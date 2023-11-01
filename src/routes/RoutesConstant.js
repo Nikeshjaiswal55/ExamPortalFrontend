@@ -8,7 +8,11 @@ export const path = {
         desc: 'this is home pages'
     },
     AdminDasboard: {
-        path: '/admin-permission',
+        path: '/admin-dashboard',
+        desc: 'this is admin dashboard'
+    },
+    Organisation: {
+        path: '/organisation',
         desc: 'this is for org type and name'
     },
     error: {
