@@ -11,10 +11,10 @@ const style = {backgroundColor: "#f6f6f6"}
 
 export default function OrgDashBoard() {
     return (
-        <div className='row w-100 rounded-5 m-0 p-0 justify-content-end'>
-
+        <>
             <SideNavBar />
             <Header />
+            <div className='row w-100 rounded-5 m-0 p-0 justify-content-end'>
 
             <div className='offset-lg-1 col-lg-11 row m-0 h-auto mt-3 d-flex'>
 
@@ -56,6 +56,7 @@ export default function OrgDashBoard() {
 
             </div>
 
-        </div >
+            </div >
+        </ >
     )
 }

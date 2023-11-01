@@ -15,6 +15,13 @@ export const path = {
         path: '/organisation',
         desc: 'this is for org type and name'
     },
+    AddCourse: {
+        path: '/add-course',
+        desc: 'this is for adding course page '
+    },AddAssessment: {
+        path: '/add-assessment',
+        desc: 'this is for adding assesment page '
+    },
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'
