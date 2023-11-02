@@ -12,16 +12,25 @@ export const path = {
         desc: 'this is admin dashboard'
     },
     Organisation: {
-        path: '/organisation',
+        path: '/get-started',
         desc: 'this is for org type and name'
     },
     AddCourse: {
         path: '/add-course',
         desc: 'this is for adding course page '
-    },AddAssessment: {
+    },
+    AddAssessment: {
         path: '/add-assessment',
         desc: 'this is for adding assesment page '
     },
+    CreateAssessment: {
+        path: '/create-assessment',
+        desc: 'this is for creating  assesment page '
+    },CreateCourse: {
+        path: '/create-course',
+        desc: 'this is for creating course page '
+    },
+
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

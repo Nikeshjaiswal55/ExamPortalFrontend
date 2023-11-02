@@ -1,8 +1,10 @@
 import Table from 'react-bootstrap/Table';
 import React from 'react'
 import TrOrganisation from './TrOrganisation';
+
 const style = {backgroundColor: "#f6f6f6"}
 const styleRow = {width: "150px",fontSize: "16px",color: "#4E4E4E"};
+
 export default function TableResponsive() {
     return (
         <>

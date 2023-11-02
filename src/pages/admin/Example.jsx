@@ -20,8 +20,8 @@ function Example() {
             <Button variant="light" onClick={handleShow}>
                 <BiMenu size={30}></BiMenu>
             </Button>
-            <Offcanvas show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
+            <Offcanvas show={show} onHide={handleClose}   >
+                <Offcanvas.Header closeButton style={{backgroundColor: "transparent"}}>
                 </Offcanvas.Header>
                 <Offcanvas.Body style={style}>
                     <SideNavBar></SideNavBar>

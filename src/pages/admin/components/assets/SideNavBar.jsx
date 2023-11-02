@@ -8,12 +8,12 @@ import {PiSquaresFour} from 'react-icons/pi'
 import {FaRegMoon} from 'react-icons/fa'
 import {SiSimpleanalytics} from 'react-icons/si'
 import {IoSettingsOutline,IoBagOutline} from 'react-icons/io5'
-
+import './SideNavbar.css'
 export default function SideNavBar() {
     return (
         <>
-            <div className=' position-fixed  top-50  col-sm-1 row rounded-3 w-auto d-flex flex-column justify-content-around align-items-baseline py-4 g-4 bg-black text-white m-auto my-3 d-lg-grid  d-none'
-                style={{top: "16px",left: "21px",width: "90px",maxHeight: "1048px",transform: "translateY(-50%)"}}>
+            <div id='side-nav-container' className=' position-fixed   col-sm-1 row rounded-3 w-auto  d-flex flex-column justify-content-around align-items-baseline py-4 g-4 bg-black text-white m-auto my-3 d-lg-grid  d-none overflow-scroll z-3'
+            >
                 <div className='d-flex flex-column  mb-3 py-1'>
                     <span className=' p-2 my-2 rounded-3' ><TiPlusOutline size={20} ></TiPlusOutline></span>
                 </div>

@@ -1,0 +1,9 @@
+#header-container {
+    width: 97vw;
+}
+
+@media screen and (max-width:1024px) {
+    #header-container {
+        width: 100vw;
+    }
+}

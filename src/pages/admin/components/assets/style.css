@@ -1,0 +1,23 @@
+.container-body {
+    background-color: #f6f6f6 !important;
+    height: 90vh !important;
+}
+
+
+/* for center a create assesment and course page  */
+
+.container-center {
+    transform: translate(-50%, -50%) !important;
+    max-width: 400px !important;
+    max-height: 520px;
+}
+
+.input-border {
+    border-color: #707070 !important;
+    border-radius: 10px !important;
+}
+
+.input-error~input.input-error {
+    color: red;
+    border-color: red;
+}
