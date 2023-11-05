@@ -2,7 +2,7 @@ import {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BiMenu} from 'react-icons/bi';
-import SideNavBar from './components/assets/SideNavBar';
+import SideNavBar from './components/SideNavBar';
 
 const style = {
     backgroundColor: "transparent!important",

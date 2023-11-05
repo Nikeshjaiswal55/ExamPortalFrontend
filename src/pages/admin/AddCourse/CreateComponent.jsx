@@ -1,5 +1,5 @@
 import React from 'react'
-import '../assets/style.css'
+import '../components/style.css'
 import {Button,Row} from 'react-bootstrap'
 export function CreateComponent({Img,onButtonClick,buttonText}) {
     return (

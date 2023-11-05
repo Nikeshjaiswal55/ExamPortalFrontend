@@ -1,9 +1,9 @@
 import React from 'react'
-import SideNavBar from './components/assets/SideNavBar'
+import SideNavBar from '../components/SideNavBar'
 import {Form} from 'react-bootstrap'
-import './components/assets/style.css'
-import TableResponsive from './components/TableResponsive'
-import Header from './components/assets/Header'
+import '../components/style.css'
+import TableResponsive from './TableResponsive'
+import Header from '../components/Header'
 
 const style = {backgroundColor: "#f6f6f6"}
 

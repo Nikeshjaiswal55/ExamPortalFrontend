@@ -1,12 +1,11 @@
 import React from 'react'
-import SideNavBar from '../assets/SideNavBar'
-import Header from '../assets/Header'
 
 import {Button,Form,Row} from 'react-bootstrap'
-import {changeDefaultButtonBehaviour} from '../assets/changeDefaultBehaviourButton'
-import {InputField} from '../assets/InputField'
 import {useNavigate} from 'react-router-dom'
-
+import SideNavBar from '../components/SideNavBar'
+import Header from '../components/Header'
+import {InputField} from '../components/InputField'
+import {changeDefaultButtonBehaviour} from '../components/changeDefaultBehaviourButton'
 
 const style = {backgroundColor: "#f6f6f6"}
 

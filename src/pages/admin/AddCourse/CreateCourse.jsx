@@ -1,9 +1,9 @@
 import React from 'react'
-import Header from '../assets/Header'
-import SideNavBar from '../assets/SideNavBar'
+import Header from '../components/Header'
+import SideNavBar from '../components/SideNavBar'
 import {CreateComponent} from './CreateComponent'
-import creatImg from '../image/Webinar-pana.svg'
-import {changeDefaultButtonBehaviour} from '../assets/changeDefaultBehaviourButton'
+import creatImg from '../assets/Webinar-pana.svg'
+import {changeDefaultButtonBehaviour} from '../components/changeDefaultBehaviourButton'
 import {useNavigate} from 'react-router-dom'
 
 export function CreateCourse() {

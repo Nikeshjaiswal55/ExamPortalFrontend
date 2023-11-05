@@ -2,10 +2,12 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import { Outlet } from 'react-router';
 
-export const getAccessToken = async (getAccessTokenSilently) => {
+export const getAccessToken = async (getAccessTokenSilently,user) => {
   try {
     const accessToken = await getAccessTokenSilently();
+    console.log(user)
     localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('users',JSON.stringify(user))
     console.log(`Access token: ${accessToken}`);
   } catch (e) {
     console.error(e);

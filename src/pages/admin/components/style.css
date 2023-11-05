@@ -1,6 +1,14 @@
 .container-body {
     background-color: #f6f6f6 !important;
+    max-height: 90vh !important;
     height: 90vh !important;
+    overflow: scroll !important;
+    scroll-behavior: smooth !important;
+    scrollbar-width: none !important;
+}
+
+.container-body::-webkit-scrollbar {
+    width: 1px !important;
 }
 
 
@@ -17,7 +25,8 @@
     border-radius: 10px !important;
 }
 
-.input-error~input.input-error {
+.input-border:invalid,
+.input-error {
     color: red;
     border-color: red;
 }
