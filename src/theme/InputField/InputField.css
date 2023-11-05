@@ -1,0 +1,4 @@
+.input-border {
+    border-color:var(--inputFiedColor)!important;
+    border-radius: 10px !important;
+}
