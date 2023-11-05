@@ -1,6 +1,6 @@
 export const path = {
     private: {
-        path: "/private",
+        path: "private",
         desc: 'this is private page'
     },
     home: {
@@ -26,11 +26,11 @@ export const path = {
     CreateAssessment: {
         path: '/create-assessment',
         desc: 'this is for creating  assesment page '
-    },CreateCourse: {
+    },
+    CreateCourse: {
         path: '/create-course',
         desc: 'this is for creating course page '
     },
-
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

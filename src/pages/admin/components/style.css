@@ -20,11 +20,6 @@
     max-height: 520px;
 }
 
-.input-border {
-    border-color: #707070 !important;
-    border-radius: 10px !important;
-}
-
 .input-border:invalid,
 .input-error {
     color: red;
