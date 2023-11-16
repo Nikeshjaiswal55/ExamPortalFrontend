@@ -74,6 +74,18 @@ export const path = {
 
     },
 
+    exam: {
+        path: '/exam',
+        desc: 'this is seprate exam pages for student'
+    },
+    examStart: {
+        path: '/exam-verify',
+        desc: 'this is for student system varification page'
+    },
+    examReport: {
+        path: '/exam-report',
+        desc: 'this is for student summery page'
+    },
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

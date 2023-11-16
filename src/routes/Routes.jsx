@@ -19,6 +19,12 @@ import {Redirect,SaveUserOrg} from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import { ExamPortal } from '../pages/exam-portal/ExamPortal';
+import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
+// import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
+import { ReportCard } from '../pages/exam-portal/components/ReportCard';
+import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
+import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 
 export const Routes = () => {
   return (
@@ -29,6 +35,9 @@ export const Routes = () => {
 
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
         <Route path={path.Redirect.path} element={<Redirect />} />
+        <Route path="/demo" element={<ExamSubmited />} />
+        <Route path={path.home.path} element={<Home />} />
+        <Route path={path.Organisation.path} element={<OrganisationPage />} />
 
         <Route path="/" element={<Private />}>
           <Route path={path.Organisation.path} element={<OrganisationPage />} />
@@ -119,6 +128,11 @@ export const Routes = () => {
             }
           />
         </Route>
+        {/* seprate exam portal */}
+        <Route path={path.exam.path} element={<ExamPortal />} />
+        <Route path="/exam-started" element={<ExamStarted />} />
+        <Route path={path.examStart.path} element={<ExamVerification />} />
+        <Route path={path.examReport.path} element={<ReportCard />} />
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
