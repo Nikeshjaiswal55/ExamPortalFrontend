@@ -10,11 +10,18 @@ import AddAssignment from '../pages/admin/AddCourse/AddAssignment';
 import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
+import { ExamPortal } from '../pages/exam-portal/ExamPortal';
+import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
+// import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
+import { ReportCard } from '../pages/exam-portal/components/ReportCard';
+import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
+import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
+        <Route path="/demo" element={<ExamSubmited />} />
         <Route path={path.home.path} element={<Home />} />
         <Route path={path.Organisation.path} element={<OrganisationPage />} />
 
@@ -32,6 +39,11 @@ export const Routes = () => {
           />
           <Route path={path.CreateCourse.path} element={<CreateCourse />} />
         </Route>
+        {/* seprate exam portal */}
+        <Route path={path.exam.path} element={<ExamPortal />} />
+        <Route path="/exam-started" element={<ExamStarted />} />
+        <Route path={path.examStart.path} element={<ExamVerification />} />
+        <Route path={path.examReport.path} element={<ReportCard />} />
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
