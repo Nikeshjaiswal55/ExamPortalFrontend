@@ -129,7 +129,7 @@ export const ExamStarted = () => {
   }, []);
 
   async function handleSubmit() {
-    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate('/demo');
   }
