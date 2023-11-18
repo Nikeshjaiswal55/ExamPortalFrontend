@@ -7,13 +7,16 @@ export const path = {
         path: '/',
         desc: 'this is home pages'
     },
-    AdminDasboard: {
-        path: '/admin-dashboard',
-        desc: 'this is admin dashboard'
-    },
     Organisation: {
         path: '/get-started',
         desc: 'this is for org type and name'
+    },
+    Layout:{
+        path:'/admin',
+    },
+    AdminDasboard: {
+        path: '/dashboard',
+        desc: 'this is admin dashboard'
     },
     AddCourse: {
         path: '/add-course',

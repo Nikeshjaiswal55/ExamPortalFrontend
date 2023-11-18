@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState}from 'react';
 import SideNavBar from '../../../components/SideNavBar/SideNavBar';
 import { Form } from 'react-bootstrap';
 import '../components/style.css';
@@ -9,10 +9,10 @@ export default function OrgDashBoard() {
   return (
     <>
       <SideNavBar />
-      <Header />
-      <div className="row w-100 rounded-5 m-0 p-0 justify-content-end ps-lg-5">
+      {/* <Header /> */}
+      {/* <div className="row w-100 rounded-5 m-0 p-0 justify-content-end ps-lg-5">
         <div className="  col-12 row m-0 ps-lg-5 d-flex">
-          {/* div where item contain comes  */}
+          div where item contain comes 
           <div className="row d-flex  p-1 g-1" style={{backgroundColor:"var(--white-100)"}}>
             <div className="row d-flex  justify-content-around  p-2 pt-0 g-1">
               <div
@@ -36,7 +36,7 @@ export default function OrgDashBoard() {
                 <h1> organisation</h1>
               </div>
             </div>
-            {/*  div where table format data come  */}
+             div where table format data come 
             <div className="row m-0  d-flex justify-content-between bg-white rounded-3 ">
               <div className="row w-100 d-flex justify-content-around  align-items-center p-3">
                 <div className="col-6  text-center  ">
@@ -63,7 +63,7 @@ export default function OrgDashBoard() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

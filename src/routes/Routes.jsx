@@ -23,14 +23,16 @@ export const Routes = () => {
             path={path.private.path}
             element={<h1>this private route</h1>}
           />
-          <Route path={path.AdminDasboard.path} element={<OrgDashBoard />} />
-          <Route path={path.AddCourse.path} element={<AddCourse />} />
-          <Route path={path.AddAssessment.path} element={<AddAssignment />} />
+          <Route path={path.Layout.path} element={<OrgDashBoard />} >
+            <Route path={path.AdminDasboard.path} element={<AddCourse />} />
+            <Route path={path.AddCourse.path} element={<AddCourse />} />
+            <Route path={path.AddAssessment.path} element={<AddAssignment />} />
+            <Route path={path.CreateCourse.path} element={<CreateCourse />} />
+          </Route>
           <Route
             path={path.CreateAssessment.path}
             element={<CreateAssesment />}
           />
-          <Route path={path.CreateCourse.path} element={<CreateCourse />} />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>

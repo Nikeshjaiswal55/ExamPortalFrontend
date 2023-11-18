@@ -12,7 +12,7 @@ export default function Header() {
         {/* user part */}
         <div className="d-flex justify-content-between  justify-content-lg-end">
           <span className="d-lg-none">
-            <Example />
+            {/* <Example /> */}
           </span>
           <span className="p-1 ">
             <FaUserAlt size={25} cursor={'pointer'} />

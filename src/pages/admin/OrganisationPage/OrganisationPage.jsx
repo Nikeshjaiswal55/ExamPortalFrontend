@@ -40,7 +40,7 @@ export default function OrganisationPage() {
     if (accessToken) {
       const promise = await postOrgDetails({ ...storeData, accessToken });
       if (promise.data) {
-        navigate('/create-course');
+        navigate('/admin/create-course');
       } else {
         // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
         alert('sorry your connection lost or api failed ');
