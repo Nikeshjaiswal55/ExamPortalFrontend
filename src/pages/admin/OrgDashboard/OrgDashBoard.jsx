@@ -1,4 +1,4 @@
-import React ,{useState}from 'react';
+import React, { useState } from 'react';
 import SideNavBar from '../../../components/SideNavBar/SideNavBar';
 import { Form } from 'react-bootstrap';
 import '../components/style.css';
@@ -8,7 +8,8 @@ import Header from '../../../components/Header/Header';
 export default function OrgDashBoard() {
   return (
     <>
-      <SideNavBar />
+      {/* <SideNavBar /> */}
+      <h1>hiii</h1>
       {/* <Header /> */}
       {/* <div className="row w-100 rounded-5 m-0 p-0 justify-content-end ps-lg-5">
         <div className="  col-12 row m-0 ps-lg-5 d-flex">

@@ -11,19 +11,19 @@ export const path = {
         path: '/get-started',
         desc: 'this is for org type and name'
     },
-    Layout:{
-        path:'/admin',
+    Layout: {
+        path: '/admin/',
     },
     AdminDasboard: {
-        path: '/dashboard',
+        path: '/admin/dashboard',
         desc: 'this is admin dashboard'
     },
     AddCourse: {
-        path: '/add-course',
+        path: '/admin/add-course',
         desc: 'this is for adding course page '
     },
     AddAssessment: {
-        path: '/add-assessment',
+        path: '/admin/add-assessment',
         desc: 'this is for adding assesment page '
     },
     CreateAssessment: {
@@ -31,7 +31,7 @@ export const path = {
         desc: 'this is for creating  assesment page '
     },
     CreateCourse: {
-        path: '/create-course',
+        path: '/admin/create-course',
         desc: 'this is for creating course page '
     },
     error: {

@@ -10,6 +10,7 @@ import AddAssignment from '../pages/admin/AddCourse/AddAssignment';
 import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
+import Layout from '../components/layout';
 
 export const Routes = () => {
   return (
@@ -23,12 +24,38 @@ export const Routes = () => {
             path={path.private.path}
             element={<h1>this private route</h1>}
           />
-          <Route path={path.Layout.path} element={<OrgDashBoard />} >
-            <Route path={path.AdminDasboard.path} element={<AddCourse />} />
-            <Route path={path.AddCourse.path} element={<AddCourse />} />
-            <Route path={path.AddAssessment.path} element={<AddAssignment />} />
-            <Route path={path.CreateCourse.path} element={<CreateCourse />} />
-          </Route>
+          <Route
+            path={path.AdminDasboard.path}
+            element={
+              <Layout>
+                <OrgDashBoard />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.AddCourse.path}
+            element={
+              <Layout>
+                <AddCourse />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.AddAssessment.path}
+            element={
+              <Layout>
+                <AddAssignment />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.CreateCourse.path}
+            element={
+              <Layout>
+                <CreateCourse />
+              </Layout>
+            }
+          />
           <Route
             path={path.CreateAssessment.path}
             element={<CreateAssesment />}
