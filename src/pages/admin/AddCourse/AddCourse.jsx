@@ -3,9 +3,26 @@ import { Button, Form, Row } from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 
 import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
+import * as Yup from 'yup'
+
+const SignupSchema = Yup.object().shape({
+  "add-course-name": Yup.string().min(2).max(25).required('CourseName is required'),
+  "add-course-email":Yup.string()
+  .matches(
+    /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+    'Invalid email format'
+  )
+  .required('Required!')
+  .test('email-provider', 'Email provider not allowed', (value) => {
+    if (/(email|yahoo)\.com$/.test(value)) {
+      return false;
+    }
+    return true;
+  }),
+});
 const style = { backgroundColor: '#f6f6f6' };
 
 const InputFieldData = [
@@ -22,11 +39,14 @@ const InputFieldData = [
     formGroupId: 'add-course-group-email',
     placeholder: `enter HOD's email`,
     labelText: 'HOD Email',
+    
+  
   },
 ];
 
 export default function AddCourse() {
   const navigate = useNavigate();
+  
 
   return (
     <>
