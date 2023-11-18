@@ -7,7 +7,7 @@ export default function Header() {
     <>
       <div
         id="header-container"
-        className=" ms-lg-5   row m-0 h-auto  w-auto  p-1  d-flex  position-sticky top-0  z-3 bg-white ps-lg-5"
+        className="row m-0 h-auto p-1  d-flex  position-sticky top-0  z-3 bg-white"
       >
         {/* user part */}
         <div className="d-flex justify-content-between  justify-content-lg-end">

@@ -32,15 +32,9 @@ export default function AddCourse() {
 
   return (
     <>
-      <SideNavBar />
-      <Header />
+     <div className="row bg-white">
 
-      <div className="container-body row w-100 rounded-5 m-0 p-0 justify-content-end ms-lg-5 w-auto  bg-white ">
-        <div
-          className="col-12 row m-0 d-flex  pt-2 p-2   ms-lg-5 ps-lg-4  w-100"
-          style={style}
-        >
-          <div className=" col-md-6 bg-white">
+     <div className=" col-md-6 ">
             <div className="p-3 pe-lg-5 ms-lg-5 mt-lg-2">
               <p className="text-capitalize fw-bold fs-4 ">Add course</p>
               <p>
@@ -74,11 +68,13 @@ export default function AddCourse() {
             </Formik>
           </div>
 
-          <div className="col-md-6  d-flex align-items-center  justify-content-center p-3 bg-white ">
+          <div className="col-md-6  d-flex align-items-center  justify-content-center">
             <img src={learning} alt="" className="img-fluid w-75" />
           </div>
-        </div>
-      </div>
+        <div className="col-6"></div>
+            
+        <div className="col-6"></div>
+     </div>
     </>
   );
 }

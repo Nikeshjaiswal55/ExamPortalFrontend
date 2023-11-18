@@ -10,6 +10,7 @@ import {
   FaThList,
 } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import Header from './Header/Header';
 
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
@@ -82,7 +83,10 @@ export default function Layout({ children }) {
             </NavLink>
           ))}
         </div>
-        <main>{children}</main>
+        <main className='p-0'>
+          <Header/>
+          <div className='main-container'> {children}</div>
+         </main>
       </div>
     </>
   );

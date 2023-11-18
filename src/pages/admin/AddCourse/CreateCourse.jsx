@@ -13,13 +13,13 @@ export function CreateCourse() {
     onButtonClick: (e) => {
       e.preventDefault();
       e.stopPropagation();
-      navigate('/add-course');
+      navigate('/admin/add-course');
     },
   };
   return (
     <>
-      <Header />
-      <SideNavBar />
+      {/* <Header />
+      <SideNavBar /> */}
       <CreateComponent {...courseData} />
     </>
   );

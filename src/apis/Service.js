@@ -21,7 +21,7 @@ export const adminApi = createApi({
                 console.log("orgDetails ;- ",JSON.stringify(organisationDetails));
 
                 return {
-                    url: `/createorganisation`,
+                    url: `/createorgnization`,
                     method: 'post',
                     body: organisationDetails,
                     headers: {

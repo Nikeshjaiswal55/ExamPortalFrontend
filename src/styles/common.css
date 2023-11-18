@@ -10,3 +10,10 @@
     --grey-100:#232323;
     --inputFiedColor:#707070;
 }
+.main-container{
+    width: calc(100vw - 75px);
+    background-color: #e6e6ed;
+    height: calc(100vh - 52px);
+    border-radius: 5px;
+    position: relative;
+}
