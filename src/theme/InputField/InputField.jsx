@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Row } from 'react-bootstrap';
+import { ErrorMessage } from 'formik';
 import './InputField.css';
 export function InputField({
   inputStyle,
@@ -34,6 +35,7 @@ export function InputField({
             className={`input-border p-2 border focus-ring text-capitalize focus-ring-light ${inputClassName}`}
             placeholder={`${placeholder}`}
           />
+          <ErrorMessage component={"div"} className=' text-capitalize text-danger px-2' name={inputName} /> 
           {invalidCondition ? (
             <p className=" text-capitalize text-danger px-2">{invalidText}</p>
           ) : null}

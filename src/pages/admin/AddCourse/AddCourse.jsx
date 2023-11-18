@@ -5,9 +5,26 @@ import { Button, Form, Row } from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 
 import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
+import * as Yup from 'yup'
+
+const SignupSchema = Yup.object().shape({
+  "add-course-name": Yup.string().min(2).max(25).required('CourseName is required'),
+  "add-course-email":Yup.string()
+  .matches(
+    /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+    'Invalid email format'
+  )
+  .required('Required!')
+  .test('email-provider', 'Email provider not allowed', (value) => {
+    if (/(email|yahoo)\.com$/.test(value)) {
+      return false;
+    }
+    return true;
+  }),
+});
 const style = { backgroundColor: '#f6f6f6' };
 
 const InputFieldData = [
@@ -24,11 +41,14 @@ const InputFieldData = [
     formGroupId: 'add-course-group-email',
     placeholder: `enter HOD's email`,
     labelText: 'HOD Email',
+    
+  
   },
 ];
 
 export default function AddCourse() {
   const navigate = useNavigate();
+  
 
   return (
     <>
@@ -49,28 +69,43 @@ export default function AddCourse() {
               </p>
             </div>
             <Formik
+
               initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
-              onSubmit={(values) => {}}
+                validationSchema={SignupSchema}
+              onSubmit={(values) => {
+                console.log(values);
+                navigate('/create-assessment')
+              }}
             >
-              <Form className="mx-lg-5">
-                {InputFieldData.map((inputData) => (
-                  <InputField
-                    inputId={inputData.inputId}
-                    inputName={inputData.inputName}
-                    formGroupId={inputData.formGroupId}
-                    placeholder={inputData.placeholder}
-                    labelText={inputData.labelText}
+              {props => (
+                 <Form className="mx-lg-5">
+                  {InputFieldData.map((inputData) => (
+                  <>
+                   <InputField
+                      inputId={inputData.inputId}
+                      inputName={inputData.inputName}
+                      formGroupId={inputData.formGroupId}
+                      placeholder={inputData.placeholder}
+                      labelText={inputData.labelText}
+                      onInputBlur={props.handleBlur}
+                      onInputChange={props.handleChange }
+                      
+                      />
+                     
+                      </>
+                  ))}
+                  
+                  <CustomButton
+                    onButtonClick={props.handleSubmit}
+                    buttonText={'Submit'}
+
+                    rowClassName={
+                      'mt-3 m-0 mx-2 p-3 p-md-5 pb-md-0  m-md-5 mb-md-0'
+                    }
+                    className={'m-md-3'}
                   />
-                ))}
-                <CustomButton
-                  onButtonClick={() => navigate('/create-assessment')}
-                  buttonText={'Submit'}
-                  rowClassName={
-                    'mt-3 m-0 mx-2 p-3 p-md-5 pb-md-0  m-md-5 mb-md-0'
-                  }
-                  className={'m-md-3'}
-                />
-              </Form>
+                </Form>
+)}
             </Formik>
           </div>
 

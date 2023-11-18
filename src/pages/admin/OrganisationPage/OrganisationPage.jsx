@@ -5,7 +5,7 @@ import { Form, Row } from 'react-bootstrap';
 import './OrganisationPage.css';
 import { useNavigate } from 'react-router-dom';
 import '../components/style.css';
-import { useFormik } from 'formik';
+import { Formik, useFormik, validateYupSchema } from 'formik';
 import { orgPageSchema } from './yup-schema/OrgPageSchema';
 import { usePostOrganisationDetailsMutation } from '../../../apis/Service';
 import { InputField } from '../../../theme/InputField/InputField';
@@ -51,12 +51,12 @@ export default function OrganisationPage() {
   }
 
   // ===============formik ==================
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: orgPageSchema,
-      onSubmit: onGetStarted,
-    });
+  // const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+  //   useFormik({
+  //     initialValues: initialValues,
+  //     validationSchema: orgPageSchema,
+  //     onSubmit: onGetStarted,
+  //   });
 
   return (
     <>
@@ -82,19 +82,28 @@ export default function OrganisationPage() {
             id="org-box"
             className="m-0 p-3 rounded-3 position-absolute top-50  start-50 translate-middle  "
           >
-            <Form onSubmit={handleSubmit}>
+            <Formik
+             initialValues={initialValues}
+                validationSchema={orgPageSchema}
+              onSubmit={(values) => {
+                console.log(values);
+                onGetStarted(values);
+                // navigate('/create-assessment')
+              }}>
+{props=>(
+            <Form onSubmit={props.validateFormhandleSubmit}>
               <InputField
                 rowClassName={'my-3'}
                 inputName={'org-name'}
                 inputId={'org-name'}
-                onInputBlur={handleBlur}
-                onInputChange={handleChange}
-                inputValue={values['org-name']}
+                onInputBlur={props.handleBlur}
+                onInputChange={props.handleChange}
+                inputValue={props.values['org-name']}
                 formGroupId={'admin-organisation-name'}
                 placeholder={'Organisation Name'}
                 labelText={'Organisation Name'}
-                invalidCondition={errors['org-name'] && touched['org-name']}
-                invalidText={'please provide a name'}
+                invalidCondition={props.errors['org-name'] && props.touched['org-name']}
+                // invalidText={'please provide a name'}
               />
               <Row className="my-3 mx-3">
                 <Form.Group>
@@ -103,9 +112,9 @@ export default function OrganisationPage() {
                   </Form.Label>
                   <Form.Select
                     aria-label="Select Type "
-                    onChange={handleChange}
-                    value={values['org-type']}
-                    onBlur={handleBlur}
+                    onChange={props.handleChange}
+                    value={props.values['org-type']}
+                    onBlur={props.handleBlur}
                     style={{ borderColor: '#707070' }}
                     name="org-type"
                     className=" input-border p-2 border focus-ring focus-ring-light"
@@ -114,7 +123,7 @@ export default function OrganisationPage() {
                     <option value="company">Company</option>
                     <option value="college">College</option>
                   </Form.Select>
-                  {errors['org-type'] && touched['org-type'] ? (
+                  {props.errors['org-type'] && props.touched['org-type'] ? (
                     <p className=" text-capitalize text-danger px-2">
                       please select option
                     </p>
@@ -131,6 +140,9 @@ export default function OrganisationPage() {
                 </Button>
               </Row>
             </Form>
+              )}
+            
+            </Formik>
           </div>
         </div>
       }
