@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ const InputFieldData = [
 
 export default function AddAssignment() {
   const navigate = useNavigate();
+  const [showAssignment, setShowAssignment] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -64,15 +65,61 @@ export default function AddAssignment() {
                   labelText={inputData.labelText}
                 />
               ))}
-              <Row className=" d-flex justify-content-center px-0 py-3  p-md-2 ">
-                <Button
-                  variant="dark"
-                  type="submit"
-                  onClick={(e) => handleSubmit(e)}
-                  className="m-auto d-block px-5 m-3 mt-lg-5  text-capitalize w-75 rounded-4"
-                >
-                  Submit
-                </Button>
+              <div className="px-3">
+                <p className="text-capitalize fw-bold fs-4">
+                  Assessment Question
+                </p>
+                {showAssignment && (
+                  <div>
+                    <p className="text-capitalize fw-bold">
+                      enter your question
+                    </p>
+                    <Form.Check
+                      type="radio"
+                      id={`default-radio-1`}
+                      name="radioGroup"
+                      label="option1"
+                    />
+
+                    <Form.Check
+                      type="radio"
+                      id={`default-radio-2`}
+                      name="radioGroup"
+                      label="option2"
+                    />
+
+                    <Form.Check
+                      type="radio"
+                      id={`default-radio-3`}
+                      name="radioGroup"
+                      label="option3"
+                    />
+
+                    <Form.Check
+                      type="radio"
+                      id={`default-radio-4`}
+                      name="radioGroup"
+                      label="option4"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <Row className="my-2 mx-3 d-flex justify-content-around p-md-5 ">
+                {!showAssignment ? (
+                  <Button
+                    variant="dark"
+                    onClick={(e) => setShowAssignment(true)}
+                    className="m-auto d-block px-5  w-50 mx-5   text-capitalize  rounded-4"
+                  >
+                    Create Assigmnet Paper
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="dark"> Add More Question</Button>
+                    <Button> Preview</Button>
+                  </>
+                )}
               </Row>
             </Form>
           </Formik>

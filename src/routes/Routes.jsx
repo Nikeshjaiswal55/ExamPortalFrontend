@@ -6,11 +6,11 @@ import { path } from './RoutesConstant';
 import OrgDashBoard from '../pages/admin/OrgDashboard/OrgDashBoard';
 
 import AddCourse from '../pages/admin/AddCourse/AddCourse';
-import AddAssignment from '../pages/admin/AddCourse/AddAssignment';
-import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
 import Layout from '../components/layout';
+import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
+import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 
 export const Routes = () => {
   return (
