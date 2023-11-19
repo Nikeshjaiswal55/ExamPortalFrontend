@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 // Define a service using a base URL and expected endpoints
-// const baseUrl = " http://localhost:3000/"
+const baseUrl = " http://localhost:3000/"
 
-const baseUrl = "http://192.168.0.237:9090"
+// const baseUrl = "http://192.168.0.237:9090/"
 
 
 export const adminApi = createApi({
@@ -13,6 +13,10 @@ export const adminApi = createApi({
         getTest: builder.query({
             query: () => `posts`,
         }),
+        getCourses: builder.query({
+            query: () => '/course'
+        }),
+
         postOrganisationDetails: builder.mutation({
             query: (orgDetail) => {
                 const {accessToken,...organisationDetails} = orgDetail;

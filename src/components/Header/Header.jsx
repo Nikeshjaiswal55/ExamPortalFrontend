@@ -1,8 +1,8 @@
 import React from 'react';
-import { FaUserAlt } from 'react-icons/fa';
+import {FaUserAlt} from 'react-icons/fa';
 
 import './Header.css';
-export default function Header() {
+export default function Header({isOpen}) {
   return (
     <>
       <div
@@ -22,7 +22,7 @@ export default function Header() {
                 aria-expanded="false"
               >
 
-            <FaUserAlt size={25} cursor={'pointer'} />
+                <FaUserAlt size={25} cursor={'pointer'} />
               </a>
               <ul className="dropdown-menu">
                 <li>

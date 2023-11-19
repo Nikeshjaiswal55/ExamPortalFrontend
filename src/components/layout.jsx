@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React,{useState} from 'react';
 import 'bootstrap/js/dist/dropdown';
 import {
   FaTh,
@@ -9,14 +9,14 @@ import {
   FaShoppingBag,
   FaThList,
 } from 'react-icons/fa';
-import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
-import { NavLink } from 'react-router-dom';
+import {RiArrowLeftSLine,RiArrowRightSLine} from 'react-icons/ri';
+import {NavLink} from 'react-router-dom';
 import './layout.css';
 import Header from './Header/Header';
 
-export default function Layout({ children }) {
+export default function Layout({children}) {
   // const Sidebar = ({children}) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen,setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const menuItem = [
     {
@@ -44,7 +44,14 @@ export default function Layout({ children }) {
       name: 'create assessment',
       icon: <FaShoppingBag />,
     },
+    {
+      path: '/admin/show-course',
+      name: 'course List',
+      icon: <FaThList />,
+    },
   ];
+
+
   return (
     <>
       <div className="d-flex p-0 h-100 ">
@@ -57,11 +64,11 @@ export default function Layout({ children }) {
           id="sideNavbar"
         >
           <div className="top_section">
-            <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
+            <h1 style={{display: isOpen ? 'block' : 'none'}} className="logo">
               Lg
             </h1>
           </div>
-          {menuItem.map((item, index) => (
+          {menuItem.map((item,index) => (
             <NavLink
               to={item.path}
               key={index}
@@ -70,7 +77,7 @@ export default function Layout({ children }) {
             >
               <div className="icon">{item.icon}</div>
               <div
-                style={{ display: isOpen ? 'block' : 'none' }}
+                style={{display: isOpen ? 'block' : 'none'}}
                 className="link_text"
               >
                 {item.name}
@@ -96,12 +103,12 @@ export default function Layout({ children }) {
 
         <main
           className="main p-0 m-0 h-100 "
-          style={{ width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)' }}
+          style={{width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)'}}
         >
           <Header isOpen={isOpen} />
           <div
             className="main-container m-0 p-2 w-100  "
-            style={{ height: 'calc(100vh - 60px)' }}
+            style={{height: 'calc(100vh - 60px)'}}
           >
             <div className="w-100 h-100 rounded-1 m-0 p-0  bg-white">
               {children}

@@ -10,6 +10,7 @@
     --grey-100: #232323;
     --inputFiedColor: #707070;
 }
+
 .main {
     transition: all 0.5s;
 }
