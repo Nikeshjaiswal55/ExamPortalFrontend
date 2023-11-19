@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Button, Form, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { InputField } from '../../../theme/InputField/InputField';
-import { Formik } from 'formik';
+import {Button,Form,Row} from 'react-bootstrap';
+import {useNavigate} from 'react-router-dom';
+import {InputField} from '../../../theme/InputField/InputField';
+import {Formik} from 'formik';
 
 const InputFieldData = [
   {
@@ -27,7 +27,7 @@ export default function AddAssignment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate('/admin-dashboard');
+    navigate('/admin/dashboard');
   };
 
   return (
@@ -77,7 +77,7 @@ export default function AddAssignment() {
             </Form>
           </Formik>
         </div>
-      </div>
-    </>
-  );
+        {/* </div> */}
+      </>
+      );
 }

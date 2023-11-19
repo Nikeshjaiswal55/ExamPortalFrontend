@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Form, Row } from 'react-bootstrap';
+import {Button,Form,Row} from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 
-import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
-import { InputField } from '../../../theme/InputField/InputField';
-import { CustomButton } from '../../../theme/Button/Buttons';
-const style = { backgroundColor: '#f6f6f6' };
+import {useNavigate} from 'react-router-dom';
+import {Formik} from 'formik';
+import {InputField} from '../../../theme/InputField/InputField';
+import {CustomButton} from '../../../theme/Button/Buttons';
+const style = {backgroundColor: '#f6f6f6'};
 
 const InputFieldData = [
   {
@@ -40,7 +40,7 @@ export default function AddCourse() {
             </p>
           </div>
           <Formik
-            initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
+            initialValues={{'add-course-name': '','add-course-email': ''}}
             onSubmit={(values) => {}}
           >
             <Form className=" d-flex flex-column justify-content-evenly ">

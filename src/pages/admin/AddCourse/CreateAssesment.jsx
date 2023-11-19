@@ -1,8 +1,8 @@
 import React from 'react';
 import creatImg from '../assets/Online test-amico.svg';
 import '../components/style.css';
-import { CreateComponent } from './CreateComponent';
-import { useNavigate } from 'react-router-dom';
+import {CreateComponent} from './CreateComponent';
+import {useNavigate} from 'react-router-dom';
 
 export default function CreateAssesment() {
   const navigate = useNavigate();
