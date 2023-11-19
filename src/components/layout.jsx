@@ -42,18 +42,20 @@ export default function Layout({ children }) {
     //   name: 'Product',
     //   icon: <FaShoppingBag />,
     // },
-    // {
-    //   path: '/productList',
-    //   name: 'Product List',
-    //   icon: <FaThList />,
-    // },
+    {
+      path: '/admin/show-course',
+      name: 'course List',
+      icon: <FaThList />,
+    },
   ];
+
+
   return (
     <>
-      <div className="container p-0">
+      <div className=" d-flex p-0 m-0 w-100">
         <div
-          style={{ width: isOpen ? '200px' : '50px' }}
-          className="sidebar m-2"
+          style={{width: isOpen ? "200px" : "75px"}}
+          className="sidebar m-2 p-0"
         >
           <div className="top_section">
             <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
@@ -83,10 +85,10 @@ export default function Layout({ children }) {
             </NavLink>
           ))}
         </div>
-        <main className='p-0'>
-          <Header/>
-          <div className='main-container'> {children}</div>
-         </main>
+        <main className='p-0 m-0 ' style={{width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 75px)'}}>
+          <Header isOpen={isOpen} />
+          <div className='main-container' > {children}</div>
+        </main>
       </div>
     </>
   );

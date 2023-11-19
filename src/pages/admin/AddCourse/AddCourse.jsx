@@ -32,10 +32,10 @@ export default function AddCourse() {
 
   return (
     <>
-     <div className="row bg-white">
+      <div className="row m-0 p-0 bg-white w-100  h-100">
 
-     <div className=" col-md-6 ">
-            <div className="p-3 pe-lg-5 ms-lg-5 mt-lg-2">
+        <div className=" col-md-6 h-100 ">
+          <div className="p-2 pe-lg-5  mt-lg-2">
               <p className="text-capitalize fw-bold fs-4 ">Add course</p>
               <p>
                 Adding a course is easy! Just provide the course name and the
@@ -68,7 +68,7 @@ export default function AddCourse() {
             </Formik>
           </div>
 
-          <div className="col-md-6  d-flex align-items-center  justify-content-center">
+        <div className="col-md-6  d-flex align-items-center  justify-content-center h-100">
             <img src={learning} alt="" className="img-fluid w-75" />
           </div>
         <div className="col-6"></div>

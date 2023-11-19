@@ -11,6 +11,7 @@ import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
 import Layout from '../components/layout';
+import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
 
 export const Routes = () => {
   return (
@@ -58,7 +59,10 @@ export const Routes = () => {
           />
           <Route
             path={path.CreateAssessment.path}
-            element={<CreateAssesment />}
+            element={<Layout><CreateAssesment /></Layout>}
+          />  <Route
+            path={path.ShowCourse.path}
+            element={<Layout><ShowCourse /></Layout>}
           />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />

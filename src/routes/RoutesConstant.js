@@ -27,12 +27,16 @@ export const path = {
         desc: 'this is for adding assesment page '
     },
     CreateAssessment: {
-        path: '/create-assessment',
+        path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
     },
     CreateCourse: {
         path: '/admin/create-course',
         desc: 'this is for creating course page '
+    },
+    ShowCourse: {
+        path: '/admin/show-course',
+        desc: 'this is showing course page '
     },
     error: {
         path: '/*',

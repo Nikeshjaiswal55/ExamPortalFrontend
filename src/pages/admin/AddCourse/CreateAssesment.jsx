@@ -13,14 +13,14 @@ export default function CreateAssesment() {
     onButtonClick: (e) => {
       e.preventDefault();
       e.stopPropagation();
-      navigate('/add-assessment');
+      navigate('/admin/add-assessment');
     },
     buttonText: 'create assesment',
   };
   return (
     <>
-      <Header />
-      <SideNavBar />
+      {/* <Header />
+      <SideNavBar /> */}
       <CreateComponent {...assesmentData} />
     </>
   );

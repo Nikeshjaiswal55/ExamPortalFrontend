@@ -28,16 +28,14 @@ export default function AddAssignment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate('/admin-dashboard');
+    navigate('/admin/dashboard');
   };
   return (
     <>
-      <SideNavBar />
-      <Header />
-      <div className="container-body row w-100 rounded-5 m-0 p-0 justify-content-end ps-lg-5">
+      {/* <div className="container-body row w-100  m-0 p-0 justify-content-end ps-lg-5"> */}
         <div
           className="col-12 row m-0   d-flex p-2 ps-lg-5 "
-          style={{ backgroundColor: 'var(--white-100)' }}
+        // style={{ backgroundColor: 'var(--white-100)' }}
         >
           <div className=" col-md-6 bg-white">
             <div className="p-3 pe-lg-5">
@@ -73,7 +71,7 @@ export default function AddAssignment() {
             </Form>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }
