@@ -9,21 +9,22 @@ import { ErrorMessage, Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import * as Yup from 'yup'
+import { useAddCourseMutation } from '../../../apis/Service';
 
 const SignupSchema = Yup.object().shape({
   "add-course-name": Yup.string().min(2).max(25).required('CourseName is required'),
-  "add-course-email":Yup.string()
-  .matches(
-    /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
-    'Invalid email format'
-  )
-  .required('Required!')
-  .test('email-provider', 'Email provider not allowed', (value) => {
-    if (/(email|yahoo)\.com$/.test(value)) {
-      return false;
-    }
-    return true;
-  }),
+  "add-course-email": Yup.string()
+    .matches(
+      /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+      'Invalid email format'
+    )
+    .required('Required!')
+    .test('email-provider', 'Email provider not allowed', (value) => {
+      if (/(email|yahoo)\.com$/.test(value)) {
+        return false;
+      }
+      return true;
+    }),
 });
 const style = { backgroundColor: '#f6f6f6' };
 
@@ -41,14 +42,14 @@ const InputFieldData = [
     formGroupId: 'add-course-group-email',
     placeholder: `enter HOD's email`,
     labelText: 'HOD Email',
-    
-  
+
+
   },
 ];
 
 export default function AddCourse() {
   const navigate = useNavigate();
-  
+  const [postAddCourse, { isLoading }] = useAddCourseMutation((localStorage.getItem('accessToken')));
 
   return (
     <>
@@ -71,30 +72,43 @@ export default function AddCourse() {
             <Formik
 
               initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
-                validationSchema={SignupSchema}
-              onSubmit={(values) => {
+              validationSchema={SignupSchema}
+              onSubmit={async (values) => {
                 console.log(values);
-                navigate('/create-assessment')
+                 let addCourseName = {
+                  "course_name": `${values["add-course-name"]}`,
+                  "userId": `${values["add-course-email"]}`
+                }
+                const accessToken = localStorage.getItem('accessToken');
+                if (accessToken) {
+                  const promise = await postAddCourse({ ...addCourseName, accessToken });
+                  if (promise.data) {
+                    navigate('/create-assessment')
+                  } else {
+                    // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
+                    alert('sorry your connection lost or api failed ');
+                  }
+                }
               }}
             >
               {props => (
-                 <Form className="mx-lg-5">
+                <Form className="mx-lg-5">
                   {InputFieldData.map((inputData) => (
-                  <>
-                   <InputField
-                      inputId={inputData.inputId}
-                      inputName={inputData.inputName}
-                      formGroupId={inputData.formGroupId}
-                      placeholder={inputData.placeholder}
-                      labelText={inputData.labelText}
-                      onInputBlur={props.handleBlur}
-                      onInputChange={props.handleChange }
-                      
+                    <>
+                      <InputField
+                        inputId={inputData.inputId}
+                        inputName={inputData.inputName}
+                        formGroupId={inputData.formGroupId}
+                        placeholder={inputData.placeholder}
+                        labelText={inputData.labelText}
+                        onInputBlur={props.handleBlur}
+                        onInputChange={props.handleChange}
+
                       />
-                     
-                      </>
+
+                    </>
                   ))}
-                  
+
                   <CustomButton
                     onButtonClick={props.handleSubmit}
                     buttonText={'Submit'}
@@ -105,7 +119,7 @@ export default function AddCourse() {
                     className={'m-md-3'}
                   />
                 </Form>
-)}
+              )}
             </Formik>
           </div>
 
