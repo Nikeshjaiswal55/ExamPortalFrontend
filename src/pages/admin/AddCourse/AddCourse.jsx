@@ -34,7 +34,7 @@ export default function AddCourse() {
     <>
       <div className="row w-100 h-100  m-0 p-0">
 
-     <div className=" col-md-6 ">
+        <div className=" col-md-6 h-100 m-0 p-0 ">
           <div className="p-3 pe-lg-5 mt-lg-2">
               <p className="text-capitalize fw-bold fs-4 ">Add course</p>
               <p>
@@ -46,12 +46,12 @@ export default function AddCourse() {
               initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
               onSubmit={(values) => {}}
             >
-            <Form >
+            <Form className=' d-flex flex-column justify-content-evenly ' >
                 {InputFieldData.map((inputData) => (
                   <InputField
                     inputId={inputData.inputId}
                     inputName={inputData.inputName}
-                    rowClassName=" my-0 mx-1"
+                    formGroupClassName="my-1 my-md-4 mx-5 my-0 mx-1 "
                     formGroupId={inputData.formGroupId}
                     placeholder={inputData.placeholder}
                     labelText={inputData.labelText}
@@ -61,16 +61,14 @@ export default function AddCourse() {
                 <CustomButton
                 onButtonClick={() => navigate('/admin/create-assessment')}
                   buttonText={'Submit'}
-                  rowClassName={
-                    'mt-3 m-0 mx-2 p-3 p-md-5 p-md-0  mb-md-0'
-                  }
-                  className={'m-md-3'}
+
+                className={'m-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'}
                 />
               </Form>
             </Formik>
           </div>
 
-        <div className="col-md-6 h-100 d-none d-md-flex  align-items-center  justify-content-center">
+        <div className="col-md-6 m-0 p-0 h-100 d-none d-md-flex  align-items-center  justify-content-center">
             <img src={learning} alt="" className="img-fluid w-75" />
         </div>
      </div>

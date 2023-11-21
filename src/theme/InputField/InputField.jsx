@@ -13,15 +13,16 @@ export function InputField({
   placeholder,
   labelText,
   formGroupId,
-  rowClassName,
+  formGroupClassName,
   labelClassName,
   invalidText,
   invalidCondition,
+
 }) {
   return (
     <>
-      <Row className={`my-1 my-md-4 mx-3 ${rowClassName} `}>
-        <Form.Group >
+      {/* <Row className={`my-1 my-md-4 mx-3 ${rowClassName} `}> */}
+      <Form.Group className={` ${formGroupClassName} `}  >
           <Form.Label className={`text-capitalize fw-bold ${labelClassName}`}>
             {labelText}
           </Form.Label>
@@ -40,7 +41,7 @@ export function InputField({
             <p className=" text-capitalize text-danger px-2">{invalidText}</p>
           ) : null} */}
         </Form.Group>
-      </Row>
+      {/* </Row> */}
     </>
   );
 }

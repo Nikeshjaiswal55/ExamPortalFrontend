@@ -64,6 +64,7 @@ export default function AddAssignment() {
                   inputId={inputData.inputId}
                   inputName={inputData.inputName}
                   formGroupId={inputData.formGroupId}
+                  formGroupClassName="my-1 my-md-4 mx-3 mx-5"
                   placeholder={inputData.placeholder}
                   labelText={inputData.labelText}
                 />
@@ -73,7 +74,7 @@ export default function AddAssignment() {
                   variant="dark"
                   type="submit"
                   onClick={(e) => handleSubmit(e)}
-                  className="m-auto d-block px-5  w-50 mx-5   text-capitalize  rounded-4"
+                  className="m-auto d-block px-5 m-3 mt-lg-5  text-capitalize w-75 rounded-4"
                 >
                   Submit
                 </Button>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import 'bootstrap/js/dist/dropdown'
 import {
   FaTh,
   FaBars,
@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fa';
 import {RiArrowLeftSLine,RiArrowRightSLine} from "react-icons/ri";
 import { NavLink } from 'react-router-dom';
+import './layout.css'
 import Header from './Header/Header';
 
 export default function Layout({ children }) {
@@ -53,12 +54,12 @@ export default function Layout({ children }) {
     <>
       <div className="d-flex p-0 h-100 ">
         <div
-          style={{ width: isOpen ? '200px' : '50px' }}
-          className="sidebar m-2  "
+          style={{width: isOpen ? '200px' : '50px',left: isOpen ? "0px" : "-70px"}}
+          className="sidebar m-2  " id='sideNavbar'
         >
           <div className="top_section">
             <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
-              Logo
+              Lg
             </h1>
 
           </div>
@@ -82,16 +83,16 @@ export default function Layout({ children }) {
 
         <div
           style={{transition: "all 0.5s",left: isOpen ? '155px' : '5px',cursor: 'pointer'}}
-          className="bars cursor-pointer position-absolute top-50 translate-middle z-3 text-white bg-dark  rounded-circle "
+          className="bars nav-arrow  cursor-pointer position-absolute top-50 translate-middle z-3 text-white bg-dark  rounded-circle "
         >
-          {isOpen ? <RiArrowLeftSLine size={30} onClick={toggle} color='' /> : <RiArrowRightSLine size={30} onClick={toggle} />}
+          {isOpen ? <RiArrowLeftSLine size={30} onClick={toggle} /> : <RiArrowRightSLine size={30} onClick={toggle} />}
 
         </div>
 
         <main className='main p-0 m-0 h-100 ' style={{width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)'}}>
           <Header isOpen={isOpen} />
-          <div className='main-container p-2 w-100' >
-            <div className='w-100 h-100 rounded-1  bg-white'>
+          <div className='main-container m-0 p-2 w-100  ' style={{height: 'calc(100vh - 60px)'}}>
+            <div className='w-100 h-100 rounded-1 m-0 p-0  bg-white'>
               {children}
             </div>
           </div>

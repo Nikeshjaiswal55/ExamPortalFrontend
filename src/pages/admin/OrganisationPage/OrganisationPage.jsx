@@ -85,7 +85,7 @@ export default function OrganisationPage() {
               {({values,errors,touched,handleBlur,handleChange,handleSubmit}) => (
                 <Form onSubmit={handleSubmit}>
                   <InputField
-                    rowClassName={'my-3'}
+                    formGroupClassName={'my-1 my-md-5 mx-3 my-3'}
                     inputName={'org-name'}
                     inputId={'org-name'}
                     onInputBlur={handleBlur}
@@ -96,8 +96,8 @@ export default function OrganisationPage() {
                     labelText={'Organisation Name'}
 
                   />
-                  <Row className="my-3 mx-3">
-                    <Form.Group>
+                  {/* <Row className="my-3 mx-3"> */}
+                  <Form.Group className='my-1 my-md-4 mx-3'>
                       <Form.Label className=" fw-bold">
                         Organisation Type :
                       </Form.Label>
@@ -117,7 +117,7 @@ export default function OrganisationPage() {
                       <ErrorMessage component={"div"} name='org-type' className=' input-error' />
 
                     </Form.Group>
-                  </Row>
+                  {/* </Row> */}
                   <Row className="my-5 mx-3 p-3">
                     <Button
                       variant="dark"
