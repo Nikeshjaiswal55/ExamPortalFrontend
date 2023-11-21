@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { Button, Form, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import SideNavBar from '../../../components/SideNavBar/SideNavBar';
-import Header from '../../../components/Header/Header';
+import {useNavigate} from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
+import {Formik} from 'formik';
 
 const InputFieldData = [
   {
@@ -30,16 +29,14 @@ export default function AddAssignment() {
     e.stopPropagation();
     navigate('/admin-dashboard');
   };
+
   return (
     <>
-      <SideNavBar />
-      <Header />
-      <div className="container-body row w-100 rounded-5 m-0 p-0 justify-content-end ps-lg-5">
+
         <div
-          className="col-12 row m-0   d-flex p-2 ps-lg-5 "
-          style={{ backgroundColor: 'var(--white-100)' }}
+        className="col-12 m-0  d-flex p-2 w-100 h-100 "
         >
-          <div className=" col-md-6 bg-white">
+        <div className=" col-md-6 bg-white ">
             <div className="p-3 pe-lg-5">
               <p className="text-capitalize fw-bold fs-4 ">create assessment</p>
               <p>
@@ -50,7 +47,18 @@ export default function AddAssignment() {
                 specific needs.
               </p>
             </div>
-            <Form>
+          <Formik
+            initialValues={{
+              "assessement-name": "",
+              'assessement-pattern': ""
+            }
+            }
+            onSubmit={(values) => {
+              console.log(values);
+            }}
+          >
+
+            <Form className='d-flex  flex-column justify-content-between' >
               {InputFieldData.map((inputData) => (
                 <InputField
                   inputId={inputData.inputId}
@@ -60,7 +68,7 @@ export default function AddAssignment() {
                   labelText={inputData.labelText}
                 />
               ))}
-              <Row className="my-5 mx-3 p-3 d-flex justify-content-center p-md-5 ">
+              <Row className=" d-flex justify-content-center px-0 py-3  p-md-2 ">
                 <Button
                   variant="dark"
                   type="submit"
@@ -71,8 +79,9 @@ export default function AddAssignment() {
                 </Button>
               </Row>
             </Form>
+          </Formik>
           </div>
-        </div>
+
       </div>
     </>
   );

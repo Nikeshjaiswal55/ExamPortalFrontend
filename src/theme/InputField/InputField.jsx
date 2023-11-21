@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row } from 'react-bootstrap';
 import './InputField.css';
+import {ErrorMessage} from 'formik';
 export function InputField({
   inputStyle,
   inputName,
@@ -19,8 +20,8 @@ export function InputField({
 }) {
   return (
     <>
-      <Row className={`my-5 mx-3 ${rowClassName} `}>
-        <Form.Group controlId={`${formGroupId}`}>
+      <Row className={`my-1 my-md-4 mx-3 ${rowClassName} `}>
+        <Form.Group >
           <Form.Label className={`text-capitalize fw-bold ${labelClassName}`}>
             {labelText}
           </Form.Label>
@@ -34,9 +35,10 @@ export function InputField({
             className={`input-border p-2 border focus-ring text-capitalize focus-ring-light ${inputClassName}`}
             placeholder={`${placeholder}`}
           />
-          {invalidCondition ? (
+          <ErrorMessage component={"div"} name={inputName} className=' input-error' />
+          {/* {invalidCondition ? (
             <p className=" text-capitalize text-danger px-2">{invalidText}</p>
-          ) : null}
+          ) : null} */}
         </Form.Group>
       </Row>
     </>

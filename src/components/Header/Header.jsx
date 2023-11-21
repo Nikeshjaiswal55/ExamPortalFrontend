@@ -7,13 +7,10 @@ export default function Header() {
     <>
       <div
         id="header-container"
-        className="row m-0 h-auto p-1  d-flex  position-sticky top-0  z-3 bg-white"
+        className="m-0 h-auto p-1  d-flex  position-sticky top-0  z-3 w-100 bg-white "
       >
         {/* user part */}
-        <div className="d-flex justify-content-between  justify-content-lg-end">
-          <span className="d-lg-none">
-            {/* <Example /> */}
-          </span>
+        <div className="d-flex m-0  justify-content-end w-100">
           <span className="p-1 ">
             <FaUserAlt size={25} cursor={'pointer'} />
           </span>

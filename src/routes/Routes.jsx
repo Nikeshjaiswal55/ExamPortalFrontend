@@ -58,7 +58,7 @@ export const Routes = () => {
           />
           <Route
             path={path.CreateAssessment.path}
-            element={<CreateAssesment />}
+            element={<Layout><CreateAssesment /></Layout>}
           />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />

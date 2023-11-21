@@ -32,10 +32,10 @@ export default function AddCourse() {
 
   return (
     <>
-     <div className="row bg-white">
+      <div className="row w-100 h-100  m-0 p-0">
 
      <div className=" col-md-6 ">
-            <div className="p-3 pe-lg-5 ms-lg-5 mt-lg-2">
+          <div className="p-3 pe-lg-5 mt-lg-2">
               <p className="text-capitalize fw-bold fs-4 ">Add course</p>
               <p>
                 Adding a course is easy! Just provide the course name and the
@@ -46,21 +46,23 @@ export default function AddCourse() {
               initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
               onSubmit={(values) => {}}
             >
-              <Form className="mx-lg-5">
+            <Form >
                 {InputFieldData.map((inputData) => (
                   <InputField
                     inputId={inputData.inputId}
                     inputName={inputData.inputName}
+                    rowClassName=" my-0 mx-1"
                     formGroupId={inputData.formGroupId}
                     placeholder={inputData.placeholder}
                     labelText={inputData.labelText}
                   />
                 ))}
+
                 <CustomButton
-                  onButtonClick={() => navigate('/create-assessment')}
+                onButtonClick={() => navigate('/admin/create-assessment')}
                   buttonText={'Submit'}
                   rowClassName={
-                    'mt-3 m-0 mx-2 p-3 p-md-5 pb-md-0  m-md-5 mb-md-0'
+                    'mt-3 m-0 mx-2 p-3 p-md-5 p-md-0  mb-md-0'
                   }
                   className={'m-md-3'}
                 />
@@ -68,12 +70,9 @@ export default function AddCourse() {
             </Formik>
           </div>
 
-          <div className="col-md-6  d-flex align-items-center  justify-content-center">
+        <div className="col-md-6 h-100 d-none d-md-flex  align-items-center  justify-content-center">
             <img src={learning} alt="" className="img-fluid w-75" />
-          </div>
-        <div className="col-6"></div>
-            
-        <div className="col-6"></div>
+        </div>
      </div>
     </>
   );

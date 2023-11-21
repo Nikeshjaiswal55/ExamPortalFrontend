@@ -6,7 +6,7 @@ export function CreateComponent({Img,onButtonClick,buttonText}) {
         <>
             <div className='container-center position-absolute top-50 start-50  '>
                         <img src={Img} className='img-fluid' alt="" /><br />
-                        <Row className=" my-0 mx-5 mt-3  ">
+                <Row className=" my-0 mx-0 mx-md-5 mt-3  ">
                             <Button variant='dark'
                                 type='submit'
                                 onClick={onButtonClick}
