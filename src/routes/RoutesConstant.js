@@ -35,6 +35,10 @@ export const path = {
         path: '/admin/create-course',
         desc: 'this is for creating course page '
     },
+    showStudent: {
+        path: '/student-details',
+        desc: 'this is a for student detail page'
+    },
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'
