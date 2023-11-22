@@ -7,28 +7,32 @@ export const path = {
         path: '/',
         desc: 'this is home pages'
     },
-    AdminDasboard: {
-        path: '/admin-dashboard',
-        desc: 'this is admin dashboard'
-    },
     Organisation: {
         path: '/get-started',
         desc: 'this is for org type and name'
     },
+    Layout: {
+        path: '/admin/',
+        desc: 'this admin route'
+    },
+    AdminDasboard: {
+        path: '/admin/dashboard',
+        desc: 'this is admin dashboard'
+    },
     AddCourse: {
-        path: '/add-course',
+        path: '/admin/add-course',
         desc: 'this is for adding course page '
     },
     AddAssessment: {
-        path: '/add-assessment',
+        path: '/admin/add-assessment',
         desc: 'this is for adding assesment page '
     },
     CreateAssessment: {
-        path: '/create-assessment',
+        path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
     },
     CreateCourse: {
-        path: '/create-course',
+        path: '/admin/create-course',
         desc: 'this is for creating course page '
     },
     error: {

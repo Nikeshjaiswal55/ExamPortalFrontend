@@ -1,12 +1,30 @@
-:root{
-    --blue:#6729FF;
-    --yellow:#E6CB0C;
-    --brandColor:#1B1D21;
-    --white:#FFFFFF;
-    --black:#000000;
-    --white-100:#F6F6F6;
-    --white-500:#CFCFCF;
-    --grey:#4E4E4E;
-    --grey-100:#232323;
-    --inputFiedColor:#707070;
+:root {
+    --blue: #6729FF;
+    --yellow: #E6CB0C;
+    --brandColor: #1B1D21;
+    --white: #FFFFFF;
+    --black: #000000;
+    --white-100: #F6F6F6;
+    --white-500: #CFCFCF;
+    --grey: #4E4E4E;
+    --grey-100: #232323;
+    --inputFiedColor: #707070;
+}
+.main {
+    transition: all 0.5s;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+}
+
+.main-container {
+    background-color: #e6e6ed;
+    height: calc(100vh - 52px);
+    border-radius: 5px;
+    position: relative;
 }

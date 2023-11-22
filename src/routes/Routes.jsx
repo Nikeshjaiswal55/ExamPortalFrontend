@@ -10,6 +10,7 @@ import AddAssignment from '../pages/admin/AddCourse/AddAssignment';
 import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
+import Layout from '../components/layout';
 
 export const Routes = () => {
   return (
@@ -23,14 +24,46 @@ export const Routes = () => {
             path={path.private.path}
             element={<h1>this private route</h1>}
           />
-          <Route path={path.AdminDasboard.path} element={<OrgDashBoard />} />
-          <Route path={path.AddCourse.path} element={<AddCourse />} />
-          <Route path={path.AddAssessment.path} element={<AddAssignment />} />
+          <Route
+            path={path.AdminDasboard.path}
+            element={
+              <Layout>
+                <OrgDashBoard />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.AddCourse.path}
+            element={
+              <Layout>
+                <AddCourse />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.AddAssessment.path}
+            element={
+              <Layout>
+                <AddAssignment />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.CreateCourse.path}
+            element={
+              <Layout>
+                <CreateCourse />
+              </Layout>
+            }
+          />
           <Route
             path={path.CreateAssessment.path}
-            element={<CreateAssesment />}
+            element={
+              <Layout>
+                <CreateAssesment />
+              </Layout>
+            }
           />
-          <Route path={path.CreateCourse.path} element={<CreateCourse />} />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>

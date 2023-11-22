@@ -1,5 +1,5 @@
 #header-container {
-    width: 97vw;
+    width: calc(100vw - 75px);
 }
 
 @media screen and (max-width:1024px) {

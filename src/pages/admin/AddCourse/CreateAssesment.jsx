@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '../../../components/Header/Header';
-import SideNavBar from '../../../components/SideNavBar/SideNavBar';
 import creatImg from '../assets/Online test-amico.svg';
 import '../components/style.css';
 import { CreateComponent } from './CreateComponent';
@@ -13,14 +11,12 @@ export default function CreateAssesment() {
     onButtonClick: (e) => {
       e.preventDefault();
       e.stopPropagation();
-      navigate('/add-assessment');
+      navigate('/admin/add-assessment');
     },
     buttonText: 'create assesment',
   };
   return (
     <>
-      <Header />
-      <SideNavBar />
       <CreateComponent {...assesmentData} />
     </>
   );
