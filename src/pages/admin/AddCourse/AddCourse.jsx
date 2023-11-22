@@ -1,13 +1,14 @@
 import React from 'react';
-import { Button, Form, Row } from 'react-bootstrap';
+import { Form} from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
-
+import {path} from '../../../routes/RoutesConstant'
 import { useNavigate } from 'react-router-dom';
-import { ErrorMessage, Formik } from 'formik';
+import {  Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import * as Yup from 'yup'
 import { useAddCourseMutation } from '../../../apis/Service';
+import { SubIdSplit } from '../../../utils/SubIdSplit';
 
 const SignupSchema = Yup.object().shape({
   "add-course-name": Yup.string().min(2).max(25).required('CourseName is required'),
@@ -24,7 +25,6 @@ const SignupSchema = Yup.object().shape({
       return true;
     }),
 });
-const style = { backgroundColor: '#f6f6f6' };
 
 const InputFieldData = [
   {
@@ -49,23 +49,23 @@ export default function AddCourse() {
   const navigate = useNavigate();
   const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation((localStorage.getItem('accessToken')));
   
- async function onSubmit(values){
+ async function onSubmits(values){
   console.log(values);
   let users = JSON.parse(localStorage.getItem("users"));
   console.log("users ", users);
   if (users) {
     console.log(users.sub);
-    
+  
     let addCourseName = {
       "course_name": `${values["add-course-name"]}`,
-      // "userId": `${values["add-course-email"]}`
-      "userId": `${users.sub}`
+      "userId":SubIdSplit(users.sub),
+      "mails":['nik@gmail.com']
     }
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       const promise = await postAddCourse({ ...addCourseName, accessToken });
       if (promise.data) {
-        navigate('/create-assessment')
+        navigate(path.CreateAssessment.path)
       } else {
         alert('sorry your connection lost or api failed ');
       }
@@ -93,28 +93,31 @@ export default function AddCourse() {
           </div>
           <Formik
             initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
-            onSubmit={(values) => {}}
+            validationSchema={SignupSchema}
+            onSubmit={onSubmits}
           >
-            <Form className=" d-flex flex-column justify-content-evenly ">
+        {(props)=>   ( <Form className=" d-flex flex-column justify-content-evenly ">
               {InputFieldData.map((inputData) => (
                 <InputField
-                  inputId={inputData.inputId}
-                  inputName={inputData.inputName}
-                  formGroupClassName="my-1 my-md-4 mx-5 my-0 mx-1 "
-                  formGroupId={inputData.formGroupId}
-                  placeholder={inputData.placeholder}
-                  labelText={inputData.labelText}
+                inputId={inputData.inputId}
+                inputName={inputData.inputName}
+                formGroupId={inputData.formGroupId}
+                placeholder={inputData.placeholder}
+                labelText={inputData.labelText}
+                onInputBlur={props.handleBlur}
+                onInputChange={props.handleChange}
+
                 />
               ))}
 
               <CustomButton
-                onButtonClick={() => navigate('/admin/create-assessment')}
                 buttonText={'Submit'}
+                onButtonClick={props.handleSubmit}
                 className={
                   'm-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'
                 }
               />
-            </Form>
+            </Form>)}
           </Formik>
         </div>
 

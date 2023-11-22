@@ -65,7 +65,6 @@ export const Routes = () => {
             }
           />
         </Route>
-        <Route path ={path.showAssessment.path}element={<ShowAssessment/>}/>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
