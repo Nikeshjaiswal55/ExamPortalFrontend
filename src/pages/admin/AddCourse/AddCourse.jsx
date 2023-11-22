@@ -47,7 +47,38 @@ const InputFieldData = [
 
 export default function AddCourse() {
   const navigate = useNavigate();
-  const [postAddCourse, { isLoading }] = useAddCourseMutation((localStorage.getItem('accessToken')));
+  const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation((localStorage.getItem('accessToken')));
+  
+ async function onSubmit(values){
+  console.log(values);
+  let users = JSON.parse(localStorage.getItem("users"));
+  console.log("users ", users);
+  if (users) {
+    console.log(users.sub);
+    
+    let addCourseName = {
+      "course_name": `${values["add-course-name"]}`,
+      // "userId": `${values["add-course-email"]}`
+      "userId": `${users.sub}`
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      const promise = await postAddCourse({ ...addCourseName, accessToken });
+      if (promise.data) {
+        navigate('/create-assessment')
+      } else {
+        alert('sorry your connection lost or api failed ');
+      }
+    } else {
+      alert("user not login or signup")
+    }
+  }
+  else {
+    alert("user not present")
+  }
+}
+
+
 
   return (
     <>
@@ -90,7 +121,13 @@ export default function AddCourse() {
         <div className="col-md-6 m-0 p-0 h-100 d-none d-md-flex  align-items-center  justify-content-center">
           <img src={learning} alt="" className="img-fluid w-75" />
         </div>
+        {
+          error &&
+          alert("connection lost " + JSON.stringify(error))
+        }
       </div>
+
     </>
   );
+     
 }
