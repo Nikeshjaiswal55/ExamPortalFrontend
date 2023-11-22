@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import 'bootstrap/js/dist/dropdown'
+import 'bootstrap/js/dist/dropdown';
 import {
   FaTh,
   FaBars,
@@ -9,9 +9,9 @@ import {
   FaShoppingBag,
   FaThList,
 } from 'react-icons/fa';
-import {RiArrowLeftSLine,RiArrowRightSLine} from "react-icons/ri";
+import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
-import './layout.css'
+import './layout.css';
 import Header from './Header/Header';
 
 export default function Layout({ children }) {
@@ -44,24 +44,22 @@ export default function Layout({ children }) {
       name: 'create assessment',
       icon: <FaShoppingBag />,
     },
-    // {
-    //   path: '/productList',
-    //   name: 'Product List',
-    //   icon: <FaThList />,
-    // },
   ];
   return (
     <>
       <div className="d-flex p-0 h-100 ">
         <div
-          style={{width: isOpen ? '200px' : '50px',left: isOpen ? "0px" : "-70px"}}
-          className="sidebar m-2  " id='sideNavbar'
+          style={{
+            width: isOpen ? '200px' : '50px',
+            left: isOpen ? '0px' : '-70px',
+          }}
+          className="sidebar m-2  "
+          id="sideNavbar"
         >
           <div className="top_section">
             <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
               Lg
             </h1>
-
           </div>
           {menuItem.map((item, index) => (
             <NavLink
@@ -82,22 +80,34 @@ export default function Layout({ children }) {
         </div>
 
         <div
-          style={{transition: "all 0.5s",left: isOpen ? '155px' : '5px',cursor: 'pointer'}}
+          style={{
+            transition: 'all 0.5s',
+            left: isOpen ? '155px' : '5px',
+            cursor: 'pointer',
+          }}
           className="bars nav-arrow  cursor-pointer position-absolute top-50 translate-middle z-3 text-white bg-dark  rounded-circle "
         >
-          {isOpen ? <RiArrowLeftSLine size={30} onClick={toggle} /> : <RiArrowRightSLine size={30} onClick={toggle} />}
-
+          {isOpen ? (
+            <RiArrowLeftSLine size={30} onClick={toggle} />
+          ) : (
+            <RiArrowRightSLine size={30} onClick={toggle} />
+          )}
         </div>
 
-        <main className='main p-0 m-0 h-100 ' style={{width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)'}}>
+        <main
+          className="main p-0 m-0 h-100 "
+          style={{ width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)' }}
+        >
           <Header isOpen={isOpen} />
-          <div className='main-container m-0 p-2 w-100  ' style={{height: 'calc(100vh - 60px)'}}>
-            <div className='w-100 h-100 rounded-1 m-0 p-0  bg-white'>
+          <div
+            className="main-container m-0 p-2 w-100  "
+            style={{ height: 'calc(100vh - 60px)' }}
+          >
+            <div className="w-100 h-100 rounded-1 m-0 p-0  bg-white">
               {children}
             </div>
           </div>
         </main>
-
       </div>
     </>
   );

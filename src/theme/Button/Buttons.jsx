@@ -11,24 +11,21 @@ export function CustomButton({
   onButtonBlur,
   buttonText,
   className,
-  rowClassName,
 }) {
   return (
     <>
-      {/* <Row className={`my-5 my-md-2 mx-3 p-3 p-md-5 ${rowClassName} `}> */}
-        <Button
-          variant="dark"
-          type="submit"
-          onClick={(e) => {
-            changeDefaultButtonBehaviour(e);
-            onButtonClick(e);
-          }}
-          onBlur={onButtonBlur}
+      <Button
+        variant="dark"
+        type="submit"
+        onClick={(e) => {
+          changeDefaultButtonBehaviour(e);
+          onButtonClick(e);
+        }}
+        onBlur={onButtonBlur}
         className={` ${className}`}
-        >
-          {buttonText}
-        </Button>
-      {/* </Row> */}
+      >
+        {buttonText}
+      </Button>
     </>
   );
 }

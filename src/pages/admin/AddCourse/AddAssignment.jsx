@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Button, Form, Row } from 'react-bootstrap';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 
 const InputFieldData = [
   {
@@ -32,33 +32,28 @@ export default function AddAssignment() {
 
   return (
     <>
-
-        <div
-        className="col-12 m-0  d-flex p-2 w-100 h-100 "
-        >
+      <div className="col-12 m-0  d-flex p-2">
         <div className=" col-md-6 bg-white ">
-            <div className="p-3 pe-lg-5">
-              <p className="text-capitalize fw-bold fs-4 ">create assessment</p>
-              <p>
-                Creating assessments is a breeze! Simply provide the assessment
-                name, and you can further customize it by configuring the paper
-                pattern via video call or online test. Plus, you have the option
-                to set blocking conditions, ensuring your assessment suits your
-                specific needs.
-              </p>
-            </div>
+          <div className="p-3 pe-lg-5">
+            <p className="text-capitalize fw-bold fs-4 ">create assessment</p>
+            <p>
+              Creating assessments is a breeze! Simply provide the assessment
+              name, and you can further customize it by configuring the paper
+              pattern via video call or online test. Plus, you have the option
+              to set blocking conditions, ensuring your assessment suits your
+              specific needs.
+            </p>
+          </div>
           <Formik
             initialValues={{
-              "assessement-name": "",
-              'assessement-pattern': ""
-            }
-            }
+              'assessement-name': '',
+              'assessement-pattern': '',
+            }}
             onSubmit={(values) => {
               console.log(values);
             }}
           >
-
-            <Form className='d-flex  flex-column justify-content-between' >
+            <Form className="d-flex  flex-column justify-content-between">
               {InputFieldData.map((inputData) => (
                 <InputField
                   inputId={inputData.inputId}
@@ -81,8 +76,7 @@ export default function AddAssignment() {
               </Row>
             </Form>
           </Formik>
-          </div>
-
+        </div>
       </div>
     </>
   );

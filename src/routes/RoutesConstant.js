@@ -13,6 +13,7 @@ export const path = {
     },
     Layout: {
         path: '/admin/',
+        desc: 'this admin route'
     },
     AdminDasboard: {
         path: '/admin/dashboard',

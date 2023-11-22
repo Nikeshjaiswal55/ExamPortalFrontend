@@ -1,35 +1,22 @@
 import React, { useState } from 'react';
-import SideNavBar from '../../../components/SideNavBar/SideNavBar';
 import { Form } from 'react-bootstrap';
 import '../components/style.css';
 import TableResponsive from './TableResponsive';
-import Header from '../../../components/Header/Header';
 
 export default function OrgDashBoard() {
   return (
     <>
-
-      {/* <h1>hiii</h1> */}
-      {/* <Header /> */}
-      <div className="row w-100  m-0 p-0 justify-content-end  h-100">
+      <div className="row m-0 p-0 justify-content-end">
         <div className="  col-12 row m-0 d-flex">
           <div className="row d-flex  p-1 g-1">
             <div className="row d-flex  justify-content-around  p-2 pt-0 g-1">
-              <div
-                className="col  col-xl-3 p-3 bg-white rounded-3"
-
-              >
+              <div className="col  col-xl-3 p-3 bg-white rounded-3">
                 <h1> Your Created Exams </h1>
-              </div>{' '}
-              <div
-                className="col col-xl-3  offset-sm-1 p-3 bg-white rounded-3"
-
-              >
+              </div>
+              <div className="col col-xl-3  offset-sm-1 p-3 bg-white rounded-3">
                 <h1> Number of Students</h1>
-              </div>{' '}
-              <div
-                className="col col-xl-3 offset-sm-1 p-3 bg-white rounded-3"
-              >
+              </div>
+              <div className="col col-xl-3 offset-sm-1 p-3 bg-white rounded-3">
                 <h1> Number of maintors </h1>
                 <h1> in your </h1>
                 <h1> organisation</h1>

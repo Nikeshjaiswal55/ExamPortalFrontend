@@ -1,29 +1,29 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import backgroundimg from '../assets/org-img.svg';
-import {Button,Spinner} from 'react-bootstrap';
-import {Form,Row} from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 import './OrganisationPage.css';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../components/style.css';
-import {ErrorMessage,Formik} from 'formik';
-import {orgPageSchema} from './yup-schema/OrgPageSchema';
-import {usePostOrganisationDetailsMutation} from '../../../apis/Service';
-import {InputField} from '../../../theme/InputField/InputField';
-import {useAuth0} from '@auth0/auth0-react';
-import {getAccessToken} from '../../../auth/Private';
+import { ErrorMessage, Formik } from 'formik';
+import { orgPageSchema } from './yup-schema/OrgPageSchema';
+import { usePostOrganisationDetailsMutation } from '../../../apis/Service';
+import { InputField } from '../../../theme/InputField/InputField';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getAccessToken } from '../../../auth/Private';
 
-const initialValues = {'org-name': '','org-type': ''};
+const initialValues = { 'org-name': '', 'org-type': '' };
 export default function OrganisationPage() {
   const navigate = useNavigate();
-  const {user,isAuthenticated,getAccessTokenSilently,loginWithRedirect} =
+  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
     useAuth0();
-  const [postOrgDetails,{isLoading}] = usePostOrganisationDetailsMutation();
+  const [postOrgDetails, { isLoading }] = usePostOrganisationDetailsMutation();
 
   useEffect(() => {
-    if(isAuthenticated) {
-      getAccessToken(getAccessTokenSilently,user);
+    if (isAuthenticated) {
+      getAccessToken(getAccessTokenSilently, user);
     }
-  },[isAuthenticated,getAccessTokenSilently]);
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   async function onGetStarted(values) {
     const users = JSON.parse(localStorage.getItem('users'));
@@ -37,9 +37,9 @@ export default function OrganisationPage() {
       picture: users.picture,
       sub: users.sub,
     };
-    if(accessToken) {
-      const promise = await postOrgDetails({...storeData,accessToken});
-      if(promise.data) {
+    if (accessToken) {
+      const promise = await postOrgDetails({ ...storeData, accessToken });
+      if (promise.data) {
         navigate('/admin/create-course');
       } else {
         // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
@@ -50,13 +50,12 @@ export default function OrganisationPage() {
     }
   }
 
-
   return (
     <>
       {
         <div
           className="row m-0 p-0 w-100  bg-white "
-          style={{height: '90vh'}}
+          style={{ height: '90vh' }}
         >
           <img
             src={backgroundimg}
@@ -76,13 +75,18 @@ export default function OrganisationPage() {
             className="m-0 p-3 rounded-3 position-absolute top-50  start-50 translate-middle  "
           >
             <Formik
-
               initialValues={initialValues}
               validationSchema={orgPageSchema}
               onSubmit={onGetStarted}
             >
-
-              {({values,errors,touched,handleBlur,handleChange,handleSubmit}) => (
+              {({
+                values,
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+              }) => (
                 <Form onSubmit={handleSubmit}>
                   <InputField
                     formGroupClassName={'my-1 my-md-5 mx-3 my-3'}
@@ -94,29 +98,31 @@ export default function OrganisationPage() {
                     formGroupId={'admin-organisation-name'}
                     placeholder={'Organisation Name'}
                     labelText={'Organisation Name'}
-
                   />
                   {/* <Row className="my-3 mx-3"> */}
-                  <Form.Group className='my-1 my-md-4 mx-3'>
-                      <Form.Label className=" fw-bold">
-                        Organisation Type :
-                      </Form.Label>
-                      <Form.Select
-                        aria-label="Select Type "
-                        onChange={handleChange}
-                        value={values['org-type']}
-                        onBlur={handleBlur}
-                        style={{borderColor: '#707070'}}
-                        name="org-type"
-                        className=" input-border p-2 border focus-ring focus-ring-light"
-                      >
-                        <option value="">Select Type</option>
-                        <option value="company">Company</option>
-                        <option value="college">College</option>
-                      </Form.Select>
-                      <ErrorMessage component={"div"} name='org-type' className=' input-error' />
-
-                    </Form.Group>
+                  <Form.Group className="my-1 my-md-4 mx-3">
+                    <Form.Label className=" fw-bold">
+                      Organisation Type :
+                    </Form.Label>
+                    <Form.Select
+                      aria-label="Select Type "
+                      onChange={handleChange}
+                      value={values['org-type']}
+                      onBlur={handleBlur}
+                      style={{ borderColor: '#707070' }}
+                      name="org-type"
+                      className=" input-border p-2 border focus-ring focus-ring-light"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="company">Company</option>
+                      <option value="college">College</option>
+                    </Form.Select>
+                    <ErrorMessage
+                      component={'div'}
+                      name="org-type"
+                      className=" input-error"
+                    />
+                  </Form.Group>
                   {/* </Row> */}
                   <Row className="my-5 mx-3 p-3">
                     <Button
@@ -124,11 +130,15 @@ export default function OrganisationPage() {
                       type="submit"
                       className="btn m-auto d-block px-5 mb-3 rounded-5 "
                     >
-                      {isLoading ? <Spinner animation="border" size="sm" /> : 'Get Started'}
+                      {isLoading ? (
+                        <Spinner animation="border" size="sm" />
+                      ) : (
+                        'Get Started'
+                      )}
                     </Button>
                   </Row>
-                </Form>)}
-
+                </Form>
+              )}
             </Formik>
           </div>
         </div>
