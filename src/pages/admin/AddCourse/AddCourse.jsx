@@ -49,7 +49,38 @@ const InputFieldData = [
 
 export default function AddCourse() {
   const navigate = useNavigate();
-  const [postAddCourse, { isLoading }] = useAddCourseMutation((localStorage.getItem('accessToken')));
+  const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation((localStorage.getItem('accessToken')));
+  
+ async function onSubmit(values){
+  console.log(values);
+  let users = JSON.parse(localStorage.getItem("users"));
+  console.log("users ", users);
+  if (users) {
+    console.log(users.sub);
+    
+    let addCourseName = {
+      "course_name": `${values["add-course-name"]}`,
+      // "userId": `${values["add-course-email"]}`
+      "userId": `${users.sub}`
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      const promise = await postAddCourse({ ...addCourseName, accessToken });
+      if (promise.data) {
+        navigate('/create-assessment')
+      } else {
+        alert('sorry your connection lost or api failed ');
+      }
+    } else {
+      alert("user not login or signup")
+    }
+  }
+  else {
+    alert("user not present")
+  }
+}
+
+
 
   return (
     <>
@@ -73,23 +104,8 @@ export default function AddCourse() {
 
               initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
               validationSchema={SignupSchema}
-              onSubmit={async (values) => {
-                console.log(values);
-                 let addCourseName = {
-                  "course_name": `${values["add-course-name"]}`,
-                  "userId": `${values["add-course-email"]}`
-                }
-                const accessToken = localStorage.getItem('accessToken');
-                if (accessToken) {
-                  const promise = await postAddCourse({ ...addCourseName, accessToken });
-                  if (promise.data) {
-                    navigate('/create-assessment')
-                  } else {
-                    // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
-                    alert('sorry your connection lost or api failed ');
-                  }
-                }
-              }}
+              onSubmit={onSubmit}
+
             >
               {props => (
                 <Form className="mx-lg-5">
@@ -123,11 +139,18 @@ export default function AddCourse() {
             </Formik>
           </div>
 
+
           <div className="col-md-6  d-flex align-items-center  justify-content-center p-3 bg-white ">
             <img src={learning} alt="" className="img-fluid w-75" />
           </div>
         </div>
+        {
+          error &&
+          alert("connection lost " + JSON.stringify(error))
+        }
       </div>
+
     </>
   );
+     
 }

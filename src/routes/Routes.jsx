@@ -10,6 +10,7 @@ import AddAssignment from '../pages/admin/AddCourse/AddAssignment';
 import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
+import ShowAssessment from '../pages/admin/showassessment/Showassessment';
 
 export const Routes = () => {
   return (
@@ -32,6 +33,7 @@ export const Routes = () => {
           />
           <Route path={path.CreateCourse.path} element={<CreateCourse />} />
         </Route>
+        <Route path ={path.showAssessment.path}element={<ShowAssessment/>}/>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
