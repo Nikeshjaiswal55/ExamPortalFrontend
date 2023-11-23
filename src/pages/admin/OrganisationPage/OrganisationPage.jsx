@@ -35,7 +35,8 @@ export default function OrganisationPage() {
       name: users.name,
       email: users.email,
       picture: users.picture,
-      sub: users.sub,
+      // userId: users.sub,// please provide userid replace sub and also remove google 0auth |
+      sub: users.sub
     };
     if (accessToken) {
       const promise = await postOrgDetails({ ...storeData, accessToken });
