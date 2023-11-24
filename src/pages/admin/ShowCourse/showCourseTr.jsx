@@ -55,8 +55,6 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
   async function handleDeleteCourse(id) {
     if (accessToken) {
       deleteCourse({ accessToken, id })
-        .then(() => console.log(responseDelete))
-        .catch((err) => alert('delete course error ', JSON.stringify(err)));
     } else {
       alert('user access token not present ');
     }
