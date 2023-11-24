@@ -11,6 +11,7 @@ import CreateAssesment from '../pages/admin/AddCourse/CreateAssesment';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
 import Layout from '../components/layout';
+import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 
 export const Routes = () => {
   return (
@@ -61,6 +62,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <CreateAssesment />
+              </Layout>
+            }
+          />
+           <Route
+            path={path.ShowAssessment.path}
+            element={
+              <Layout>
+                <ShowAssessment />
               </Layout>
             }
           />
