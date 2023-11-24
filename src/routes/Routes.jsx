@@ -64,7 +64,8 @@ export const Routes = () => {
                 <CreateAssesment />
               </Layout>
             }
-          />  <Route
+          />  
+          <Route
             path={path.ShowCourse.path}
             element={<Layout><ShowCourse /></Layout>}
           />
