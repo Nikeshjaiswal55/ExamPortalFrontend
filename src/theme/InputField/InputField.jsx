@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row } from 'react-bootstrap';
-import './InputField.css';
 import { ErrorMessage } from 'formik';
+import './InputField.css';
 export function InputField({
   inputStyle,
   inputName,

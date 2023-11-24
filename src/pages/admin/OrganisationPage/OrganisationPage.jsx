@@ -11,6 +11,7 @@ import { usePostOrganisationDetailsMutation } from '../../../apis/Service';
 import { InputField } from '../../../theme/InputField/InputField';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getAccessToken } from '../../../auth/Private';
+import { SubIdSplit } from '../../../utils/SubIdSplit';
 
 const initialValues = { 'org-name': '', 'org-type': '' };
 export default function OrganisationPage() {
@@ -31,11 +32,12 @@ export default function OrganisationPage() {
     const storeData = {};
     storeData.orgnizationName = values['org-name'];
     storeData.orgnizationType = values['org-type'];
+    storeData.userId = SubIdSplit(users.sub);
     storeData.user = {
       name: users.name,
       email: users.email,
       picture: users.picture,
-      sub: users.sub,
+      userId: SubIdSplit(users.sub),
     };
     if (accessToken) {
       const promise = await postOrgDetails({ ...storeData, accessToken });
