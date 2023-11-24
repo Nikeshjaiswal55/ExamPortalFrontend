@@ -31,10 +31,10 @@ export const path = {
         path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
     },
-    showAssessment:{
-        path:'/show-assessment',
-        desc:'this is for creating showassesment page'
-        
+    showAssessment: {
+        path: '/admin/show-assessment',
+        desc: 'this is for creating showassesment page'
+
     },
     CreateCourse: {
         path: '/admin/create-course',
@@ -44,10 +44,15 @@ export const path = {
         path: '/admin/show-course',
         desc: 'this is showing course page '
     },
-    
+
     showStudent: {
         path: '/admin/student-details',
         desc: 'this is a for student detail page'
+    },
+    ShowAssessment: {
+        path: '/admin/show-assessment',
+        desc: 'this is for creating showassessment page '
+
     },
     error: {
         path: '/*',
