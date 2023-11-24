@@ -19,9 +19,42 @@ export const adminApi = createApi({
                 console.log("accessToken",accessToken)
                 return {
                     url: 'course/getAll',
-                    method: "get",
+                    method: "GET",
                     headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
 
+                }
+            }
+
+        }),
+        deleteCourse: builder.mutation({
+            query: (payload) => {
+                const {accessToken,id} = payload;
+                console.log("accessToken",accessToken);
+                console.log(id);
+                return {
+                    url: `course/${id}`,
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+
+                }
+            }
+
+        }),
+        updateCourse: builder.mutation({
+            query: (payload) => {
+                const {accessToken,...updateCourseDetail} = payload;
+                console.log("accessToken",accessToken);
+                return {
+                    url: `course/update`,
+                    method: "PUT",
+                    body: updateCourseDetail,
+                    headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
                     }
@@ -36,10 +69,9 @@ export const adminApi = createApi({
                 const {accessToken,...organisationDetails} = orgDetail;
                 console.log("accessToken :-  ",accessToken);
                 console.log("orgDetails ;- ",JSON.stringify(organisationDetails));
-
                 return {
                     url: `/createorgnization`,
-                    method: 'post',
+                    method: 'POST',
                     body: organisationDetails,
                     headers: {
                         "Content-Type": 'application/json;',
@@ -72,4 +104,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useGetTestQuery,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetAllCoursesQuery} = adminApi;
+export const {useGetTestQuery,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation} = adminApi;

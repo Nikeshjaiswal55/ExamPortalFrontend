@@ -1,8 +1,11 @@
 import React from 'react';
 import {FaUserAlt} from 'react-icons/fa';
-
+import {CiLogout} from "react-icons/ci";
 import './Header.css';
+
 export default function Header({isOpen}) {
+  const user = JSON.parse(localStorage.getItem("users"));
+  console.log(user)
   return (
     <>
       <div
@@ -15,29 +18,29 @@ export default function Header({isOpen}) {
 
             <div className="dropdown">
               <a
-                className="btn  "
+                className="btn border-0 "
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-
                 <FaUserAlt size={25} cursor={'pointer'} />
               </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    UserName
+              <ul className="dropdown-menu  text-body-secondary">
+
+                <li >
+                  <a className="dropdown-item bg-white text-black fw-bold" href="#">
+                    {user.name}
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Email
+                  <a className="dropdown-item  bg-white text-black" href="#">
+                    {user.email}
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Logout
+                <li> 
+                  <a className="dropdown-item   fw-bold" href="#">
+                    <CiLogout size={20} />  Logout
                   </a>
                 </li>
               </ul>
