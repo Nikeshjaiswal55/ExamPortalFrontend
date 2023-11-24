@@ -9,7 +9,7 @@ export default function ShowAssessment() {
   // Create an array of assessment details objects
   const assessmentDetailsArray = [
     {
-      id: 1, // Unique identifier (you can use any unique identifier for your assessments)
+      id: 1, 
       ExamMode: "Online",
       ExamDuration: "9.45-12.10",
       ExamRound: "8",
@@ -103,7 +103,6 @@ export default function ShowAssessment() {
     }
     
     
-    // Add more assessment objects here as needed
   ];
 
   return (
