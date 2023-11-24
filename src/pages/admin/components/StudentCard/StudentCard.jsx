@@ -1,6 +1,5 @@
-import react from "react";
 import { Link } from "react-router-dom";
-export function StudentCard({bgblack,borderdark,divBoxStyle}) {
+export function StudentCard({divBoxStyle}) {
 
     return (
         <>
@@ -13,18 +12,14 @@ export function StudentCard({bgblack,borderdark,divBoxStyle}) {
                         <p className="card-text ">
                            kapilj.bca2022@ssism.org
                         </p>
-                        {/* <hr className=" border-dark border-5"/>                         */}
                     </div>
-                    <div className={`card-footer rounded-bottom-3 bg-black p-3`}>
+                    <div className={`card-footer rounded-bottom-3  p-3`} style={{background:'var(--grey)'}}>
                     <Link to='/admin/dashboard' className=' fw-bold  text-white' style={{textDecoration:"none" }}>
                             Evidence
                         </Link>
 
                     </div>
                 </div>
-
-
-
             </div>
         </>
     )
