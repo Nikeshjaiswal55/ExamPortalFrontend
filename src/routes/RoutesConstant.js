@@ -46,7 +46,7 @@ export const path = {
     },
     
     showStudent: {
-        path: '/student-details',
+        path: '/admin/student-details',
         desc: 'this is a for student detail page'
     },
     error: {
