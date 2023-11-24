@@ -1,9 +1,13 @@
-#header-container {
-    width: calc(100vw - 75px);
+/* #header-container {
+     width: calc(100vw - 75px); 
 }
 
-@media screen and (max-width:1024px) {
+*/
+
+/* @media screen and (max-width:1024px) {
     #header-container {
-        width: 100vw;
+        /* width: 100vw; 
     }
 }
+
+*/
