@@ -37,3 +37,7 @@
     --bs-table-bg: black !important;
     --bs-table-color: white !important;
 }
+
+.cursor-pointer{
+    cursor: pointer;
+}

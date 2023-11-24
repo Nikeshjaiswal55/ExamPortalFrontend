@@ -32,7 +32,7 @@ export const path = {
         desc: 'this is for creating  assesment page '
     },
     showAssessment: {
-        path: '/show-assessment',
+        path: '/admin/show-assessment',
         desc: 'this is for creating showassesment page'
 
     },
