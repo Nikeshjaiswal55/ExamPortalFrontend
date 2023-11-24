@@ -1,18 +1,21 @@
 import React from 'react';
-import { Form} from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
-import {path} from '../../../routes/RoutesConstant'
+import { path } from '../../../routes/RoutesConstant';
 import { useNavigate } from 'react-router-dom';
-import {  Formik } from 'formik';
+import { Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import { useAddCourseMutation } from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 
 const SignupSchema = Yup.object().shape({
-  "add-course-name": Yup.string().min(2).max(25).required('CourseName is required'),
-  "add-course-email": Yup.string()
+  'add-course-name': Yup.string()
+    .min(2)
+    .max(25)
+    .required('CourseName is required'),
+  'add-course-email': Yup.string()
     .matches(
       /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
       'Invalid email format'
@@ -40,45 +43,42 @@ const InputFieldData = [
     formGroupId: 'add-course-group-email',
     placeholder: `enter HOD's email`,
     labelText: 'HOD Email',
-
-
   },
 ];
 
 export default function AddCourse() {
   const navigate = useNavigate();
-  const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation((localStorage.getItem('accessToken')));
-  
- async function onSubmits(values){
-  console.log(values);
-  let users = JSON.parse(localStorage.getItem("users"));
-  console.log("users ", users);
-  if (users) {
-    console.log(users.sub);
-  
-    let addCourseName = {
-      "course_name": `${values["add-course-name"]}`,
-      "userId":SubIdSplit(users.sub),
-      "mails":['nik@gmail.com']
-    }
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      const promise = await postAddCourse({ ...addCourseName, accessToken });
-      if (promise.data) {
-        navigate(path.CreateAssessment.path)
+  const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation(
+    localStorage.getItem('accessToken')
+  );
+
+  async function onSubmits(values) {
+    console.log(values);
+    let users = JSON.parse(localStorage.getItem('users'));
+    console.log('users ', users);
+    if (users) {
+      console.log(users.sub);
+
+      let addCourseName = {
+        course_name: `${values['add-course-name']}`,
+        userId: SubIdSplit(users.sub),
+        mails: ['nik@gmail.com'],
+      };
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        const promise = await postAddCourse({ ...addCourseName, accessToken });
+        if (promise.data) {
+          navigate(path.CreateAssessment.path);
+        } else {
+          alert('sorry your connection lost or api failed ');
+        }
       } else {
-        alert('sorry your connection lost or api failed ');
+        alert('user not login or signup');
       }
     } else {
-      alert("user not login or signup")
+      alert('user not present');
     }
   }
-  else {
-    alert("user not present")
-  }
-}
-
-
 
   return (
     <>
@@ -96,41 +96,44 @@ export default function AddCourse() {
             validationSchema={SignupSchema}
             onSubmit={onSubmits}
           >
-        {(props)=>   ( <Form className=" d-flex flex-column justify-content-evenly ">
-              {InputFieldData.map((inputData) => (
-                <InputField
-                inputId={inputData.inputId}
-                inputName={inputData.inputName}
-                formGroupId={inputData.formGroupId}
-                placeholder={inputData.placeholder}
-                labelText={inputData.labelText}
-                onInputBlur={props.handleBlur}
-                onInputChange={props.handleChange}
+            {(props) => (
+              <Form className=" d-flex flex-column justify-content-evenly ">
+                {InputFieldData.map((inputData) => (
+                  <InputField
+                    inputId={inputData.inputId}
+                    inputName={inputData.inputName}
+                    formGroupId={inputData.formGroupId}
+                    formGroupClassName={'my-1 my-md-4 mx-5 '}
+                    placeholder={inputData.placeholder}
+                    labelText={inputData.labelText}
+                    onInputBlur={props.handleBlur}
+                    onInputChange={props.handleChange}
+                  />
+                ))}
 
+                <CustomButton
+                  buttonText={
+                    isLoading ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      'Submit'
+                    )
+                  }
+                  onButtonClick={props.handleSubmit}
+                  className={
+                    'm-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'
+                  }
                 />
-              ))}
-
-              <CustomButton
-                buttonText={'Submit'}
-                onButtonClick={props.handleSubmit}
-                className={
-                  'm-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'
-                }
-              />
-            </Form>)}
+              </Form>
+            )}
           </Formik>
         </div>
 
         <div className="col-md-6 m-0 p-0 h-100 d-none d-md-flex  align-items-center  justify-content-center">
           <img src={learning} alt="" className="img-fluid w-75" />
         </div>
-        {
-          error &&
-          alert("connection lost " + JSON.stringify(error))
-        }
+        {error && alert('connection lost ' + JSON.stringify(error))}
       </div>
-
     </>
   );
-     
 }
