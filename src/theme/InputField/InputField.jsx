@@ -17,6 +17,7 @@ export function InputField({
   labelClassName,
   invalidText,
   invalidCondition,
+  formClassName,
 }) {
   return (
     <>
