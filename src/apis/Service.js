@@ -96,6 +96,20 @@ export const adminApi = createApi({
                     method: 'post',
                     body: addCourse,
         }}}),
+        postAssignment: builder.mutation({
+            query: (data) => {
+                const { accessToken, ...assignmentData } = data;
+                return {
+                    url: `/create/paper`,
+                    method: 'post',
+                    body: assignmentData,
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            }
+        }),
         getOrgernization: builder.query({
             query: (data) => {
                 const { accessToken, id } = data;
@@ -114,4 +128,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation } = adminApi;
+export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation } = adminApi;
