@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // const baseUrl = " http://localhost:3000/"
 // const baseUrl = "http://exam-easy.up.railway.app"
 
-const baseUrl = "http://192.168.0.237:9090/"
+const baseUrl = "http://192.168.0.237:9090"
 
 
 export const adminApi = createApi({
@@ -95,13 +95,19 @@ export const adminApi = createApi({
                     url: `/course/create`,
                     method: 'post',
                     body: addCourse,
+        }}}),
+        getOrgernization: builder.query({
+            query: (data) => {
+                const { accessToken, id } = data;
+                return {
+                    url: `/getOrgnizationByUserId/${id}`,
+                    method: 'get',
                     headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
                     }
                 }
-            },
-            invalidatesTags: ['getAllCourse'],
+            }
         })
     }),
 })
