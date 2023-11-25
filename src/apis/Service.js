@@ -96,6 +96,20 @@ export const adminApi = createApi({
                     method: 'post',
                     body: addCourse,
         }}}),
+        postAssignment: builder.mutation({
+            query: (data) => {
+                const { accessToken, ...assignmentData } = data;
+                return {
+                    url: `/create/paper`,
+                    method: 'post',
+                    body: assignmentData,
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            }
+        }),
         getOrgernization: builder.query({
             query: (data) => {
                 const { accessToken, id } = data;
