@@ -1,32 +1,40 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Form, Spinner } from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 import { path } from '../../../routes/RoutesConstant';
 import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
+import {ErrorMessage,Formik} from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import * as Yup from 'yup';
 import { useAddCourseMutation } from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
+import {ExcelDataReader} from '../../../utils/ExcelDataReader';
+import {MdUpload} from 'react-icons/md';
+import {FaEye} from "react-icons/fa";
+import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
+import {useRef} from 'react';
 
 const SignupSchema = Yup.object().shape({
   'add-course-name': Yup.string()
     .min(2)
     .max(25)
-    .required('CourseName is required'),
-  'add-course-email': Yup.string()
-    .matches(
-      /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
-      'Invalid email format'
-    )
-    .required('Required!')
-    .test('email-provider', 'Email provider not allowed', (value) => {
-      if (/(email|yahoo)\.com$/.test(value)) {
-        return false;
-      }
-      return true;
-    }),
+    .required('Course name is required'),
+
+  // 'add-course-email': Yup.string()
+  //   .matches(
+  //     /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+  //     'Invalid email format'
+  //   )
+  //   .required('Required!')
+  //   .test('email-provider', 'Email provider not allowed', (value) => {
+  //     if (/(email|yahoo)\.com$/.test(value)) {
+  //       return false;
+  //     }
+  //     return true;
+  //   }),
+  'excelFile': Yup.mixed()
+    .required('File is required')
 });
 
 const InputFieldData = [
@@ -37,33 +45,51 @@ const InputFieldData = [
     placeholder: 'enter course name',
     labelText: 'Course Name',
   },
-  {
-    inputId: 'add-course-email',
-    inputName: 'add-course-email',
-    formGroupId: 'add-course-group-email',
-    placeholder: `enter HOD's email`,
-    labelText: 'HOD Email',
-  },
+  // {
+  //   inputId: 'add-course-email',
+  //   inputName: 'add-course-email',
+  //   formGroupId: 'add-course-group-email',
+  //   placeholder: `enter HOD's email`,
+  //   labelText: 'HOD Email',
+  // },
 ];
 
 export default function AddCourse() {
   const navigate = useNavigate();
+  const inputFile = useRef(null);
+  const [selectedFile,setSelectedFile] = useState(null);
+  const [showPreview,setShowPreview] = useState(false);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleRemoveFile = () => {
+
+    setSelectedFile(null);
+    if(inputFile.current) {
+      console.log(inputFile);
+      inputFile.current.value = "";
+      inputFile.current.type = "text";
+      inputFile.current.type = "file";
+    }
+  };
+
   const [postAddCourse, { isLoading, data, error }] = useAddCourseMutation(
     localStorage.getItem('accessToken')
   );
+  const [excel,setExcel] = useState([])
 
   async function onSubmits(values) {
-    console.log(values);
-    let users = JSON.parse(localStorage.getItem('users'));
-    console.log('users ', users);
-    if (users) {
-      console.log(users.sub);
 
+    let users = JSON.parse(localStorage.getItem('users'));
+    // console.log('users ', users);
+    if(excel.length) {
+      if(users) {
       let addCourseName = {
         course_name: `${values['add-course-name']}`,
         userId: SubIdSplit(users.sub),
         mails: ['nik@gmail.com'],
       };
+
       const accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
         const promise = await postAddCourse({ ...addCourseName, accessToken });
@@ -77,6 +103,9 @@ export default function AddCourse() {
       }
     } else {
       alert('user not present');
+    }
+    } else {
+      alert("please provide a excel file or data in valid form ");
     }
   }
 
@@ -92,7 +121,7 @@ export default function AddCourse() {
             </p>
           </div>
           <Formik
-            initialValues={{ 'add-course-name': '', 'add-course-email': '' }}
+            initialValues={{'add-course-name': '','add-course-email': '','excelFile': ''}}
             validationSchema={SignupSchema}
             onSubmit={onSubmits}
           >
@@ -110,6 +139,51 @@ export default function AddCourse() {
                     onInputChange={props.handleChange}
                   />
                 ))}
+
+                <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+                  <>  <label for="files" className=' cursor-pointer' > Upload student email excel list</label>
+                    <input id="files" style={{visibility: "hidden",width: "1px",height: "1px"}}
+                      name="excelFile"
+                      ref={inputFile}
+                      onChange={async (e) => {
+                        handleFileChange(e);
+                        props.handleChange(e);
+                        let arr = await ExcelDataReader(e.target.files[0]);
+                        setExcel([...arr]);
+                        console.log("excel data =========",arr);
+                      }}
+                      onBlur={props.handleBlur}
+                      type="file"
+                    /></>
+                  <MdUpload size={30} className=" p-1" />
+
+                </div>
+                <div className="my-0 py-1 d-flex justify-content-center  ">
+                  {selectedFile ? <div style={{display: 'flex',alignItems: 'center'}}>
+                    <span>{selectedFile.name}</span>
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className=' fw-bold cursor-pointer ms-2 px-1 border-0 text-danger rounded-circle'
+                      title='remove file'
+                    >
+                      &#x2715;
+                    </button >
+                    <button type='button' title='Show Preview '
+                      className=' cursor-pointer border border-0 ms-2 px-1'
+                      onClick={() => {
+                        if(excel.length && selectedFile) {
+                          console.log("======================= onclick show previw");
+                          setShowPreview(true);
+
+                        }
+                      }}
+                    > <FaEye /> </button>
+                  </div>
+                    : null}
+                </div>
+                <ErrorMessage component={"div"} className=' input-error  my-1  mx-5 ' name='excelFile' />
+                {/* {!props.touched['excelFile'] && excel ? null : <p className=' input-error text-center'> Please provide  a excel</p>} */}
 
                 <CustomButton
                   buttonText={
@@ -134,6 +208,9 @@ export default function AddCourse() {
         </div>
         {error && alert('connection lost ' + JSON.stringify(error))}
       </div>
+
+      {showPreview && excel.length > 0 && <ExcelShower showFlag={true} setShowPreview={setShowPreview} excelData={excel} />}
+
     </>
   );
 }

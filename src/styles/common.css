@@ -38,6 +38,10 @@
     --bs-table-color: white !important;
 }
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
+}
+.input-border {
+    border-color: var(--inputFiedColor) !important;
+    border-radius: 10px !important;
 }
