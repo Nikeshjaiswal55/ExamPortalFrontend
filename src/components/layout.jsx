@@ -1,56 +1,65 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/js/dist/dropdown';
 import {
   FaTh,
-  FaBars,
-  FaUserAlt,
-  FaRegChartBar,
-  FaCommentAlt,
-  FaShoppingBag,
+  FaChalkboardTeacher,
+  FaClipboardList,
   FaThList,
 } from 'react-icons/fa';
-import {RiArrowLeftSLine,RiArrowRightSLine} from 'react-icons/ri';
-import {NavLink} from 'react-router-dom';
+import { MdAssignmentAdd } from 'react-icons/md';
+import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
+import { FaRegRectangleList } from 'react-icons/fa6';
 import './layout.css';
 import Header from './Header/Header';
+import { path } from '../routes/RoutesConstant';
+import { CiLogout } from 'react-icons/ci';
+import { useAuth0 } from '@auth0/auth0-react';
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
-  const [isOpen,setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const orgData = JSON.parse(localStorage.getItem('orgData'));
+  const icon_size = '18px';
+  const { logout } = useAuth0();
   const menuItem = [
     {
       path: '/admin/dashboard',
       name: 'Dashboard',
-      icon: <FaTh />,
+      icon: <FaTh size={icon_size} />,
     },
     {
-      path: '/admin/add-course',
-      name: 'Add course',
-      icon: <FaUserAlt />,
+      path: path.AddCourse.path,
+      name: 'Add Course',
+      icon: <FaChalkboardTeacher size={icon_size} />,
+      orgtype: orgData?.orgnizationType,
     },
     {
-      path: '/admin/add-assessment',
-      name: 'add assessment',
-      icon: <FaRegChartBar />,
+      path: path.ShowCourse.path,
+      name: 'Course List',
+      icon: <FaRegRectangleList size={icon_size} />,
+      orgtype: orgData?.orgnizationType,
     },
     {
-      path: '/admin/create-course',
-      name: 'create course',
-      icon: <FaCommentAlt />,
+      path: path.AddAssessment.path,
+      name: 'Add Assessment',
+      icon: <MdAssignmentAdd size={icon_size} />,
     },
     {
-      path: '/admin/create-assessment',
-      name: 'create assessment',
-      icon: <FaShoppingBag />,
+      path: path.ShowAssessment.path,
+      name: 'Assessment List',
+      icon: <FaClipboardList size={icon_size} />,
     },
     {
-      path: '/admin/show-course',
-      name: 'course List',
-      icon: <FaThList />,
+      path: '',
+      name: 'LogOut',
+      icon: <CiLogout size={icon_size} />,
+      onClick: () => {
+        logout({ logoutParams: { returnTo: window.location.origin } });
+      },
     },
   ];
-
 
   return (
     <>
@@ -64,26 +73,31 @@ export default function Layout({children}) {
           id="sideNavbar"
         >
           <div className="top_section">
-            <h1 style={{display: isOpen ? 'block' : 'none'}} className="logo">
+            <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
               Lg
             </h1>
           </div>
-          {menuItem.map((item,index) => (
-            <NavLink
-              to={item.path}
-              key={index}
-              className="link"
-              activeclassName="active"
-            >
-              <div className="icon">{item.icon}</div>
-              <div
-                style={{display: isOpen ? 'block' : 'none'}}
-                className="link_text"
+          {menuItem.map((item, index) =>
+            item.orgtype === 'company' ? (
+              ''
+            ) : (
+              <NavLink
+                to={item.path}
+                key={index}
+                className="link"
+                activeclassName="active"
+                onClick={item.onClick}
               >
-                {item.name}
-              </div>
-            </NavLink>
-          ))}
+                {item.icon}
+                <div
+                  style={{ display: isOpen ? 'block' : 'none' }}
+                  className="link_text"
+                >
+                  {item.name}
+                </div>
+              </NavLink>
+            )
+          )}
         </div>
 
         <div
@@ -103,12 +117,12 @@ export default function Layout({children}) {
 
         <main
           className="main p-0 m-0 h-100 "
-          style={{width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)'}}
+          style={{ width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)' }}
         >
           <Header isOpen={isOpen} />
           <div
             className="main-container m-0 p-2 w-100  "
-            style={{height: 'calc(100vh - 60px)'}}
+            style={{ height: 'calc(100vh - 60px)' }}
           >
             <div className="w-100 h-100 rounded-1 m-0 p-0  bg-white">
               {children}

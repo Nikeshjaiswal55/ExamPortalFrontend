@@ -1,38 +1,42 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router';
-import {path} from '../../../routes/RoutesConstant'
+import { path } from '../../../routes/RoutesConstant';
 
 export default function Cardassessment(props) {
   const navigate = useNavigate();
   return (
     <div className={'col-12 col-md-6'}>
-      <div className="card bg-light py-1 px-4 rounded-3  ">
+      <div className="card bg-dark py-1 px-4 rounded-3  ">
         <div className="py-2">
-          <p className="text-black">
-            <strong>ExamName:</strong> {props.ExamName}
+          <p className="text-light">
+            <strong>ExamName:</strong> {props?.assessmentName}
           </p>
         </div>
         <div className="d-flex justify-content-between bg-white rounded-3 p-3">
           <div>
             <p>
-              <strong>Exam Mode:</strong> {props.ExamMode}
+              <strong>Exam Mode:</strong> {props?.examMode}
             </p>
             <p>
-              <strong>Exam Duration:</strong> {props.ExamDuration}
+              <strong>Exam Duration:</strong> {props?.examDuration}
             </p>
           </div>
           <div>
             <p>
-              <strong>Exam Round:</strong> {props.ExamRound}
+              <strong>Exam Round:</strong> {props?.examRounds}
             </p>
-            <p>
-              <strong>Session:</strong> {props.Session}
-            </p>
+            {props?.branch === '' ? (
+              ''
+            ) : (
+              <p>
+                <strong>Course Name:</strong> {props?.branch}
+              </p>
+            )}
           </div>
         </div>
         <div className="d-flex justify-content-between py-2">
-          <p className="text-black">
+          <p className="text-light">
             <strong>ExamDate:</strong> {props.ExamDate}
           </p>
           <div

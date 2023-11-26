@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-import { Button, FormCheck, Form, FormLabel } from 'react-bootstrap';
+import { Button, FormCheck, Form, FormLabel, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
 import { ImCross } from 'react-icons/im';
@@ -9,7 +9,11 @@ import { Formik, FieldArray, Field, ErrorMessage } from 'formik';
 import { IoClose } from 'react-icons/io5';
 import { MdUpload } from 'react-icons/md';
 import * as yup from 'yup';
-import { usePostAssignmentMutation,useGetOrgernizationQuery } from '../../../apis/Service';
+import {
+  usePostAssignmentMutation,
+  useGetOrgernizationQuery,
+} from '../../../apis/Service';
+import { path } from '../../../routes/RoutesConstant';
 
 export default function AddAssignment() {
   const navigate = useNavigate();
@@ -21,17 +25,31 @@ export default function AddAssignment() {
   const [option, setOption] = useState('');
   const [email, setEmail] = useState();
   const [duration, setDuration] = useState('');
-  const [AssigmnetData] = usePostAssignmentMutation();
-  const {data,isSuccess} = useGetOrgernizationQuery({ accessToken, id: userId });
-  if(isSuccess){console.log(data)}
+  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess }] =
+    usePostAssignmentMutation();
+  const { data: getOrgdata, isSuccess } = useGetOrgernizationQuery({
+    accessToken,
+    id: userId,
+  });
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('-----', getOrgdata);
+    }
+  }, [isSuccess, getOrgdata]);
+
+  useEffect(() => {
+    if (AssignmentSuccess) {
+      navigate(path.ShowAssessment.path);
+    }
+  });
 
   const addAssignmentSchema = yup.object().shape({
     assessementName: yup.string().required('Please enter assessement name'),
     assessementPattern: yup.string().required('Please enter assessement name'),
     examDuration: yup.string().required('Please enter assessement duration'),
-    examBranch: yup.string().required('Please enter branch name'),
-    examSession: yup.string().required('Please enter session name'),
-    email: yup.array().required('Please enter assessement emails'),
+    // examBranch: yup.string().required('Please enter branch name'),
+    // examSession: yup.string().required('Please enter session name'),
+    // email: yup.array().required('Please enter assessement emails'),
     questions: yup.array().required('Please enter assessement name'),
   });
 
@@ -74,6 +92,7 @@ export default function AddAssignment() {
       placeholder: 'enter assessement  pattern',
       labelText: 'assessement  pattern',
       colClassName: 'col-md-6 my-3',
+      inputValue: 'Online',
     },
     {
       inputId: 'exam-duration',
@@ -94,21 +113,25 @@ export default function AddAssignment() {
     //   colClassName: 'col-md-6 my-3',
     // },
     {
-      inputId: 'exam-branch',
-      inputName: 'examBranch',
-      formGroupId: 'exam-group-branch',
-      placeholder: 'enter branch name',
-      labelText: 'enter assessement branch',
-      colClassName: 'col-md-6 my-3',
-    },
-    {
       inputId: 'exam-session',
       inputName: 'examSession',
       formGroupId: 'exam-group-session',
       placeholder: 'select of assessement session',
       labelText: 'enter assessement session',
       colClassName: 'col-md-6  my-3',
+      Orgtype: getOrgdata?.orgnizationType,
     },
+  ];
+
+  const branchOptions = [
+    'bca',
+    'bba',
+    'bcom',
+    'btech',
+    'mca',
+    'mba',
+    'mcom',
+    'mtech',
   ];
 
   const handleSubmits = (e, handleSubmit) => {
@@ -123,7 +146,7 @@ export default function AddAssignment() {
         <Formik
           initialValues={{
             assessementName: '',
-            assessementPattern: '',
+            assessementPattern: 'Online',
             examDuration: '',
             examRound: 1,
             examBranch: '',
@@ -157,7 +180,7 @@ export default function AddAssignment() {
               questions: values.questions,
               userId,
               accessToken,
-              orgnizationId: '038bd702-6874-4545-b803-107986fbbc0e',
+              orgnizationId: getOrgdata?.orgnizationId,
               token: accessToken,
             });
           }}
@@ -185,25 +208,58 @@ export default function AddAssignment() {
                     </p>
                   </div>
                   <div className="row">
-                    {InputFieldData.map((inputData) => (
-                      <InputField
-                        inputId={inputData.inputId}
-                        inputName={inputData.inputName}
-                        formGroupId={inputData.formGroupId}
-                        placeholder={inputData.placeholder}
-                        labelText={inputData.labelText}
-                        onInputBlur={handleBlur}
-                        onInputChange={
-                          inputData.onInputChange
-                            ? (e) => handleDurationChange(e, handleChange)
-                            : handleChange
-                        }
-                        formGroupClassName={inputData.colClassName}
-                        inputValue={inputData.inputValue}
-                      />
-                    ))}
+                    {InputFieldData.map((inputData) =>
+                      inputData.Orgtype == 'company' ? (
+                        ''
+                      ) : (
+                        <InputField
+                          inputId={inputData.inputId}
+                          inputName={inputData.inputName}
+                          formGroupId={inputData.formGroupId}
+                          placeholder={inputData.placeholder}
+                          labelText={inputData.labelText}
+                          onInputBlur={handleBlur}
+                          onInputChange={
+                            inputData.onInputChange
+                              ? (e) => handleDurationChange(e, handleChange)
+                              : handleChange
+                          }
+                          formGroupClassName={inputData.colClassName}
+                          inputValue={inputData.inputValue}
+                        />
+                      )
+                    )}
                   </div>
-
+                  {getOrgdata?.orgnizationType == 'company' ? (
+                    ''
+                  ) : (
+                    <>
+                      <label className="text-capitalize fw-bold">
+                        Select Candidate Course{' '}
+                        <span className="fw-normal">
+                          (note: only selected course student will get exam
+                          link)
+                        </span>
+                      </label>
+                      <Form.Select
+                        className="my-3 rounded-3 border px-2"
+                        aria-label="Default select example"
+                        name="examBranch"
+                        value={values.examBranch} // Make sure to set the value prop
+                        onChange={handleChange}
+                      >
+                        <option value="">Select Course</option>
+                        {branchOptions.map((branch) => (
+                          <option key={branch} value={branch}>
+                            {branch}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <p className="text-capitalize fw-bold m-0 p-0 text-center">
+                        OR
+                      </p>
+                    </>
+                  )}
                   <label className="text-capitalize fw-bold">
                     Enter Candidate Emails
                   </label>
@@ -247,6 +303,7 @@ export default function AddAssignment() {
                       )}
                     </FieldArray>
                   </div>
+
                   <p className="text-capitalize fw-bold m-0 p-0 text-center">
                     OR
                   </p>
@@ -325,7 +382,7 @@ export default function AddAssignment() {
                                         id={`option-${index}`}
                                         name={`questions[${index}].options`}
                                         placeholder="Enter options"
-                                        className="form-control w-100"
+                                        className="form-control w-100 hello"
                                         onChange={(e) => {
                                           setOption(e.target.value);
                                         }}
@@ -354,6 +411,8 @@ export default function AddAssignment() {
                                           ? alert('Please enter option')
                                           : question.options.push(option);
                                         setOption('');
+                                        document.querySelector('.hello').value =
+                                          '';
                                       }}
                                     />
                                   </div>
@@ -408,19 +467,21 @@ export default function AddAssignment() {
                           >
                             Preview
                           </Button>
+
                           <Button
                             type="submit"
                             variant="primary"
                             className=" w-100 text-capitalize rounded-4"
                           >
-                            Submit
+                            {isLoading ? (
+                              <Spinner animation="border" size="sm" />
+                            ) : (
+                              'Submit'
+                            )}
                           </Button>
                         </>
                       )}
                     </div>
-                    {/* <p className="mx-4 fw-bold">
-                      NOTE : Please tick on correct option
-                    </p> */}
                   </div>
                 </div>
               </div>
