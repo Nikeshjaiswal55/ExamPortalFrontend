@@ -50,7 +50,7 @@ export const path = {
         desc: 'this is a for student detail page'
     },
     TermAndCondition:{
-        path: '/admin/Term-And-Condition',
+        path: '/student/Term-And-Condition',
         desc : 'this is for creating TermAndCondition page '
 
     },

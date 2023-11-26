@@ -8,12 +8,11 @@ import { CustomButton } from '../../../theme/Button/Buttons';
 export default function TermandConditionPage() {
   const navigate = useNavigate();
   return (
-    <div className="container">
-      <div className="row">
+      <div className="row w-100 h-100">
         <div className="col-lg-6 col-md-12 mb-4 mb-lg-0">
           <img src={Ima} className="img-fluid" alt="Rules" />
         </div>
-        <div className="col-lg-6 col-md-12">
+        <div className="col-lg-6    col-md-12">
           <div className="text-center">
             <h3>Online Exam Rules</h3>
           </div>
@@ -67,6 +66,5 @@ export default function TermandConditionPage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
