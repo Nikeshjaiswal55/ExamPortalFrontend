@@ -14,6 +14,7 @@ import Layout from '../components/layout';
 import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
 import AssignmentStudentPage from '../pages/admin/AssignmentStudentPage/AssignmentStudentPage';
 import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
+import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 
 export const Routes = () => {
   return (
@@ -80,6 +81,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <ShowCourse />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.TermAndCondition.path}
+            element={
+              <Layout>
+                <TermandConditionPage />
               </Layout>
             }
           />
