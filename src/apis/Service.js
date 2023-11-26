@@ -1,22 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-// const baseUrl = " http://localhost:3000/"
+const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-
-const baseUrl = "http://192.168.0.237:9090/"
+// const baseUrl = "http://192.168.0.237:9090"
 
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
-    tagTypes: ['getAllCourse'],
+    tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization'],
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
     endpoints: (builder) => ({
         getTest: builder.query({
             query: () => `posts`,
         }),
         getAllCourses: builder.query({
-            query: ({accessToken,userId}) => {
+            query: ({ accessToken, userId }) => {
                 console.log("accessToken", accessToken)
                 return {
                     url: `course/byUserId/${userId}`,
@@ -81,7 +81,8 @@ export const adminApi = createApi({
                         "Authorization": `Bearer ${accessToken}`
                     }
                 }
-            }
+            },
+            invalidatesTags: ['getOrgernization'],
         }),
 
         addCourse: builder.mutation({
@@ -95,17 +96,57 @@ export const adminApi = createApi({
                     url: `/course/create`,
                     method: 'post',
                     body: addCourse,
+                }
+            }
+        }),
+        postAssignment: builder.mutation({
+            query: (data) => {
+                const { accessToken, ...assignmentData } = data;
+                return {
+                    url: `/create/paper`,
+                    method: 'post',
+                    body: assignmentData,
                     headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
                     }
                 }
             },
-            invalidatesTags: ['getAllCourse'],
+            invalidatesTags: ['getAllAssissment'],
+        }),
+        getAssignment: builder.query({
+            query: (data) => {
+                const { accessToken, id } = data;
+                return {
+                    url: `/getAllPaper/byUserId/${id}`,
+                    method: 'get',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            },
+            providesTags: ['getAllAssissment']
+        }),
+        getOrgernization: builder.query({
+            query: (data) => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userId = SubIdSplit(users?.sub);
+                const { accessToken, id } = data;
+                return {
+                    url: `/getOrgnizationByUserId/${userId}`,
+                    method: 'get',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            },
+            providesTags: ['getOrgernization']
         })
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation } = adminApi;
+export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery } = adminApi;

@@ -33,7 +33,7 @@ export default function ShowCourse() {
     <>
       <div className="w-100 h-100 m-0 p-2 overflow-auto">
         <div className="m-0  p-2 d-flex justify-content-between">
-          <h4 className="m-0"> Courses</h4>
+          <h4 className="m-0 text-capitalize fw-bold">All Courses</h4>
           <CustomButton
             className={' rounded-4'}
             buttonText={'Add Course'}
@@ -65,7 +65,7 @@ export default function ShowCourse() {
                 <th className="text-center"> SrNo</th>
                 <th>Course Name</th>
                 <th>Created By</th>
-                <th>Other</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

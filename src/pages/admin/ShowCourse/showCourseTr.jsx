@@ -66,7 +66,7 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
         <td className="custom-table-td-width text-center">{props.srNo}</td>
         <td className="custom-table-td-width">{props.courseName}</td>
         <td className="custom-table-td-width">{props.createdBy}</td>
-        <td className="custom-table-td-width">
+        <td className="custom-table-td-width d-flex justify-content-evenly">
           {' '}
           <RiDeleteBin6Line
             className=" mx-2"
@@ -90,8 +90,7 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
         >
           <Modal.Header>
             <Modal.Title id="contained-modal-title-vcenter">
-              {' '}
-              Edit Course Name{' '}
+              Edit Course Name
             </Modal.Title>
           </Modal.Header>
 

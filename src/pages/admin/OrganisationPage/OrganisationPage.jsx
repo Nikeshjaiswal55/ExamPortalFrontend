@@ -3,28 +3,48 @@ import backgroundimg from '../assets/org-img.svg';
 import { Button, Spinner } from 'react-bootstrap';
 import { Form, Row } from 'react-bootstrap';
 import './OrganisationPage.css';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import '../components/style.css';
 import { ErrorMessage, Formik } from 'formik';
 import { orgPageSchema } from './yup-schema/OrgPageSchema';
-import { usePostOrganisationDetailsMutation } from '../../../apis/Service';
+import {
+  useGetOrgernizationQuery,
+  usePostOrganisationDetailsMutation,
+} from '../../../apis/Service';
 import { InputField } from '../../../theme/InputField/InputField';
 import { useAuth0 } from '@auth0/auth0-react';
 import { getAccessToken } from '../../../auth/Private';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
+import { path } from '../../../routes/RoutesConstant';
 
 const initialValues = { 'org-name': '', 'org-type': '' };
 export default function OrganisationPage() {
-  const navigate = useNavigate();
   const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
     useAuth0();
-  const [postOrgDetails, { isLoading }] = usePostOrganisationDetailsMutation();
 
   useEffect(() => {
     if (isAuthenticated) {
       getAccessToken(getAccessTokenSilently, user);
     }
   }, [isAuthenticated, getAccessTokenSilently]);
+  const navigate = useNavigate();
+  const [postOrgDetails, { isLoading }] = usePostOrganisationDetailsMutation();
+  const accessToken = localStorage.getItem('accessToken');
+  const users = JSON.parse(localStorage.getItem('users'));
+  const {
+    data: getOrgdata,
+    isLoading: orgLoading,
+    isSuccess,
+  } = useGetOrgernizationQuery({
+    accessToken,
+    id: '',
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem('orgData', JSON.stringify(getOrgdata));
+    }
+  }, [isSuccess]);
 
   async function onGetStarted(values) {
     const users = JSON.parse(localStorage.getItem('users'));
@@ -54,7 +74,11 @@ export default function OrganisationPage() {
 
   return (
     <>
-      {
+      {orgLoading ? (
+        <UserWaiting />
+      ) : getOrgdata ? (
+        <Navigate to={path.AdminDasboard.path} />
+      ) : (
         <div
           className="row m-0 p-0 w-100  bg-white "
           style={{ height: '90vh' }}
@@ -144,7 +168,20 @@ export default function OrganisationPage() {
             </Formik>
           </div>
         </div>
-      }
+      )}
     </>
   );
 }
+
+const UserWaiting = () => {
+  return (
+    <div className="d-flex justify-content-center align-items-center w-100 h-100">
+      <iframe
+        src="https://i.stack.imgur.com/YG4bw.gif"
+        width="400px"
+        height="400px"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
+};
