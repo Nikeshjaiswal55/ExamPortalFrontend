@@ -1,6 +1,5 @@
 import React from 'react';
 import {FaUserAlt} from 'react-icons/fa';
-import {CiLogout} from "react-icons/ci";
 import './Header.css';
 
 export default function Header({isOpen}) {
@@ -36,11 +35,6 @@ export default function Header({isOpen}) {
                 <li>
                   <a className="dropdown-item  bg-white text-black" href="#">
                     {user.email}
-                  </a>
-                </li>
-                <li> 
-                  <a className="dropdown-item   fw-bold" href="#">
-                    <CiLogout size={20} />  Logout
                   </a>
                 </li>
               </ul>
