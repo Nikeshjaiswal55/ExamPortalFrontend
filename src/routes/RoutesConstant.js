@@ -49,11 +49,17 @@ export const path = {
         path: '/admin/student-details',
         desc: 'this is a for student detail page'
     },
+    TermAndCondition:{
+        path: '/admin/Term-And-Condition',
+        desc : 'this is for creating TermAndCondition page '
+
+    },
     ShowAssessment: {
         path: '/admin/show-assessment',
         desc: 'this is for creating showassessment page '
 
     },
+    
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'
