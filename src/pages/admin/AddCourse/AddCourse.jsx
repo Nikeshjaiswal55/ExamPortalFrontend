@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
-import { Form, Spinner } from 'react-bootstrap';
+import {Button,Form,Modal,Spinner} from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 import { path } from '../../../routes/RoutesConstant';
-import { useNavigate } from 'react-router-dom';
+import {json,useNavigate} from 'react-router-dom';
 import {ErrorMessage,Formik} from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
@@ -14,6 +14,7 @@ import {MdUpload} from 'react-icons/md';
 import {FaEye} from "react-icons/fa";
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import {useRef} from 'react';
+import {copyWithStructuralSharing} from '@reduxjs/toolkit/query';
 
 const SignupSchema = Yup.object().shape({
   'add-course-name': Yup.string()
@@ -59,11 +60,14 @@ export default function AddCourse() {
   const inputFile = useRef(null);
   const [selectedFile,setSelectedFile] = useState(null);
   const [showPreview,setShowPreview] = useState(false);
+  const [showError,setShowError] = useState(false);
+
+  const handleErrorClose = () => setShowError(false);
+  const handleErrorShow = () => setShowError(true);
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
   const handleRemoveFile = () => {
-
     setSelectedFile(null);
     if(inputFile.current) {
       console.log(inputFile);
@@ -145,12 +149,20 @@ export default function AddCourse() {
                     <input id="files" style={{visibility: "hidden",width: "1px",height: "1px"}}
                       name="excelFile"
                       ref={inputFile}
+                      accept=".xlsx, .xls, .xlsm, .xlsb, .csv,.xlam ,.xltx , .xltm"
                       onChange={async (e) => {
                         handleFileChange(e);
                         props.handleChange(e);
                         let arr = await ExcelDataReader(e.target.files[0]);
-                        setExcel([...arr]);
-                        console.log("excel data =========",arr);
+                        if(arr instanceof String) {
+                          console.log(arr);
+                          setExcel(arr);
+                          handleErrorShow();
+                        } else {
+                          setExcel([...arr]);
+                          console.log("excel data =========",arr);
+                        }
+
                       }}
                       onBlur={props.handleBlur}
                       type="file"
@@ -175,16 +187,17 @@ export default function AddCourse() {
                         if(excel.length && selectedFile) {
                           console.log("======================= onclick show previw");
                           setShowPreview(true);
-
+                        } else {
+                          alert(excel);
                         }
                       }}
                     > <FaEye /> </button>
                   </div>
                     : null}
                 </div>
+
                 <ErrorMessage component={"div"} className=' input-error  my-1  mx-5 ' name='excelFile' />
                 {/* {!props.touched['excelFile'] && excel ? null : <p className=' input-error text-center'> Please provide  a excel</p>} */}
-
                 <CustomButton
                   buttonText={
                     isLoading ? (
@@ -198,7 +211,7 @@ export default function AddCourse() {
                     'm-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'
                   }
                 />
-              </Form>
+              </Form> 
             )}
           </Formik>
         </div>
@@ -208,9 +221,22 @@ export default function AddCourse() {
         </div>
         {error && alert('connection lost ' + JSON.stringify(error))}
       </div>
-
+      {excel instanceof String ?
+        <>
+          <Modal show={showError} onHide={handleErrorClose}>
+            <Modal.Header >
+              <Modal.Title>Invalid File Error </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{JSON.stringify(excel).replaceAll('"'," ")}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={
+                () => {handleRemoveFile(); handleErrorClose()}}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </> : null}
       {showPreview && excel.length > 0 && <ExcelShower showFlag={true} setShowPreview={setShowPreview} excelData={excel} />}
-
     </>
   );
 }
