@@ -17,8 +17,6 @@ import { path } from '../../../routes/RoutesConstant';
 import {FaEye} from 'react-icons/fa';
 import {ExcelDataReader} from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
-import {current} from 'immer';
-
 export default function AddAssignment() {
   const navigate = useNavigate();
   const inputFile = useRef(null);
@@ -76,6 +74,16 @@ export default function AddAssignment() {
     // examBranch: yup.string().required('Please enter branch name'),
     // examSession: yup.string().required('Please enter session name'),
     // email: yup.array().required('Please enter assessement emails'),
+    email: yup.array().of(yup.string().matches(
+      /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+      'Invalid email formats'
+    )).required()
+      .test('email-provider','Email provider not allowed',(value) => {
+        if(/(email|yahoo)\.com$/.test(value)) {
+          return false;
+        }
+        return true;
+      }),
     questions: yup.array().required('Please enter assessement name'),
     'excelFile': yup.mixed()
       .required('File is required'),
@@ -342,6 +350,7 @@ export default function AddAssignment() {
                         </div>
                       )}
                     </FieldArray>
+                    <ErrorMessage name='email' component={"div"} className=' input-error' />
                   </div>
 
                   <p className="text-capitalize fw-bold m-0 p-0 text-center">
