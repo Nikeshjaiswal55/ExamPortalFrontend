@@ -15,6 +15,8 @@ import Header from './Header/Header';
 import { path } from '../routes/RoutesConstant';
 import { CiLogout } from 'react-icons/ci';
 import { useAuth0 } from '@auth0/auth0-react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
@@ -128,6 +130,7 @@ export default function Layout({ children }) {
               {children}
             </div>
           </div>
+          <ToastContainer />
         </main>
       </div>
     </>

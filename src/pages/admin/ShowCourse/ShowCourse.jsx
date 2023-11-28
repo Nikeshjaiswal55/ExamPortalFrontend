@@ -12,23 +12,85 @@ import { CustomButton } from '../../../theme/Button/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
+import { toast } from 'react-toastify';
+import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 
 export default function ShowCourse() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
-  const { data, error, isLoading } = useGetAllCoursesQuery({
+  const { data, isError, isLoading } = useGetAllCoursesQuery({
     accessToken: localStorage.getItem('accessToken'),
     userId,
   });
 
-  const [updateCourse, { isLoading: updateLoading }] =
-    useUpdateCourseMutation();
-  const [deleteCourse, { isLoading: deleteLoading }] =
-    useDeleteCourseMutation();
+  const [
+    updateCourse,
+    {
+      isLoading: updateLoading,
+      isError: updateError,
+      isSuccess: updateSuccess,
+    },
+  ] = useUpdateCourseMutation();
+
+  const [
+    deleteCourse,
+    {
+      isLoading: deleteLoading,
+      isError: deleteError,
+      isSuccess: deleteSuccess,
+    },
+  ] = useDeleteCourseMutation();
   function handleAddCourse() {
     navigate(path.AddCourse.path);
   }
+  
+  useEffect(() => {
+    if (updateSuccess) {
+      toast.success('course updated successfully!!🎉', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [updateSuccess]);
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      toast.success('course deleted successfully!!🎉', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [deleteSuccess]);
+
+  useEffect(() => {
+    if (isError || updateError || deleteError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [updateError, deleteError, isError]);
+
   return (
     <>
       <div className="w-100 h-100 m-0 p-2 overflow-auto">
@@ -40,6 +102,7 @@ export default function ShowCourse() {
             onButtonClick={handleAddCourse}
           />
         </div>
+        {isError && <SomethingWentWrong />}
         {(isLoading || updateLoading || deleteLoading) && (
           <div className=" position-absolute top-50 start-50  translate-middle ">
             <Spinner animation="grow" />
@@ -47,15 +110,17 @@ export default function ShowCourse() {
             <Spinner animation="grow" />
           </div>
         )}
-        {error &&
-          alert(
-            'error while fetching data on show courses :- ' +
-              JSON.stringify(error)
-          )}
         {data?.length == 0 && (
-          <div>
-            <h1> No data available</h1>
-          </div>
+          <NoDataFound>
+            <div>
+              <h4 className="text-capitalize fw-bold text-center">
+                No Data Available!!
+              </h4>
+              <h6 className="text-capitalize fw-bold text-center">
+                create course by click on above right corner button
+              </h6>
+            </div>
+          </NoDataFound>
         )}
 
         {data && data.length > 0 && (
