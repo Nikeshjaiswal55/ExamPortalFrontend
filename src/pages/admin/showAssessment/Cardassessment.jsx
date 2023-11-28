@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { path } from '../../../routes/RoutesConstant';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import '../../../styles/common.css';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, Placeholder, Spinner } from 'react-bootstrap';
 
 export default function Cardassessment(props) {
   const navigate = useNavigate();
@@ -71,3 +71,28 @@ export default function Cardassessment(props) {
     </>
   );
 }
+
+export const CardassessmentPlaceholder = () => {
+  return (
+    <div className="col-12 col-lg-6 mb-4 h-25 ">
+      <div className=" white-box p-4 border rounded-4 bg-white">
+        <div className=" rounded-3 p-2 mx-3  bg-body-secondary">
+          <Placeholder as="div" animation="glow">
+            <Placeholder xs={5} />
+          </Placeholder>
+          <Placeholder as="div" animation="glow">
+            <Placeholder xs={3} />
+          </Placeholder>
+        </div>
+        <div className="pt-3 ps-4">
+            <Placeholder as="div" animation="glow">
+              <Placeholder xs={2} />
+            </Placeholder>
+            <Placeholder as="div" animation="glow">
+              <Placeholder xs={3} />
+            </Placeholder>
+        </div>
+      </div>
+    </div>
+  );
+};

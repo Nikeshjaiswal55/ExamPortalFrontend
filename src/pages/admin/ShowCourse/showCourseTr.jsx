@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { FaRegEdit } from 'react-icons/fa';
-import {
-  useDeleteCourseMutation,
-  useUpdateCourseMutation,
-} from '../../../apis/Service';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { InputField } from '../../../theme/InputField/InputField';
 import { Formik } from 'formik';
@@ -54,7 +50,7 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
   }
   async function handleDeleteCourse(id) {
     if (accessToken) {
-      deleteCourse({ accessToken, id })
+      deleteCourse({ accessToken, id });
     } else {
       alert('user access token not present ');
     }
@@ -119,12 +115,22 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
                   />
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                  </Button>
-                  <Button variant="success" type="submit">
-                    Edit
-                  </Button>
+                  <div className="d-flex w-100 gap-3">
+                    <Button
+                      variant="danger"
+                      className="rounded-4 w-100"
+                      onClick={handleClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="dark"
+                      className="rounded-4 w-100"
+                      type="submit"
+                    >
+                      Edit
+                    </Button>
+                  </div>
                 </Modal.Footer>
               </Form>
             )}
@@ -151,16 +157,25 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
             <p>do you want to delete the course</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleDeleteClose}>
-              Cancle
-            </Button>
-            <Button
-              variant="danger"
-              type="submit"
-              onClick={() => handleDeleteCourse(props.courseId)}
-            >
-              Delete
-            </Button>
+            <div className="d-flex w-100 gap-3">
+              <Button
+                variant="dark"
+                className="rounded-4 w-100"
+                onClick={handleDeleteClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="danger"
+                className="rounded-4 w-100"
+                onClick={() => {
+                  handleDeleteCourse(props.courseId);
+                  handleDeleteClose();
+                }}
+              >
+                Delete
+              </Button>
+            </div>
           </Modal.Footer>
         </Modal>
       )}
