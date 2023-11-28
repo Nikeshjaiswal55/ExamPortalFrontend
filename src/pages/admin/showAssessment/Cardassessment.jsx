@@ -11,13 +11,13 @@ export default function Cardassessment(props) {
   return (
     <>
 
-      <div className='col-12 col-lg-6 h-25 '>
+      <div className='col-12 col-lg-6 mb-4 h-25 '>
         <div className=' white-box p-4 border rounded-4  bg-white' >
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className='m-0 p-0'>
               <strong className='fs-6'>{props?.assessmentName}
               </strong><br />
-              <span>{props.ExamDate}</span>
+              <span>{props?.ExamDate}</span>
             </div>
             {props.flag ? (<div className=' d-flex justify-content-evenly   align-items-center'> <Spinner animation="grow" variant='success' size="sm" /> <strong className='ms-2'>  Active</strong>
             </div>) :
