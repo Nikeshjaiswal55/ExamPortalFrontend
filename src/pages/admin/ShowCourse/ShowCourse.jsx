@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Spinner, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { ShowCourseTr } from './showCourseTr';
 import {
   useDeleteCourseMutation,
@@ -15,6 +15,7 @@ import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { toast } from 'react-toastify';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import NoDataFound from '../../../components/NoDataFound/NoDataFound';
+import { Loader } from '../../../components/Loader/Loader';
 
 export default function ShowCourse() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function ShowCourse() {
   function handleAddCourse() {
     navigate(path.AddCourse.path);
   }
-  
+
   useEffect(() => {
     if (updateSuccess) {
       toast.success('course updated successfully!!🎉', {
@@ -105,23 +106,24 @@ export default function ShowCourse() {
         {isError && <SomethingWentWrong />}
         {(isLoading || updateLoading || deleteLoading) && (
           <div className=" position-absolute top-50 start-50  translate-middle ">
-            <Spinner animation="grow" />
-            <Spinner animation="grow" />
-            <Spinner animation="grow" />
+            <Loader />
           </div>
         )}
-        {data?.length == 0 && (
-          <NoDataFound>
-            <div>
-              <h4 className="text-capitalize fw-bold text-center">
-                No Data Available!!
-              </h4>
-              <h6 className="text-capitalize fw-bold text-center">
-                create course by click on above right corner button
-              </h6>
-            </div>
-          </NoDataFound>
-        )}
+
+        <div className=" position-absolute top-50 start-50  translate-middle ">
+          {data?.length == 0 && (
+            <NoDataFound>
+              <div>
+                <h4 className="text-capitalize fw-bold text-center">
+                  No Data Available!!
+                </h4>
+                <h6 className="text-capitalize fw-bold text-center">
+                  create course by click on above right corner button
+                </h6>
+              </div>
+            </NoDataFound>
+          )}
+        </div>
 
         {data && data.length > 0 && (
           <Table striped responsive hover>
