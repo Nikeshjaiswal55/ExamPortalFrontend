@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../components/style.css';
 import { useNavigate } from 'react-router-dom';
 import Cardassessment from './Cardassessment';
+import '../../../styles/common.css';
 import { useGetAssignmentQuery } from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
-import { Spinner } from 'react-bootstrap';
-
+import { Form, Spinner } from 'react-bootstrap';
+import { IoSearchSharp } from 'react-icons/io5';
 export default function ShowAssessment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -15,111 +16,62 @@ export default function ShowAssessment() {
     data: assignmentData,
     isLoading,
     error,
+    isSuccess,
   } = useGetAssignmentQuery({ accessToken, id: userId });
 
-  console.log('assignmentData', assignmentData);
+  const [filterData, setFilterData] = useState(assignmentData);
+  const [input, setInput] = useState();
 
-  // Create an array of assessment details objects
-  const assessmentDetailsArray = [
-    {
-      id: 1,
-      ExamMode: 'Online',
-      ExamDuration: '9.45-12.10',
-      ExamRound: '8',
-      Session: '2022-23',
-      ExamDate: '1/05/2023',
-      ExamName: 'BBA',
-    },
-    {
-      id: 2,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-    {
-      id: 3,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-    {
-      id: 4,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
+  useEffect(() => {
+    setFilterData(assignmentData);
+  }, [isSuccess]);
 
-    {
-      id: 5,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-    {
-      id: 6,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-
-    {
-      id: 7,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-    {
-      id: 8,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-
-    {
-      id: 9,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-    {
-      id: 10,
-      ExamMode: 'Offline',
-      ExamDuration: '10.00-11.30',
-      ExamRound: '5',
-      Session: '2022-23',
-      ExamDate: '2/05/2023',
-      ExamName: 'BCA',
-    },
-  ];
+  useEffect(() => {
+    if (input) {
+      const filterdata = assignmentData.filter((item) =>
+        item.examDetails.assessmentName
+          .toLowerCase()
+          .includes(input.toLowerCase())
+      );
+      setFilterData(filterdata);
+    } else {
+      setFilterData(assignmentData);
+    }
+  }, [input]);
 
   return (
     <>
-      <div className="w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto">
-        <h4 className="m-0 text-capitalize fw-bold py-2"> All Assessments</h4>
+      <div className="main w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
+        <div className="w-100 row justify-content-between flex-wrap align-items-center  p-lg-3  ">
+          <div
+            className=" d-flex col-md-5 mx-3 mb-lg-0 mb-3 col-12 justify-content-between border p-2 fs-4 rounded-4 bg-white  "
+            style={{ width: '550px' }}
+          >
+            <input
+              type="search"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="border-0 focus-ring  focus-ring-light"
+              placeholder="Search here.."
+              style={{ width: '90%' }}
+            />
+            <span>
+              <IoSearchSharp size={35} className=" cursor-pointer" />
+            </span>
+          </div>
+          <div className="w-auto col-md-3 mx-2  mb-lg-0 mb-3 col-12  d-flex justify-content-end">
+            <Form.Select
+              aria-label="Table view "
+              style={{ borderColor: '#707070' }}
+              className=" w-100 input-border  border focus-ring focus-ring-light "
+            >
+              <option value="">Select All </option>
+              <option value="company">By name</option>
+              <option value="college">By date </option>
+            </Form.Select>
+          </div>
+        </div>
+        {/* <h4 className="m-0 text-capitalize fw-bold py-2"> All Assessments</h4> */}
 
         {isLoading ? (
           <div className=" position-absolute top-50 start-50  translate-middle ">
@@ -128,13 +80,14 @@ export default function ShowAssessment() {
             <Spinner animation="grow" />
           </div>
         ) : (
-          <div className=" row m-0 p-0 g-2 ">
-            {assignmentData.map((assessmentDetails) => (
-              <Cardassessment
-                key={assessmentDetails.paperId}
-                {...assessmentDetails.examDetails}
-              />
-            ))}
+          <div className="row m-0 p-0  ">
+            {assignmentData &&
+              filterData?.map((assessmentDetails, index) => (
+                <Cardassessment
+                  key={index}
+                  {...assessmentDetails.examDetails}
+                />
+              ))}
           </div>
         )}
       </div>
