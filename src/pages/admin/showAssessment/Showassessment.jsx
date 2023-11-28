@@ -117,13 +117,10 @@ export default function ShowAssessment() {
           )}
         </div>
         {isLoading ? (
-          // <div className="row m-0 p-0  ">
-          //   {[1, 2, 3, 4, 5, 6].map((item) => (
-          //     <CardassessmentPlaceholder />
-          //   ))}
-          // </div>
-          <div className=" position-absolute top-50 start-50  translate-middle ">
-            <Loader />
+          <div className="row m-0 p-0  ">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <CardassessmentPlaceholder />
+            ))}
           </div>
         ) : (
           // <div className=" position-absolute top-50 start-50  translate-middle ">
