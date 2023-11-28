@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Button, FormCheck, Form, FormLabel, Spinner } from 'react-bootstrap';
+import {Button,FormCheck,Form,FormLabel,Spinner,Modal} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
 import { ImCross } from 'react-icons/im';
@@ -14,9 +14,33 @@ import {
   useGetOrgernizationQuery,
 } from '../../../apis/Service';
 import { path } from '../../../routes/RoutesConstant';
-
+import {FaEye} from 'react-icons/fa';
+import {ExcelDataReader} from '../../../utils/ExcelDataReader';
+import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 export default function AddAssignment() {
   const navigate = useNavigate();
+  const inputFile = useRef(null);
+  const [selectedFile,setSelectedFile] = useState(null);
+  const [showPreview,setShowPreview] = useState(false);
+  const [showError,setShowError] = useState(false);
+  const [excel,setExcel] = useState([]);
+
+  const handleErrorClose = () => setShowError(false);
+  const handleErrorShow = () => setShowError(true);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    if(inputFile.current) {
+      console.log(inputFile);
+      inputFile.current.value = "";
+      inputFile.current.type = "text";
+      inputFile.current.type = "file";
+    }
+  };
+
+
   const accessToken = localStorage.getItem('accessToken');
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];
@@ -50,7 +74,19 @@ export default function AddAssignment() {
     // examBranch: yup.string().required('Please enter branch name'),
     // examSession: yup.string().required('Please enter session name'),
     // email: yup.array().required('Please enter assessement emails'),
+    email: yup.array().of(yup.string().matches(
+      /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+      'Invalid email formats'
+    )).required()
+      .test('email-provider','Email provider not allowed',(value) => {
+        if(/(email|yahoo)\.com$/.test(value)) {
+          return false;
+        }
+        return true;
+      }),
     questions: yup.array().required('Please enter assessement name'),
+    'excelFile': yup.mixed()
+      .required('File is required'),
   });
 
   const handleDurationChange = (event, handleChange) => {
@@ -155,10 +191,13 @@ export default function AddAssignment() {
             questions: [
               { questions: '', options: [], correctAns: '', userAns: '' },
             ],
+            'excelFile': ''
           }}
           onSubmit={async (values) => {
             values.examDuration = duration + '';
-            const examDetails = {
+            if(excel.length) {
+              console.log("-----------------------data submit---------------");
+              const examDetails = {
               examDuration: values.examDuration,
               examMode: 'Online',
               examRounds: 2,
@@ -167,6 +206,7 @@ export default function AddAssignment() {
               session: values.examSession,
               assessmentName: values.assessementName,
             };
+
             console.log({
               examDetails,
               email: values.email,
@@ -174,15 +214,23 @@ export default function AddAssignment() {
               userId,
               token: accessToken,
             });
+              let emails = excel.reduce((arr,currentvalue) => {
+                arr.push(currentvalue.email);
+                return arr;
+              },[...values.email]);
+              console.log("emails :------ ",emails);
+
             await AssigmnetData({
               examDetails,
-              emails: values.email,
+              // emails: values.email,
+              emails: emails,
               questions: values.questions,
               userId,
               accessToken,
               orgnizationId: getOrgdata?.orgnizationId,
               token: accessToken,
             });
+            }
           }}
           validationSchema={addAssignmentSchema}
         >
@@ -302,17 +350,66 @@ export default function AddAssignment() {
                         </div>
                       )}
                     </FieldArray>
+                    <ErrorMessage name='email' component={"div"} className=' input-error' />
                   </div>
 
                   <p className="text-capitalize fw-bold m-0 p-0 text-center">
                     OR
                   </p>
-                  <div className="my-3 py-1 d-flex justify-content-center align-items-center border border-dark  ps-3 pe-2 text-center rounded-5 cursor-pointer  ">
-                    <MdUpload size={30} className="cursor-pointer p-1" />
-                    <div className="py-1 pe-3 flex-1">
-                      Upload student email excel list
-                    </div>
+                  {/* ------------------------------------------------------------------- */}
+                  <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+                    <>  <label for="files" className=' cursor-pointer' > Upload student email excel list</label>
+                      <input id="files" style={{visibility: "hidden",width: "1px",height: "1px"}}
+                        name="excelFile"
+                        ref={inputFile}
+                        accept=".xlsx, .xls, .xlsm, .xlsb, .csv,.xlam ,.xltx , .xltm"
+                        onChange={async (e) => {
+                          handleFileChange(e);
+                          handleChange(e);
+                          let arr = await ExcelDataReader(e.target.files[0]);
+                          if(arr instanceof String) {
+                            console.log(arr);
+                            setExcel(arr);
+                            handleErrorShow();
+                          } else {
+                            setExcel([...arr]);
+                            console.log("excel data =========",arr);
+                          }
+
+                        }}
+                        onBlur={handleBlur}
+                        type="file"
+                      /></>
+                    <MdUpload size={30} className=" p-1" />
+
                   </div>
+                  <div className="my-0 py-1 d-flex justify-content-center  ">
+                    {selectedFile ? <div style={{display: 'flex',alignItems: 'center'}}>
+                      <span>{selectedFile.name}</span>
+                      <button
+                        type="button"
+                        onClick={handleRemoveFile}
+                        className=' fw-bold cursor-pointer ms-2 px-1 border-0 text-danger rounded-circle'
+                        title='remove file'
+                      >
+                        &#x2715;
+                      </button >
+                      <button type='button' title='Show Preview '
+                        className=' cursor-pointer border border-0 ms-2 px-1'
+                        onClick={() => {
+                          if(excel.length && selectedFile) {
+                            console.log("======================= onclick show previw");
+                            setShowPreview(true);
+                          } else {
+                            alert(excel);
+                          }
+                        }}
+                      > <FaEye /> </button>
+                    </div>
+                      : null}
+                  </div>
+
+                  <ErrorMessage component={"div"} className=' input-error  my-1  mx-5 ' name='excelFile' />
                 </div>
                 <div className="col-md-6 pe-1 bg-white position-relative">
                   <div className="ps-3  mt-lg-2  ">
@@ -489,6 +586,22 @@ export default function AddAssignment() {
           )}
         </Formik>
       </div>
+      {excel instanceof String ?
+        <>
+          <Modal show={showError} onHide={handleErrorClose}>
+            <Modal.Header >
+              <Modal.Title>Invalid File Error </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{JSON.stringify(excel).replaceAll('"'," ")}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={
+                () => {handleRemoveFile(); handleErrorClose()}}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </> : null}
+      {showPreview && excel.length > 0 && <ExcelShower showFlag={true} setShowPreview={setShowPreview} excelData={excel} />}
     </>
   );
 }
