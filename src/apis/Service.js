@@ -190,6 +190,34 @@ export const adminApi = createApi({
                 return {
                     url: `/getPaperbyPaperId/${paperID}`,
                     method: 'GET',
+                }
+            },
+            invalidatesTags: ['getAllAssissment'],
+        }),
+        getStudentOnPerticularAssignment: builder.query(
+            {
+                query: (paperId) => {
+                    const accessToken = localStorage.getItem('accessToken')
+                    return {
+                        url: `/student/GetAllByPaperId/${paperId}`,
+                        method: 'get',
+                        headers: {
+                            "Content-Type": 'application/json;',
+                            "Authorization": `Bearer ${accessToken}`
+                        }
+
+                    }
+                }
+            }
+        ),
+        deleteAssignment: builder.mutation({
+            query: (payload) => {
+                const accessToken = localStorage.getItem('accessToken')
+                console.log("accessToken", accessToken);
+                console.log(payload);
+                return {
+                    url: `/deletePaperByPaperID/${payload}`,
+                    method: "DELETE",
                     headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
@@ -199,8 +227,8 @@ export const adminApi = createApi({
         }),
         postSaveResult: builder.mutation({
             query: (payload) => {
-                const [accessToken,result] = payload;
-                console.log("result : ",result);
+                const [accessToken, result] = payload;
+                console.log("result : ", result);
                 return {
                     url: "/saveresult",
                     method: "POST",
@@ -211,7 +239,7 @@ export const adminApi = createApi({
                     }
                 }
             }
-        }),   
+        }),
     }),
 })
 
