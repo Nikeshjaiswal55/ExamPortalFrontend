@@ -15,6 +15,7 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
+import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 
 export const Routes = () => {
   return (
@@ -76,6 +77,16 @@ export const Routes = () => {
               </Layout>
             }
           />
+
+          <Route
+            path={path.SidePooup.path}
+            element={
+              <Layout>
+                <Example />
+              </Layout>
+            }
+          />
+
           <Route
             path={path.ShowCourse.path}
             element={

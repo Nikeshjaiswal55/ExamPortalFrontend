@@ -59,6 +59,11 @@ export const path = {
         desc: 'this is for creating showassessment page '
 
     },
+    SidePooup: {
+        path: '/admin/Side-Pooup',
+        desc: 'this is for creating sidepooup page '
+
+    },
     
     error: {
         path: '/*',
