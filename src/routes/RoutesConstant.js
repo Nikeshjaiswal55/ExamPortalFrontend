@@ -46,7 +46,7 @@ export const path = {
     },
 
     showStudent: {
-        path: '/admin/student-details',
+        path: '/admin/student-details/:paperId',
         desc: 'this is a for student detail page'
     },
     TermAndCondition:{

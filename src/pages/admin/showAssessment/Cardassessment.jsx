@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router';
 import { path } from '../../../routes/RoutesConstant';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import '../../../styles/common.css';
 import { Button, Placeholder, Spinner } from 'react-bootstrap';
+import { ImCross } from 'react-icons/im';
+import { useDeleteAssignmentMutation } from '../../../apis/Service';
+import { toast } from 'react-toastify';
 
-export default function Cardassessment(props) {
+export default function Cardassessment({paperId,...props}) {
+  const [deleteAssignment,{isError,isLoading}] =useDeleteAssignmentMutation()
   const navigate = useNavigate();
+  const removeAssisstment=async()=>{
+    await deleteAssignment(paperId) 
+  }
+
+  useEffect(() => {
+    if (isError) {
+      toast.success('assissment deleted successfully!!🎉', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isError]);
   return (
     <>
       <div className="col-12 col-lg-6 mb-4 h-25 ">
-        <div className=" white-box p-4 border rounded-4  bg-white">
+        <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
+          <div className='w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center'>
+            <ImCross onClick={removeAssisstment}/>
+          </div>
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong className="fs-6">{props?.assessmentName}</strong>
@@ -44,7 +69,7 @@ export default function Cardassessment(props) {
             <div
               className="text-black m-0 mx-5 p-0 position-relative cursor-pointer "
               style={{ width: '50px', height: '10px' }}
-              onClick={() => navigate(path.showStudent.path)}
+              onClick={() => navigate(`/admin/student-details/${paperId}`)}
             >
               <div
                 className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center  bg-danger   "
