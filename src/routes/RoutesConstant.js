@@ -68,6 +68,12 @@ export const path = {
         desc: 'this is for org type and name'
     },
 
+    SidePooup: {
+        path: '/admin/Side-Pooup',
+        desc: 'this is for creating sidepooup page '
+
+    },
+    
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

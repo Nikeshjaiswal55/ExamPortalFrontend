@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes as ReactRoute } from 'react-router-dom';
+import {BrowserRouter,Route,Routes as ReactRoute} from 'react-router-dom';
 import Home from '../pages/home/Home';
-import { Private } from '../auth/Private';
-import { path } from './RoutesConstant';
+import {Private} from '../auth/Private';
+import {path} from './RoutesConstant';
 import OrgDashBoard from '../pages/admin/OrgDashboard/OrgDashBoard';
 
 import AddCourse from '../pages/admin/AddCourse/AddCourse';
-import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
+import {CreateCourse} from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
 import Layout from '../components/layout';
 import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
@@ -15,8 +15,9 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
-import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
+import {Redirect,SaveUserOrg} from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
+import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 
 export const Routes = () => {
   return (
@@ -82,6 +83,16 @@ export const Routes = () => {
               </Layout>
             }
           />
+
+          <Route
+            path={path.SidePooup.path}
+            element={
+              <Layout>
+                <Example />
+              </Layout>
+            }
+          />
+
           <Route
             path={path.ShowCourse.path}
             element={

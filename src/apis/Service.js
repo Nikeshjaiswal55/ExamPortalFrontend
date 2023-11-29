@@ -1,23 +1,24 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { SubIdSplit } from '../utils/SubIdSplit'
+import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {SubIdSplit} from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
 const baseUrl = "http://192.168.205.155:9090"
+// const baseUrl = "http://192.168.0.237:9090"
 
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
-    tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization'],
-    baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+    tagTypes: ['getAllCourse','getAllAssissment','getOrgernization'],
+    baseQuery: fetchBaseQuery({baseUrl: baseUrl}),
     endpoints: (builder) => ({
         getTest: builder.query({
             query: () => `posts`,
         }),
         getAllCourses: builder.query({
-            query: ({ accessToken, userId }) => {
-                console.log("accessToken", accessToken)
+            query: ({accessToken,userId}) => {
+                console.log("accessToken",accessToken)
                 return {
                     url: `course/byUserId/${userId}`,
                     method: "GET",
@@ -33,8 +34,8 @@ export const adminApi = createApi({
         }),
         deleteCourse: builder.mutation({
             query: (payload) => {
-                const { accessToken, id } = payload;
-                console.log("accessToken", accessToken);
+                const {accessToken,id} = payload;
+                console.log("accessToken",accessToken);
                 console.log(id);
                 return {
                     url: `course/${id}`,
@@ -50,8 +51,8 @@ export const adminApi = createApi({
         }),
         updateCourse: builder.mutation({
             query: (payload) => {
-                const { accessToken, ...updateCourseDetail } = payload;
-                console.log("accessToken", accessToken);
+                const {accessToken,...updateCourseDetail} = payload;
+                console.log("accessToken",accessToken);
                 return {
                     url: `course/update`,
                     method: "PUT",
@@ -68,9 +69,9 @@ export const adminApi = createApi({
 
         postOrganisationDetails: builder.mutation({
             query: (orgDetail) => {
-                const { accessToken, ...organisationDetails } = orgDetail;
-                console.log("accessToken :-  ", accessToken);
-                console.log("orgDetails ;- ", JSON.stringify(organisationDetails));
+                const {accessToken,...organisationDetails} = orgDetail;
+                console.log("accessToken :-  ",accessToken);
+                console.log("orgDetails ;- ",JSON.stringify(organisationDetails));
                 return {
                     url: `/createorgnization`,
                     method: 'POST',
@@ -86,11 +87,11 @@ export const adminApi = createApi({
 
         addCourse: builder.mutation({
             query: (addCourse) => {
-                const { accessToken, ...addCourseDetails } = addCourse;
-                console.log("accessToken :-  ", accessToken);
-                console.log("create course details ;- ", JSON.stringify(addCourseDetails));
+                const {accessToken,...addCourseDetails} = addCourse;
+                console.log("accessToken :-  ",accessToken);
+                console.log("create course details ;- ",JSON.stringify(addCourseDetails));
 
-                console.log("create course:", addCourse)
+                console.log("create course:",addCourse)
                 return {
                     url: `/course/create`,
                     method: 'post',
@@ -100,7 +101,7 @@ export const adminApi = createApi({
         }),
         postAssignment: builder.mutation({
             query: (data) => {
-                const { accessToken, ...assignmentData } = data;
+                const {accessToken,...assignmentData} = data;
                 return {
                     url: `/create/paper`,
                     method: 'post',
@@ -115,7 +116,7 @@ export const adminApi = createApi({
         }),
         getAssignment: builder.query({
             query: (data) => {
-                const { accessToken, id } = data;
+                const {accessToken,id} = data;
                 return {
                     url: `/getAllPaperbyUserId/${id}`,
                     method: 'get',
@@ -162,7 +163,7 @@ export const adminApi = createApi({
         deleteAssignment: builder.mutation({
             query: (payload) => {
                 const accessToken = localStorage.getItem('accessToken')
-                console.log("accessToken", accessToken);
+                console.log("accessToken",accessToken);
                 console.log(payload);
                 return {
                     url: `/deletePaperByPaperID/${payload}`,
@@ -193,4 +194,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery } = adminApi;
+export const {useGetTestQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery} = adminApi;
