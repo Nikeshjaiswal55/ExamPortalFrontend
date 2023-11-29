@@ -17,6 +17,7 @@ import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 
 export const Routes = () => {
   return (
@@ -103,6 +104,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <ShowAssessment />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.StudentPaper.path}
+            element={
+              <Layout>
+                <StudentPaper />
               </Layout>
             }
           />
