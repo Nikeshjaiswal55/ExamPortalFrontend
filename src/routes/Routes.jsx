@@ -28,6 +28,7 @@ import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 
 export const Routes = () => {
   return (
