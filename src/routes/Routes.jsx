@@ -15,6 +15,7 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 
 export const Routes = () => {
   return (
@@ -97,6 +98,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <ShowAssessment />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.StudentPaper.path}
+            element={
+              <Layout>
+                <StudentPaper />
               </Layout>
             }
           />
