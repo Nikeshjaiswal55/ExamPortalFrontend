@@ -86,6 +86,11 @@ export const path = {
         path: '/exam-report',
         desc: 'this is for student summery page'
     },
+    StudentPaper: {
+        path: '/student/student-paper',
+        desc: 'this is for creating student paper page '
+
+    },
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

@@ -25,6 +25,7 @@ import { ExamVerification } from '../pages/exam-portal/components/ExamVerificati
 import { ReportCard } from '../pages/exam-portal/components/ReportCard';
 import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 
 export const Routes = () => {
   return (
@@ -124,6 +125,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <ShowAssessment />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.StudentPaper.path}
+            element={
+              <Layout>
+                <StudentPaper />
               </Layout>
             }
           />
