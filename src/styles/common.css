@@ -9,8 +9,15 @@
     --grey: #4E4E4E;
     --grey-100: #232323;
     --inputFiedColor: #707070;
+    --light :rgb(246,246,246);
 }
 
+.white-box{
+    background-color: var(--white) !important;
+}
+.light-box{
+    background-color: var(--light);
+}
 .main {
     transition: all 0.5s;
 }

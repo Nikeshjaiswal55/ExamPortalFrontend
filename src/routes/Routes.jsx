@@ -15,6 +15,7 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
+import StudentAvidancePage from '../pages/student/StudentAvidance/StudentAvidancepage';
 
 export const Routes = () => {
   return (
@@ -89,6 +90,14 @@ export const Routes = () => {
             element={
               <Layout>
                 <TermandConditionPage />
+              </Layout>
+            }
+          />
+          <Route
+            path={path.StudentAvidance.path}
+            element={
+              <Layout>
+                <StudentAvidancePage />
               </Layout>
             }
           />

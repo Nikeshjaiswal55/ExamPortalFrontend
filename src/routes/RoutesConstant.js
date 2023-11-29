@@ -52,7 +52,10 @@ export const path = {
     TermAndCondition:{
         path: '/student/Term-And-Condition',
         desc : 'this is for creating TermAndCondition page '
-
+    },
+    StudentAvidance:{
+        path: '/admin/Student-Avidance',
+        decs:' this is for creating Studentavidance page'
     },
     ShowAssessment: {
         path: '/admin/show-assessment',
