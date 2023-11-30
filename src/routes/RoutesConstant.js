@@ -8,7 +8,7 @@ export const path = {
         desc: 'this is home pages'
     },
     Organisation: {
-        path: '/get-started',
+        path: '/add-organization',
         desc: 'this is for org type and name'
     },
     Layout: {
@@ -49,9 +49,9 @@ export const path = {
         path: '/admin/student-details/:paperId',
         desc: 'this is a for student detail page'
     },
-    TermAndCondition:{
+    TermAndCondition: {
         path: '/student/Term-And-Condition',
-        desc : 'this is for creating TermAndCondition page '
+        desc: 'this is for creating TermAndCondition page '
 
     },
     ShowAssessment: {
@@ -59,7 +59,15 @@ export const path = {
         desc: 'this is for creating showassessment page '
 
     },
-    
+    GetStarted: {
+        path: '/get-started',
+        desc: 'this is for org type and name'
+    },
+    Redirect: {
+        path: '/redirection',
+        desc: 'this is for org type and name'
+    },
+
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

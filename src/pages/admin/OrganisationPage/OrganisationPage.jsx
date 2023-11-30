@@ -12,33 +12,21 @@ import {
   usePostOrganisationDetailsMutation,
 } from '../../../apis/Service';
 import { InputField } from '../../../theme/InputField/InputField';
-import { useAuth0 } from '@auth0/auth0-react';
-import { getAccessToken } from '../../../auth/Private';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { path } from '../../../routes/RoutesConstant';
 
 const initialValues = { 'org-name': '', 'org-type': '' };
 export default function OrganisationPage() {
-  const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
-    useAuth0();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      getAccessToken(getAccessTokenSilently, user);
-    }
-  }, [isAuthenticated, getAccessTokenSilently]);
   const navigate = useNavigate();
   const [postOrgDetails, { isLoading }] = usePostOrganisationDetailsMutation();
-  const accessToken = localStorage.getItem('accessToken');
-  const users = JSON.parse(localStorage.getItem('users'));
+  const orgdata = JSON.parse(localStorage.getItem('orgData'));
+  console.log(orgdata, 'org');
   const {
     data: getOrgdata,
     isLoading: orgLoading,
     isSuccess,
-  } = useGetOrgernizationQuery({
-    accessToken,
-    id: '',
-  });
+    isError: orgError,
+  } = useGetOrgernizationQuery();
 
   useEffect(() => {
     if (isSuccess) {
@@ -59,24 +47,18 @@ export default function OrganisationPage() {
       picture: users.picture,
       userId: SubIdSplit(users.sub),
     };
-    if (accessToken) {
-      const promise = await postOrgDetails({ ...storeData, accessToken });
-      if (promise.data) {
-        navigate('/admin/create-course');
-      } else {
-        // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
-        alert('sorry your connection lost or api failed ');
-      }
+    const promise = await postOrgDetails({ ...storeData, accessToken });
+    if (promise.data) {
+      navigate(path.CreateCourse.path);
     } else {
-      loginWithRedirect();
+      // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
+      alert('sorry your connection lost or api failed ');
     }
   }
 
   return (
     <>
-      {orgLoading ? (
-        <UserWaiting />
-      ) : getOrgdata ? (
+      {orgdata ? (
         <Navigate to={path.AdminDasboard.path} />
       ) : (
         <div
@@ -172,16 +154,3 @@ export default function OrganisationPage() {
     </>
   );
 }
-
-const UserWaiting = () => {
-  return (
-    <div className="d-flex justify-content-center align-items-center w-100 h-100">
-      <iframe
-        src="https://i.stack.imgur.com/YG4bw.gif"
-        width="400px"
-        height="400px"
-        allowFullScreen
-      ></iframe>
-    </div>
-  );
-};
