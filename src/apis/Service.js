@@ -5,7 +5,7 @@ import { SubIdSplit } from '../utils/SubIdSplit'
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
 const baseUrl = "http://192.168.0.237:9090"
-// const baseUrl = "http://192.168.1.20:9090"
+// const baseUrl = "http://192.168.205.155:9090"
 
 
 export const adminApi = createApi({
@@ -149,7 +149,7 @@ export const adminApi = createApi({
                 query:(paperId)=>{
                     const accessToken = localStorage.getItem('accessToken')
                     return{
-                        url:`/student/GetAllByPaperId/${paperId}`,
+                        url:`/GetAllStudentByPaperId/${paperId}`,
                         method:'get',
                         headers:{
                             "Content-Type": 'application/json;',

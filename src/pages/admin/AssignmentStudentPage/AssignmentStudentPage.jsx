@@ -15,14 +15,13 @@ export default function AssignmentStudentPage() {
     isLoading?<h1>load</h1>:
     <div className="h-100 w-100 m-0 p-0 ">
       <div className=" h-auto ">
-        <TotalStudent totalStudent={data?.content_Student}/>
+        <TotalStudent totalStudent={data}/>
       </div>
       <div
         className="card-div row w-100 overflow-auto"
         style={{ height: 'calc(100vh - 16rem)' }}
       >
-        {data.content_Student
-          .map((studentdetails) => (
+        {data?.map((studentdetails) => (
             <StudentCard divBoxStyle={'col-lg-2 col-12'} studentdetails={studentdetails} />
           ))}
       </div>
