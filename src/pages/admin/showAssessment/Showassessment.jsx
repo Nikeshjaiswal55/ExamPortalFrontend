@@ -12,6 +12,7 @@ import { path } from '../../../routes/RoutesConstant';
 import { Loader } from '../../../components/Loader/Loader';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { toast } from 'react-toastify';
+
 export default function ShowAssessment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -131,6 +132,7 @@ export default function ShowAssessment() {
               filterData?.map((assessmentDetails, index) => (
                 <Cardassessment
                   key={index}
+                  paperId={assessmentDetails.paperId}
                   {...assessmentDetails.examDetails}
                 />
               ))}

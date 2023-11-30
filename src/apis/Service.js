@@ -2,9 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
+// const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-// const baseUrl = "http://192.168.0.237:9090"
+const baseUrl = "http://192.168.0.237:9090"
+// const baseUrl = "http://192.168.205.155:9090"
 
 
 export const adminApi = createApi({
@@ -47,7 +48,6 @@ export const adminApi = createApi({
                 }
             },
             invalidatesTags: ['getAllCourse'],
-
         }),
         updateCourse: builder.mutation({
             query: (payload) => {
@@ -118,7 +118,7 @@ export const adminApi = createApi({
             query: (data) => {
                 const { accessToken, id } = data;
                 return {
-                    url: `/getAllPaper/byUserId/${id}`,
+                    url: `/getAllPaperbyUserId/${id}`,
                     method: 'get',
                     headers: {
                         "Content-Type": 'application/json;',
@@ -143,10 +143,43 @@ export const adminApi = createApi({
                 }
             },
             providesTags: ['getOrgernization']
-        })
+        }),
+        getStudentOnPerticularAssignment:builder.query(
+            {
+                query:(paperId)=>{
+                    const accessToken = localStorage.getItem('accessToken')
+                    return{
+                        url:`/GetAllStudentByPaperId/${paperId}`,
+                        method:'get',
+                        headers:{
+                            "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                        }
+
+                    }
+                }
+            }
+        ),
+        deleteAssignment: builder.mutation({
+            query: (payload) => {
+                const accessToken = localStorage.getItem('accessToken')
+                console.log("accessToken", accessToken);
+                console.log(payload);
+                return {
+                    url: `/deletePaperByPaperID/${payload}`,
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+
+                }
+            },
+            invalidatesTags: ['getAllAssissment'],
+        }),
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery } = adminApi;
+export const { useGetTestQuery,useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery } = adminApi;
