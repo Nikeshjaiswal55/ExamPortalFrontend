@@ -2,9 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
+// const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-// const baseUrl = "http://192.168.0.237:9090"
+const baseUrl = "http://192.168.0.237:9090"
 
 
 export const adminApi = createApi({
@@ -129,10 +129,10 @@ export const adminApi = createApi({
             providesTags: ['getAllAssissment']
         }),
         getOrgernization: builder.query({
-            query: (data) => {
+            query: () => {
+                const accessToken = localStorage.getItem('accessToken');
                 const users = JSON.parse(localStorage.getItem('users'));
                 const userId = SubIdSplit(users?.sub);
-                const { accessToken, id } = data;
                 return {
                     url: `/getOrgnizationByUserId/${userId}`,
                     method: 'get',
@@ -143,10 +143,27 @@ export const adminApi = createApi({
                 }
             },
             providesTags: ['getOrgernization']
+        }),
+        getUser: builder.query({
+            query: () => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const accessToken = localStorage.getItem('accessToken');
+                const userId = SubIdSplit(users?.sub);
+                // const { accessToken, id } = data;
+                return {
+                    url: `/user/byid/${userId}`,
+                    method: 'get',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            },
         })
     }),
+
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery } = adminApi;
+export const { useGetUserQuery, useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery } = adminApi;

@@ -59,6 +59,7 @@ export default function Layout({ children }) {
       icon: <CiLogout size={icon_size} />,
       onClick: () => {
         logout({ logoutParams: { returnTo: window.location.origin } });
+        localStorage.clear()
       },
     },
   ];

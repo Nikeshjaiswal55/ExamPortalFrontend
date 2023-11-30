@@ -15,15 +15,20 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
+import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
         <Route path={path.home.path} element={<Home />} />
-        <Route path={path.Organisation.path} element={<OrganisationPage />} />
+        <Route path="/student" element={<h1>student sashboard</h1>} />
+
+        <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
+        <Route path={path.Redirect.path} element={<Redirect />} />
 
         <Route path="/" element={<Private />}>
+          <Route path={path.Organisation.path} element={<OrganisationPage />} />
           <Route
             path={path.private.path}
             element={<h1>this private route</h1>}
