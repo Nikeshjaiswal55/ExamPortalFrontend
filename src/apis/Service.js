@@ -198,10 +198,10 @@ export const adminApi = createApi({
             {
                 query: (paperId) => {
                     const accessToken = localStorage.getItem('accessToken')
-                    return {
-                        url: `/student/GetAllByPaperId/${paperId}`,
-                        method: 'get',
-                        headers: {
+                    return{
+                        url:`/GetAllStudentByPaperId/${paperId}`,
+                        method:'get',
+                        headers:{
                             "Content-Type": 'application/json;',
                             "Authorization": `Bearer ${accessToken}`
                         }
