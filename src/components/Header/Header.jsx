@@ -1,6 +1,9 @@
 import React from 'react';
-import {FaUserAlt} from 'react-icons/fa';
+import {FaUserAlt,FaMoon} from 'react-icons/fa';
+import {MdSunny} from 'react-icons/md';
+
 import './Header.css';
+import Mode from '../../utils/theme';
 
 export default function Header({isOpen}) {
   const user = JSON.parse(localStorage.getItem("users"));
@@ -9,39 +12,32 @@ export default function Header({isOpen}) {
     <>
       <div
         id="header-container"
-        className="m-0 h-auto p-1  d-flex  position-sticky top-0  z-1 w-100 bg-white "
+        className="m-0 h-auto p-1  d-flex  position-sticky top-0  z-1 w-100 box"
       >
         {/* user part */}
         <div className="d-flex m-0  justify-content-end w-100">
-          <span className="p-1 ">
-
+          <div className="d-flex py-1">
+            <Mode/>
             <div className="dropdown">
-              <a
-                className="btn border-0 "
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+              <div href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
               >
-                <FaUserAlt size={25} cursor={'pointer'} />
-              </a>
+                <FaUserAlt className='me-3 icon' size={22} cursor={'pointer'} />
+              </div>
               <ul className="dropdown-menu  text-body-secondary">
 
                 <li >
-                  <a className="dropdown-item bg-white text-black fw-bold" href="#">
+                  <a className="dropdown-item box text-black fw-bold" href="#">
                     {user.name}
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item  bg-white text-black" href="#">
+                  <a className="dropdown-item  box text-black" href="#">
                     {user.email}
                   </a>
                 </li>
               </ul>
             </div>
-
-
-          </span>
+          </div>
         </div>
       </div>
     </>

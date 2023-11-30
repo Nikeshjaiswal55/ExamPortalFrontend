@@ -29,7 +29,7 @@ export default function Layout({ children }) {
     {
       path: '/admin/dashboard',
       name: 'Dashboard',
-      icon: <FaTh size={icon_size} />,
+      icon: <FaTh  size={icon_size} />,
     },
     {
       path: path.AddCourse.path,
@@ -127,7 +127,7 @@ export default function Layout({ children }) {
             className="main-container m-0 p-2 w-100  "
             style={{ height: 'calc(100vh - 60px)' }}
           >
-            <div className="w-100 h-100 rounded-1 m-0 p-0  bg-white">
+            <div className="w-100 h-100 rounded-1 m-0 p-0 ">
               {children}
             </div>
           </div>

@@ -1,0 +1,41 @@
+/*  CSS for light theme */
+
+.dark-theme {
+        background-color: black;
+    
+    .box {
+        background-color: black;
+        color: #fff;
+    }
+
+    .light-box, .main-container, .sidebar  {
+        background-color: #292D33;
+        color: #fff;
+    }
+    .icon{
+        color: #ffff;
+    }
+}
+
+
+/*  CSS for dark theme */
+
+.light-theme {
+        background-color: #fff;
+
+        .sidebar{
+            background-color: black;
+        }
+    .box {
+        background-color: rgb(255, 255, 255);
+        color: #000000;
+    }
+
+    .light-box, .main-container{
+        background-color: #E9E9E9;
+        color: #000000;
+    }
+    .icon{
+        color: #000000;
+    }
+}

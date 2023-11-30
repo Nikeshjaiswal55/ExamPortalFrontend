@@ -5,6 +5,7 @@ import { AuthProvider } from './auth';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/common.css';
+import './styles/theme.css';
 import { store } from './store/store.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

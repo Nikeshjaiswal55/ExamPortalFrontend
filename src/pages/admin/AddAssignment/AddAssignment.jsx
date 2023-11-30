@@ -411,9 +411,9 @@ export default function AddAssignment() {
 
                   <ErrorMessage component={"div"} className=' input-error  my-1  mx-5 ' name='excelFile' />
                 </div>
-                <div className="col-md-6 pe-1 bg-white position-relative">
+                <div className="col-md-6 pe-1 box position-relative">
                   <div className="ps-3  mt-lg-2  ">
-                    <p className="text-capitalize fw-bold fs-4 position-sticky top-0 bg-white pt-3">
+                    <p className="text-capitalize fw-bold fs-4 position-sticky top-0 box pt-3">
                       Assessment Question
                     </p>
                     {showAssignment && (

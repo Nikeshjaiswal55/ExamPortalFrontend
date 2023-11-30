@@ -62,7 +62,7 @@ export default function OrganisationPage() {
         <Navigate to={path.AdminDasboard.path} />
       ) : (
         <div
-          className="row m-0 p-0 w-100  bg-white "
+          className="row m-0 p-0 w-100  box "
           style={{ height: '90vh' }}
         >
           <img

@@ -70,7 +70,7 @@ export default function ShowAssessment() {
       <div className="main w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
         <div className="w-100 row justify-content-between flex-wrap align-items-center  p-lg-3  ">
           <div
-            className=" d-flex col-md-5 mx-3 mb-lg-0 mb-3 col-12 justify-content-between border p-2 fs-4 rounded-4 bg-white  "
+            className=" d-flex col-md-5 mx-3 mb-lg-0 mb-3 col-12 justify-content-between border p-2 fs-4 rounded-4 box  "
             style={{ width: '550px' }}
           >
             <input

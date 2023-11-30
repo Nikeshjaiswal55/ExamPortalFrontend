@@ -33,11 +33,11 @@ export default function Cardassessment({paperId,...props}) {
   return (
     <>
       <div className="col-12 col-lg-6 mb-4 h-25 ">
-        <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
+        <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  box">
           <div className='w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center'>
             <ImCross onClick={removeAssisstment}/>
           </div>
-          <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
+          <div className="d-flex justify-content-between align-items-center box rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong className="fs-6">{props?.assessmentName}</strong>
               <br />
@@ -84,7 +84,7 @@ export default function Cardassessment({paperId,...props}) {
                 <b>B</b>{' '}
               </div>
               <div
-                className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-white "
+                className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center box "
                 style={{ width: '30px', height: '30px' }}
               >
                 <b> 3+</b>
@@ -100,7 +100,7 @@ export default function Cardassessment({paperId,...props}) {
 export const CardassessmentPlaceholder = () => {
   return (
     <div className="col-12 col-lg-6 mb-4 h-25 ">
-      <div className=" white-box p-4 border rounded-4 bg-white">
+      <div className=" white-box p-4 border rounded-4 box">
         <div className=" rounded-3 p-2 mx-3  bg-body-secondary">
           <Placeholder as="div" animation="glow">
             <Placeholder xs={5} />
