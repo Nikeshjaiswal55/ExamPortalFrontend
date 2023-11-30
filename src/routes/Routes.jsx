@@ -26,6 +26,7 @@ import { ReportCard } from '../pages/exam-portal/components/ReportCard';
 import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
+import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 
 export const Routes = () => {
   return (
@@ -38,7 +39,10 @@ export const Routes = () => {
         <Route path={path.Redirect.path} element={<Redirect />} />
         <Route path="/demo" element={<ExamSubmited />} />
         <Route path={path.home.path} element={<Home />} />
-        <Route path={path.Organisation.path} element={<OrganisationPage />} />
+        <Route path="/student" element={<h1>student sashboard</h1>} />
+
+        <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
+        <Route path={path.Redirect.path} element={<Redirect />} />
 
         <Route path="/" element={<Private />}>
           <Route path={path.Organisation.path} element={<OrganisationPage />} />

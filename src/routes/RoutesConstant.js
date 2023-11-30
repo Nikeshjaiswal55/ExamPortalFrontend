@@ -91,6 +91,15 @@ export const path = {
         desc: 'this is for creating student paper page '
 
     },
+    GetStarted: {
+        path: '/get-started',
+        desc: 'this is for org type and name'
+    },
+    Redirect: {
+        path: '/redirection',
+        desc: 'this is for org type and name'
+    },
+
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'

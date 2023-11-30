@@ -198,10 +198,10 @@ export const adminApi = createApi({
             {
                 query: (paperId) => {
                     const accessToken = localStorage.getItem('accessToken')
-                    return{
-                        url:`/GetAllStudentByPaperId/${paperId}`,
-                        method:'get',
-                        headers:{
+                    return {
+                        url: `/GetAllStudentByPaperId/${paperId}`,
+                        method: 'get',
+                        headers: {
                             "Content-Type": 'application/json;',
                             "Authorization": `Bearer ${accessToken}`
                         }
@@ -218,6 +218,19 @@ export const adminApi = createApi({
                 return {
                     url: `/deletePaperByPaperID/${payload}`,
                     method: "DELETE",
+
+                }
+            },
+        }),
+        getUser: builder.query({
+            query: () => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const accessToken = localStorage.getItem('accessToken');
+                const userId = SubIdSplit(users?.sub);
+                // const { accessToken, id } = data;
+                return {
+                    url: `/user/byid/${userId}`,
+                    method: 'get',
                     headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
@@ -241,6 +254,7 @@ export const adminApi = createApi({
             }
         }),
     }),
+
 })
 
 // Export hooks for usage in functional components, which are
