@@ -2,9 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
+// const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-// const baseUrl = "http://192.168.0.237:9090"
+const baseUrl = "http://192.168.0.237:9090"
+// const baseUrl = "http://192.168.1.20:9090"   //nikesh
 
 
 export const adminApi = createApi({
@@ -66,7 +67,6 @@ export const adminApi = createApi({
             },
             invalidatesTags: ['getAllCourse'],
         }),
-
         postOrganisationDetails: builder.mutation({
             query: (orgDetail) => {
                 const { accessToken, ...organisationDetails } = orgDetail;
@@ -84,7 +84,6 @@ export const adminApi = createApi({
             },
             invalidatesTags: ['getOrgernization'],
         }),
-
         addCourse: builder.mutation({
             query: (addCourse) => {
                 const { accessToken, ...addCourseDetails } = addCourse;
@@ -118,7 +117,7 @@ export const adminApi = createApi({
             query: (data) => {
                 const { accessToken, id } = data;
                 return {
-                    url: `/getAllPaper/byUserId/${id}`,
+                    url: `/getAllPaperbyUserId/${id}`,
                     method: 'get',
                     headers: {
                         "Content-Type": 'application/json;',
@@ -143,10 +142,24 @@ export const adminApi = createApi({
                 }
             },
             providesTags: ['getOrgernization']
+        }),
+        getAllQuestionsFromPaperId: builder.query({
+            query: (payload) => {
+                const [accessToken,paperID] = payload;
+
+                return {
+                    url: `/getPaperbyPaperId/${paperID}`,
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            }
         })
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery } = adminApi;
+export const {useGetTestQuery,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetAllQuestionsFromPaperIdQuery} = adminApi;
