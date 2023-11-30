@@ -156,10 +156,25 @@ export const adminApi = createApi({
                     }
                 }
             }
-        })
+        }),
+        postSaveResult: builder.mutation({
+            query: (payload) => {
+                const [accessToken,result] = payload;
+                console.log("result : ",result);
+                return {
+                    url: "/saveresult",
+                    method: "POST",
+                    body: result,
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            }
+        }),   
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useGetTestQuery,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetAllQuestionsFromPaperIdQuery} = adminApi;
+export const {useGetTestQuery,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation} = adminApi;
