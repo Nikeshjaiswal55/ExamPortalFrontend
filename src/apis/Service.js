@@ -5,7 +5,6 @@ import { SubIdSplit } from '../utils/SubIdSplit'
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
 const baseUrl = "http://192.168.0.237:9090"
-// const baseUrl = "http://192.168.205.155:9090"
 
 
 export const adminApi = createApi({
@@ -129,10 +128,10 @@ export const adminApi = createApi({
             providesTags: ['getAllAssissment']
         }),
         getOrgernization: builder.query({
-            query: (data) => {
+            query: () => {
+                const accessToken = localStorage.getItem('accessToken');
                 const users = JSON.parse(localStorage.getItem('users'));
                 const userId = SubIdSplit(users?.sub);
-                const { accessToken, id } = data;
                 return {
                     url: `/getOrgnizationByUserId/${userId}`,
                     method: 'get',
@@ -144,16 +143,16 @@ export const adminApi = createApi({
             },
             providesTags: ['getOrgernization']
         }),
-        getStudentOnPerticularAssignment:builder.query(
+        getStudentOnPerticularAssignment: builder.query(
             {
-                query:(paperId)=>{
+                query: (paperId) => {
                     const accessToken = localStorage.getItem('accessToken')
-                    return{
-                        url:`/GetAllStudentByPaperId/${paperId}`,
-                        method:'get',
-                        headers:{
+                    return {
+                        url: `/GetAllStudentByPaperId/${paperId}`,
+                        method: 'get',
+                        headers: {
                             "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
+                            "Authorization": `Bearer ${accessToken}`
                         }
 
                     }
@@ -168,18 +167,30 @@ export const adminApi = createApi({
                 return {
                     url: `/deletePaperByPaperID/${payload}`,
                     method: "DELETE",
+
+                }
+            },
+        }),
+        getUser: builder.query({
+            query: () => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const accessToken = localStorage.getItem('accessToken');
+                const userId = SubIdSplit(users?.sub);
+                // const { accessToken, id } = data;
+                return {
+                    url: `/user/byid/${userId}`,
+                    method: 'get',
                     headers: {
                         "Content-Type": 'application/json;',
                         "Authorization": `Bearer ${accessToken}`
                     }
-
                 }
             },
-            invalidatesTags: ['getAllAssissment'],
-        }),
+        })
     }),
+
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery,useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery } = adminApi;
+export const { useGetTestQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery } = adminApi;
