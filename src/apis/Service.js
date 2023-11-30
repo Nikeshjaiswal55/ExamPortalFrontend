@@ -65,7 +65,6 @@ export const adminApi = createApi({
             },
             invalidatesTags: ['getAllCourse'],
         }),
-
         postOrganisationDetails: builder.mutation({
             query: (orgDetail) => {
                 const { accessToken, ...organisationDetails } = orgDetail;
@@ -83,7 +82,6 @@ export const adminApi = createApi({
             },
             invalidatesTags: ['getOrgernization'],
         }),
-
         addCourse: builder.mutation({
             query: (addCourse) => {
                 const { accessToken, ...addCourseDetails } = addCourse;
@@ -185,11 +183,25 @@ export const adminApi = createApi({
                         "Authorization": `Bearer ${accessToken}`
                     }
                 }
-            },
-        })
-    }),
+            }
+        }),
+        getAllQuestionsFromPaperId: builder.query({
+            query: (payload) => {
+                const [accessToken, paperID] = payload;
 
-})
+                return {
+                    url: `/getPaperbyPaperId/${paperID}`,
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            },
+
+        }),
+
+    })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
