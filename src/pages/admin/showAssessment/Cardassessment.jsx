@@ -1,20 +1,22 @@
-import React from 'react';
+import React,{useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router';
 import { path } from '../../../routes/RoutesConstant';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import '../../../styles/common.css';
 import { Button, Placeholder, Spinner } from 'react-bootstrap';
+import SidePooup from './AssessmentSidePooup/SidePooup';
 
 export default function Cardassessment(props) {
   const navigate = useNavigate();
+  const [showCard,setShowCard] = useState(false);
   return (
     <>
-      <div className="col-12 col-lg-6 mb-4 h-25 ">
+      {!showCard && <div className="col-12 col-lg-6 mb-4 h-25 ">
         <div className=" white-box p-4 border rounded-4  bg-white">
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
-              <strong className="fs-6">{props?.assessmentName}</strong>
+              <strong className="fs-6" onClick={() => setShowCard(true)}>{props?.assessmentName}</strong>
               <br />
               <span>{props?.ExamDate}</span>
             </div>
@@ -67,7 +69,8 @@ export default function Cardassessment(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+      {showCard && <SidePooup examName={props?.assessmentName} />}
     </>
   );
 }

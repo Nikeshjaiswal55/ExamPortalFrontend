@@ -15,7 +15,7 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
-import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 
 export const Routes = () => {
   return (
@@ -82,7 +82,7 @@ export const Routes = () => {
             path={path.SidePooup.path}
             element={
               <Layout>
-                <Example />
+                <SidePooup examName={"Java Mastery Challenge"} />
               </Layout>
             }
           />
