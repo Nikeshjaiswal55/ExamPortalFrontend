@@ -18,6 +18,7 @@ import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import {Redirect,SaveUserOrg} from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 
 export const Routes = () => {
   return (
@@ -88,7 +89,7 @@ export const Routes = () => {
             path={path.SidePooup.path}
             element={
               <Layout>
-                <Example />
+                <SidePooup examName={"Java Mastery Challenge"} />
               </Layout>
             }
           />
