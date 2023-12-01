@@ -5,9 +5,8 @@
 }
 
 html{
+    scroll-snap-type: y mandatory; 
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-
 }
 
 .section{
@@ -15,6 +14,7 @@ html{
     width: 100vw;
             background-color: #0c0c1d;
     color: white;
+    overflow: hidden;
     scroll-snap-align: center;
 }
 
@@ -32,13 +32,17 @@ html{
     padding: 0;
 }
 
-/* .wrapper{
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-} */
 
 /* hero section page */
 
+.login-button{
+    padding: 10px 50px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    margin-right: 20px;
+    cursor: pointer;
+    font-weight: 300;
+    cursor: pointer;
+  }

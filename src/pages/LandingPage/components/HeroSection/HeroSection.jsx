@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './heroSection.css';
+import landingPage from '../../../../assets/landingPageImage.png';
 
 const HeroSection = () => {
   const textVariants = {
@@ -46,9 +47,9 @@ const HeroSection = () => {
           <motion.h1 variant={textVariants} className="text-h1">
             With Moto Your Action Our Reaction...
           </motion.h1>
-          <motion.button variant={textVariants} className="buttons">
+          <motion.a href="#contact" variant={textVariants} className="buttons">
             contact us
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
       <motion.div
@@ -60,7 +61,7 @@ const HeroSection = () => {
         NO MORE CHEATING
       </motion.div>
       <div className="imageContainer">
-        <img src="" alt="" />
+        <img src={landingPage} alt="" />
       </div>
     </div>
   );

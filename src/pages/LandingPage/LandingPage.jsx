@@ -1,4 +1,5 @@
 import './LandingPage.css';
+import Feature from './components/Feature/Feature';
 import HeroSection from './components/HeroSection/HeroSection';
 import LandingPageNavbar from './components/LandingPageNavbar/LandingPageNavbar';
 import Parallex from './components/Parallex/Parallex';
@@ -25,7 +26,7 @@ const LandingPage = () => {
       <div className="section" id={linkIds.features}>
         <Parallex type={'feature'} />
       </div>
-
+      <Feature />
       <div className="section" id={linkIds.contact}>
         <Contact />
       </div>

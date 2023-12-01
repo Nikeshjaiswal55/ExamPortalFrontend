@@ -15,7 +15,7 @@ const LandingPageNavbar = () => {
         <h3 className="text-capitalize fw-bold">ExamEasy</h3>
       </motion.span>
       <motion.div className="wrapper">
-        <button className="btn btn-primary" onClick={() => loginWithRedirect()}>
+        <button className="login-button" onClick={() => loginWithRedirect()}>
           login
         </button>
       </motion.div>

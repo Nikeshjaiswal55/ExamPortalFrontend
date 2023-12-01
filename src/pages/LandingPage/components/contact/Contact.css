@@ -1,6 +1,6 @@
 
 .contact {
-  height: 100%;
+  height: 70%;
   max-width: 1366px;
   margin: auto;
   display: flex;
@@ -9,7 +9,7 @@
 }
 
 
-.text-containers {
+.contact-textContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -18,44 +18,30 @@
 
 
 
-.text-h1 {
-  font-size: 100px;
-  line-height: 88px;
+.contact-text-h1 {
+  font-size: 80px;
 }
 
-.contact.mobile .textContainer h1 {
-  font-size: 36px;
-}
 
-.contact .textContainer span {
+.contact-text-span {
   font-weight: 300;
 }
 
-.contact .formContainer {
+.conatct-form-container {
   flex: 1;
   position: relative;
 }
 
-.contact.mobile .formContainer {
-  padding: 50px;
-  width: 100%;
-}
 
-.contact .formContainer .phoneSvg {
-  stroke: orange;
-  position: absolute;
-  margin: auto;
-  z-index: -1;
-}
 
-.contact .formContainer form {
+.contact-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.contact .formContainer form input,
-.contact .formContainer form textarea {
+.conatct-input,
+.conatct-textarea {
   padding: 20px;
   background-color: transparent;
   border: 1px solid white;
@@ -63,12 +49,7 @@
   border-radius: 5px;
 }
 
-.contact.mobile .formContainer form input,
-.contact.mobile .formContainer form textarea {
-  padding: 10px;
-}
-
-.contact .formContainer form button {
+.conatct-button {
   padding: 20px;
   border: none;
   background-color: orange;
@@ -76,6 +57,3 @@
   font-weight: 500;
 }
 
-.contact.mobile .formContainer form button {
-  padding: 10px;
-}
