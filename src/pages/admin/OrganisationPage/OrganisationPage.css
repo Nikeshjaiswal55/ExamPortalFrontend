@@ -1,0 +1,17 @@
+#org-box {
+    width: 500px;
+    background-color: transparent;
+}
+.org-img {
+    width: 14rem !important;
+}
+
+#org-img-top {
+    transform: rotate(180deg);
+}
+
+@media screen and (max-width:768px) {
+    .org-img {
+        width: 9rem !important;
+    }
+}

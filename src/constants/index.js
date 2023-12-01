@@ -1,5 +1,6 @@
 export const AUTH0KEYS = {
-    DOMAIN: "dev-mp3ifwfcpsy5t3ok.us.auth0.com",
-    CLIENT_ID: "dxc13ljTb644A1YENClpXOzNQBrALOTv",
-    AUDIENCE: "https://exam-portal"
+    DOMAIN: "dev-uil1ecwkoehr31jg.us.auth0.com",
+    CLIENT_ID: "lA9qLAs5xQxoBuCVM1AJERQoPIsopevs",
+    AUDIENCE: "https://exam-easy",
+    REDIRECT_URL: "http://localhost:5173/get-started"
 }
