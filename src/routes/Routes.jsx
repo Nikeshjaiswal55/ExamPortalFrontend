@@ -16,12 +16,13 @@ import TermandConditionPage from '../pages/student/TermsConditionPage/TermandCon
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
+import LandingPage from '../pages/LandingPage/LandingPage';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
-        <Route path={path.home.path} element={<Home />} />
+        <Route path={path.home.path} element={<LandingPage />} />
         <Route path="/student" element={<h1>student sashboard</h1>} />
 
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />

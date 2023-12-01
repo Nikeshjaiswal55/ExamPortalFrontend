@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+
+}
+
+.section{
+    height: 100vh;
+    width: 100vw;
+            background-color: #0c0c1d;
+    color: white;
+    scroll-snap-align: center;
+}
+
+
+
+.ancor-tag{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* landing page navbar css */
+
+.navbar{
+    height: 100px;
+    padding: 0;
+}
+
+/* .wrapper{
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+} */
+
+/* hero section page */
+
