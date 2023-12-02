@@ -188,27 +188,22 @@ export const adminApi = createApi({
         getAllQuestionsFromPaperId: builder.query({
             query: (payload) => {
                 const [accessToken, paperID] = payload;
-                getAllQuestionsFromPaperId: builder.query({
-                    query: (payload) => {
-                        const [accessToken, paperID] = payload;
 
-                        return {
-                            url: `/getPaperbyPaperId/${paperID}`,
-                            method: 'GET',
-                            headers: {
-                                "Content-Type": 'application/json;',
-                                "Authorization": `Bearer ${accessToken}`
-                            }
-                        }
-                    },
+                return {
+                    url: `/getPaperbyPaperId/${paperID}`,
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": 'application/json;',
+                        "Authorization": `Bearer ${accessToken}`
+                    }
+                }
+            },
 
-                }),
-            }
-        }
+        }),
 
     })
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery } = adminApi;
+export const { useGetTestQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery,useGetAllQuestionsFromPaperIdQuery} = adminApi;
