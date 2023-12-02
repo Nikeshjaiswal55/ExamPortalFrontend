@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from 'react-router';
 import {path} from '../../../routes/RoutesConstant';
@@ -8,6 +8,7 @@ import {Button,Placeholder,Spinner} from 'react-bootstrap';
 import {ImCross} from 'react-icons/im';
 import {useDeleteAssignmentMutation} from '../../../apis/Service';
 import {toast} from 'react-toastify';
+// import {Button,Placeholder,Spinner} from 'react-bootstrap';
 import SidePooup from './AssessmentSidePooup/SidePooup';
 
 export default function Cardassessment({paperId,...props}) {
@@ -17,7 +18,7 @@ export default function Cardassessment({paperId,...props}) {
     await deleteAssignment(paperId)
   }
 
-  const [showCard,setShowCard] = useState()
+  const [showCard,setShowCard] = useState();
 
   useEffect(() => {
     if(isError) {

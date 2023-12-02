@@ -14,6 +14,7 @@ import SomethingWentWrong from '../../../components/SomethingWentWrong/Something
 import { toast } from 'react-toastify';
 
 export default function ShowAssessment() {
+  // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
@@ -133,6 +134,8 @@ export default function ShowAssessment() {
                 <Cardassessment
                   key={index}
                   paperId={assessmentDetails.paperId}
+                  // showCard={showCard}
+                  // setShowCard={setShowCard}
                   {...assessmentDetails.examDetails}
                 />
               ))}

@@ -28,8 +28,7 @@ export const SaveUserOrg = () => {
 };
 
 export const Redirect = () => {
-  const { isLoading, data, error } = useGetUserQuery();
-  console.log('data',data);
+  const {isLoading,data,error} = useGetUserQuery();
   const navigate = useNavigate();
   const {
     data: getOrgdata,

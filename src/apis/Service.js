@@ -4,7 +4,7 @@ import {SubIdSplit} from '../utils/SubIdSplit'
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-const baseUrl = "http://192.168.205.155:9090"
+const baseUrl = "http://192.168.0.165:9090"
 // const baseUrl = "http://192.168.0.237:9090"
 
 

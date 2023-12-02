@@ -73,7 +73,7 @@ export const path = {
         desc: 'this is for creating sidepooup page '
 
     },
-    
+
     error: {
         path: '/*',
         desc: 'this is for if anyone one put wrong endpoint'
