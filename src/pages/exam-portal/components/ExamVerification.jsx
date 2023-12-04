@@ -5,13 +5,17 @@ import { GetEntireScreen } from '../utils/GetEntireScreen';
 import { ExamModal } from './ExamModal';
 import GiphyEmbed from './GiphyEmbed';
 import { handleVisibilityChange } from '../utils/TabSwitch';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CheckForExtension } from '../utils/CheckForExtension';
+import { path } from '../../../routes/RoutesConstant';
 
 export const ExamVerification = () => {
   const [progress, setProgress] = useState(0);
   const [content, setContent] = useState();
   const [show, setShow] = useState(false);
+  const { paperId } = useParams();
+  // let paperIds = paperId.split('/');
+  // paperIds = paperIds[paperIds.length - 1];
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -35,7 +39,7 @@ export const ExamVerification = () => {
 
   useEffect(() => {
     if (progress == 100) {
-      navigate('/exam-started');
+      navigate(`${path.StudentExamStarted.path}/${paperId}`);
     }
   }, [progress]);
 
@@ -68,11 +72,7 @@ export const ExamVerification = () => {
           </div> */}
         </div>
       </div>
-      <ExamModal
-        show={show}
-        content={content}
-        handleClose={handleClose}
-      />
+      <ExamModal show={show} content={content} handleClose={handleClose} />
     </>
   );
 };

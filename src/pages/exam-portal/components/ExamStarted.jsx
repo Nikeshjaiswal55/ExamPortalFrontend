@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ExamModal } from './ExamModal';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
+import StudentPaper from '../../student/StudentPaper/StudentPaper';
+import { path } from '../../../routes/RoutesConstant';
 
 export const ExamStarted = () => {
   const [timeLeft, setTimeLeft] = useState(60 * 60); // 1 hour in seconds
@@ -17,6 +19,7 @@ export const ExamStarted = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const { paperId } = useParams();
 
   const screenSharingStreaam = (stream) => {
     setScreenStream(stream);
@@ -131,16 +134,12 @@ export const ExamStarted = () => {
   async function handleSubmit() {
     // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
-    navigate('/demo');
+    navigate(path.StudentPaperSubmitted.path);
   }
 
   return (
     <div>
-      <h1>Exam Started</h1>
-      <p>Time Left: {formatTime(timeLeft)}</p>
-      <Button variant="success" onClick={handleSubmit}>
-        submit
-      </Button>
+      <StudentPaper paperId={paperId} />
       <ExamModal
         show={show}
         content={content}

@@ -23,9 +23,10 @@ export default function Layout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const orgData = JSON.parse(localStorage.getItem('orgData'));
+  const stdData = JSON.parse(localStorage.getItem('stdData'));
   const icon_size = '18px';
   const { logout } = useAuth0();
-  const menuItem = [
+  const orgOption = [
     {
       path: '/admin/dashboard',
       name: 'Dashboard',
@@ -59,10 +60,66 @@ export default function Layout({ children }) {
       icon: <CiLogout size={icon_size} />,
       onClick: () => {
         logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear()
+        localStorage.clear();
       },
     },
   ];
+  const cmpOption = [
+    {
+      path: '/admin/dashboard',
+      name: 'Dashboard',
+      icon: <FaTh size={icon_size} />,
+    },
+    {
+      path: path.AddAssessment.path,
+      name: 'Add Assessment',
+      icon: <MdAssignmentAdd size={icon_size} />,
+    },
+    {
+      path: path.ShowAssessment.path,
+      name: 'Assessment List',
+      icon: <FaClipboardList size={icon_size} />,
+    },
+    {
+      path: '',
+      name: 'LogOut',
+      icon: <CiLogout size={icon_size} />,
+      onClick: () => {
+        logout({ logoutParams: { returnTo: window.location.origin } });
+        localStorage.clear();
+      },
+    },
+  ];
+
+  const stdOption = [
+    {
+      path: '/student/dashboard',
+      name: 'Dashboard',
+      icon: <FaTh size={icon_size} />,
+    },
+    {
+      path: path.ShowAllAssessmentToStudent.path,
+      name: 'Assessment List',
+      icon: <FaClipboardList size={icon_size} />,
+    },
+    {
+      path: '',
+      name: 'LogOut',
+      icon: <CiLogout size={icon_size} />,
+      onClick: () => {
+        logout({ logoutParams: { returnTo: window.location.origin } });
+        localStorage.clear();
+      },
+    },
+  ];
+
+  const orgtype = localStorage.getItem('orgtype');
+  const menuItem =
+    orgData && orgData.orgnizationType === 'company' && orgtype === 'company'
+      ? cmpOption
+      : stdData && stdData.role === 'Student'
+      ? stdOption
+      : orgOption;
 
   return (
     <>
@@ -80,27 +137,23 @@ export default function Layout({ children }) {
               Lg
             </h1>
           </div>
-          {menuItem.map((item, index) =>
-            item.orgtype === 'company' ? (
-              ''
-            ) : (
-              <NavLink
-                to={item.path}
-                key={index}
-                className="link"
-                activeclassName="active"
-                onClick={item.onClick}
+          {menuItem.map((item, index) => (
+            <NavLink
+              to={item.path}
+              key={index}
+              className="link"
+              activeclassName="active"
+              onClick={item.onClick}
+            >
+              {item.icon}
+              <div
+                style={{ display: isOpen ? 'block' : 'none' }}
+                className="link_text"
               >
-                {item.icon}
-                <div
-                  style={{ display: isOpen ? 'block' : 'none' }}
-                  className="link_text"
-                >
-                  {item.name}
-                </div>
-              </NavLink>
-            )
-          )}
+                {item.name}
+              </div>
+            </NavLink>
+          ))}
         </div>
 
         <div

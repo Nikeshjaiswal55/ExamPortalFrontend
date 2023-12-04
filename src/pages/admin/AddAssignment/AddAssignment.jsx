@@ -19,11 +19,13 @@ import * as yup from 'yup';
 import {
   usePostAssignmentMutation,
   useGetOrgernizationQuery,
+  useGetAllCoursesQuery,
 } from '../../../apis/Service';
 import { path } from '../../../routes/RoutesConstant';
 import { FaEye } from 'react-icons/fa';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
+import { toast } from 'react-toastify';
 export default function AddAssignment() {
   const navigate = useNavigate();
   const inputFile = useRef(null);
@@ -48,31 +50,48 @@ export default function AddAssignment() {
     setExcel([]);
   };
 
-  const accessToken = localStorage.getItem('accessToken');
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];
+  const getOrgdata = localStorage.getItem('orgData');
 
   const [showAssignment, setShowAssignment] = useState(false);
   const [option, setOption] = useState('');
   const [email, setEmail] = useState();
   const [duration, setDuration] = useState('');
-  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess }] =
+  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
     usePostAssignmentMutation();
-  const { data: getOrgdata, isSuccess } = useGetOrgernizationQuery({
-    accessToken,
-    id: userId,
-  });
-  useEffect(() => {
-    if (isSuccess) {
-      console.log('-----', getOrgdata);
-    }
-  }, [isSuccess, getOrgdata]);
+  const { data: AllCourse } = useGetAllCoursesQuery({ userId });
 
   useEffect(() => {
     if (AssignmentSuccess) {
+      toast.success('assessment created successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
       navigate(path.ShowAssessment.path);
     }
   });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isError]);
 
   const addAssignmentSchema = yup.object().shape({
     assessementName: yup.string().required('Please enter assessement name'),
@@ -170,17 +189,22 @@ export default function AddAssignment() {
       colClassName: 'col-md-6  my-3',
       Orgtype: getOrgdata?.orgnizationType,
     },
-  ];
-
-  const branchOptions = [
-    'bca',
-    'bba',
-    'bcom',
-    'btech',
-    'mca',
-    'mba',
-    'mcom',
-    'mtech',
+    {
+      inputId: 'total-marks',
+      inputName: 'totalMarks',
+      formGroupId: 'total-group-marks',
+      placeholder: 'enter total marks',
+      labelText: 'enter assessement session',
+      colClassName: 'col-md-6  my-3',
+    },
+    {
+      inputId: 'minimum-marks',
+      inputName: 'minimumMarks',
+      formGroupId: 'minimum-group-marks',
+      placeholder: 'select of assessement session',
+      labelText: 'enter minimum marks',
+      colClassName: 'col-md-6  my-3',
+    },
   ];
 
   const handleSubmits = (e, handleSubmit) => {
@@ -199,6 +223,8 @@ export default function AddAssignment() {
             examRound: 1,
             examBranch: '',
             examSession: '',
+            totalMarks: '',
+            minimumMarks: '',
             email: [],
             questions: [
               { questions: '', options: [], correctAns: '', userAns: '' },
@@ -223,7 +249,6 @@ export default function AddAssignment() {
                 email: values.email,
                 questions: values.questions,
                 userId,
-                token: accessToken,
               });
               let emails = excel.reduce(
                 (arr, currentvalue) => {
@@ -238,9 +263,7 @@ export default function AddAssignment() {
                 emails: emails,
                 questions: values.questions,
                 userId,
-                accessToken,
                 orgnizationId: getOrgdata?.orgnizationId,
-                token: accessToken,
               });
             }
           }}
@@ -270,7 +293,10 @@ export default function AddAssignment() {
                       needs.
                     </p>
                   </div>
-                  <div className='overflow-auto' style={{ height: 'calc(100vh - 16rem)' }}>
+                  <div
+                    className="overflow-auto"
+                    style={{ height: 'calc(100vh - 16rem)' }}
+                  >
                     <div className="row">
                       {InputFieldData.map((inputData) =>
                         inputData.Orgtype == 'company' ? (
@@ -318,9 +344,9 @@ export default function AddAssignment() {
                           }
                         >
                           <option value="">Select Course</option>
-                          {branchOptions.map((branch) => (
-                            <option key={branch} value={branch}>
-                              {branch}
+                          {AllCourse?.map((branch) => (
+                            <option key={branch} value={branch.course_name}>
+                              {branch.course_name}
                             </option>
                           ))}
                         </Form.Select>

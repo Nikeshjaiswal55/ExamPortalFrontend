@@ -50,7 +50,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (updateSuccess) {
       toast.success('course updated successfully!!🎉', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -65,7 +65,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (deleteSuccess) {
       toast.success('course deleted successfully!!🎉', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -80,7 +80,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (isError || updateError || deleteError) {
       toast.error('something went wrong!!😑', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

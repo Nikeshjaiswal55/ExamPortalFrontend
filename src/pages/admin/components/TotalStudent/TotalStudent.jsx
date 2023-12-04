@@ -8,7 +8,7 @@ export function TotalStudent({ totalStudent }) {
         </div>
         <div className="w-100 py-3 btn  text-bg-light rounded-3 d-flex flex-column align-items-center justify-content-center">
           <h3>Attempted Student</h3>
-          <h3 className="py-2">10</h3>
+          <h3 className="py-2">0</h3>
         </div>
       </div>
     </>

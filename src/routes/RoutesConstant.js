@@ -1,4 +1,14 @@
 export const path = {
+    // ------------------------------public endpoints--------------------------------------------
+    GetStarted: {
+        path: '/get-started',
+        desc: 'this is for org type and name'
+    },
+    Redirect: {
+        path: '/redirection',
+        desc: 'this is for org type and name'
+    },
+    // ------------------------------private endpoints--------------------------------------------
     private: {
         path: "private",
         desc: 'this is private page'
@@ -49,61 +59,50 @@ export const path = {
         path: '/admin/student-details/:paperId',
         desc: 'this is a for student detail page'
     },
-    TermAndCondition: {
-        path: '/student/Term-And-Condition',
-        desc: 'this is for creating TermAndCondition page '
-
-    },
     ShowAssessment: {
         path: '/admin/show-assessment',
         desc: 'this is for creating showassessment page '
 
     },
-    GetStarted: {
-        path: '/get-started',
-        desc: 'this is for org type and name'
-    },
-    Redirect: {
-        path: '/redirection',
-        desc: 'this is for org type and name'
-    },
-
     SidePooup: {
         path: '/admin/Side-Pooup',
         desc: 'this is for creating sidepooup page '
 
     },
+    // ------------------------------student endpoints--------------------------------------------
+    TermAndCondition: {
+        path: '/student/Term-And-Condition',
+        desc: 'this is for creating TermAndCondition page '
 
+    },
     exam: {
-        path: '/exam',
+        path: '/student/exam',
         desc: 'this is seprate exam pages for student'
     },
-    examStart: {
-        path: '/exam-verify',
+    examVerify: {
+        path: '/student/exam-verify',
         desc: 'this is for student system varification page'
     },
     examReport: {
-        path: '/exam-report',
+        path: '/student/exam-report',
         desc: 'this is for student summery page'
     },
     StudentPaper: {
-        path: '/student/student-paper',
+        path: '/student/student-paper/:paperId',
         desc: 'this is for creating student paper page '
 
     },
-    GetStarted: {
-        path: '/get-started',
-        desc: 'this is for org type and name'
-    },
-    Redirect: {
-        path: '/redirection',
-        desc: 'this is for org type and name'
-    },
-
-    StudentPaper: {
-        path: '/student/student-paper',
+    StudentExamStarted:{
+        path: '/student/exam-started',
         desc: 'this is for creating student paper page '
-
+    },
+    StudentPaperSubmitted:{
+        path: '/student/exam-submited',
+        desc: 'this is for creating student paper page '
+    },
+    ShowAllAssessmentToStudent:{
+        path: '/student/allAssissment',
+        desc: 'this is for creating student paper page '
     },
     error: {
         path: '/*',

@@ -11,7 +11,7 @@ function SidePooup({examName}) {
         <div className='row gap-3 mt-4  align-items-center'>
           <div className=' col-2 p-4 '>
 
-            <h3>    Test Configuration</h3>
+            <h3>Test Configuration</h3>
 
             <div className=' mx-1 bg-dark-subtle rounded-5' style={{width: "200px",height: "10px"}}>
               <div className=' rounded-5' style={{width: "50%",height: "10px",backgroundColor: "blue"}}  >
@@ -36,10 +36,9 @@ function SidePooup({examName}) {
                   <Nav.Link eventKey="edit-emails">Edit Emails </Nav.Link>
                 </Nav.Item>
               </Nav>
-              <CustomButton buttonText={"Publish"} onButtonClick={(e) => {console.log(e); e.target.innerHTML = "End"}} className={" p-lg-2 w-100"} />
+              <CustomButton buttonText={"Publish"} onButtonClick={(e) => {e.target.innerHTML = "End"}} className={" p-lg-2 w-100"} />
             </div>
-            <div className=' col-9 shadow  rounded-4  ' style={{height: " 650px"}}>
-
+            <div className=' col-9 shadow  rounded-4  ' style={{height: "650px"}}>
               <Tab.Content>
                 <Tab.Pane eventKey="configure" className=' bg-transparent'>
                   <div className=' row w-100'> <Configure /></div>
