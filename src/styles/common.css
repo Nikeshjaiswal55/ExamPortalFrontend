@@ -45,3 +45,13 @@
     border-color: var(--inputFiedColor) !important;
     border-radius: 10px !important;
 }
+
+.total-assissment-card{
+    background: rgb(78,78,78);
+    background: radial-gradient(circle, rgba(78,78,78,1) 0%, rgba(78,78,78,1) 10%, rgba(11,9,14,1) 83%);}
+
+
+.total-assissment-card-selected{
+    background: rgb(232,232,232);
+background: radial-gradient(circle, rgba(232,232,232,1) 0%, rgba(201,201,201,1) 10%, rgba(178,178,184,1) 87%);
+} 

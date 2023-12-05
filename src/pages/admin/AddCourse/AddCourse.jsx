@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import learning from '../assets/Learning-cuate.svg';
 import { path } from '../../../routes/RoutesConstant';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ErrorMessage, Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
@@ -21,19 +21,6 @@ const SignupSchema = Yup.object().shape({
     .min(2)
     .max(25)
     .required('Course name is required'),
-
-  // 'add-course-email': Yup.string()
-  //   .matches(
-  //     /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
-  //     'Invalid email format'
-  //   )
-  //   .required('Required!')
-  //   .test('email-provider', 'Email provider not allowed', (value) => {
-  //     if (/(email|yahoo)\.com$/.test(value)) {
-  //       return false;
-  //     }
-  //     return true;
-  //   }),
   excelFile: Yup.mixed().required('File is required'),
 });
 
@@ -45,13 +32,6 @@ const InputFieldData = [
     placeholder: 'enter course name',
     labelText: 'Course Name',
   },
-  // {
-  //   inputId: 'add-course-email',
-  //   inputName: 'add-course-email',
-  //   formGroupId: 'add-course-group-email',
-  //   placeholder: `enter HOD's email`,
-  //   labelText: 'HOD Email',
-  // },
 ];
 
 export default function AddCourse() {
@@ -60,6 +40,7 @@ export default function AddCourse() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [excel, setExcel] = useState([]);
 
   const handleErrorClose = () => setShowError(false);
   const handleErrorShow = () => setShowError(true);
@@ -77,8 +58,7 @@ export default function AddCourse() {
   };
 
   const [postAddCourse, { isLoading, data, error, isError, isSuccess }] =
-    useAddCourseMutation(localStorage.getItem('accessToken'));
-  const [excel, setExcel] = useState([]);
+    useAddCourseMutation();
 
   async function onSubmits(values) {
     const accessToken = localStorage.getItem('accessToken');
@@ -138,6 +118,7 @@ export default function AddCourse() {
       });
     }
   }, [isError]);
+
   return (
     <>
       <div className="row h-100 m-0 p-0">
@@ -280,7 +261,7 @@ export default function AddCourse() {
             </Modal.Body>
             <Modal.Footer>
               <Button
-              className='px-4'
+                className="px-4"
                 variant="dark"
                 onClick={() => {
                   handleRemoveFile();

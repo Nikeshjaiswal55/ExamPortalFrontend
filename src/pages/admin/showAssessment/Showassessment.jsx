@@ -3,7 +3,10 @@ import '../components/style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Cardassessment, { CardassessmentPlaceholder } from './Cardassessment';
 import '../../../styles/common.css';
-import { useGetAssignmentQuery } from '../../../apis/Service';
+import {
+  useDeleteAssignmentMutation,
+  useGetAssignmentQuery,
+} from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { Form, Spinner } from 'react-bootstrap';
 import { IoSearchSharp } from 'react-icons/io5';
@@ -18,13 +21,17 @@ export default function ShowAssessment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
-  const accessToken = localStorage.getItem('accessToken');
   const {
     data: assignmentData,
     isLoading,
     isError,
     isSuccess,
-  } = useGetAssignmentQuery({ accessToken, id: userId });
+  } = useGetAssignmentQuery({id: userId });
+
+  const [
+    deleteAssignment,
+    { isError: deleteError, isLoading: deleteloading, isSuccess: dltSuccess },
+  ] = useDeleteAssignmentMutation();
 
   const [filterData, setFilterData] = useState(assignmentData);
   const [input, setInput] = useState();
@@ -39,7 +46,6 @@ export default function ShowAssessment() {
       const filterdata = assignmentData.filter((item) =>
         item.assessmentName.toLowerCase().includes(input.toLowerCase())
       );
-      console.log(filterdata.length);
       filterdata.length === 0
         ? setSearchDataFound(true)
         : setSearchDataFound(false);
@@ -47,7 +53,7 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input]);
+  }, [input,dltSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -62,7 +68,7 @@ export default function ShowAssessment() {
         theme: 'dark',
       });
     }
-  }, [isError]);
+  }, [isError, deleteError]);
 
   return (
     <>
@@ -116,7 +122,7 @@ export default function ShowAssessment() {
             </NoDataFound>
           )}
         </div>
-        {isLoading ? (
+        {isLoading || deleteloading ? (
           <div className="row m-0 p-0  ">
             {[1, 2, 3, 4, 5, 6].map((item) => (
               <CardassessmentPlaceholder />
@@ -130,6 +136,7 @@ export default function ShowAssessment() {
                   key={index}
                   paperId={assessmentDetails.paperId}
                   {...assessmentDetails}
+                  deleteAssignment={deleteAssignment}
                 />
               ))}
           </div>

@@ -4,8 +4,9 @@ import { Form } from 'react-bootstrap';
 import { InputField } from '../../../../theme/InputField/InputField';
 import { CustomButton } from '../../../../theme/Button/Buttons';
 import * as yup from 'yup';
-export default function Configure() {
+export default function Configure({ ...ConfigureProps }) {
   const getOrgdata = localStorage.getItem('orgData');
+  console.log('getOrgdata :- ', ConfigureProps);
   const InputFieldData = [
     {
       inputId: 'exam-duration',
@@ -15,7 +16,7 @@ export default function Configure() {
       labelText: 'assessement duration',
       colClassName: 'col-lg-6 my-3',
       onInputChange: (e) => handleDurationChange(e, handleChange),
-      //   inputValue: duration,
+      inputValue: ConfigureProps.examDuration,
     },
     {
       inputId: 'assesement-pattern',
@@ -92,84 +93,88 @@ export default function Configure() {
     'mtech',
   ];
   return (
-    <div className="col-md-12 col-lg-8 offset-lg-2 ">
-      <Formik
-        initialValues={{
-          assessementName: '',
-          examDuration: duration,
-          examBranch: '',
-          examSession: '',
-        }}
-        validationSchema={configureSchema}
-        onSubmit={async (values) => {
-          console.log('values :- ', values);
-        }}
-      >
-        {({ values, handleSubmit, handleBlur, handleChange }) => (
-          <div className=" w-100 ">
-            {' '}
-            <Form onSubmit={(e) => {}}>
-              <div className="row d-flex justify-content-around  align-items-center">
-                {InputFieldData.map((inputData, index) =>
-                  inputData.Orgtype == 'company' ? (
-                    ''
-                  ) : (
-                    <InputField
-                      key={index}
-                      inputId={inputData.inputId}
-                      inputName={inputData.inputName}
-                      formGroupId={inputData.formGroupId}
-                      placeholder={inputData.placeholder}
-                      labelText={inputData.labelText}
-                      onInputBlur={handleBlur}
-                      onInputChange={
-                        inputData.onInputChange
-                          ? (e) => handleDurationChange(e, handleChange)
-                          : handleChange
-                      }
-                      formGroupClassName={inputData.colClassName}
-                      inputValue={inputData.inputValue}
-                    />
-                  )
-                )}
-                <div className=" w-100">
-                  <label className="text-capitalize fw-bold">
-                    Select Candidate Course{' '}
-                    <span className="fw-normal">
-                      (note: only selected course student will get exam link)
-                    </span>
-                  </label>
-                  <Form.Select
-                    className="my-3 focus-ring focus-ring-light w-100 rounded-3 border"
-                    aria-label="Default select example"
-                    name="examBranch"
-                    value={values.examBranch} // Make sure to set the value prop
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  >
-                    <option value="">Select Course</option>
-                    {branchOptions.map((branch) => (
-                      <option key={branch} value={branch}>
-                        {branch}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <ErrorMessage
-                    component={'div'}
-                    name="examBranch"
-                    className=" input-error"
+    <Formik
+      initialValues={{
+        assessementName: ConfigureProps.assessementName,
+        examDuration: ConfigureProps.examDuration,
+        examBranch: ConfigureProps.examBranch,
+        examSession: ConfigureProps.examSession,
+      }}
+      validationSchema={configureSchema}
+      onSubmit={async (values) => {
+        console.log('values :- ', values);
+      }}
+    >
+      {({ values, handleSubmit, handleBlur, handleChange }) => (
+        <div className=" w-100 ">
+          {' '}
+          <Form onSubmit={(e) => {}}>
+            <div className="row d-flex align-items-center">
+              {InputFieldData.map((inputData, index) =>
+                inputData.Orgtype == 'company' ? (
+                  ''
+                ) : (
+                  <InputField
+                    key={index}
+                    inputId={inputData.inputId}
+                    inputName={inputData.inputName}
+                    formGroupId={inputData.formGroupId}
+                    placeholder={inputData.placeholder}
+                    labelText={inputData.labelText}
+                    onInputBlur={handleBlur}
+                    onInputChange={
+                      inputData.onInputChange
+                        ? (e) => handleDurationChange(e, handleChange)
+                        : handleChange
+                    }
+                    formGroupClassName={inputData.colClassName}
+                    inputValue={inputData.inputValue}
                   />
-                </div>
-                <CustomButton
-                  className={'px-5 my-3  w-auto'}
-                  buttonText={'Save'}
-                  onButtonClick={handleSubmit}
+                )
+              )}
+              <div className=" w-100">
+                <label className="text-capitalize fw-bold">
+                  Select Candidate Course{' '}
+                  <span className="fw-normal">
+                    (note: only selected course student will get exam link)
+                  </span>
+                </label>
+                <Form.Select
+                  className="my-3 focus-ring focus-ring-light w-100 rounded-3 border"
+                  aria-label="Default select example"
+                  name="examBranch"
+                  value={values.examBranch} // Make sure to set the value prop
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <option value="">Select Course</option>
+                  {branchOptions.map((branch) => (
+                    <option key={branch} value={branch}>
+                      {branch}
+                    </option>
+                  ))}
+                </Form.Select>
+                <ErrorMessage
+                  component={'div'}
+                  name="examBranch"
+                  className=" input-error"
                 />
               </div>
-            </Form>
-          </div>
-        )}
-      </Formik>
-    </div>
+              <div
+                className={
+                  'px-5 my-4 d-flex justify-content-center align-items-center w-100'
+                }
+              >
+                <CustomButton
+                  buttonText={'Save'}
+                  onButtonClick={handleSubmit}
+                  className="w-50"
+                />
+              </div>
+            </div>
+          </Form>
+        </div>
+      )}
+    </Formik>
   );
 }

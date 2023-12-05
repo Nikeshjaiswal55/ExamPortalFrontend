@@ -18,7 +18,6 @@ import { MdUpload } from 'react-icons/md';
 import * as yup from 'yup';
 import {
   usePostAssignmentMutation,
-  useGetOrgernizationQuery,
   useGetAllCoursesQuery,
 } from '../../../apis/Service';
 import { path } from '../../../routes/RoutesConstant';
@@ -28,11 +27,18 @@ import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import { toast } from 'react-toastify';
 export default function AddAssignment() {
   const navigate = useNavigate();
+  let userId = JSON.parse(localStorage.getItem('users'));
+  userId = userId.sub.split('|')[1];
+  const getOrgdata = localStorage.getItem('orgData');
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showError, setShowError] = useState(false);
   const [excel, setExcel] = useState([]);
+  const [showAssignment, setShowAssignment] = useState(false);
+  const [option, setOption] = useState('');
+  const [email, setEmail] = useState();
+  const [duration, setDuration] = useState('');
 
   const handleErrorClose = () => setShowError(false);
   const handleErrorShow = () => setShowError(true);
@@ -42,7 +48,6 @@ export default function AddAssignment() {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     if (inputFile.current) {
-      console.log(inputFile);
       inputFile.current.value = '';
       inputFile.current.type = 'text';
       inputFile.current.type = 'file';
@@ -50,14 +55,6 @@ export default function AddAssignment() {
     setExcel([]);
   };
 
-  let userId = JSON.parse(localStorage.getItem('users'));
-  userId = userId.sub.split('|')[1];
-  const getOrgdata = localStorage.getItem('orgData');
-
-  const [showAssignment, setShowAssignment] = useState(false);
-  const [option, setOption] = useState('');
-  const [email, setEmail] = useState();
-  const [duration, setDuration] = useState('');
   const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
     usePostAssignmentMutation();
   const { data: AllCourse } = useGetAllCoursesQuery({ userId });

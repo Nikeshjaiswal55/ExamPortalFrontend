@@ -22,7 +22,6 @@ export default function ShowCourse() {
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
   const { data, isError, isLoading } = useGetAllCoursesQuery({
-    accessToken: localStorage.getItem('accessToken'),
     userId,
   });
 
@@ -132,7 +131,7 @@ export default function ShowCourse() {
                 <th className="text-center"> SrNo</th>
                 <th>Course Name</th>
                 <th>Created By</th>
-                <th></th>
+                <th className='text-center'><input placeholder='search here course' className='form-control'/></th>
               </tr>
             </thead>
             <tbody>

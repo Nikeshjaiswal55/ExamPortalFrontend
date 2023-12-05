@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StudentCard } from '../components/StudentCard/StudentCard';
 import { TotalStudent } from '../components/TotalStudent/TotalStudent';
 import { useGetStudentOnPerticularAssignmentQuery } from '../../../apis/Service';
@@ -25,7 +25,7 @@ export default function AssignmentStudentPage() {
             <TotalStudent totalStudent={data} />
           </div>
           <div
-            className="card-div row w-100 overflow-auto"
+            className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto"
             style={{ height: 'calc(100vh - 16rem)' }}
           >
             {data?.map((studentdetails) => (
