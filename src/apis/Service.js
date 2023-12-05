@@ -2,9 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-// const baseUrl = " http://localhost:9090"
+const baseUrl = " http://localhost:9090"
 // const baseUrl = "http://exam-easy.up.railway.app"
-const baseUrl = "http://192.168.205.155:9090"
+// const baseUrl = "http://192.168.205.155:9090"
 
 
 export const adminApi = createApi({
@@ -26,37 +26,54 @@ export const adminApi = createApi({
         getTest: builder.query({
             query: () => `posts`,
         }),
+        getUser: builder.query({
+            query: () => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userId = SubIdSplit(users?.sub);
+                return {
+                    url: `/user/byid/${userId}`,
+                    method: 'get',
+                }
+
+            }
+        }),
+        postOrganisationDetails: builder.mutation({
+            query: (orgDetail) => {
+                const { accessToken, ...organisationDetails } = orgDetail;
+                return {
+                    url: `/createorgnization`,
+                    method: 'POST',
+                    body: organisationDetails,
+                }
+            },
+            invalidatesTags: ['getOrgernization'],
+        }),
+        getOrgernization: builder.query({
+            query: () => {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const userId = SubIdSplit(users?.sub);
+                return {
+                    url: `/getOrgnizationByUserId/${userId}`,
+                    method: 'get',
+                }
+            },
+            providesTags: ['getOrgernization']
+        }),
         getAllCourses: builder.query({
             query: ({ accessToken, userId }) => {
-                console.log("accessToken", accessToken)
                 return {
                     url: `course/byUserId/${userId}`,
                     method: "GET",
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-
                 }
             },
             providesTags: ['getAllCourse'],
-            keepUnusedDataFor: 0,
-
-
         }),
         deleteCourse: builder.mutation({
             query: (payload) => {
                 const { accessToken, id } = payload;
-                console.log("accessToken", accessToken);
-                console.log(id);
                 return {
                     url: `course/${id}`,
                     method: "DELETE",
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-
                 }
             },
             invalidatesTags: ['getAllCourse'],
@@ -64,50 +81,24 @@ export const adminApi = createApi({
         updateCourse: builder.mutation({
             query: (payload) => {
                 const { accessToken, ...updateCourseDetail } = payload;
-                console.log("accessToken", accessToken);
                 return {
                     url: `course/update`,
                     method: "PUT",
                     body: updateCourseDetail,
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-
                 }
             },
             invalidatesTags: ['getAllCourse'],
         }),
-        postOrganisationDetails: builder.mutation({
-            query: (orgDetail) => {
-                const { accessToken, ...organisationDetails } = orgDetail;
-                console.log("accessToken :-  ", accessToken);
-                console.log("orgDetails ;- ", JSON.stringify(organisationDetails));
-                return {
-                    url: `/createorgnization`,
-                    method: 'POST',
-                    body: organisationDetails,
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-                }
-            },
-            invalidatesTags: ['getOrgernization'],
-        }),
         addCourse: builder.mutation({
             query: (addCourse) => {
                 const { accessToken, ...addCourseDetails } = addCourse;
-                console.log("accessToken :-  ", accessToken);
-                console.log("create course details ;- ", JSON.stringify(addCourseDetails));
-
-                console.log("create course:", addCourse)
                 return {
                     url: `/course/create`,
                     method: 'post',
                     body: addCourse,
                 }
-            }
+            },
+            invalidatesTags: ['getAllCourse'],
         }),
         postAssignment: builder.mutation({
             query: (data) => {
@@ -116,10 +107,6 @@ export const adminApi = createApi({
                     url: `/create/paper`,
                     method: 'post',
                     body: assignmentData,
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
                 }
             },
             invalidatesTags: ['getAllAssissment'],
@@ -130,73 +117,30 @@ export const adminApi = createApi({
                 return {
                     url: `/getAllPaperbyUserId/${id}`,
                     method: 'get',
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
                 }
             },
             providesTags: ['getAllAssissment'],
-            keepUnusedDataFor: 0,
-
         }),
-        getOrgernization: builder.query({
-            query: () => {
-                const accessToken = localStorage.getItem('accessToken');
-                const users = JSON.parse(localStorage.getItem('users'));
-                const userId = SubIdSplit(users?.sub);
-                return {
-                    url: `/getOrgnizationByUserId/${userId}`,
-                    method: 'get',
-                    headers: {
-                        "Content-Type": 'application/json;',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
-                }
-            },
-            providesTags: ['getOrgernization']
-        }),
-        getStudentOnPerticularAssignment: builder.query(
-            {
-                query: (paperId) => {
-                    const accessToken = localStorage.getItem('accessToken')
-                    return {
-                        url: `/GetAllStudentByPaperId/${paperId}`,
-                        method: 'get',
-                        headers: {
-                            "Content-Type": 'application/json;',
-                            "Authorization": `Bearer ${accessToken}`
-                        }
-
-                    }
-                }
-            }
-        ),
         deleteAssignment: builder.mutation({
             query: (payload) => {
-                const accessToken = localStorage.getItem('accessToken')
-                console.log("accessToken", accessToken);
-                console.log(payload);
                 return {
                     url: `/deletePaperByPaperID/${payload}`,
                     method: "DELETE",
 
                 }
             },
+            invalidatesTags: ['getAllAssissment'],
         }),
-        getUser: builder.query({
-            query: () => {
-                const users = JSON.parse(localStorage.getItem('users'));
-                const accessToken = localStorage.getItem('accessToken');
-                const userId = SubIdSplit(users?.sub);
-                // const { accessToken, id } = data;
-                return {
-                    url: `/user/byid/${userId}`,
-                    method: 'get',
+        getStudentOnPerticularAssignment: builder.query(
+            {
+                query: (paperId) => {
+                    return {
+                        url: `/GetAllStudentByPaperId/${paperId}`,
+                        method: 'get',
+                    }
                 }
-
             }
-        }),
+        ),
         getAllQuestionsFromPaperId: builder.query({
             query: (payload) => {
                 const [accessToken, paperID] = payload;
@@ -207,45 +151,22 @@ export const adminApi = createApi({
                 }
             },
         }),
-        deleteAssignment: builder.mutation({
-            query: (payload) => {
-                const accessToken = localStorage.getItem('accessToken')
-                console.log("accessToken", accessToken);
-                console.log(payload);
-                return {
-                    url: `/deletePaperByPaperID/${payload}`,
-                    method: "DELETE",
-
-                }
-            },
-        }),
         postSaveResult: builder.mutation({
             query: (payload) => {
                 const [accessToken, result] = payload;
-                console.log("result : ", result);
                 return {
                     url: "/saveresult",
                     method: "POST",
                     body: result,
-                    headers: {
-                        "Content-Type": 'application/json',
-                        "Authorization": `Bearer ${accessToken}`
-                    }
                 }
             }
         }),
         getAllAssissmentOnstudentPage: builder.query(
             {
                 query: (stdId) => {
-                    const accessToken = localStorage.getItem('accessToken')
                     return {
                         url: `/getall/Assesment/${stdId}`,
                         method: 'get',
-                        headers: {
-                            "Content-Type": 'application/json;',
-                            "Authorization": `Bearer ${accessToken}`
-                        }
-
                     }
                 }
             }
