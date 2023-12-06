@@ -1,0 +1,89 @@
+
+.portfolio {
+  position: relative;
+}
+
+.progress {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 61px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+}
+
+.portfolio-text-h1{
+    text-align: center;
+    color: orange;
+    font-size: 36px;
+}
+
+
+.progressBar {
+  height: 10px;
+  background-color: orange;
+}
+
+.portfolio-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.portfolio-wrapper {
+  max-width: 1366px;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+
+.portfolio-image-container {
+  flex: 1;
+  height: 50%;
+}
+
+
+
+.portfolio-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portfolio .container .wrapper.mobile .imageContainer img {
+  object-fit: contain;
+}
+
+ .portfolio-text-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.portfolio-text-h2 {
+  font-size: 72px;
+}
+
+
+.portfolio-text-p {
+  color: gray;
+  font-size: 20px;
+}
+
+.portfolio-button {
+  background-color: orange;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  cursor: pointer;
+}

@@ -22,7 +22,6 @@ export default function ShowCourse() {
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
   const { data, isError, isLoading } = useGetAllCoursesQuery({
-    accessToken: localStorage.getItem('accessToken'),
     userId,
   });
 
@@ -50,7 +49,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (updateSuccess) {
       toast.success('course updated successfully!!🎉', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -65,7 +64,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (deleteSuccess) {
       toast.success('course deleted successfully!!🎉', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -80,7 +79,7 @@ export default function ShowCourse() {
   useEffect(() => {
     if (isError || updateError || deleteError) {
       toast.error('something went wrong!!😑', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -132,7 +131,7 @@ export default function ShowCourse() {
                 <th className="text-center"> SrNo</th>
                 <th>Course Name</th>
                 <th>Created By</th>
-                <th></th>
+                <th className='text-center'><input placeholder='search here course' className='form-control'/></th>
               </tr>
             </thead>
             <tbody>

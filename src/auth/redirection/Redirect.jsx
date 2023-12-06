@@ -28,8 +28,7 @@ export const SaveUserOrg = () => {
 };
 
 export const Redirect = () => {
-  const { isLoading, data, error } = useGetUserQuery();
-  console.log('data',data);
+  const { isLoading, data, isSuccess: userSucess, error } = useGetUserQuery();
   const navigate = useNavigate();
   const {
     data: getOrgdata,
@@ -39,27 +38,34 @@ export const Redirect = () => {
   } = useGetOrgernizationQuery();
 
   useEffect(() => {
+    if (userSucess && data?.role === 'Student') {
+      localStorage.setItem('stdData', JSON.stringify(data ?? {}));
+    }
+  }, [userSucess]);
+
+  useEffect(() => {
     if (isSuccess) {
       localStorage.setItem('orgData', JSON.stringify(getOrgdata));
     }
   }, [isSuccess]);
-  
-  if (orgError || error) {
-    if (error.data?._user) {
+
+  if (error) {
+    if (error && error.data?._user) {
       navigate(path.Organisation.path);
+    } else {
+      return (
+        <div className="d-flex justify-content-center align-items-center w-100 h-100">
+          <SomethingWentWrong />
+        </div>
+      );
     }
-    return (
-      <div className="d-flex justify-content-center align-items-center w-100 h-100">
-        <SomethingWentWrong />
-      </div>
-    );
   } else {
-    return isLoading ? (
+    return isLoading || orgLoading ? (
       <div className="d-flex justify-content-center align-items-center w-100 h-100">
         <UserWaiting />
       </div>
     ) : data?.role === 'Student' ? (
-      <Navigate to="/student" />
+      <Navigate to="/student/dashboard" />
     ) : (
       <Navigate to={path.Organisation.path} />
     );

@@ -16,19 +16,28 @@ import TermandConditionPage from '../pages/student/TermsConditionPage/TermandCon
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
+import LandingPage from '../pages/LandingPage/LandingPage';
+import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import { ExamPortal } from '../pages/exam-portal/ExamPortal';
+import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
+// import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
+import { ReportCard } from '../pages/exam-portal/components/ReportCard';
+import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
+import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
+import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
-        <Route path={path.home.path} element={<Home />} />
-        <Route path="/student" element={<h1>student sashboard</h1>} />
-
+        <Route path={path.home.path} element={<LandingPage />} />
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
         <Route path={path.Redirect.path} element={<Redirect />} />
 
+        <Route path={path.Organisation.path} element={<OrganisationPage />} />
         <Route path="/" element={<Private />}>
-          <Route path={path.Organisation.path} element={<OrganisationPage />} />
           <Route
             path={path.private.path}
             element={<h1>this private route</h1>}
@@ -81,6 +90,16 @@ export const Routes = () => {
               </Layout>
             }
           />
+
+          <Route
+            path={path.SidePooup.path}
+            element={
+              <Layout>
+                <SidePooup examName={'Java Mastery Challenge'} />
+              </Layout>
+            }
+          />
+
           <Route
             path={path.ShowCourse.path}
             element={
@@ -105,7 +124,42 @@ export const Routes = () => {
               </Layout>
             }
           />
+          {/* --------------------------student-------------------------- */}
+          <Route path={path.StudentPaper.path} element={<StudentPaper />} />
+          <Route
+            path="/student/dashboard"
+            element={
+              <Layout>
+                <h1>student sashboard</h1>
+              </Layout>
+            }
+          />
+
+          <Route
+            path={path.ShowAllAssessmentToStudent.path}
+            element={
+              <Layout>
+                <AllAssissmentToStudent />
+              </Layout>
+            }
+          />
         </Route>
+        {/* seprate exam portal */}
+        <Route path={path.exam.path} element={<ExamPortal />} />
+        <Route path={`${path.StudentExamStarted.path}/:paperId`} element={<ExamStarted />} />
+        <Route path={`${path.examVerify.path}/:paperId`} element={<ExamVerification />} />
+        <Route
+          path={path.examReport.path}
+          element={
+            <Layout>
+              <ReportCard />
+            </Layout>
+          }
+        />
+        <Route
+          path={path.StudentPaperSubmitted.path}
+          element={<ExamSubmited />}
+        />
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
