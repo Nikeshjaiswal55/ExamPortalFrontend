@@ -1,9 +1,19 @@
-import { useState } from 'react';
-import { Nav, Tab } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Nav, Spinner, Tab } from 'react-bootstrap';
 
 import { CustomButton } from '../../../../theme/Button/Buttons';
+
 import Configure from './Configure';
-function SidePooup({ ...props }) {
+import { usePutActivePaperMutation } from '../../../../apis/Service';
+function SidePooup({ paperId, ...props }) {
+  const [paperActive, setPaperActive] = useState(props._Active);
+  const [publish, { isSuccess, isLoading }] = usePutActivePaperMutation();
+  const activePaper = async () => {
+    await publish({ paperId, paperActive });
+    setPaperActive(!paperActive);
+  };
+
+  useEffect(() => {}, [isSuccess]);
   return (
     <>
       <div className="w-100 m-0 p-0">
@@ -42,20 +52,26 @@ function SidePooup({ ...props }) {
                 </Nav.Item>
               </Nav>
               <CustomButton
-                buttonText={'Publish'}
+                buttonText={`${
+                  isLoading ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : paperActive ? (
+                    'End'
+                  ) : (
+                    'Publish'
+                  )
+                }`}
                 onButtonClick={(e) => {
-                  e.target.innerHTML = 'End';
+                  activePaper();
                 }}
                 className={' p-lg-2 w-100'}
               />
             </div>
-            <div
-              className=" col-12 flex-1 col-md-8 shadow  rounded-4  "
-            >
+            <div className=" col-12 flex-1 col-md-8 shadow  rounded-4  ">
               <Tab.Content>
                 <Tab.Pane eventKey="configure" className=" bg-transparent">
                   <div className="row w-100">
-                    <Configure {...props} />
+                    <Configure paperId={paperId} ConfigureProps={props} />
                   </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="edit-emails" className=" bg-transparent">

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import SidePooup from './SidePooup';
 
-function Example({ show, setShowCard, ...props }) {
+function Example({ show, setShowCard,paperId,  ...props }) {
   const handleClose = () => setShowCard(false);
 
   return (
@@ -16,10 +16,9 @@ function Example({ show, setShowCard, ...props }) {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        style={{ width: '100vw' }}
       >
         <Modal.Header closeButton />
-        <SidePooup {...props}/>
+        <SidePooup {...props} paperId={paperId} />
       </Modal>
     </>
   );

@@ -7,6 +7,7 @@ import {
   FormLabel,
   Spinner,
   Modal,
+  Alert,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
@@ -19,11 +20,13 @@ import * as yup from 'yup';
 import {
   usePostAssignmentMutation,
   useGetAllCoursesQuery,
+  useInvitedStudentByMailMutation,
 } from '../../../apis/Service';
 import { path } from '../../../routes/RoutesConstant';
 import { FaEye } from 'react-icons/fa';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
+import emailGif from '../../../assets/gif/mailgif.gif';
 import { toast } from 'react-toastify';
 export default function AddAssignment() {
   const navigate = useNavigate();
@@ -55,8 +58,12 @@ export default function AddAssignment() {
     setExcel([]);
   };
 
-  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
-    usePostAssignmentMutation();
+  const [
+    AssigmnetData,
+    { isLoading, data, isSuccess: AssignmentSuccess, isError },
+  ] = usePostAssignmentMutation();
+  const [inviteStudent, { isLoading: invitedLoading, isError: inviteError }] =
+    useInvitedStudentByMailMutation();
   const { data: AllCourse } = useGetAllCoursesQuery({ userId });
 
   useEffect(() => {
@@ -71,9 +78,10 @@ export default function AddAssignment() {
         progress: undefined,
         theme: 'dark',
       });
-      navigate(path.ShowAssessment.path);
+
+      // navigate(path.ShowAssessment.path);
     }
-  });
+  }, [AssignmentSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -88,7 +96,7 @@ export default function AddAssignment() {
         theme: 'dark',
       });
     }
-  }, [isError]);
+  }, [isError, inviteError]);
 
   const addAssignmentSchema = yup.object().shape({
     assessementName: yup.string().required('Please enter assessement name'),
@@ -169,14 +177,6 @@ export default function AddAssignment() {
       onInputChange: (e) => handleDurationChange(e, handleChange),
       inputValue: duration,
     },
-    // {
-    //   inputId: 'exam-rounds',
-    //   inputName: 'examRound',
-    //   formGroupId: 'exam-group-rounds',
-    //   placeholder: 'number of assessement rounds',
-    //   labelText: 'enter no. of assessement rounds',
-    //   colClassName: 'col-md-6 my-3',
-    // },
     {
       inputId: 'exam-session',
       inputName: 'examSession',
@@ -191,14 +191,14 @@ export default function AddAssignment() {
       inputName: 'totalMarks',
       formGroupId: 'total-group-marks',
       placeholder: 'enter total marks',
-      labelText: 'enter assessement session',
+      labelText: 'enter total marks',
       colClassName: 'col-md-6  my-3',
     },
     {
       inputId: 'minimum-marks',
       inputName: 'minimumMarks',
       formGroupId: 'minimum-group-marks',
-      placeholder: 'select of assessement session',
+      placeholder: 'enter minimum marks',
       labelText: 'enter minimum marks',
       colClassName: 'col-md-6  my-3',
     },
@@ -211,7 +211,13 @@ export default function AddAssignment() {
 
   return (
     <>
-      <div className=" row w-100 rounded-5 m-0 p-0 justify-content-end">
+      <div className="row w-100 rounded-5 m-0 p-0 justify-content-end">
+        {invitedLoading && (
+          <Alert key={'primary'} className="py-2" variant={'primary'}>
+            <img src={emailGif} height={'40px'} className="mx-3" />
+            sending mails to students...
+          </Alert>
+        )}
         <Formik
           initialValues={{
             assessementName: '',
@@ -239,14 +245,12 @@ export default function AddAssignment() {
                 branch: values.examBranch,
                 session: values.examSession,
                 assessmentName: values.assessementName,
+                totalMarks: values.totalMarks,
+                minimum_marks: values.minimumMarks,
+                is_Active: false,
+                is_Setup: true,
+                is_attempted: false,
               };
-
-              console.log({
-                examDetails,
-                email: values.email,
-                questions: values.questions,
-                userId,
-              });
               let emails = excel.reduce(
                 (arr, currentvalue) => {
                   arr.push(currentvalue.email);
@@ -257,10 +261,18 @@ export default function AddAssignment() {
 
               await AssigmnetData({
                 examDetails,
-                emails: emails,
                 questions: values.questions,
                 userId,
                 orgnizationId: getOrgdata?.orgnizationId,
+              }).then((res) => {
+                if (res?.data?.paperId) {
+                  inviteStudent({
+                    userId: res?.data?.userId,
+                    paperId: res?.data?.paperId,
+                    orgnizationId: res?.data?.orgnizationId,
+                    emails: emails,
+                  });
+                }
               });
             }
           }}

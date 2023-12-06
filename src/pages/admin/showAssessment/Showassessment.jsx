@@ -26,7 +26,7 @@ export default function ShowAssessment() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAssignmentQuery({id: userId });
+  } = useGetAssignmentQuery({ id: userId });
 
   const [
     deleteAssignment,
@@ -53,7 +53,7 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input,dltSuccess]);
+  }, [input, dltSuccess]);
 
   useEffect(() => {
     if (isError) {

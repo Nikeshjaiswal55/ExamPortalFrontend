@@ -2,9 +2,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
-// const baseUrl = "http://exam-easy.up.railway.app"
-// const baseUrl = "http://192.168.205.155:9090"
+// const baseUrl = " http://localhost:9090"
+const baseUrl = "https://exameasy.onrender.com/"
+// const baseUrl = "http://192.168.0.202:9090"
+// const baseUrl = "http://192.168.180.59:9090"
+// const baseUrl = "http://192.168.180.155:9090"
+
 
 
 export const adminApi = createApi({
@@ -171,7 +174,23 @@ export const adminApi = createApi({
                 }
             }
         ),
-
+        putActivePaper: builder.mutation({
+            query: ({ paperId, paperActive }) => {
+                return {
+                    url: `/activetPaper/${paperId}/${paperActive}`,
+                    method: 'put',
+                }
+            },
+        }),
+        invitedStudentByMail: builder.mutation({
+            query: (payload) => {
+                return {
+                    url: `/inviteStudents/`,
+                    method: 'post',
+                    body: payload,
+                }
+            }
+        }),
     }),
 
 
@@ -179,4 +198,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation } = adminApi;
+export const { useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation } = adminApi;

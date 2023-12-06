@@ -100,7 +100,7 @@ export default function Cardassessment({
         </div>
       </div>
 
-      <Example show={showCard} {...props} setShowCard={setShowCard} />
+      <Example show={showCard} {...props} paperId={paperId} setShowCard={setShowCard} />
     </>
   );
 }
