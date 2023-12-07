@@ -72,7 +72,8 @@ export const Routes = () => {
               path={path.AdminDasboard.path}
               element={
                 <Layout>
-                  <OrgDashBoard />
+                  <AdminDashboard />
+
                 </Layout>
               }
             />
@@ -136,7 +137,7 @@ export const Routes = () => {
               path="/student/dashboard"
               element={
                 <Layout>
-                  <h1>student sashboard</h1>
+                  <StudentDashBoard />
                 </Layout>
               }
             />

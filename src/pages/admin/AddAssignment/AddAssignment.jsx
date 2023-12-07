@@ -33,6 +33,7 @@ export default function AddAssignment() {
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];
   const orgType = localStorage.getItem('orgtype');
+  const getOrgdata = JSON.parse(localStorage.getItem('orgData'));
 
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
