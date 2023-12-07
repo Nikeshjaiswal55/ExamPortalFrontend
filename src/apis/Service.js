@@ -3,9 +3,9 @@ import {SubIdSplit} from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
-const baseUrl = "https://exameasy.onrender.com/"
+// const baseUrl = "https://exameasy.onrender.com/"
 // const baseUrl = "http://192.168.0.202:9090"
-// const baseUrl = "http://192.168.180.59:9090"
+const baseUrl = "http://192.168.180.59:9090"
 // const baseUrl = "http://192.168.180.155:9090"
 
 

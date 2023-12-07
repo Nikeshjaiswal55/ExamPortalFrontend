@@ -44,20 +44,20 @@ const info = [
 
     }
 ];
-const TopStudent = [
-    {
-        id: 12,
-        email: "dixitp034@gmail.com",
-    },
-    {
-        id: 13,
-        email: "kapilj.bca2022@ssism.org",
-    },
-    {
-        id: 14,
-        email: "akashbba2022@ssism.org",
-    }
-]
+// const TopStudent = [
+//     {
+//         id: 12,
+//         email: "dixitp034@gmail.com",
+//     },
+//     {
+//         id: 13,
+//         email: "kapilj.bca2022@ssism.org",
+//     },
+//     {
+//         id: 14,
+//         email: "akashbba2022@ssism.org",
+//     }
+// ]
 
 function TotalComponent({infoText,infoNumber,icon,iconClassName}) {
     return <>
@@ -97,7 +97,7 @@ function TopStudentCard({email,onEvidenceClick}) {
     </>
 }
 
-export default function StudentDashBoard() {
+export const StudentDashBoard = () => {
     let userId = JSON.parse(localStorage.getItem('users'));
     userId = SubIdSplit(userId.sub);
     const {
@@ -223,4 +223,4 @@ export default function StudentDashBoard() {
 
         </>
     );
-} {}
+}

@@ -8,7 +8,6 @@ import {
   StudentPrivate,
 } from '../auth/Private';
 import {path} from './RoutesConstant';
-import OrgDashBoard from '../pages/admin/OrgDashboard/OrgDashBoard';
 
 import AddCourse from '../pages/admin/AddCourse/AddCourse';
 import {CreateCourse} from '../pages/admin/AddCourse/CreateCourse';
@@ -22,7 +21,6 @@ import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import {Redirect,SaveUserOrg} from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
-import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 import {ExamPortal} from '../pages/exam-portal/ExamPortal';
 import {ExamVerification} from '../pages/exam-portal/components/ExamVerification';
@@ -32,8 +30,8 @@ import {ExamStarted} from '../pages/exam-portal/components/ExamStarted';
 import {ExamSubmited} from '../pages/exam-portal/components/ExamSubmited';
 import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
-import AdminDashboard from '../pages/home/AdminDashBoard/AdminDashboard';
-import StudentDashBoard from '../pages/home/StudentDashBoard/StudentDashBoard';
+import {AdminDashboard} from '../pages/home/AdminDashBoard/AdminDashboards';
+import {StudentDashBoard} from '../pages/home/StudentDashBoard/StudentDashBoard';
 
 export const Routes = () => {
   return (
