@@ -34,6 +34,7 @@
 .custom-table-td-width {
     min-width: 150px !important;
 }
+
 .t-head {
     --bs-table-bg: black !important;
     --bs-table-color: white !important;
@@ -42,6 +43,7 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
 .input-border {
     border-color: var(--inputFiedColor) !important;
     border-radius: 10px !important;
@@ -55,4 +57,17 @@
 .total-assissment-card-selected {
     background: rgb(232, 232, 232);
     background: radial-gradient(circle, rgba(232, 232, 232, 1) 0%, rgba(201, 201, 201, 1) 10%, rgba(178, 178, 184, 1) 87%);
+}
+
+.certificate-img {
+    background-image: url('../assets/Abc.png');
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.Signature-img {
+    background-image: url('../assets/Signature.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
 }
