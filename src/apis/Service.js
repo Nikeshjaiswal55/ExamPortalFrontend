@@ -2,8 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
-// const baseUrl = "http://exam-easy.up.railway.app"
+const baseUrl = 'http://192.168.0.237:9090';// const baseUrl = "http://exam-easy.up.railway.app"
 // const baseUrl = "http://192.168.205.155:9090"
 
 
@@ -171,7 +170,28 @@ export const adminApi = createApi({
                 }
             }
         ),
-
+        getTop5Assissment: builder.query(
+            {
+                query: (adminId) => {
+                    return {
+                        url: ` http://localhost:3000/getTop5Assesment`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTop3AssissmentStudents: builder.query(
+            {
+                query: (AssessmentId) => {
+                    return {
+                        url: `/getTopperByPaperId/${AssessmentId}`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ) 
     }),
 
 
@@ -179,4 +199,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation } = adminApi;
+export const {useGetTestQuery,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop5AssissmentQuery} = adminApi;

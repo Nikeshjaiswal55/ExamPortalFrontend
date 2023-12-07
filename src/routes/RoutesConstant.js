@@ -54,7 +54,6 @@ export const path = {
         path: '/admin/show-course',
         desc: 'this is showing course page '
     },
-
     showStudent: {
         path: '/admin/student-details/:paperId',
         desc: 'this is a for student detail page'
@@ -70,6 +69,10 @@ export const path = {
 
     },
     // ------------------------------student endpoints--------------------------------------------
+    StudentDashboard: {
+        path: "/student/dashboard",
+        desc: " this is to show dashboard of student "
+    },
     TermAndCondition: {
         path: '/student/Term-And-Condition',
         desc: 'this is for creating TermAndCondition page '

@@ -27,6 +27,8 @@ import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
+import AdminDashboard from '../pages/home/AdminDashBoard/AdminDashboard';
+import StudentDashBoard from '../pages/home/StudentDashBoard/StudentDashBoard';
 
 export const Routes = () => {
   return (
@@ -46,7 +48,7 @@ export const Routes = () => {
             path={path.AdminDasboard.path}
             element={
               <Layout>
-                <OrgDashBoard />
+                <AdminDashboard />
               </Layout>
             }
           />
@@ -127,10 +129,10 @@ export const Routes = () => {
           {/* --------------------------student-------------------------- */}
           <Route path={path.StudentPaper.path} element={<StudentPaper />} />
           <Route
-            path="/student/dashboard"
+            path={path.StudentDashboard.path}
             element={
               <Layout>
-                <h1>student sashboard</h1>
+                <StudentDashBoard />
               </Layout>
             }
           />
