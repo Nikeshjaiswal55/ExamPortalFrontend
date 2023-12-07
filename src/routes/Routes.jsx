@@ -21,7 +21,6 @@ import { LandingPage } from '../pages/LandingPage/LandingPage';
 import { SidePooup } from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 import { ExamPortal } from '../pages/exam-portal/ExamPortal';
 import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
-// import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import { ReportCard } from '../pages/exam-portal/components/ReportCard';
 import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
@@ -94,15 +93,6 @@ export const Routes = () => {
               element={
                 <Layout>
                   <CreateAssesment />
-                </Layout>
-              }
-            />
-
-            <Route
-              path={path.SidePooup.path}
-              element={
-                <Layout>
-                  <SidePooup examName={'Java Mastery Challenge'} />
                 </Layout>
               }
             />
