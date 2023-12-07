@@ -32,7 +32,8 @@ export default function AddAssignment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];
-  const getOrgdata = localStorage.getItem('orgData');
+  const orgType = localStorage.getItem('orgtype');
+
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
@@ -184,7 +185,7 @@ export default function AddAssignment() {
       placeholder: 'select of assessement session',
       labelText: 'enter assessement session',
       colClassName: 'col-md-6  my-3',
-      Orgtype: getOrgdata?.orgnizationType,
+      Orgtype: orgType,
     },
     {
       inputId: 'total-marks',
@@ -329,7 +330,7 @@ export default function AddAssignment() {
                         )
                       )}
                     </div>
-                    {getOrgdata?.orgnizationType == 'company' ? (
+                    {orgType == 'company' ? (
                       ''
                     ) : (
                       <>

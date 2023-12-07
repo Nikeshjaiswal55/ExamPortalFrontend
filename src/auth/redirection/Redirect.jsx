@@ -46,6 +46,7 @@ export const Redirect = () => {
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem('orgData', JSON.stringify(getOrgdata));
+      localStorage.setItem('orgtype', getOrgdata.orgnizationType);
     }
   }, [isSuccess]);
 

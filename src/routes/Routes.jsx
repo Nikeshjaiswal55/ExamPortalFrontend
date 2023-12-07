@@ -1,7 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes as ReactRoute } from 'react-router-dom';
 import Home from '../pages/home/Home';
-import { Private } from '../auth/Private';
+import {
+  AdminPrivate,
+  CollegePrivate,
+  Private,
+  StudentPrivate,
+} from '../auth/Private';
 import { path } from './RoutesConstant';
 import OrgDashBoard from '../pages/admin/OrgDashboard/OrgDashBoard';
 
@@ -38,128 +43,142 @@ export const Routes = () => {
 
         <Route path={path.Organisation.path} element={<OrganisationPage />} />
         <Route path="/" element={<Private />}>
-          <Route
-            path={path.private.path}
-            element={<h1>this private route</h1>}
-          />
-          <Route
-            path={path.AdminDasboard.path}
-            element={
-              <Layout>
-                <OrgDashBoard />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.AddCourse.path}
-            element={
-              <Layout>
-                <AddCourse />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.AddAssessment.path}
-            element={
-              <Layout>
-                <AddAssignment />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.CreateCourse.path}
-            element={
-              <Layout>
-                <CreateCourse />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.showStudent.path}
-            element={
-              <Layout>
-                <AssignmentStudentPage />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.CreateAssessment.path}
-            element={
-              <Layout>
-                <CreateAssesment />
-              </Layout>
-            }
-          />
+          <Route path="/admin/" element={<CollegePrivate />}>
+            <Route
+              path={path.AddCourse.path}
+              element={
+                <Layout>
+                  <AddCourse />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.CreateCourse.path}
+              element={
+                <Layout>
+                  <CreateCourse />
+                </Layout>
+              }
+            />
+          </Route>
+          <Route path="/admin/" element={<AdminPrivate />}>
+            <Route
+              path={path.private.path}
+              element={<h1>this private route</h1>}
+            />
+            <Route
+              path={path.AdminDasboard.path}
+              element={
+                <Layout>
+                  <OrgDashBoard />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.AddAssessment.path}
+              element={
+                <Layout>
+                  <AddAssignment />
+                </Layout>
+              }
+            />
 
-          <Route
-            path={path.SidePooup.path}
-            element={
-              <Layout>
-                <SidePooup examName={'Java Mastery Challenge'} />
-              </Layout>
-            }
-          />
+            <Route
+              path={path.showStudent.path}
+              element={
+                <Layout>
+                  <AssignmentStudentPage />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.CreateAssessment.path}
+              element={
+                <Layout>
+                  <CreateAssesment />
+                </Layout>
+              }
+            />
 
-          <Route
-            path={path.ShowCourse.path}
-            element={
-              <Layout>
-                <ShowCourse />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.TermAndCondition.path}
-            element={
-              <Layout>
-                <TermandConditionPage />
-              </Layout>
-            }
-          />
-          <Route
-            path={path.ShowAssessment.path}
-            element={
-              <Layout>
-                <ShowAssessment />
-              </Layout>
-            }
-          />
+            <Route
+              path={path.SidePooup.path}
+              element={
+                <Layout>
+                  <SidePooup examName={'Java Mastery Challenge'} />
+                </Layout>
+              }
+            />
+
+            <Route
+              path={path.ShowCourse.path}
+              element={
+                <Layout>
+                  <ShowCourse />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.ShowAssessment.path}
+              element={
+                <Layout>
+                  <ShowAssessment />
+                </Layout>
+              }
+            />
+          </Route>
+
           {/* --------------------------student-------------------------- */}
-          <Route path={path.StudentPaper.path} element={<StudentPaper />} />
+          <Route path="/student/" element={<StudentPrivate />}>
+            <Route path={path.StudentPaper.path} element={<StudentPaper />} />
+            <Route
+              path="/student/dashboard"
+              element={
+                <Layout>
+                  <h1>student sashboard</h1>
+                </Layout>
+              }
+            />
+            <Route
+              path={path.TermAndCondition.path}
+              element={
+                <Layout>
+                  <TermandConditionPage />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.ShowAllAssessmentToStudent.path}
+              element={
+                <Layout>
+                  <AllAssissmentToStudent />
+                </Layout>
+              }
+            />
+          </Route>
+          {/* seprate exam portal */}
+          <Route path={path.exam.path} element={<ExamPortal />} />
           <Route
-            path="/student/dashboard"
+            path={`${path.StudentExamStarted.path}/:paperId`}
+            element={<ExamStarted />}
+          />
+          <Route
+            path={`${path.examVerify.path}/:paperId`}
+            element={<ExamVerification />}
+          />
+          <Route
+            path={path.examReport.path}
             element={
               <Layout>
-                <h1>student sashboard</h1>
+                <ReportCard />
               </Layout>
             }
           />
-
           <Route
-            path={path.ShowAllAssessmentToStudent.path}
-            element={
-              <Layout>
-                <AllAssissmentToStudent />
-              </Layout>
-            }
+            path={path.StudentPaperSubmitted.path}
+            element={<ExamSubmited />}
           />
         </Route>
-        {/* seprate exam portal */}
-        <Route path={path.exam.path} element={<ExamPortal />} />
-        <Route path={`${path.StudentExamStarted.path}/:paperId`} element={<ExamStarted />} />
-        <Route path={`${path.examVerify.path}/:paperId`} element={<ExamVerification />} />
-        <Route
-          path={path.examReport.path}
-          element={
-            <Layout>
-              <ReportCard />
-            </Layout>
-          }
-        />
-        <Route
-          path={path.StudentPaperSubmitted.path}
-          element={<ExamSubmited />}
-        />
+
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
