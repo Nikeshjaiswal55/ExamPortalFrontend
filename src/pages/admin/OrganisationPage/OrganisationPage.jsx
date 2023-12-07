@@ -17,7 +17,8 @@ import { path } from '../../../routes/RoutesConstant';
 import { toast } from 'react-toastify';
 
 const initialValues = { 'org-name': '', 'org-type': '' };
-export default function OrganisationPage() {
+
+export function OrganisationPage() {
   const navigate = useNavigate();
   const [postOrgDetails, { isLoading, isError, isSuccess: orgCreatedSuccess }] =
     usePostOrganisationDetailsMutation();

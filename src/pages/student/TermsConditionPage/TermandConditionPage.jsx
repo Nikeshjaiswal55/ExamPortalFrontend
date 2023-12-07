@@ -5,7 +5,7 @@ import { path } from '../../../routes/RoutesConstant';
 import Ima from '../../../assets/rules.jpg';
 import { CustomButton } from '../../../theme/Button/Buttons';
 
-export default function TermandConditionPage() {
+export const TermandConditionPage = () => {
   const navigate = useNavigate();
   const [checked, setChecked] = React.useState(false);
   return (
@@ -90,4 +90,4 @@ export default function TermandConditionPage() {
       </div>
     </div>
   );
-}
+};

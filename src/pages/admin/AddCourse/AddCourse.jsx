@@ -34,7 +34,7 @@ const InputFieldData = [
   },
 ];
 
-export default function AddCourse() {
+export function AddCourse() {
   const navigate = useNavigate();
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);

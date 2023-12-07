@@ -6,7 +6,7 @@ import Parallex from './components/Parallex/Parallex';
 import Contact from './components/contact/Contact';
 import Services from './components/services/Service';
 
-const LandingPage = () => {
+export const LandingPage = () => {
   const linkIds = {
     home: 'home',
     service: 'service',
@@ -34,4 +34,3 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;

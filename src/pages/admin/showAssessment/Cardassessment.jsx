@@ -7,14 +7,10 @@ import { Button, Placeholder, Spinner } from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
 import { toast } from 'react-toastify';
 // import {Button,Placeholder,Spinner} from 'react-bootstrap';
-import SidePooup from './AssessmentSidePooup/SidePooup';
-import Example from './AssessmentSidePooup/Modal';
+import { SidePooup } from './AssessmentSidePooup/SidePooup';
+import { Example } from './AssessmentSidePooup/Modal';
 
-export default function Cardassessment({
-  deleteAssignment,
-  paperId,
-  ...props
-}) {
+export function Cardassessment({ deleteAssignment, paperId, ...props }) {
   const stdData = JSON.parse(localStorage.getItem('stdData'));
   const navigate = useNavigate();
   const removeAssisstment = async () => {
@@ -100,7 +96,12 @@ export default function Cardassessment({
         </div>
       </div>
 
-      <Example show={showCard} {...props} paperId={paperId} setShowCard={setShowCard} />
+      <Example
+        show={showCard}
+        {...props}
+        paperId={paperId}
+        setShowCard={setShowCard}
+      />
     </>
   );
 }

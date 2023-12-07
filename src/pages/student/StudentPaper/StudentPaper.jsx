@@ -9,109 +9,8 @@ import {
 } from '../../../apis/Service';
 import { Loader } from '../../../components/Loader/Loader';
 import { useParams } from 'react-router';
-// const setA = [
-//     {
-//         id: "1",
-//         topic: "Basic's of  JavaScript",
-//         ques: "javascript is a _____ language",
-//         "opt1": "object Oriented ",
-//         "opt2": " single threaded ",
-//         "opt3": "both A and B",
-//         "opt4": " none of the above",
-//         ans: "both A and B",
-//     },
-//     {
-//         id: "2",
-//         topic: "data type",
-//         ques: "which of the following is not a datatype in javaScript ?",
-//         "opt1": "string ",
-//         "opt2": "number",
-//         "opt3": "boolean",
-//         "opt4": "int",
-//         ans: "int",
-//     },{
-//         id: "3",
-//         topic: "conditional ",
-//         ques: "How many Loops in javaScript ? ",
-//         "opt1": "2 ",
-//         "opt2": "5",
-//         "opt3": "8",
-//         "opt4": "6",
-//         ans: "5",
-//     }
-//     ,{
-//         id: "4",
-//         topic: "string ",
-//         ques: "which method is used to create Array from String ?  ",
-//         "opt1": "slice ",
-//         "opt2": "splice",
-//         "opt3": "split",
-//         "opt4": "join",
-//         ans: "split",
-//     },{
-//         id: "5",
-//         topic: "string ",
-//         ques: "Which Operator is called us Nullish Operator ? ",
-//         "opt1": "??",
-//         "opt2": "&&",
-//         "opt3": "||",
-//         "opt4": "none of the above",
-//         ans: "??",
-//     }
-//     ,{
-//         id: "6",
-//         topic: "Basic's of  JavaScript",
-//         ques: "javascript is a _____ language",
-//         "opt1": "script",
-//         "opt2": "scripting multithreaded",
-//         "opt3": "javascript",
-//         "opt4": "js",
-//         ans: "script",
-//     },
 
-//     {
-//         id: "7",
-//         topic: "Basic's of  JavaScript",
-//         ques: "What is the correct JavaScript syntax to change the content of the HTML element below?",
-//         "opt1": '#demo.innerHTML = "Hello World!";',
-//         "opt2": 'document.getElementById("demo").innerHTML = "Hello World!"; ',
-//         "opt3": 'document.getElementByName("p").innerHTML = "Hello World!";',
-//         "opt4": 'document.getElement("p").innerHTML = "Hello World!";',
-//         ans: 'document.getElementById("demo").innerHTML = "Hello World!"; ',
-//     },
-//     {
-//         id: "8",
-//         topic: "Basic's of  JavaScript",
-//         ques: "Where is the correct place to insert a JavaScript?",
-//         "opt1": 'The body section ',
-//         "opt2": 'Both the head section and the body section are correct ',
-//         "opt3": 'The head section',
-//         "opt4": 'none of above',
-//         ans: 'Both the head section and the body section are correct ',
-//     },
-//     {
-//         id: "9",
-//         topic: "Basic's of  JavaScript",
-//         ques: 'What is the correct syntax for referring to an external script called "x.js"?',
-//         "opt1": 'script src="x.js"',
-//         "opt2": 'script name="x.js"',
-//         "opt3": 'script href="x.js"',
-//         "opt4": 'link src="x.js"',
-//         ans: 'script src="x.js"',
-//     },
-//     {
-//         id: "10",
-//         topic: "Basic's of  JavaScript",
-//         ques: 'The external JavaScript file must contain the <script> tag.',
-//         "opt1": 'False',
-//         "opt2": 'true',
-//         "opt3": 'null',
-//         "opt4": 'undifiend',
-//         ans: 'False',
-//     },
-// ];
-
-export default function StudentPaper({ paperId }) {
+export const StudentPaper = ({ paperId }) => {
   const [setA, setSetA] = useState([]);
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
@@ -121,14 +20,11 @@ export default function StudentPaper({ paperId }) {
     paperId,
   ]);
   const [saveResult, otherDetails] = usePostSaveResultMutation();
-  console.log('otherDetails := ', otherDetails);
-  // console.log("data================",data)
   const timeString = '01:45:15';
   const [targetTime, setTargetTime] = useState(null);
   const progressBar = useRef(null);
   const [count, setCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(new Array(setA?.length));
-  // console.log("   selected option := ",selectedOption);
 
   // set data
   useEffect(() => {
@@ -159,7 +55,6 @@ export default function StudentPaper({ paperId }) {
   }
 
   async function submitPaperDetails(params) {
-    console.log(selectedOption, 'submited =====================');
     const questions = getUserAnswereWithQuestion();
     const result = {
       studentID: 'string',
@@ -173,7 +68,6 @@ export default function StudentPaper({ paperId }) {
         audios: null,
       },
     };
-    console.log('result in submit :  ', result);
     const resp = await saveResult([
       localStorage.getItem('accessToken'),
       result,
@@ -200,7 +94,6 @@ export default function StudentPaper({ paperId }) {
     console.log(e.target.value);
     console.log(id);
     update[id] = e.target.value;
-    console.log('update ========================', update);
   }
 
   return (
@@ -365,4 +258,4 @@ export default function StudentPaper({ paperId }) {
       )}
     </>
   );
-}
+};

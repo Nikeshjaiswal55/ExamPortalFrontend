@@ -4,7 +4,7 @@ import '../components/style.css';
 import { CreateComponent } from '../AddCourse/CreateComponent';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreateAssesment() {
+export function CreateAssesment() {
   const navigate = useNavigate();
   const assesmentData = {
     Img: creatImg,

@@ -4,14 +4,15 @@ import { useGetAllAssissmentOnstudentPageQuery } from '../../../apis/Service';
 import { Form } from 'react-bootstrap';
 import { IoSearchSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
-import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
-import Cardassessment, {
+import { SomethingWentWrong } from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import { NoDataFound } from '../../../components/NoDataFound/NoDataFound';
+import {
+  Cardassessment,
   CardassessmentPlaceholder,
 } from '../../admin/showAssessment/Cardassessment';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 
-export default function AllAssissmentToStudent() {
+export function AllAssissmentToStudent() {
   // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let stdId = JSON.parse(localStorage.getItem('stdData'));

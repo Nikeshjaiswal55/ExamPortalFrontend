@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../components/style.css';
 import { Link, useNavigate } from 'react-router-dom';
-import Cardassessment, { CardassessmentPlaceholder } from './Cardassessment';
+import { Cardassessment, CardassessmentPlaceholder } from './Cardassessment';
 import '../../../styles/common.css';
 import {
   useDeleteAssignmentMutation,
@@ -10,13 +10,13 @@ import {
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { Form, Spinner } from 'react-bootstrap';
 import { IoSearchSharp } from 'react-icons/io5';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
+import { NoDataFound } from '../../../components/NoDataFound/NoDataFound';
 import { path } from '../../../routes/RoutesConstant';
 import { Loader } from '../../../components/Loader/Loader';
-import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import { SomethingWentWrong } from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { toast } from 'react-toastify';
 
-export default function ShowAssessment() {
+export function ShowAssessment() {
   // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));

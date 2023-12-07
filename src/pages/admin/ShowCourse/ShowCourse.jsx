@@ -13,11 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { toast } from 'react-toastify';
-import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
+import {SomethingWentWrong} from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import {NoDataFound} from '../../../components/NoDataFound/NoDataFound';
 import { Loader } from '../../../components/Loader/Loader';
 
-export default function ShowCourse() {
+export const ShowCourse=()=> {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);

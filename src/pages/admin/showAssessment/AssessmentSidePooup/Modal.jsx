@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import SidePooup from './SidePooup';
+import {SidePooup} from './SidePooup';
 
-function Example({ show, setShowCard,paperId,  ...props }) {
+export function Example({ show, setShowCard,paperId,  ...props }) {
   const handleClose = () => setShowCard(false);
 
   return (
@@ -24,4 +24,3 @@ function Example({ show, setShowCard,paperId,  ...props }) {
   );
 }
 
-export default Example;

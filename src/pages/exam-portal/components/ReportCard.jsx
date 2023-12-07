@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import StudentAvidancePage from '../../student/StudentAvidence/StudentAvidancePage';
+import {StudentAvidancePage} from '../../student/StudentAvidence/StudentAvidancePage';
 
 export const ReportCard = () => {
   const randomImage = JSON.parse(localStorage.getItem('capturedImage'));

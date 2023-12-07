@@ -11,14 +11,14 @@ import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 import { FaRegRectangleList } from 'react-icons/fa6';
 import './layout.css';
-import Header from './Header/Header';
 import { path } from '../routes/RoutesConstant';
 import { CiLogout } from 'react-icons/ci';
 import { useAuth0 } from '@auth0/auth0-react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { Header } from './Header/Header';
 
-export default function Layout({ children }) {
+export function Layout({ children }) {
   // const Sidebar = ({children}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);

@@ -5,7 +5,7 @@ import { path } from '../../routes/RoutesConstant';
 import { useGetOrgernizationQuery, useGetUserQuery } from '../../apis/Service';
 import { useAuth0 } from '@auth0/auth0-react';
 import { UserWaiting } from '../../components/UserWaiting/UserWaiting';
-import SomethingWentWrong from '../../components/SomethingWentWrong/SomethingWentWrong';
+import {SomethingWentWrong} from '../../components/SomethingWentWrong/SomethingWentWrong';
 
 export const SaveUserOrg = () => {
   const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } =

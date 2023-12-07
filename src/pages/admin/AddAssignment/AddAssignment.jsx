@@ -28,7 +28,8 @@ import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import emailGif from '../../../assets/gif/mailgif.gif';
 import { toast } from 'react-toastify';
-export default function AddAssignment() {
+
+export function AddAssignment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];

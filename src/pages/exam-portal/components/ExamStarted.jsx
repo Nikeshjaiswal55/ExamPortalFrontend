@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ExamModal } from './ExamModal';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
-import StudentPaper from '../../student/StudentPaper/StudentPaper';
+import {StudentPaper} from '../../student/StudentPaper/StudentPaper';
 import { path } from '../../../routes/RoutesConstant';
 
 export const ExamStarted = () => {

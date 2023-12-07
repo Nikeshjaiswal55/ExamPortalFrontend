@@ -8,30 +8,28 @@ import {
   StudentPrivate,
 } from '../auth/Private';
 import { path } from './RoutesConstant';
-import OrgDashBoard from '../pages/admin/OrgDashboard/OrgDashBoard';
-
-import AddCourse from '../pages/admin/AddCourse/AddCourse';
+import { OrgDashBoard } from '../pages/admin/OrgDashboard/OrgDashBoard';
+import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
+import { AddCourse } from '../pages/admin/AddCourse/AddCourse';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
-import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
-import Layout from '../components/layout';
-import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
-import AssignmentStudentPage from '../pages/admin/AssignmentStudentPage/AssignmentStudentPage';
-import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
-import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
-import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
-import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
+import { OrganisationPage } from '../pages/admin/OrganisationPage/OrganisationPage';
+import { AssignmentStudentPage } from '../pages/admin/AssignmentStudentPage/AssignmentStudentPage';
+import { Layout } from '../components/layout';
+import { ShowCourse } from '../pages/admin/ShowCourse/ShowCourse';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
-import LandingPage from '../pages/LandingPage/LandingPage';
-import Example from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
-import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import { LandingPage } from '../pages/LandingPage/LandingPage';
+import { SidePooup } from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
 import { ExamPortal } from '../pages/exam-portal/ExamPortal';
 import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
 // import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import { ReportCard } from '../pages/exam-portal/components/ReportCard';
 import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
-import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
-import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
+import { StudentPaper } from '../pages/student/StudentPaper/StudentPaper';
+import { AllAssissmentToStudent } from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
+import { CreateAssesment } from '../pages/admin/AddAssignment/CreateAssesment';
+import { ShowAssessment } from '../pages/admin/showAssessment/Showassessment';
+
 
 export const Routes = () => {
   return (
@@ -138,14 +136,14 @@ export const Routes = () => {
                 </Layout>
               }
             />
-            <Route
+            {/* <Route
               path={path.TermAndCondition.path}
               element={
                 <Layout>
                   <TermandConditionPage />
                 </Layout>
               }
-            />
+            /> */}
             <Route
               path={path.ShowAllAssessmentToStudent.path}
               element={

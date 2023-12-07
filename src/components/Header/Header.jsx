@@ -2,7 +2,7 @@ import React from 'react';
 import {FaUserAlt} from 'react-icons/fa';
 import './Header.css';
 
-export default function Header({isOpen}) {
+export function Header({isOpen}) {
   const user = JSON.parse(localStorage.getItem("users"));
   console.log(user)
   return (

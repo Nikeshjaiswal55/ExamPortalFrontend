@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/Table';
 import React from 'react';
-import TrOrganisation from './TrOrganisation';
+import { TrOrganisation } from './TrOrganisation';
 
 const style = { backgroundColor: 'var(--white-100)' };
 const styleRow = { width: '150px', fontSize: '16px', color: 'var(--grey)' };
@@ -32,7 +32,7 @@ const rowData = [
   },
 ];
 
-export default function TableResponsive() {
+export const TableResponsive = () => {
   return (
     <>
       <Table responsive className="row  w-100 ">
@@ -66,4 +66,4 @@ export default function TableResponsive() {
       </Table>
     </>
   );
-}
+};

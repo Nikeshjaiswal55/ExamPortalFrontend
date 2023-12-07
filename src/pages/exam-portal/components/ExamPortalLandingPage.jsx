@@ -2,7 +2,7 @@ import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
-import TermandConditionPage from '../../student/TermsConditionPage/TermandConditionPage';
+import {TermandConditionPage} from '../../student/TermsConditionPage/TermandConditionPage';
 
 export const ExamPortalLandingPage = () => {
   const navigate = useNavigate();

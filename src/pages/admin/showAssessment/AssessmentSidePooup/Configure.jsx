@@ -5,7 +5,7 @@ import { InputField } from '../../../../theme/InputField/InputField';
 import { CustomButton } from '../../../../theme/Button/Buttons';
 import * as yup from 'yup';
 
-export default function Configure({ ConfigureProps }) {
+export function Configure({ ConfigureProps }) {
   const getOrgdata = localStorage.getItem('orgData');
   const [duration, setDuration] = useState(ConfigureProps.examDuration);
   console.log(ConfigureProps);

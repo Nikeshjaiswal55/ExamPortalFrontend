@@ -5,7 +5,7 @@ import '../../../styles/common.css';
 import { path } from '../../../routes/RoutesConstant';
 import { Table } from 'react-bootstrap';
 
-export default function StudentAvidancePage() {
+export  function StudentAvidancePage() {
   const navigate = useNavigate();
   const randomImage = JSON.parse(localStorage.getItem('capturedImage'));
   const ssImage = JSON.parse(localStorage.getItem('ss'));

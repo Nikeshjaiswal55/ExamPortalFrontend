@@ -5,7 +5,7 @@ import { useGetStudentOnPerticularAssignmentQuery } from '../../../apis/Service'
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../../components/Loader/Loader';
 
-export default function AssignmentStudentPage() {
+export function AssignmentStudentPage() {
   const { paperId } = useParams();
   const { data, isSuccess, isLoading, isError } =
     useGetStudentOnPerticularAssignmentQuery(paperId);

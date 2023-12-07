@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import '../components/style.css';
-import TableResponsive from './TableResponsive';
+import { TableResponsive } from './TableResponsive';
 
-export default function OrgDashBoard() {
+export function OrgDashBoard() {
   return (
     <>
       <div className="row m-0 p-0 justify-content-end">

@@ -3,9 +3,9 @@ import { Nav, Spinner, Tab } from 'react-bootstrap';
 
 import { CustomButton } from '../../../../theme/Button/Buttons';
 
-import Configure from './Configure';
+import { Configure } from './Configure';
 import { usePutActivePaperMutation } from '../../../../apis/Service';
-function SidePooup({ paperId, ...props }) {
+export function SidePooup({ paperId, ...props }) {
   const [paperActive, setPaperActive] = useState(props._Active);
   const [publish, { isSuccess, isLoading }] = usePutActivePaperMutation();
   const activePaper = async () => {
@@ -85,5 +85,3 @@ function SidePooup({ paperId, ...props }) {
     </>
   );
 }
-
-export default SidePooup;
