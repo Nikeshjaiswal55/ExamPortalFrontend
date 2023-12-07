@@ -1,0 +1,29 @@
+{
+    "getTop5Assesment": [
+        {
+            "id": 1,
+            "assessmentName": "Iteg",
+            "marks": 100
+        },
+        {
+            "id": 1,
+            "assessmentName": "SVS",
+            "marks": 80
+        },
+        {
+            "id": 1,
+            "assessmentName": "SNS",
+            "marks": 45
+        },
+        {
+            "id": 1,
+            "assessmentName": "Meg",
+            "marks": 65
+        },
+        {
+            "id": 5,
+            "assessmentName": "beg",
+            "marks": 25
+        }
+    ]
+}
