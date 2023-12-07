@@ -14,13 +14,13 @@ import {
 import { InputField } from '../../../theme/InputField/InputField';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { path } from '../../../routes/RoutesConstant';
+import { toast } from 'react-toastify';
 
 const initialValues = { 'org-name': '', 'org-type': '' };
 export default function OrganisationPage() {
   const navigate = useNavigate();
-  const [postOrgDetails, { isLoading }] = usePostOrganisationDetailsMutation();
-  const orgdata = JSON.parse(localStorage.getItem('orgData'));
-  console.log(orgdata, 'org');
+  const [postOrgDetails, { isLoading, isError, isSuccess: orgCreatedSuccess }] =
+    usePostOrganisationDetailsMutation();
   const {
     data: getOrgdata,
     isLoading: orgLoading,
@@ -34,6 +34,37 @@ export default function OrganisationPage() {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (orgCreatedSuccess) {
+      toast.success('organization created successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      navigate(path.AdminDasboard.path)
+    }
+  }, [orgCreatedSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isError]);
+
   async function onGetStarted(values) {
     const users = JSON.parse(localStorage.getItem('users'));
     const accessToken = localStorage.getItem('accessToken');
@@ -46,15 +77,12 @@ export default function OrganisationPage() {
       email: users.email,
       picture: users.picture,
       userId: SubIdSplit(users.sub),
+      role: 'OG',
     };
-    const promise = await postOrgDetails({ ...storeData, accessToken });
-    if (promise.data) {
-      navigate(path.CreateCourse.path);
-    } else {
-      // <ErrorModal errorModalText={"sorry your connection lost or api failed "} />
-      alert('sorry your connection lost or api failed ');
-    }
+    await postOrgDetails({ ...storeData, accessToken });
+    localStorage.setItem('orgtype', storeData.orgnizationType);
   }
+  const orgdata = JSON.parse(localStorage.getItem('orgData'));
 
   return (
     <>
@@ -105,12 +133,12 @@ export default function OrganisationPage() {
                     inputValue={values['org-name']}
                     formGroupId={'admin-organisation-name'}
                     placeholder={'Organisation Name'}
-                    labelText={'Organisation Name'}
+                    labelText={'Organization Name'}
                   />
                   {/* <Row className="my-3 mx-3"> */}
                   <Form.Group className="my-1 my-md-4 mx-3">
                     <Form.Label className=" fw-bold">
-                      Organisation Type :
+                      Organization Type :
                     </Form.Label>
                     <Form.Select
                       aria-label="Select Type "

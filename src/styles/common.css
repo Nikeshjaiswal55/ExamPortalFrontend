@@ -8,6 +8,7 @@
     --white-500: #CFCFCF;
     --grey: #4E4E4E;
     --grey-100: #232323;
+    --main-div: #e6e6ed;
     --inputFiedColor: #707070;
 }
 
@@ -24,7 +25,7 @@
 }
 
 .main-container {
-    background-color: #e6e6ed;
+    background-color: var(--main-div);
     height: calc(100vh - 52px);
     border-radius: 5px;
     position: relative;
@@ -44,4 +45,14 @@
 .input-border {
     border-color: var(--inputFiedColor) !important;
     border-radius: 10px !important;
+}
+
+.total-assissment-card {
+    background: rgb(78, 78, 78);
+    background: radial-gradient(circle, rgba(78, 78, 78, 1) 0%, rgba(78, 78, 78, 1) 10%, rgba(11, 9, 14, 1) 83%);
+}
+
+.total-assissment-card-selected {
+    background: rgb(232, 232, 232);
+    background: radial-gradient(circle, rgba(232, 232, 232, 1) 0%, rgba(201, 201, 201, 1) 10%, rgba(178, 178, 184, 1) 87%);
 }

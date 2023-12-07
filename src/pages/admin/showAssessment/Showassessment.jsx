@@ -3,7 +3,10 @@ import '../components/style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Cardassessment, { CardassessmentPlaceholder } from './Cardassessment';
 import '../../../styles/common.css';
-import { useGetAssignmentQuery } from '../../../apis/Service';
+import {
+  useDeleteAssignmentMutation,
+  useGetAssignmentQuery,
+} from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { Form, Spinner } from 'react-bootstrap';
 import { IoSearchSharp } from 'react-icons/io5';
@@ -14,16 +17,21 @@ import SomethingWentWrong from '../../../components/SomethingWentWrong/Something
 import { toast } from 'react-toastify';
 
 export default function ShowAssessment() {
+  // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
-  const accessToken = localStorage.getItem('accessToken');
   const {
     data: assignmentData,
     isLoading,
     isError,
     isSuccess,
-  } = useGetAssignmentQuery({ accessToken, id: userId });
+  } = useGetAssignmentQuery({ id: userId });
+
+  const [
+    deleteAssignment,
+    { isError: deleteError, isLoading: deleteloading, isSuccess: dltSuccess },
+  ] = useDeleteAssignmentMutation();
 
   const [filterData, setFilterData] = useState(assignmentData);
   const [input, setInput] = useState();
@@ -36,11 +44,8 @@ export default function ShowAssessment() {
   useEffect(() => {
     if (input) {
       const filterdata = assignmentData.filter((item) =>
-        item.examDetails.assessmentName
-          .toLowerCase()
-          .includes(input.toLowerCase())
+        item.assessmentName.toLowerCase().includes(input.toLowerCase())
       );
-      console.log(filterdata.length);
       filterdata.length === 0
         ? setSearchDataFound(true)
         : setSearchDataFound(false);
@@ -48,12 +53,12 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input]);
+  }, [input, dltSuccess]);
 
   useEffect(() => {
     if (isError) {
       toast.error('something went wrong!!😑', {
-        position: 'top-center',
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -63,7 +68,7 @@ export default function ShowAssessment() {
         theme: 'dark',
       });
     }
-  }, [isError]);
+  }, [isError, deleteError]);
 
   return (
     <>
@@ -117,23 +122,21 @@ export default function ShowAssessment() {
             </NoDataFound>
           )}
         </div>
-        {isLoading ? (
+        {isLoading || deleteloading ? (
           <div className="row m-0 p-0  ">
             {[1, 2, 3, 4, 5, 6].map((item) => (
               <CardassessmentPlaceholder />
             ))}
           </div>
         ) : (
-          // <div className=" position-absolute top-50 start-50  translate-middle ">
-          //   <Loader />
-          // </div>
           <div className="row m-0 p-0  ">
             {assignmentData &&
               filterData?.map((assessmentDetails, index) => (
                 <Cardassessment
                   key={index}
                   paperId={assessmentDetails.paperId}
-                  {...assessmentDetails.examDetails}
+                  {...assessmentDetails}
+                  deleteAssignment={deleteAssignment}
                 />
               ))}
           </div>

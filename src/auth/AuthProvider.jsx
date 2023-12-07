@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
     <Auth0Provider
       domain={AUTH0KEYS.DOMAIN}
       clientId={AUTH0KEYS.CLIENT_ID}
+      useRefreshTokens={true}
       authorizationParams={{
         redirect_uri: AUTH0KEYS.REDIRECT_URL,
         audience: AUTH0KEYS.AUDIENCE,

@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import {Button,FormCheck,Form,FormLabel,Spinner,Modal} from 'react-bootstrap';
+import {
+  Button,
+  FormCheck,
+  Form,
+  FormLabel,
+  Spinner,
+  Modal,
+  Alert,
+} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
 import { ImCross } from 'react-icons/im';
@@ -11,19 +19,31 @@ import { MdUpload } from 'react-icons/md';
 import * as yup from 'yup';
 import {
   usePostAssignmentMutation,
-  useGetOrgernizationQuery,
+  useGetAllCoursesQuery,
+  useInvitedStudentByMailMutation,
 } from '../../../apis/Service';
 import { path } from '../../../routes/RoutesConstant';
-import {FaEye} from 'react-icons/fa';
-import {ExcelDataReader} from '../../../utils/ExcelDataReader';
+import { FaEye } from 'react-icons/fa';
+import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
+import emailGif from '../../../assets/gif/mailgif.gif';
+import { toast } from 'react-toastify';
 export default function AddAssignment() {
   const navigate = useNavigate();
+  let userId = JSON.parse(localStorage.getItem('users'));
+  userId = userId.sub.split('|')[1];
+  const orgType = localStorage.getItem('orgtype');
+  const getOrgdata = JSON.parse(localStorage.getItem('orgData'));
+
   const inputFile = useRef(null);
-  const [selectedFile,setSelectedFile] = useState(null);
-  const [showPreview,setShowPreview] = useState(false);
-  const [showError,setShowError] = useState(false);
-  const [excel,setExcel] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [excel, setExcel] = useState([]);
+  const [showAssignment, setShowAssignment] = useState(false);
+  const [option, setOption] = useState('');
+  const [email, setEmail] = useState();
+  const [duration, setDuration] = useState('');
 
   const handleErrorClose = () => setShowError(false);
   const handleErrorShow = () => setShowError(true);
@@ -32,40 +52,53 @@ export default function AddAssignment() {
   };
   const handleRemoveFile = () => {
     setSelectedFile(null);
-    if(inputFile.current) {
-      console.log(inputFile);
-      inputFile.current.value = "";
-      inputFile.current.type = "text";
-      inputFile.current.type = "file";
+    if (inputFile.current) {
+      inputFile.current.value = '';
+      inputFile.current.type = 'text';
+      inputFile.current.type = 'file';
     }
+    setExcel([]);
   };
 
-
-  const accessToken = localStorage.getItem('accessToken');
-  let userId = JSON.parse(localStorage.getItem('users'));
-  userId = userId.sub.split('|')[1];
-
-  const [showAssignment, setShowAssignment] = useState(false);
-  const [option, setOption] = useState('');
-  const [email, setEmail] = useState();
-  const [duration, setDuration] = useState('');
-  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess }] =
-    usePostAssignmentMutation();
-  const { data: getOrgdata, isSuccess } = useGetOrgernizationQuery({
-    accessToken,
-    id: userId,
-  });
-  useEffect(() => {
-    if (isSuccess) {
-      console.log('-----', getOrgdata);
-    }
-  }, [isSuccess, getOrgdata]);
+  const [
+    AssigmnetData,
+    { isLoading, data, isSuccess: AssignmentSuccess, isError },
+  ] = usePostAssignmentMutation();
+  const [inviteStudent, { isLoading: invitedLoading, isError: inviteError }] =
+    useInvitedStudentByMailMutation();
+  const { data: AllCourse } = useGetAllCoursesQuery({ userId });
 
   useEffect(() => {
     if (AssignmentSuccess) {
-      navigate(path.ShowAssessment.path);
+      toast.success('assessment created successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+
+      // navigate(path.ShowAssessment.path);
     }
-  });
+  }, [AssignmentSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isError, inviteError]);
 
   const addAssignmentSchema = yup.object().shape({
     assessementName: yup.string().required('Please enter assessement name'),
@@ -74,19 +107,25 @@ export default function AddAssignment() {
     // examBranch: yup.string().required('Please enter branch name'),
     // examSession: yup.string().required('Please enter session name'),
     // email: yup.array().required('Please enter assessement emails'),
-    email: yup.array().of(yup.string().matches(
-      /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
-      'Invalid email formats'
-    )).required()
-      .test('email-provider','Email provider not allowed',(value) => {
-        if(/(email|yahoo)\.com$/.test(value)) {
+    email: yup
+      .array()
+      .of(
+        yup
+          .string()
+          .matches(
+            /^(?=.*[a-zA-Z]).*^(?!.*@(email|yahoo)\.com).*[A-Za-z0-9]+@[A-Za-z0.9.-]+\.[A-Za-z]{2,4}$/,
+            'Invalid email formats'
+          )
+      )
+      .required()
+      .test('email-provider', 'Email provider not allowed', (value) => {
+        if (/(email|yahoo)\.com$/.test(value)) {
           return false;
         }
         return true;
       }),
     questions: yup.array().required('Please enter assessement name'),
-    'excelFile': yup.mixed()
-      .required('File is required'),
+    // 'excelFile': yup.mixed().required('File is required'),
   });
 
   const handleDurationChange = (event, handleChange) => {
@@ -140,14 +179,6 @@ export default function AddAssignment() {
       onInputChange: (e) => handleDurationChange(e, handleChange),
       inputValue: duration,
     },
-    // {
-    //   inputId: 'exam-rounds',
-    //   inputName: 'examRound',
-    //   formGroupId: 'exam-group-rounds',
-    //   placeholder: 'number of assessement rounds',
-    //   labelText: 'enter no. of assessement rounds',
-    //   colClassName: 'col-md-6 my-3',
-    // },
     {
       inputId: 'exam-session',
       inputName: 'examSession',
@@ -155,30 +186,40 @@ export default function AddAssignment() {
       placeholder: 'select of assessement session',
       labelText: 'enter assessement session',
       colClassName: 'col-md-6  my-3',
-      Orgtype: getOrgdata?.orgnizationType,
+      Orgtype: orgType,
     },
-  ];
-
-  const branchOptions = [
-    'bca',
-    'bba',
-    'bcom',
-    'btech',
-    'mca',
-    'mba',
-    'mcom',
-    'mtech',
+    {
+      inputId: 'total-marks',
+      inputName: 'totalMarks',
+      formGroupId: 'total-group-marks',
+      placeholder: 'enter total marks',
+      labelText: 'enter total marks',
+      colClassName: 'col-md-6  my-3',
+    },
+    {
+      inputId: 'minimum-marks',
+      inputName: 'minimumMarks',
+      formGroupId: 'minimum-group-marks',
+      placeholder: 'enter minimum marks',
+      labelText: 'enter minimum marks',
+      colClassName: 'col-md-6  my-3',
+    },
   ];
 
   const handleSubmits = (e, handleSubmit) => {
     e.preventDefault();
-    // e.stopPropagation();
     handleSubmit();
   };
 
   return (
     <>
-      <div className=" row w-100 rounded-5 m-0 p-0 justify-content-end">
+      <div className="row w-100 rounded-5 m-0 p-0 justify-content-end">
+        {invitedLoading && (
+          <Alert key={'primary'} className="py-2" variant={'primary'}>
+            <img src={emailGif} height={'40px'} className="mx-3" />
+            sending mails to students...
+          </Alert>
+        )}
         <Formik
           initialValues={{
             assessementName: '',
@@ -187,49 +228,54 @@ export default function AddAssignment() {
             examRound: 1,
             examBranch: '',
             examSession: '',
+            totalMarks: '',
+            minimumMarks: '',
             email: [],
             questions: [
               { questions: '', options: [], correctAns: '', userAns: '' },
             ],
-            'excelFile': ''
+            excelFile: '',
           }}
           onSubmit={async (values) => {
             values.examDuration = duration + '';
-            if(excel.length) {
-              console.log("-----------------------data submit---------------");
+            if (excel.length || values.email.length || values.branch !== '') {
               const examDetails = {
-              examDuration: values.examDuration,
-              examMode: 'Online',
-              examRounds: 2,
-              paperChecked: false,
-              branch: values.examBranch,
-              session: values.examSession,
-              assessmentName: values.assessementName,
-            };
+                examDuration: values.examDuration,
+                examMode: 'Online',
+                examRounds: 2,
+                paperChecked: false,
+                branch: values.examBranch,
+                session: values.examSession,
+                assessmentName: values.assessementName,
+                totalMarks: values.totalMarks,
+                minimum_marks: values.minimumMarks,
+                is_Active: false,
+                is_Setup: true,
+                is_attempted: false,
+              };
+              let emails = excel.reduce(
+                (arr, currentvalue) => {
+                  arr.push(currentvalue.email);
+                  return arr;
+                },
+                [...values.email]
+              );
 
-            console.log({
-              examDetails,
-              email: values.email,
-              questions: values.questions,
-              userId,
-              token: accessToken,
-            });
-              let emails = excel.reduce((arr,currentvalue) => {
-                arr.push(currentvalue.email);
-                return arr;
-              },[...values.email]);
-              console.log("emails :------ ",emails);
-
-            await AssigmnetData({
-              examDetails,
-              // emails: values.email,
-              emails: emails,
-              questions: values.questions,
-              userId,
-              accessToken,
-              orgnizationId: getOrgdata?.orgnizationId,
-              token: accessToken,
-            });
+              await AssigmnetData({
+                examDetails,
+                questions: values.questions,
+                userId,
+                orgnizationId: getOrgdata?.orgnizationId,
+              }).then((res) => {
+                if (res?.data?.paperId) {
+                  inviteStudent({
+                    userId: res?.data?.userId,
+                    paperId: res?.data?.paperId,
+                    orgnizationId: res?.data?.orgnizationId,
+                    emails: emails,
+                  });
+                }
+              });
             }
           }}
           validationSchema={addAssignmentSchema}
@@ -241,9 +287,12 @@ export default function AddAssignment() {
               }}
             >
               <div className="row m-0  d-flex ">
-                <div className="col-md-6" style={{ height: '90vh' }}>
+                <div
+                  className="col-md-6  position-relative"
+                  style={{ height: '90vh' }}
+                >
                   <div className="pt-3 pe-lg-5 mt-lg-2">
-                    <p className="text-capitalize fw-bold fs-4 ">
+                    <p className="text-capitalize fw-bold fs-4  position-sticky top-0  ">
                       create assessment
                     </p>
                     <p>
@@ -255,161 +304,204 @@ export default function AddAssignment() {
                       needs.
                     </p>
                   </div>
-                  <div className="row">
-                    {InputFieldData.map((inputData) =>
-                      inputData.Orgtype == 'company' ? (
-                        ''
-                      ) : (
-                        <InputField
-                          inputId={inputData.inputId}
-                          inputName={inputData.inputName}
-                          formGroupId={inputData.formGroupId}
-                          placeholder={inputData.placeholder}
-                          labelText={inputData.labelText}
-                          onInputBlur={handleBlur}
-                          onInputChange={
-                            inputData.onInputChange
-                              ? (e) => handleDurationChange(e, handleChange)
-                              : handleChange
+                  <div
+                    className="overflow-auto"
+                    style={{ height: 'calc(100vh - 16rem)' }}
+                  >
+                    <div className="row">
+                      {InputFieldData.map((inputData) =>
+                        inputData.Orgtype == 'company' ? (
+                          ''
+                        ) : (
+                          <InputField
+                            inputId={inputData.inputId}
+                            inputName={inputData.inputName}
+                            formGroupId={inputData.formGroupId}
+                            placeholder={inputData.placeholder}
+                            labelText={inputData.labelText}
+                            onInputBlur={handleBlur}
+                            onInputChange={
+                              inputData.onInputChange
+                                ? (e) => handleDurationChange(e, handleChange)
+                                : handleChange
+                            }
+                            formGroupClassName={inputData.colClassName}
+                            inputValue={inputData.inputValue}
+                          />
+                        )
+                      )}
+                    </div>
+                    {orgType == 'company' ? (
+                      ''
+                    ) : (
+                      <>
+                        <label className="text-capitalize fw-bold">
+                          Select Candidate Course{' '}
+                          <span className="fw-normal">
+                            (note: only selected course student will get exam
+                            link)
+                          </span>
+                        </label>
+                        <Form.Select
+                          className="my-3 rounded-3 border px-2"
+                          aria-label="Default select example"
+                          name="examBranch"
+                          value={values.examBranch} // Make sure to set the value prop
+                          onChange={handleChange}
+                          disabled={
+                            values.email.length > 0 || excel.length > 0
+                              ? true
+                              : false
                           }
-                          formGroupClassName={inputData.colClassName}
-                          inputValue={inputData.inputValue}
-                        />
-                      )
-                    )}
-                  </div>
-                  {getOrgdata?.orgnizationType == 'company' ? (
-                    ''
-                  ) : (
-                    <>
-                      <label className="text-capitalize fw-bold">
-                        Select Candidate Course{' '}
-                        <span className="fw-normal">
-                          (note: only selected course student will get exam
-                          link)
-                        </span>
-                      </label>
-                      <Form.Select
-                        className="my-3 rounded-3 border px-2"
-                        aria-label="Default select example"
-                        name="examBranch"
-                        value={values.examBranch} // Make sure to set the value prop
-                        onChange={handleChange}
-                      >
-                        <option value="">Select Course</option>
-                        {branchOptions.map((branch) => (
-                          <option key={branch} value={branch}>
-                            {branch}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <p className="text-capitalize fw-bold m-0 p-0 text-center">
-                        OR
-                      </p>
-                    </>
-                  )}
-                  <label className="text-capitalize fw-bold">
-                    Enter Candidate Emails
-                  </label>
-                  <div className="my-3 rounded-3 border py-3 px-2">
-                    <FieldArray name="email">
-                      {({ push, remove }) => (
-                        <div className="d-flex gap-2 align-items-center flex-wrap">
-                          {values.email.map((email, index) => (
-                            <div
-                              key={index}
-                              className="d-flex  ps-3 pe-2 align-items-center rounded-5 "
-                              style={{ backgroundColor: 'var(--grey)' }}
-                            >
-                              <div className="py-2 border-end pe-3 text-light">
-                                {email}
-                              </div>
-                              <IoClose
-                                color="white"
-                                size={30}
-                                className="cursor-pointer p-1"
-                                onClick={() => remove(index)}
-                              />
-                            </div>
+                        >
+                          <option value="">Select Course</option>
+                          {AllCourse?.map((branch) => (
+                            <option key={branch} value={branch.course_name}>
+                              {branch.course_name}
+                            </option>
                           ))}
-                          <input
-                            type="email"
-                            value={email}
-                            // name={`email[${index}]`}
-                            placeholder="Enter email"
-                            className=" py-2 px-3 rounded-5 form-control border focus-ring border-0 focus-ring-light"
-                            onChange={(e) => setEmail(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' && email.trim() !== '') {
-                                e.preventDefault();
-                                values.email.push(email);
-                                setEmail('');
+                        </Form.Select>
+                        <p className="text-capitalize fw-bold m-0 p-0 text-center">
+                          OR
+                        </p>
+                      </>
+                    )}
+                    <label className="text-capitalize fw-bold">
+                      Enter Candidate Emails
+                    </label>
+                    <div className="my-3 rounded-3 border py-3 px-2">
+                      <FieldArray name="email">
+                        {({ push, remove }) => (
+                          <div className="d-flex gap-2 align-items-center flex-wrap">
+                            {values.email.map((email, index) => (
+                              <div
+                                key={index}
+                                className="d-flex  ps-3 pe-2 align-items-center rounded-5 "
+                                style={{ backgroundColor: 'var(--grey)' }}
+                              >
+                                <div className="py-2 border-end pe-3 text-light">
+                                  {email}
+                                </div>
+                                <IoClose
+                                  color="white"
+                                  size={30}
+                                  className="cursor-pointer p-1"
+                                  onClick={() => remove(index)}
+                                />
+                              </div>
+                            ))}
+                            <input
+                              type="email"
+                              value={email}
+                              // name={`email[${index}]`}
+                              placeholder="Enter email"
+                              disabled={
+                                values.examBranch || excel.length > 0
+                                  ? true
+                                  : false
+                              }
+                              className=" py-2 px-3 rounded-5 form-control border focus-ring border-0 focus-ring-light"
+                              onChange={(e) => setEmail(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' && email.trim() !== '') {
+                                  e.preventDefault();
+                                  values.email.push(email);
+                                  setEmail('');
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
+                      </FieldArray>
+                      <ErrorMessage
+                        name="email"
+                        component={'div'}
+                        className=" input-error"
+                      />
+                    </div>
+
+                    <p className="text-capitalize fw-bold m-0 p-0 text-center">
+                      OR
+                    </p>
+                    {/* ------------------------------------------------------------------- */}
+                    <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+                      <>
+                        {' '}
+                        <label for="files" className=" cursor-pointer">
+                          {' '}
+                          Upload student email excel list
+                        </label>
+                        <input
+                          id="files"
+                          style={{
+                            visibility: 'hidden',
+                            width: '1px',
+                            height: '1px',
+                          }}
+                          disabled={
+                            values.examBranch || values.email.length > 0
+                              ? true
+                              : false
+                          }
+                          name="excelFile"
+                          ref={inputFile}
+                          accept=".xlsx, .xls, .xlsm, .xlsb, .csv,.xlam ,.xltx , .xltm"
+                          onChange={async (e) => {
+                            handleFileChange(e);
+                            handleChange(e);
+                            let arr = await ExcelDataReader(e.target.files[0]);
+                            if (arr instanceof String) {
+                              console.log(arr);
+                              setExcel(arr);
+                              handleErrorShow();
+                            } else {
+                              setExcel([...arr]);
+                              console.log('excel data =========', arr);
+                            }
+                          }}
+                          onBlur={handleBlur}
+                          type="file"
+                        />
+                      </>
+                      <MdUpload size={30} className=" p-1" />
+                    </div>
+                    <div className="my-0 py-1 d-flex justify-content-center  ">
+                      {selectedFile ? (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <span>{selectedFile.name}</span>
+                          <button
+                            type="button"
+                            onClick={handleRemoveFile}
+                            className=" fw-bold cursor-pointer ms-2 px-1 border-0 text-danger rounded-circle"
+                            title="remove file"
+                          >
+                            &#x2715;
+                          </button>
+                          <button
+                            type="button"
+                            title="Show Preview "
+                            className=" cursor-pointer border border-0 ms-2 px-1"
+                            onClick={() => {
+                              if (excel.length && selectedFile) {
+                                setShowPreview(true);
+                              } else {
+                                alert(excel);
                               }
                             }}
-                          />
+                          >
+                            {' '}
+                            <FaEye />{' '}
+                          </button>
                         </div>
-                      )}
-                    </FieldArray>
-                    <ErrorMessage name='email' component={"div"} className=' input-error' />
-                  </div>
-
-                  <p className="text-capitalize fw-bold m-0 p-0 text-center">
-                    OR
-                  </p>
-                  {/* ------------------------------------------------------------------- */}
-                  <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
-                    <>  <label for="files" className=' cursor-pointer' > Upload student email excel list</label>
-                      <input id="files" style={{visibility: "hidden",width: "1px",height: "1px"}}
-                        name="excelFile"
-                        ref={inputFile}
-                        accept=".xlsx, .xls, .xlsm, .xlsb, .csv,.xlam ,.xltx , .xltm"
-                        onChange={async (e) => {
-                          handleFileChange(e);
-                          handleChange(e);
-                          let arr = await ExcelDataReader(e.target.files[0]);
-                          if(arr instanceof String) {
-                            console.log(arr);
-                            setExcel(arr);
-                            handleErrorShow();
-                          } else {
-                            setExcel([...arr]);
-                            console.log("excel data =========",arr);
-                          }
-
-                        }}
-                        onBlur={handleBlur}
-                        type="file"
-                      /></>
-                    <MdUpload size={30} className=" p-1" />
-
-                  </div>
-                  <div className="my-0 py-1 d-flex justify-content-center  ">
-                    {selectedFile ? <div style={{display: 'flex',alignItems: 'center'}}>
-                      <span>{selectedFile.name}</span>
-                      <button
-                        type="button"
-                        onClick={handleRemoveFile}
-                        className=' fw-bold cursor-pointer ms-2 px-1 border-0 text-danger rounded-circle'
-                        title='remove file'
-                      >
-                        &#x2715;
-                      </button >
-                      <button type='button' title='Show Preview '
-                        className=' cursor-pointer border border-0 ms-2 px-1'
-                        onClick={() => {
-                          if(excel.length && selectedFile) {
-                            console.log("======================= onclick show previw");
-                            setShowPreview(true);
-                          } else {
-                            alert(excel);
-                          }
-                        }}
-                      > <FaEye /> </button>
+                      ) : null}
                     </div>
-                      : null}
-                  </div>
 
-                  <ErrorMessage component={"div"} className=' input-error  my-1  mx-5 ' name='excelFile' />
+                    <ErrorMessage
+                      component={'div'}
+                      className=" input-error  my-1  mx-5 "
+                      name="excelFile"
+                    />
+                  </div>
                 </div>
                 <div className="col-md-6 pe-1 bg-white position-relative">
                   <div className="ps-3  mt-lg-2  ">
@@ -586,22 +678,36 @@ export default function AddAssignment() {
           )}
         </Formik>
       </div>
-      {excel instanceof String ?
+      {excel instanceof String ? (
         <>
           <Modal show={showError} onHide={handleErrorClose}>
-            <Modal.Header >
+            <Modal.Header>
               <Modal.Title>Invalid File Error </Modal.Title>
             </Modal.Header>
-            <Modal.Body>{JSON.stringify(excel).replaceAll('"'," ")}</Modal.Body>
+            <Modal.Body>
+              {JSON.stringify(excel).replaceAll('"', ' ')}
+            </Modal.Body>
             <Modal.Footer>
-              <Button variant="primary" onClick={
-                () => {handleRemoveFile(); handleErrorClose()}}>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  handleRemoveFile();
+                  handleErrorClose();
+                }}
+              >
                 Ok
               </Button>
             </Modal.Footer>
           </Modal>
-        </> : null}
-      {showPreview && excel.length > 0 && <ExcelShower showFlag={true} setShowPreview={setShowPreview} excelData={excel} />}
+        </>
+      ) : null}
+      {showPreview && excel.length > 0 && (
+        <ExcelShower
+          showFlag={true}
+          setShowPreview={setShowPreview}
+          excelData={excel}
+        />
+      )}
     </>
   );
 }
