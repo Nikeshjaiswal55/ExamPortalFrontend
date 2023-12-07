@@ -1,5 +1,5 @@
 import React from 'react';
-import robot from '../../assets/gif/no_data_found.webp';
+import robot from '../../assets/gif/no_data_found.gif';
 
 const NoDataFound = ({ children }) => {
   return (

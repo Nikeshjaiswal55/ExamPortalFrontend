@@ -1,37 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import '../components/style.css';
 import { Link, useNavigate } from 'react-router-dom';
-import Cardassessment, { CardassessmentPlaceholder } from './Cardassessment';
-import '../../../styles/common.css';
-import {
-  useDeleteAssignmentMutation,
-  useGetAssignmentQuery,
-} from '../../../apis/Service';
-import { SubIdSplit } from '../../../utils/SubIdSplit';
-import { Form, Spinner } from 'react-bootstrap';
+import { useGetAllAssissmentOnstudentPageQuery } from '../../../apis/Service';
+import { Form } from 'react-bootstrap';
 import { IoSearchSharp } from 'react-icons/io5';
-import NoDataFound from '../../../components/NoDataFound/NoDataFound';
-import { path } from '../../../routes/RoutesConstant';
-import { Loader } from '../../../components/Loader/Loader';
-import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { toast } from 'react-toastify';
+import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import NoDataFound from '../../../components/NoDataFound/NoDataFound';
+import Cardassessment, {
+  CardassessmentPlaceholder,
+} from '../../admin/showAssessment/Cardassessment';
+import { SubIdSplit } from '../../../utils/SubIdSplit';
 
-export default function ShowAssessment() {
+export default function AllAssissmentToStudent() {
   // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
-  let userId = JSON.parse(localStorage.getItem('users'));
-  userId = SubIdSplit(userId.sub);
+  let stdId = JSON.parse(localStorage.getItem('stdData'));
   const {
     data: assignmentData,
     isLoading,
     isError,
     isSuccess,
-  } = useGetAssignmentQuery({ id: userId });
-
-  const [
-    deleteAssignment,
-    { isError: deleteError, isLoading: deleteloading, isSuccess: dltSuccess },
-  ] = useDeleteAssignmentMutation();
+  } = useGetAllAssissmentOnstudentPageQuery(stdId.userId);
 
   const [filterData, setFilterData] = useState(assignmentData);
   const [input, setInput] = useState();
@@ -46,6 +35,7 @@ export default function ShowAssessment() {
       const filterdata = assignmentData.filter((item) =>
         item.assessmentName.toLowerCase().includes(input.toLowerCase())
       );
+      console.log(filterdata.length);
       filterdata.length === 0
         ? setSearchDataFound(true)
         : setSearchDataFound(false);
@@ -53,12 +43,12 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input, dltSuccess]);
+  }, [input]);
 
   useEffect(() => {
     if (isError) {
       toast.error('something went wrong!!😑', {
-        position: 'top-right',
+        position: 'top-center',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -68,7 +58,7 @@ export default function ShowAssessment() {
         theme: 'dark',
       });
     }
-  }, [isError, deleteError]);
+  }, [isError]);
 
   return (
     <>
@@ -115,20 +105,23 @@ export default function ShowAssessment() {
                     : ' No Data Available!!'}
                 </h4>
                 <h6 className="text-capitalize fw-bold text-center">
-                  create assissment by click{' '}
+                  create assissment by click
                   <Link to={path.CreateAssessment.path}>here</Link>
                 </h6>
               </div>
             </NoDataFound>
           )}
         </div>
-        {isLoading || deleteloading ? (
+        {isLoading ? (
           <div className="row m-0 p-0  ">
             {[1, 2, 3, 4, 5, 6].map((item) => (
               <CardassessmentPlaceholder />
             ))}
           </div>
         ) : (
+          // <div className=" position-absolute top-50 start-50  translate-middle ">
+          //   <Loader />
+          // </div>
           <div className="row m-0 p-0  ">
             {assignmentData &&
               filterData?.map((assessmentDetails, index) => (
@@ -136,7 +129,6 @@ export default function ShowAssessment() {
                   key={index}
                   paperId={assessmentDetails.paperId}
                   {...assessmentDetails}
-                  deleteAssignment={deleteAssignment}
                 />
               ))}
           </div>

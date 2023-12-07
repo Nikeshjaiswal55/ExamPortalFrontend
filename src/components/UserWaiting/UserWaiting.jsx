@@ -1,5 +1,5 @@
 import { Image } from 'react-bootstrap';
-import gif from '../../assets/gif/waiting_user.gif';
+import gif from '../../assets/gif/waiting_user2.gif';
 
 export const UserWaiting = () => {
   return (
