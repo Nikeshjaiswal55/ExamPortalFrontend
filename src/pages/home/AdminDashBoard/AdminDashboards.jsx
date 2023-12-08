@@ -4,7 +4,7 @@ import '../component/Chart.css'
 import {FaUsers,FaShoppingCart} from "react-icons/fa";
 import {MdOutlineAssignment} from "react-icons/md";
 import {CustomButton} from '../../../theme/Button/Buttons'
-import {useGetAssignmentQuery,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery} from '../../../apis/Service';
+import {useGetAssignmentQuery,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalAssessmentAdminQuery,useGetTotalStudentAdminQuery} from '../../../apis/Service';
 import {SubIdSplit} from '../../../utils/SubIdSplit';
 import BarChart from '../component/BarChart';
 import DoughnutChart from '../component/DoughnutChart';
@@ -22,43 +22,21 @@ const color = [
   'bg-dark',
 ];
 // const randomColor = color[Math.floor(Math.random() * color.length)];
-const info = [
-  {
-    id: 1,
-    infoText: "Total Student",
-    infoNumber: "10,333",
-    icon: <FaUsers size={50} />,
-    iconClassName: "bg-warning",
-  },
-  {
-    id: 2,
-    infoText: "Total Assessment",
-    infoNumber: "10,333",
-    icon: <MdOutlineAssignment size={50} />,
-    iconClassName: "bg-danger",
-  },{
-    id: 3,
-    infoText: "like",
-    infoNumber: "10,333",
-    icon: <FaShoppingCart size={50} />,
-    iconClassName: "bg-success",
 
-  }
-];
-const TopStudent = [
-  {
-    studentid: 12,
-    email: "dixitp034@gmail.com",
-  },
-  {
-    studentid: 13,
-    email: "kapilj.bca2022@ssism.org",
-  },
-  {
-    studentid: 14,
-    email: "akashbba2022@ssism.org",
-  }
-]
+// const TopStudent = [
+//   {
+//     studentid: 12,
+//     email: "dixitp034@gmail.com",
+//   },
+//   {
+//     studentid: 13,
+//     email: "kapilj.bca2022@ssism.org",
+//   },
+//   {
+//     studentid: 14,
+//     email: "akashbba2022@ssism.org",
+//   }
+// ]
 const TotalComponent = ({infoText,infoNumber,icon,iconClassName}) => {
   return <>
     <div class="col-12 col-sm-6 h-7 col-md-4 p-2 m-0" style={{height: "150px"}}>
@@ -97,7 +75,7 @@ const TopStudentCard = ({email,onEvidenceClick}) => {
 }
 
 const TopStudentAcordianItem = ({index,assessmentId,assessmentName,examDuration,examDate}) => {
-  // const {data: TopStudent,isLoading,isError,isSuccess} = useGetTop3AssissmentStudentsQuery(assessmentId);
+  const {data: TopStudent,isLoading,isError,isSuccess} = useGetTop3AssissmentStudentsQuery(assessmentId);
   return (
     <>
       <Accordion.Item eventKey={index} className=' border-0  border-bottom b'>
@@ -108,10 +86,11 @@ const TopStudentAcordianItem = ({index,assessmentId,assessmentName,examDuration,
         </div></Accordion.Header>
         <Accordion.Body className='px-2 py-0 w-100'>
           <div className='row w-100'>
-            {TopStudent && TopStudent.map((value) => {
+            {TopStudent && TopStudent?.map((value) => {
               return <TopStudentCard key={value.studentid} email={value.email} onEvidenceClick={() => {console.log("evidence click")}} />
             })
             }
+            {TopStudent?.length ? null : <p> Actively no  student Toper present </p>}
           </div>
         </Accordion.Body>
       </Accordion.Item>
@@ -129,12 +108,33 @@ export const AdminDashboard = () => {
     isError,
     isSuccess,
   } = useGetAssignmentQuery({id: userId});
+  const {data: totalStudents} = useGetTotalStudentAdminQuery();
+  const {data: totalAssessments} = useGetTotalAssessmentAdminQuery();
+  const info = [
+    {
+      id: 1,
+      infoText: "Total Student",
+      infoNumber: totalStudents?.[0] ?? 0,
+      icon: <FaUsers size={50} />,
+      iconClassName: "bg-warning",
+    },
+    {
+      id: 2,
+      infoText: "Total Assessment",
+      infoNumber: totalAssessments?.[0] ?? 0,
+      icon: <MdOutlineAssignment size={50} />,
+      iconClassName: "bg-danger",
+    },{
+      id: 3,
+      infoText: "Publish Assessment",
+      infoNumber: data?.length,
+      icon: <FaShoppingCart size={50} />,
+      iconClassName: "bg-success",
+    }
+  ];
   const {data: top5Assessment
     ,isLoading: isTop5AssessmentLoading
     ,isError: isTop5AssessmentError} = useGetTop5AssissmentQuery(userId);
-
-  // console.log("data :-  ",data);
-  // console.log("userId :-  ",userId);
 
   const [barChatData,setBarChatData] = useState();
   const [barChartLabels,setBarChatLabels] = useState();
@@ -157,8 +157,7 @@ export const AdminDashboard = () => {
   return (
     <>
 
-      {/* {isError && <SomethingWentWrong />} */}
-      {/* {console.log(data)} */}
+
       {
         isLoading ? (
           <div className=" position-absolute top-50 start-50  translate-middle " >
@@ -204,21 +203,7 @@ export const AdminDashboard = () => {
                   <Accordion className='  my-1 p-0  ' >
 
                   {data && data?.map((value,index) => {
-                    // return <Accordion.Item eventKey={index} className=' border-0  border-bottom b'>
-                    //   <Accordion.Header className=' border border-white'>   <div className='row w-100  gap-2 gap-lg-0 fw-bold '>
-                    //     <div className='  col-md-4   '>{value?.assessmentName} </div>
-                    //     <div className='  col-md-4  '>{value?.examDuration} </div>
-                    //     <div className='  col-md-4   align-self-end'>28-sep-2023 </div>
-                    //   </div></Accordion.Header>
-                    //   <Accordion.Body>
-                    //     <div className='row'>
-                    //       {TopStudent && TopStudent.map((value) => {
-                    //         return <TopStudentCard key={value.id} email={value.email} onEvidenceClick={() => {console.log("evidence click")}} />
-                    //       })
-                    //       }
-                    //     </div>
-                    //   </Accordion.Body>
-                    // </Accordion.Item>
+
                     if(value._Active) {
                       return <TopStudentAcordianItem
                         index={index}

@@ -4,7 +4,7 @@ import {SubIdSplit} from '../utils/SubIdSplit'
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy.onrender.com/"
-// const baseUrl = "http://192.168.0.202:9090"
+// const baseUrl = "http://192.168.0.201:9090"
 const baseUrl = "http://192.168.180.59:9090"
 // const baseUrl = "http://192.168.180.155:9090"
 
@@ -212,7 +212,39 @@ export const adminApi = createApi({
                     }
                 }
             }
-        )
+        ),
+        getTotalStudentAdmin: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/totalStudent`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTotalAssessmentAdmin: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/totalAssessment`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTop5AssesmentScoreByStudentId: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/getTop5ExamScoreHigh`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
     }),
 
 
@@ -220,4 +252,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery} = adminApi;
+export const {useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalAssessmentAdminQuery,useGetTotalStudentAdminQuery,useGetTop5AssesmentScoreByStudentIdQuery} = adminApi;

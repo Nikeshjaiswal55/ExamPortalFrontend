@@ -5,7 +5,7 @@ import {FaUsers,FaThumbsUp} from "react-icons/fa";
 
 import {MdOutlineAssignment} from "react-icons/md";
 import {CustomButton} from '../../../theme/Button/Buttons'
-import {useGetAllAssissmentOnstudentPageQuery,useGetAssignmentQuery,useGetTop5AssissmentQuery} from '../../../apis/Service';
+import {useGetAllAssissmentOnstudentPageQuery,useGetAssignmentQuery,useGetTop5AssesmentScoreByStudentIdQuery,useGetTop5AssissmentQuery} from '../../../apis/Service';
 import {SubIdSplit} from '../../../utils/SubIdSplit';
 import BarChart from '../component/BarChart';
 import DoughnutChart from '../component/DoughnutChart';
@@ -16,29 +16,6 @@ import {StudentCertificate} from '../../student/StudentCertificate/StudentCertif
 
 
 
-const info = [
-    {
-        id: 1,
-        infoText: "given Assessement",
-        infoNumber: "10,333",
-        icon: <FaUsers size={50} />,
-        iconClassName: "bg-warning",
-    },
-    {
-        id: 2,
-        infoText: " Pending Assessment",
-        infoNumber: "10,333",
-        icon: <MdOutlineAssignment size={50} />,
-        iconClassName: "bg-danger",
-    },{
-        id: 3,
-        infoText: "Passed Assessment",
-        infoNumber: "10,333",
-        icon: <FaThumbsUp size={50} />,
-        iconClassName: "bg-success",
-
-    }
-];
 
 function TotalComponent({infoText,infoNumber,icon,iconClassName}) {
     return <>
@@ -58,10 +35,31 @@ function TotalComponent({infoText,infoNumber,icon,iconClassName}) {
 export const StudentDashBoard = () => {
     let userId = JSON.parse(localStorage.getItem('users'));
     userId = SubIdSplit(userId.sub);
-    const {data} = useGetAllAssissmentOnstudentPageQuery(userId);
+    const [data,setData] = useState([]);
+    // const {data: assessmentData} = useGetAllAssissmentOnstudentPageQuery(userId);
+    const assessmentData = [
+        {
+            "examid": "6f38ba1c-8c86-40cf-ae16-3f7cda703a0f",
+            "examDuration": "20:22:02",
+            "examMode": "Online",
+            "examRounds": 2,
+            "paperChecked": false,
+            "branch": "",
+            "session": "2021-2022",
+            "assessmentName": "iteg",
+            "totalMarks": 100,
+            "minimum_marks": 33,
+            "paperId": "82251bba-313d-4067-b565-866dd5adb20d",
+            "_Active": true,
+            "_Setup": false,
+            "_attempted": false
+        },];
     useEffect(() => {
+        setData(assessmentData?.filter((value) => {
+            return value._attempted;
+        }));
         console.log("data of student page all assessment ",data);
-    },[data]);
+    },[assessmentData]);
     const {
         data: xy,
         isLoading,
@@ -70,31 +68,11 @@ export const StudentDashBoard = () => {
     } = useGetAssignmentQuery({id: userId});
     const {data: top5Assessment
         ,isLoading: isTop5AssessmentLoading
-        ,isError: isTop5AssessmentError} = useGetTop5AssissmentQuery(5);
-
-    // console.log("data :-  ",data);
-    // console.log("userId :-  ",userId);
+        ,isError: isTop5AssessmentError} = useGetTop5AssesmentScoreByStudentIdQuery(5);
 
     const [barChatData,setBarChatData] = useState();
     const [barChartLabels,setBarChatLabels] = useState();
-    // const data = [
-    //     {
-    //         id: 1,
-    //         assessmentName: " given assessment",
-    //         assessmentDate: " 22-08-2022",
-    //         assessmentDuration: " 22:08:20",
-    //     },{
-    //         id: 2,
-    //         assessmentName: " given assessment2",
-    //         assessmentDate: " 22-08-2022",
-    //         assessmentDuration: " 22:08:20",
-    //     },{
-    //         id: 3,
-    //         assessmentName: " given assessment3",
-    //         assessmentDate: " 22-08-2022",
-    //         assessmentDuration: " 22:08:20",
-    //     }
-    // ]
+
     useEffect(() => {
         const chartData = [];
         const chartLabels = [];
@@ -110,11 +88,35 @@ export const StudentDashBoard = () => {
         setBarChatLabels(chartLabels);
         console.log(top5Assessment);
     },[top5Assessment]);
+    // const [totalInfo,setTotaInfo] = useState();
+
+    const info = [
+        {
+            id: 1,
+            infoText: "given Assessement",
+            infoNumber: assessmentData?.length ?? 0,
+            icon: <FaUsers size={50} />,
+            iconClassName: "bg-warning",
+        },
+        {
+            id: 2,
+            infoText: " Pending Assessment",
+            infoNumber: (assessmentData?.length - data?.length) || 0,
+            icon: <MdOutlineAssignment size={50} />,
+            iconClassName: "bg-danger",
+        },{
+            id: 3,
+            infoText: "Passed Assessment",
+            infoNumber: assessmentData?.length ?? 0,
+            icon: <FaThumbsUp size={50} />,
+            iconClassName: "bg-success",
+
+        }
+    ];
+
     return (
         <>
 
-            {/* {isError && <SomethingWentWrong />} */}
-            {/* {console.log(data)} */}
             {
                 isLoading ? (
                     <div className=" position-absolute top-50 start-50  translate-middle " >
@@ -144,12 +146,12 @@ export const StudentDashBoard = () => {
                             </div>
                             <div class="row m-0 p-0 d-flex justify-content-around w-100  " >
                                 {info && info.map((value) => {
+
                                     return <>
                                         <TotalComponent key={value.id} infoText={value.infoText} infoNumber={value.infoNumber} icon={value.icon} iconClassName={value.iconClassName} />
                                     </>
                                 })
-                                }
-
+                                    }
                             </div>
 
                             {data?.length ? <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100  p-2   ">
@@ -159,6 +161,7 @@ export const StudentDashBoard = () => {
                                 <Accordion className='  my-2 p-0 p-md-2 ' >
 
                                     {data && data?.map((value,index) => {
+
                                         return <>
                                             <div className=' border rounded py-3 px-2 my-1'>   <div className=' row gap-2 gap-md-0 w-100  fw-bold '>
                                                 <div className=' col-md-6 col-lg-3  text-capitalize'>{value?.assessmentName} </div>
@@ -173,9 +176,10 @@ export const StudentDashBoard = () => {
 
                                     })
                                     }
+                                        {/* {data?.length == 0 && < p > No taken assessment</>} */}
 
                                 </Accordion>
-                            </div> : null}
+                                </div> : <h1> No exam given</h1>}
 
 
                         </div>
