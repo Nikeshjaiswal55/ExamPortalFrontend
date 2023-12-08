@@ -9,10 +9,8 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import Cardassessment, {
   CardassessmentPlaceholder,
 } from '../../admin/showAssessment/Cardassessment';
-import { SubIdSplit } from '../../../utils/SubIdSplit';
 
 export default function AllAssissmentToStudent() {
-  // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const {
@@ -104,10 +102,6 @@ export default function AllAssissmentToStudent() {
                     ? 'No Such A Data Found!!'
                     : ' No Data Available!!'}
                 </h4>
-                <h6 className="text-capitalize fw-bold text-center">
-                  create assissment by click
-                  <Link to={path.CreateAssessment.path}>here</Link>
-                </h6>
               </div>
             </NoDataFound>
           )}
@@ -119,9 +113,6 @@ export default function AllAssissmentToStudent() {
             ))}
           </div>
         ) : (
-          // <div className=" position-absolute top-50 start-50  translate-middle ">
-          //   <Loader />
-          // </div>
           <div className="row m-0 p-0  ">
             {assignmentData &&
               filterData?.map((assessmentDetails, index) => (

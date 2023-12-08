@@ -33,13 +33,13 @@ export default function ShowAssessment() {
     { isError: deleteError, isLoading: deleteloading, isSuccess: dltSuccess },
   ] = useDeleteAssignmentMutation();
 
-  const [filterData, setFilterData] = useState(assignmentData);
+  const [filterData, setFilterData] = useState([]);
   const [input, setInput] = useState();
   const [notSearchDataFound, setSearchDataFound] = useState(false);
 
   useEffect(() => {
     setFilterData(assignmentData);
-  }, [isSuccess]);
+  }, [isSuccess, dltSuccess]);
 
   useEffect(() => {
     if (input) {

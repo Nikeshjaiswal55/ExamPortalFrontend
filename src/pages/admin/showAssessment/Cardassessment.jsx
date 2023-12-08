@@ -5,10 +5,12 @@ import { AiOutlineFieldTime } from 'react-icons/ai';
 import '../../../styles/common.css';
 import { Button, Placeholder, Spinner } from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
+import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 // import {Button,Placeholder,Spinner} from 'react-bootstrap';
 import SidePooup from './AssessmentSidePooup/SidePooup';
 import Example from './AssessmentSidePooup/Modal';
+import { path } from '../../../routes/RoutesConstant';
 
 export default function Cardassessment({
   deleteAssignment,
@@ -28,13 +30,17 @@ export default function Cardassessment({
       <div className="col-12 col-lg-6 mb-4 h-25 ">
         <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
           <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
-            <ImCross onClick={removeAssisstment} />
+            {stdData ? (
+              ''
+            ) : (
+              <MdDelete color="red" onClick={removeAssisstment} />
+            )}
           </div>
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong
                 className="fs-6 cursor-pointer"
-                onClick={() => setShowCard(true)}
+                onClick={() =>stdData?"":setShowCard(true)}
               >
                 {props?.assessmentName}
               </strong>
@@ -43,7 +49,6 @@ export default function Cardassessment({
             </div>
             {props?._Active ? (
               <div className=" d-flex justify-content-evenly   align-items-center">
-                {' '}
                 <Spinner animation="grow" variant="success" size="sm" />{' '}
                 <strong className="ms-2"> Active</strong>
               </div>
@@ -66,7 +71,9 @@ export default function Cardassessment({
             </div>
             {stdData ? (
               <Button
-                onClick={() => navigate(`/student/exam-verify/${paperId}`)}
+                onClick={() =>
+                  navigate(`${path.TermAndCondition.path}/${paperId}`)
+                }
               >
                 GetStarted
               </Button>
@@ -100,7 +107,12 @@ export default function Cardassessment({
         </div>
       </div>
 
-      <Example show={showCard} {...props} paperId={paperId} setShowCard={setShowCard} />
+      <Example
+        show={showCard}
+        {...props}
+        paperId={paperId}
+        setShowCard={setShowCard}
+      />
     </>
   );
 }

@@ -66,7 +66,7 @@ export const Redirect = () => {
         <UserWaiting />
       </div>
     ) : data?.role === 'Student' ? (
-      <Navigate to="/student/dashboard" />
+      <Navigate to={path.StudentDashboard.path} />
     ) : (
       <Navigate to={path.Organisation.path} />
     );
