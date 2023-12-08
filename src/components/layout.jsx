@@ -17,7 +17,8 @@ import { CiLogout } from 'react-icons/ci';
 import { useAuth0 } from '@auth0/auth0-react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-
+import exameasy_light_logo from '../assets/exameasy_light_logo.svg'
+import exameasy_short_light_logo from '../assets/exameasy_short_light_logo.svg'
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,17 +95,20 @@ export default function Layout({ children }) {
   const stdOption = [
     {
       path: '/student/dashboard',
+      className: "",
       name: 'Dashboard',
       icon: <FaTh size={icon_size} />,
     },
     {
       path: path.ShowAllAssessmentToStudent.path,
       name: 'Assessment List',
+      className: "",
       icon: <FaClipboardList size={icon_size} />,
     },
     {
       path: '',
       name: 'LogOut',
+      className: " align-self-end",
       icon: <CiLogout size={icon_size} />,
       onClick: () => {
         logout({ logoutParams: { returnTo: window.location.origin } });
@@ -132,11 +136,16 @@ export default function Layout({ children }) {
           className="sidebar m-2  "
           id="sideNavbar"
         >
+
           <div className="top_section">
-            <h1 style={{ display: isOpen ? 'block' : 'none' }} className="logo">
-              Lg
+            <div style={{display: isOpen ? 'none' : 'block'}}>
+              <img src={exameasy_short_light_logo} alt="logo" className='' width={"20px"} />
+            </div>
+            <h1 style={{display: isOpen ? 'block' : 'none'}} className="logo text-center">
+              <img src={exameasy_light_logo} alt="logo" width={"60%"} />
             </h1>
           </div>
+
           {menuItem.map((item, index) => (
             <NavLink
               to={item.path}
