@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter,Route,Routes as ReactRoute} from 'react-router-dom';
+import { BrowserRouter, Route, Routes as ReactRoute } from 'react-router-dom';
 import Home from '../pages/home/Home';
 import {
   AdminPrivate,
@@ -7,10 +7,10 @@ import {
   Private,
   StudentPrivate,
 } from '../auth/Private';
-import {path} from './RoutesConstant';
+import { path } from './RoutesConstant';
 
 import AddCourse from '../pages/admin/AddCourse/AddCourse';
-import {CreateCourse} from '../pages/admin/AddCourse/CreateCourse';
+import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
 import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
 import Layout from '../components/layout';
 import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
@@ -19,19 +19,19 @@ import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
-import {Redirect,SaveUserOrg} from '../auth/redirection/Redirect';
+import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
-import {ExamPortal} from '../pages/exam-portal/ExamPortal';
-import {ExamVerification} from '../pages/exam-portal/components/ExamVerification';
+import { ExamPortal } from '../pages/exam-portal/ExamPortal';
+import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
 // import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
-import {ReportCard} from '../pages/exam-portal/components/ReportCard';
-import {ExamStarted} from '../pages/exam-portal/components/ExamStarted';
-import {ExamSubmited} from '../pages/exam-portal/components/ExamSubmited';
+import { ReportCard } from '../pages/exam-portal/components/ReportCard';
+import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
+import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
 import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
-import {AdminDashboard} from '../pages/home/AdminDashBoard/AdminDashboards';
-import {StudentDashBoard} from '../pages/home/StudentDashBoard/StudentDashBoard';
+import { AdminDashboard } from '../pages/home/AdminDashBoard/AdminDashboards';
+import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoard';
 
 export const Routes = () => {
   return (
@@ -71,7 +71,6 @@ export const Routes = () => {
               element={
                 <Layout>
                   <AdminDashboard />
-
                 </Layout>
               }
             />
@@ -132,7 +131,7 @@ export const Routes = () => {
           <Route path="/student/" element={<StudentPrivate />}>
             <Route path={path.StudentPaper.path} element={<StudentPaper />} />
             <Route
-              path="/student/dashboard"
+              path={path.StudentDashboard.path}
               element={
                 <Layout>
                   <StudentDashBoard />
@@ -140,7 +139,7 @@ export const Routes = () => {
               }
             />
             <Route
-              path={path.TermAndCondition.path}
+              path={`${path.TermAndCondition.path}/:paperId`}
               element={
                 <Layout>
                   <TermandConditionPage />

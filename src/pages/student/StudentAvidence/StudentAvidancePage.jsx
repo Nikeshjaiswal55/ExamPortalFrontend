@@ -73,13 +73,13 @@ export default function StudentAvidancePage() {
                   <tr key={index}>
                     <td className="p-5">1</td>
                     <td className="p-5">random image</td>
-                    <td className="p-5">{image?.timestamp.toString()}</td>
+                    {/* <td className="p-5">{image?.timestamp.toString()}</td> */}
                     <td className="p-5">
                       <img
                         key={index}
                         className="img-fluid"
                         style={{ height: '10rem' }}
-                        src={image.base64Image}
+                        src={image}
                         alt={`Captured Image ${index + 1}`}
                       />
                     </td>
@@ -92,9 +92,9 @@ export default function StudentAvidancePage() {
                   <td className="p-5">Thornton</td>
                   <td className="p-5">
                     <img
-                      key={index}
-                      src={URL.createObjectURL(ssImage)}
-                      alt={`Captured ${index}`}
+                      className="img-fluid"
+                      style={{ height: '10rem' }}
+                      src={ssImage}
                     />
                   </td>
                 </tr>
