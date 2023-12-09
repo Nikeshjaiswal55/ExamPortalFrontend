@@ -166,7 +166,7 @@ export const Routes = () => {
             element={<ExamVerification />}
           />
           <Route
-            path={path.examReport.path}
+            path={`${path.examReport.path}/:paperId/:stdId`}
             element={
               <Layout>
                 <ReportCard />

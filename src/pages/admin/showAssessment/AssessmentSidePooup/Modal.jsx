@@ -18,7 +18,7 @@ function Example({ show, setShowCard,paperId,  ...props }) {
         centered
       >
         <Modal.Header closeButton />
-        <SidePooup {...props} paperId={paperId} />
+        <SidePooup handleClose={handleClose} {...props} paperId={paperId} />
       </Modal>
     </>
   );

@@ -30,6 +30,7 @@ export default function AssignmentStudentPage() {
           >
             {data?.map((studentdetails) => (
               <StudentCard
+              paperId={paperId}
                 divBoxStyle={'col-lg-2 col-12'}
                 studentdetails={studentdetails}
               />

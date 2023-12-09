@@ -267,7 +267,6 @@ export default function AddAssignment() {
             excelFile: '',
           }}
           onSubmit={async (values) => {
-            values.examDuration = duration + '';
             if (excel.length || values.email.length || values.branch !== '') {
               const examDetails = {
                 examDuration: values.examDuration,
@@ -298,6 +297,7 @@ export default function AddAssignment() {
                 orgnizationId: getOrgdata?.orgnizationId,
               }).then((res) => {
                 if (res?.data?.paperId) {
+                  navigate(path.ShowAssessment.path);
                   inviteStudent({
                     userId: res?.data?.userId,
                     paperId: res?.data?.paperId,
@@ -590,10 +590,6 @@ export default function AddAssignment() {
                                       placeholder="Enter question"
                                       className="form-control"
                                     />
-                                    <ErrorMessage
-                                      name={`questions[${index}].questions`}
-                                      component="div"
-                                    />
                                   </Form.Group>
                                   <Form.Group>
                                     <FormLabel className="py-2 m-0 fw-bold">
@@ -710,12 +706,12 @@ export default function AddAssignment() {
                         ''
                       ) : (
                         <>
-                          <Button
+                          {/* <Button
                             variant="secondary"
                             className="w-100 text-capitalize rounded-4"
                           >
                             Preview
-                          </Button>
+                          </Button> */}
 
                           <Button
                             type="submit"

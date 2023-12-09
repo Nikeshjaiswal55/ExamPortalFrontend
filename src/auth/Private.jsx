@@ -1,6 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import { Outlet } from 'react-router';
+import { useRefreshAccessTokenMutation } from '../apis/Service';
 
 export const getAccessToken = async (getAccessTokenSilently, user) => {
   try {
@@ -63,5 +64,27 @@ export const StudentPrivate = () => {
     return <Outlet />;
   } else {
     return <h1>Something went wrong</h1>;
+  }
+};
+
+export const refreshToken = (queryCall, error) => {
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  if (userError) {
+    if (userError.status === 401) {
+      // Token expired, try refreshing the token
+      const refreshResult = useRefreshAccessTokenMutation(refreshToken);
+
+      if (refreshResult.data) {
+        // Token refreshed successfully, retry the original query
+        const retryUserResult = queryCall();
+        return retryUserResult;
+        // Use retryUserResult.data and handle errors accordingly
+      } else {
+        // Token refresh failed, handle the error or redirect to login
+      }
+    } else {
+      // Handle other types of errors
+    }
   }
 };

@@ -1,19 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Nav, Spinner, Tab } from 'react-bootstrap';
+import { Button, Nav, Spinner, Tab } from 'react-bootstrap';
 
 import { CustomButton } from '../../../../theme/Button/Buttons';
 
 import Configure from './Configure';
 import { usePutActivePaperMutation } from '../../../../apis/Service';
-function SidePooup({ paperId, ...props }) {
+import { toast } from 'react-toastify';
+function SidePooup({ paperId, handleClose, ...props }) {
   const [paperActive, setPaperActive] = useState(props._Active);
   const [publish, { isSuccess, isLoading }] = usePutActivePaperMutation();
   const activePaper = async () => {
     await publish({ paperId, paperActive });
     setPaperActive(!paperActive);
+    toast.success('assessment updated successfully!!🎉', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+    handleClose();
   };
 
-  useEffect(() => {}, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess) {
+    }
+  }, [isSuccess]);
+
   return (
     <>
       <div className="w-100 m-0 p-0">
@@ -47,25 +63,24 @@ function SidePooup({ paperId, ...props }) {
                 <Nav.Item>
                   <Nav.Link eventKey="configure">Configure</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                   <Nav.Link eventKey="edit-emails">Edit Emails </Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
               </Nav>
-              <CustomButton
-                buttonText={`${
-                  isLoading ? (
-                    <Spinner animation="border" size="sm" />
-                  ) : paperActive ? (
-                    'End'
-                  ) : (
-                    'Publish'
-                  )
-                }`}
-                onButtonClick={(e) => {
+              <Button
+                onClick={(e) => {
                   activePaper();
                 }}
-                className={' p-lg-2 w-100'}
-              />
+                className=" p-lg-2 w-100 btn-dark btn"
+              >
+                {isLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : paperActive ? (
+                  'End'
+                ) : (
+                  'Publish'
+                )}
+              </Button>
             </div>
             <div className=" col-12 flex-1 col-md-8 shadow  rounded-4  ">
               <Tab.Content>
@@ -74,9 +89,9 @@ function SidePooup({ paperId, ...props }) {
                     <Configure paperId={paperId} ConfigureProps={props} />
                   </div>
                 </Tab.Pane>
-                <Tab.Pane eventKey="edit-emails" className=" bg-transparent">
+                {/* <Tab.Pane eventKey="edit-emails" className=" bg-transparent">
                   Second tab content
-                </Tab.Pane>
+                </Tab.Pane> */}
               </Tab.Content>
             </div>
           </Tab.Container>

@@ -40,7 +40,7 @@ export default function Cardassessment({
             <div className="m-0 p-0">
               <strong
                 className="fs-6 cursor-pointer"
-                onClick={() =>stdData?"":setShowCard(true)}
+                onClick={() => (stdData ? '' : setShowCard(true))}
               >
                 {props?.assessmentName}
               </strong>
