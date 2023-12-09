@@ -71,3 +71,12 @@
     background-repeat: no-repeat;
     background-position-x: center;
 }
+.bg-purple{
+    background-color: #6729ff;
+}
+.bg-orange{
+    background-color: #ff8533;
+}
+.bg-yellow{
+    background-color: #e6cb0c;
+}

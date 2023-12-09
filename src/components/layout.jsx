@@ -55,15 +55,15 @@ export default function Layout({ children }) {
       name: 'Assessment List',
       icon: <FaClipboardList size={icon_size} />,
     },
-    {
-      path: '',
-      name: 'LogOut',
-      icon: <CiLogout size={icon_size} />,
-      onClick: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear();
-      },
-    },
+    // {
+    //   path: '',
+    //   name: 'LogOut',
+    //   icon: <CiLogout size={icon_size} />,
+    //   onClick: () => {
+    //     logout({ logoutParams: { returnTo: window.location.origin } });
+    //     localStorage.clear();
+    //   },
+    // },
   ];
   const cmpOption = [
     {
@@ -81,15 +81,15 @@ export default function Layout({ children }) {
       name: 'Assessment List',
       icon: <FaClipboardList size={icon_size} />,
     },
-    {
-      path: '',
-      name: 'LogOut',
-      icon: <CiLogout size={icon_size} />,
-      onClick: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear();
-      },
-    },
+    // {
+    //   path: '',
+    //   name: 'LogOut',
+    //   icon: <CiLogout size={icon_size} />,
+    //   onClick: () => {
+    //     logout({ logoutParams: { returnTo: window.location.origin } });
+    //     localStorage.clear();
+    //   },
+    // },
   ];
 
   const stdOption = [
@@ -145,7 +145,9 @@ export default function Layout({ children }) {
               <img src={exameasy_light_logo} alt="logo" width={"60%"} />
             </h1>
           </div>
-
+          <div className='menu-section'  style={{
+            height: isOpen ? 'calc(97.8vh - 145px)' : 'calc(97.8vh - 120px)',
+          }}>
           {menuItem.map((item, index) => (
             <NavLink
               to={item.path}
@@ -163,6 +165,21 @@ export default function Layout({ children }) {
               </div>
             </NavLink>
           ))}
+          </div>
+          <div className='menu-footer'>
+          <NavLink
+              className="link"
+              onClick={()=>{ logout({ logoutParams: { returnTo: window.location.origin } });
+              localStorage.clear()}}
+            >
+              <CiLogout size={icon_size} />
+              <div
+                style={{ display: isOpen ? 'block' : 'none' }}
+                className="link_text" >
+               LogOut
+              </div>
+            </NavLink>
+          </div>
         </div>
 
         <div
@@ -189,7 +206,7 @@ export default function Layout({ children }) {
             className="main-container m-0 p-2 w-100  "
             style={{ height: 'calc(100vh - 60px)' }}
           >
-            <div className="w-100 h-100 rounded-1 m-0 p-0 bg-white ">
+            <div className="w-100 h-100 rounded-1 m-0 p-0 ">
               {children}
             </div>
           </div>

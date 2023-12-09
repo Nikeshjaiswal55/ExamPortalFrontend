@@ -19,6 +19,7 @@
     "formik": "^2.4.5",
     "framer-motion": "^10.16.9",
     "html2canvas": "^1.4.1",
+    "json-server": "^0.17.4",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jws": "^4.0.0",

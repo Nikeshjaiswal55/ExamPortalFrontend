@@ -73,6 +73,8 @@ main {
     transition: all 0.5s;
     text-decoration: none;
     align-items: center;
+    margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .link:hover {
     background: lightskyblue;
@@ -86,6 +88,9 @@ main {
     border-radius: 5px;
     /* background: lightskyblue;
     color: #000; */
+}
+.menu-footer a{
+    background-color: transparent;
 }
 .link_text {
     font-size: 14px;

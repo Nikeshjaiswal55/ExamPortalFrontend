@@ -27,15 +27,15 @@ export default function Cardassessment({
 
   return (
     <>
-      <div className="col-12 col-lg-6 mb-4 h-25 ">
-        <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
-          <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
+      <div className="col-12 col-lg-6 mb-4 h-25 ps-1">
+        <div className=" white-box px-3 pt-3 pb-4 position-relative border rounded-3  bg-white">
+          {/* <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
             {stdData ? (
               ''
             ) : (
               <MdDelete color="red" onClick={removeAssisstment} />
             )}
-          </div>
+          </div> */}
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong
@@ -84,19 +84,19 @@ export default function Cardassessment({
                 onClick={() => navigate(`/admin/student-details/${paperId}`)}
               >
                 <div
-                  className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center  bg-danger   "
+                  className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center bg-purple"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b> A</b>{' '}
                 </div>
                 <div
-                  className="border rounded-circle p-0 position-absolute top-0 start-50 text-center bg-secondary  bg-gradient"
+                  className="border rounded-circle p-0 position-absolute top-0 start-50 text-center bg-orange  bg-gradient"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b>B</b>{' '}
                 </div>
                 <div
-                  className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-white "
+                  className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-yellow"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b> 3+</b>
