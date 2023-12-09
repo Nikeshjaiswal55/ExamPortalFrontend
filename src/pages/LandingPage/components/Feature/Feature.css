@@ -3,7 +3,7 @@
   position: relative;
 }
 
-/* .progress {
+.progress {
   position: sticky;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   z-index: 5;
-} */
+}
 
 .portfolio-text-h1{
     text-align: center;

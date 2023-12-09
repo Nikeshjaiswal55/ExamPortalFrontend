@@ -6,13 +6,13 @@ const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy.onrender.com/"
 // const baseUrl = "http://192.168.0.202:9090"
 // const baseUrl = "http://192.168.180.59:9090"
-// const baseUrl = "http://192.168.0.201:9090"
+// const baseUrl = "http://192.168.1.188:9090"
 
 
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
-    tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization'],
+    tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization', 'submitExam'],
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
         prepareHeaders: (headers, { getState }) => {
@@ -80,6 +80,7 @@ export const adminApi = createApi({
                 }
             },
             invalidatesTags: ['getAllCourse'],
+
         }),
         updateCourse: builder.mutation({
             query: (payload) => {
@@ -159,7 +160,8 @@ export const adminApi = createApi({
                     method: "POST",
                     body: payload,
                 }
-            }
+            },
+            invalidatesTags: ['submitExam'],
         }),
         getAllAssissmentOnstudentPage: builder.query(
             {
@@ -168,7 +170,8 @@ export const adminApi = createApi({
                         url: `/getAllAssessmentByStudentId/${stdId}`,
                         method: 'get',
                     }
-                }
+                },
+                providesTags: ['submitExam']
             }
         ),
         putActivePaper: builder.mutation({
@@ -187,7 +190,8 @@ export const adminApi = createApi({
                     method: 'post',
                     body: payload,
                 }
-            }
+            },
+            invalidatesTags: ['getAllAssissment'],
         }),
         getTop5Assissment: builder.query(
             {
@@ -228,7 +232,8 @@ export const adminApi = createApi({
                         url: `/getresultby/student/${stdId}/paperId/${paperId}`,
                         method: 'get',
                     }
-                }
+                },
+                providesTags: ['submitExam']
             }
         ),
         getTotalAssessmentAdmin: builder.query(

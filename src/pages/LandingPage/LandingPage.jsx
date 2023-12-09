@@ -19,13 +19,13 @@ const LandingPage = () => {
         <LandingPageNavbar />
         <HeroSection />
       </div>
-      <div className="section" id={linkIds.service}>
+      {/* <div className="section" id={linkIds.service}>
         <Parallex type={'services'} />
       </div>
-      <div className="section"></div>
-      <div className="section" id={linkIds.features}>
+      <div className="section"></div> */}
+      {/* <div className="section" id={linkIds.features}>
         <Parallex type={'feature'} />
-      </div>
+      </div> */}
       <Feature />
       <div className="section" id={linkIds.contact}>
         <Contact />
