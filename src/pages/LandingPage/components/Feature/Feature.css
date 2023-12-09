@@ -35,18 +35,18 @@
 }
 
 .portfolio-wrapper {
-  max-width: 1366px;
+  /* max-width: 1366px;
   height: 100%;
   margin: auto;
-  display: flex;
+  display: flex; */
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  /* gap: 50px; */
 }
 
 
 .portfolio-image-container {
-  flex: 1;
+  /* flex: 1; */
   height: 50%;
 }
 

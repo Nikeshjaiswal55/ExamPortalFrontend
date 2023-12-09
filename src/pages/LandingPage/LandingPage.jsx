@@ -15,21 +15,21 @@ const LandingPage = () => {
   };
   return (
     <>
-      <div className="section w-100" id={linkIds.home}>
+     <div className="section w-100" id={linkIds.home}>
         <LandingPageNavbar />
         <HeroSection />
       </div>
-      <div className="section" id={linkIds.service}>
+      {/* <div className="section" id={linkIds.service}>
         <Parallex type={'services'} />
-      </div>
-      <div className="section"></div>
-      <div className="section" id={linkIds.features}>
+      </div> */}
+      {/* <div className="section"></div> */}
+      {/* <div className="section" id={linkIds.features}>
         <Parallex type={'feature'} />
-      </div>
-      <Feature />
-      <div className="section" id={linkIds.contact}>
+      </div> */}
+      {/* <Feature /> */}
+      {/* <div className="section" id={linkIds.contact}>
         <Contact />
-      </div>
+      </div> */}
     </>
   );
 };
