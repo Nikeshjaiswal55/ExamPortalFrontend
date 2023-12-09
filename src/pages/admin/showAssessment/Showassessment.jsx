@@ -17,8 +17,6 @@ import SomethingWentWrong from '../../../components/SomethingWentWrong/Something
 import { toast } from 'react-toastify';
 
 export default function ShowAssessment() {
-  // const [showCard,setShowCard] = useState();
-  const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
   const {
@@ -38,7 +36,14 @@ export default function ShowAssessment() {
   const [notSearchDataFound, setSearchDataFound] = useState(false);
 
   useEffect(() => {
+    if (dltSuccess) {
+      setFilterData(assignmentData);
+    }
+  }, [dltSuccess]);
+
+  useEffect(() => {
     setFilterData(assignmentData);
+    console.log(filterData, 'filter');
   }, [isSuccess]);
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input, dltSuccess]);
+  }, [input]);
 
   useEffect(() => {
     if (isError) {
@@ -130,15 +135,14 @@ export default function ShowAssessment() {
           </div>
         ) : (
           <div className="row m-0 p-0  ">
-            {assignmentData &&
-              filterData?.map((assessmentDetails, index) => (
-                <Cardassessment
-                  key={index}
-                  paperId={assessmentDetails.paperId}
-                  {...assessmentDetails}
-                  deleteAssignment={deleteAssignment}
-                />
-              ))}
+            {filterData?.map((assessmentDetails, index) => (
+              <Cardassessment
+                key={index}
+                paperId={assessmentDetails.paperId}
+                {...assessmentDetails}
+                deleteAssignment={deleteAssignment}
+              />
+            ))}
           </div>
         )}
       </div>

@@ -2,140 +2,37 @@ import React, { useEffect, useRef, useState } from 'react';
 import { PiHandWaving } from 'react-icons/pi';
 import Countdown from 'react-countdown-now';
 import { CustomButton } from '../../../theme/Button/Buttons';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Spinner } from 'react-bootstrap';
 import {
   useGetAllQuestionsFromPaperIdQuery,
   usePostSaveResultMutation,
 } from '../../../apis/Service';
 import { Loader } from '../../../components/Loader/Loader';
 import { useParams } from 'react-router';
-// const setA = [
-//     {
-//         id: "1",
-//         topic: "Basic's of  JavaScript",
-//         ques: "javascript is a _____ language",
-//         "opt1": "object Oriented ",
-//         "opt2": " single threaded ",
-//         "opt3": "both A and B",
-//         "opt4": " none of the above",
-//         ans: "both A and B",
-//     },
-//     {
-//         id: "2",
-//         topic: "data type",
-//         ques: "which of the following is not a datatype in javaScript ?",
-//         "opt1": "string ",
-//         "opt2": "number",
-//         "opt3": "boolean",
-//         "opt4": "int",
-//         ans: "int",
-//     },{
-//         id: "3",
-//         topic: "conditional ",
-//         ques: "How many Loops in javaScript ? ",
-//         "opt1": "2 ",
-//         "opt2": "5",
-//         "opt3": "8",
-//         "opt4": "6",
-//         ans: "5",
-//     }
-//     ,{
-//         id: "4",
-//         topic: "string ",
-//         ques: "which method is used to create Array from String ?  ",
-//         "opt1": "slice ",
-//         "opt2": "splice",
-//         "opt3": "split",
-//         "opt4": "join",
-//         ans: "split",
-//     },{
-//         id: "5",
-//         topic: "string ",
-//         ques: "Which Operator is called us Nullish Operator ? ",
-//         "opt1": "??",
-//         "opt2": "&&",
-//         "opt3": "||",
-//         "opt4": "none of the above",
-//         ans: "??",
-//     }
-//     ,{
-//         id: "6",
-//         topic: "Basic's of  JavaScript",
-//         ques: "javascript is a _____ language",
-//         "opt1": "script",
-//         "opt2": "scripting multithreaded",
-//         "opt3": "javascript",
-//         "opt4": "js",
-//         ans: "script",
-//     },
 
-//     {
-//         id: "7",
-//         topic: "Basic's of  JavaScript",
-//         ques: "What is the correct JavaScript syntax to change the content of the HTML element below?",
-//         "opt1": '#demo.innerHTML = "Hello World!";',
-//         "opt2": 'document.getElementById("demo").innerHTML = "Hello World!"; ',
-//         "opt3": 'document.getElementByName("p").innerHTML = "Hello World!";',
-//         "opt4": 'document.getElement("p").innerHTML = "Hello World!";',
-//         ans: 'document.getElementById("demo").innerHTML = "Hello World!"; ',
-//     },
-//     {
-//         id: "8",
-//         topic: "Basic's of  JavaScript",
-//         ques: "Where is the correct place to insert a JavaScript?",
-//         "opt1": 'The body section ',
-//         "opt2": 'Both the head section and the body section are correct ',
-//         "opt3": 'The head section',
-//         "opt4": 'none of above',
-//         ans: 'Both the head section and the body section are correct ',
-//     },
-//     {
-//         id: "9",
-//         topic: "Basic's of  JavaScript",
-//         ques: 'What is the correct syntax for referring to an external script called "x.js"?',
-//         "opt1": 'script src="x.js"',
-//         "opt2": 'script name="x.js"',
-//         "opt3": 'script href="x.js"',
-//         "opt4": 'link src="x.js"',
-//         ans: 'script src="x.js"',
-//     },
-//     {
-//         id: "10",
-//         topic: "Basic's of  JavaScript",
-//         ques: 'The external JavaScript file must contain the <script> tag.',
-//         "opt1": 'False',
-//         "opt2": 'true',
-//         "opt3": 'null',
-//         "opt4": 'undifiend',
-//         ans: 'False',
-//     },
-// ];
-
-export default function StudentPaper({ paperId }) {
-  const [setA, setSetA] = useState([]);
+export default function StudentPaper({
+  paperId,
+  decodedData,
+  isLoading,
+  handleSubmit,
+  paperSubmit,
+  cameraStop,
+}) {
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
   const handleSubmitShow = () => setShowSubmit(true);
-  const { data, error, isLoading } = useGetAllQuestionsFromPaperIdQuery([
-    localStorage.getItem('accessToken'),
-    paperId,
-  ]);
-  const [saveResult, otherDetails] = usePostSaveResultMutation();
-  console.log('otherDetails := ', otherDetails);
-  // console.log("data================",data)
+  // const { data, isSuccess, isLoading } =
+  //   useGetAllQuestionsFromPaperIdQuery(paperId);
+  const [saveResult, { isSucess, isLoading: submitPaperLoading }] =
+    usePostSaveResultMutation();
   const timeString = '01:45:15';
   const [targetTime, setTargetTime] = useState(null);
   const progressBar = useRef(null);
   const [count, setCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(new Array(setA?.length));
-  // console.log("   selected option := ",selectedOption);
+  const [selectedOption, setSelectedOption] = useState(
+    new Array(decodedData?.questions?.length)
+  );
 
-  // set data
-  useEffect(() => {
-    setSetA(data?.questions);
-    console.log('data================', data);
-  }, [data]);
-  // time
   useEffect(() => {
     const convertTimeStringToMillis = (timeString) => {
       const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -148,38 +45,42 @@ export default function StudentPaper({ paperId }) {
   }, [timeString]);
 
   function getUserAnswereWithQuestion() {
-    const questionsJson = JSON.stringify(data?.questions);
+    const questionsJson = JSON.stringify(decodedData?.questions);
     let questions = JSON.parse(questionsJson);
     console.log('before ', questions);
-    setA.forEach((value, index) => {
+    decodedData?.questions.forEach((value, index) => {
       questions[index].userAns = selectedOption[index];
     });
     console.log('after ', questions);
     return questions;
   }
 
+  const stdData = JSON.parse(localStorage.getItem('stdData'));
   async function submitPaperDetails(params) {
     console.log(selectedOption, 'submited =====================');
+    const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
+    const ss = localStorage.getItem('ss');
+    randomImg.push(ss);
     const questions = getUserAnswereWithQuestion();
+
     const result = {
-      studentID: 'string',
-      paperID: paperId,
+      studentId: stdData.userId,
+      paperId: paperId,
       questions: questions,
       cheating: {
-        // "cheatingId": "string",
-        // "studentId": "string",
+        studentId: stdData.userId,
         paperId: paperId,
-        images: null,
+        images: randomImg,
         audios: null,
+        paperId: paperId,
       },
     };
+    cameraStop();
     console.log('result in submit :  ', result);
-    const resp = await saveResult([
-      localStorage.getItem('accessToken'),
-      result,
-    ]);
-    console.log('response save result ;-  ', resp);
-    handleSubmitClose();
+    saveResult(result).then(() => {
+      handleSubmit();
+      handleSubmitClose();
+    });
   }
 
   function isChecked(id) {
@@ -187,7 +88,7 @@ export default function StudentPaper({ paperId }) {
     return selectedOption[id] ? true : false;
   }
   function updateProgressBar() {
-    const progress = ((count + 1) / setA?.length) * 100;
+    const progress = ((count + 1) / decodedData?.questions?.length) * 100;
     progressBar.current.style.width = progress + '%';
   }
   function handleChecked(e, id) {
@@ -215,14 +116,16 @@ export default function StudentPaper({ paperId }) {
             <div className="col-lg-8  offset-lg-2 ">
               <div className=" d-flex flex-wrap justify-content-between">
                 <div>
-                  <h1 className=" text-capitalize">java mastery challenge</h1>
+                  <h1 className=" text-capitalize">
+                    {decodedData?.examDetails.assessmentName}
+                  </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
                     {' '}
                     <span>
                       {' '}
                       {targetTime && (
                         <Countdown
-                          date={targetTime} // Set the target time for the countdown
+                          date={decodedData?.examDetails.examDuration} // Set the target time for the countdown
                           renderer={({
                             hours,
                             minutes,
@@ -259,19 +162,19 @@ export default function StudentPaper({ paperId }) {
                       ></div>
                     </div>{' '}
                     <span>
-                      {count}/{setA?.length} question
+                      {count}/{decodedData?.questions?.length} question
                     </span>
                   </div>
                 </div>
                 <div className="d-none d-md-flex justify-content-center align-items-center flex-column">
                   <h1>
-                    Hey shruti 👋
+                    Hey {stdData?.email.split('@')[0]} 👋
                     {/* <PiHandWaving size={35} /> */}
                   </h1>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
-                    <p>min score:30% </p>
-                    <p>max score:100% </p>
+                    <p>min score:{decodedData?.examDetails.minimum_marks}% </p>
+                    <p>max score:{decodedData?.examDetails.totalMarks} </p>
                   </div>
                 </div>
               </div>
@@ -280,8 +183,8 @@ export default function StudentPaper({ paperId }) {
               className="col-lg-8  offset-lg-2 p-lg-4  overflow-auto  "
               style={{ maxHeight: '60vh' }}
             >
-              {setA &&
-                setA.map((value, index) => {
+              {decodedData?.questions &&
+                decodedData?.questions.map((value, index) => {
                   return (
                     <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3">
                       <div className="question d-flex fs-6">
@@ -357,7 +260,11 @@ export default function StudentPaper({ paperId }) {
                 className="rounded-4 w-100"
                 onClick={submitPaperDetails}
               >
-                Submit
+                {submitPaperLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  'Submit'
+                )}
               </Button>
             </div>
           </Modal.Footer>

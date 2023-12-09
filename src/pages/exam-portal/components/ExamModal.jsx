@@ -25,7 +25,12 @@ export function ExamModal({ show, content, isButtonVisible, handleClose }) {
               reload
             </Button>
           ) : (
-            <Button variant="success" onClick={handleClose}>
+            <Button
+              variant="success"
+              onClick={() => {
+                handleClose();
+              }}
+            >
               ok
             </Button>
           )}

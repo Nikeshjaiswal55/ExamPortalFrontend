@@ -1,16 +1,17 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { path } from '../../../routes/RoutesConstant';
 import Ima from '../../../assets/rules.jpg';
 import { CustomButton } from '../../../theme/Button/Buttons';
 
 export default function TermandConditionPage() {
   const navigate = useNavigate();
+  const { paperId } = useParams();
   const [checked, setChecked] = React.useState(false);
   return (
     <div className="row w-100 h-100">
-      <div className="col-lg-6 col-md-12 mb-4 mb-lg-0">
+      <div className="col-lg-6 d-flex align-items-center col-md-12 mb-4 mb-lg-0">
         <img src={Ima} className="img-fluid" alt="Rules" />
       </div>
       <div className="col-lg-6    col-md-12">
@@ -68,22 +69,23 @@ export default function TermandConditionPage() {
         </section>
         <div className="form-check">
           <input
-            className="form-check-input border-black"
+            className={`form-check-input border-2 border-black`}
             type="checkbox"
             id="flexCheckDefault"
             value={checked}
             onChange={() => setChecked(!checked)}
           />
-          <label className="form-check-label">
+          <label className="form-check-label fw-bold">
             Accept All Terms and Conditions
           </label>
         </div>
-        <div className="start-button text-end mt-3">
+        <div className="d-flex justify-content-center mt-3">
           <CustomButton
-            className={'rounded-4'}
+            className={'rounded-4 w-25'}
             buttonText={'Let Started'}
             onButtonClick={() => {
-              if (checked) navigate(path.examVerify.path);
+              if (checked)
+                navigate(`${path.StudentExamStarted.path}/${paperId}`);
             }}
           />
         </div>

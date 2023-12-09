@@ -1,26 +1,26 @@
-import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {SubIdSplit} from '../utils/SubIdSplit'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-// const baseUrl = " http://localhost:9090"
+const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy.onrender.com/"
-// const baseUrl = "http://192.168.0.201:9090"
-const baseUrl = "http://192.168.180.59:9090"
-// const baseUrl = "http://192.168.180.155:9090"
+// const baseUrl = "http://192.168.0.202:9090"
+// const baseUrl = "http://192.168.180.59:9090"
+// const baseUrl = "http://192.168.1.188:9090"
 
 
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
-    tagTypes: ['getAllCourse','getAllAssissment','getOrgernization'],
+    tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization', 'submitExam'],
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
-        prepareHeaders: (headers,{getState}) => {
+        prepareHeaders: (headers, { getState }) => {
             const accessToken = localStorage.getItem('accessToken');
-            if(accessToken) {
-                headers.set('Authorization',`Bearer ${accessToken}`);
+            if (accessToken) {
+                headers.set('Authorization', `Bearer ${accessToken}`);
             }
-            headers.set('Content-Type','application/json');
+            headers.set('Content-Type', 'application/json');
             return headers;
         },
     }),
@@ -42,7 +42,7 @@ export const adminApi = createApi({
         }),
         postOrganisationDetails: builder.mutation({
             query: (orgDetail) => {
-                const {accessToken,...organisationDetails} = orgDetail;
+                const { accessToken, ...organisationDetails } = orgDetail;
                 return {
                     url: `/createorgnization`,
                     method: 'POST',
@@ -63,7 +63,7 @@ export const adminApi = createApi({
             providesTags: ['getOrgernization']
         }),
         getAllCourses: builder.query({
-            query: ({accessToken,userId}) => {
+            query: ({ accessToken, userId }) => {
                 return {
                     url: `course/byUserId/${userId}`,
                     method: "GET",
@@ -73,17 +73,18 @@ export const adminApi = createApi({
         }),
         deleteCourse: builder.mutation({
             query: (payload) => {
-                const {accessToken,id} = payload;
+                const { accessToken, id } = payload;
                 return {
                     url: `course/${id}`,
                     method: "DELETE",
                 }
             },
             invalidatesTags: ['getAllCourse'],
+
         }),
         updateCourse: builder.mutation({
             query: (payload) => {
-                const {accessToken,...updateCourseDetail} = payload;
+                const { accessToken, ...updateCourseDetail } = payload;
                 return {
                     url: `course/update`,
                     method: "PUT",
@@ -94,7 +95,7 @@ export const adminApi = createApi({
         }),
         addCourse: builder.mutation({
             query: (addCourse) => {
-                const {accessToken,...addCourseDetails} = addCourse;
+                const { accessToken, ...addCourseDetails } = addCourse;
                 return {
                     url: `/course/create`,
                     method: 'post',
@@ -105,7 +106,7 @@ export const adminApi = createApi({
         }),
         postAssignment: builder.mutation({
             query: (data) => {
-                const {accessToken,...assignmentData} = data;
+                const { accessToken, ...assignmentData } = data;
                 return {
                     url: `/create/paper`,
                     method: 'post',
@@ -116,7 +117,7 @@ export const adminApi = createApi({
         }),
         getAssignment: builder.query({
             query: (data) => {
-                const {accessToken,id} = data;
+                const { accessToken, id } = data;
                 return {
                     url: `/getAllPaperbyUserId/${id}`,
                     method: 'get',
@@ -146,41 +147,41 @@ export const adminApi = createApi({
         ),
         getAllQuestionsFromPaperId: builder.query({
             query: (payload) => {
-                const [accessToken,paperID] = payload;
-
                 return {
-                    url: `/getPaperbyPaperId/${paperID}`,
+                    url: `/getPaperbyPaperId/${payload}`,
                     method: 'GET',
                 }
             },
         }),
         postSaveResult: builder.mutation({
             query: (payload) => {
-                const [accessToken,result] = payload;
                 return {
-                    url: "/saveresult",
+                    url: "/checkPaper",
                     method: "POST",
-                    body: result,
+                    body: payload,
                 }
-            }
+            },
+            invalidatesTags: ['submitExam'],
         }),
         getAllAssissmentOnstudentPage: builder.query(
             {
                 query: (stdId) => {
                     return {
-                        url: `/getall/Assesment/${stdId}`,
+                        url: `/getAllAssessmentByStudentId/${stdId}`,
                         method: 'get',
                     }
-                }
+                },
+                providesTags: ['submitExam']
             }
         ),
         putActivePaper: builder.mutation({
-            query: ({paperId,paperActive}) => {
+            query: ({ paperId, paperActive }) => {
                 return {
                     url: `/activetPaper/${paperId}/${paperActive}`,
                     method: 'put',
                 }
             },
+            invalidatesTags: ['getAllAssissment'],
         }),
         invitedStudentByMail: builder.mutation({
             query: (payload) => {
@@ -189,7 +190,8 @@ export const adminApi = createApi({
                     method: 'post',
                     body: payload,
                 }
-            }
+            },
+            invalidatesTags: ['getAllAssissment'],
         }),
         getTop5Assissment: builder.query(
             {
@@ -223,6 +225,17 @@ export const adminApi = createApi({
                 }
             }
         ),
+        getStudentAvidence: builder.query(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/getresultby/student/${stdId}/paperId/${paperId}`,
+                        method: 'get',
+                    }
+                },
+                providesTags: ['submitExam']
+            }
+        ),
         getTotalAssessmentAdmin: builder.query(
             {
                 query: (organizationId) => {
@@ -245,6 +258,21 @@ export const adminApi = createApi({
                 }
             }
         ),
+        refreshAccessToken: builder.mutation({
+            query: (refreshToken) => {
+                return {
+                    url: '/oauth/token',
+                    method: 'POST',
+                    body: {
+                        grant_type: 'refresh_token',
+                        client_id: 'lA9qLAs5xQxoBuCVM1AJERQoPIsopevs',
+                        client_secret: 'LvKHmQdAdkZ-wj2RWrq32VTZq4GuK_XACwrh9KvUaKdTOYE3UbiwlnI1TPFhU08N',
+                        refresh_token: refreshToken,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                };
+            },
+        }),
     }),
 
 
@@ -252,4 +280,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalAssessmentAdminQuery,useGetTotalStudentAdminQuery,useGetTop5AssesmentScoreByStudentIdQuery} = adminApi;
+export const { useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery } = adminApi;

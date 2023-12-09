@@ -8,14 +8,14 @@ import { handleVisibilityChange } from '../utils/TabSwitch';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CheckForExtension } from '../utils/CheckForExtension';
 import { path } from '../../../routes/RoutesConstant';
+import { useDispatch } from 'react-redux';
 
 export const ExamVerification = () => {
   const [progress, setProgress] = useState(0);
   const [content, setContent] = useState();
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
   const { paperId } = useParams();
-  // let paperIds = paperId.split('/');
-  // paperIds = paperIds[paperIds.length - 1];
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -27,7 +27,7 @@ export const ExamVerification = () => {
   };
 
   const callback2 = () => {
-    GetEntireScreen(setProgress, handleShow, setContent);
+    GetEntireScreen(setProgress, handleShow, setContent, dispatch);
   };
 
   useEffect(() => {

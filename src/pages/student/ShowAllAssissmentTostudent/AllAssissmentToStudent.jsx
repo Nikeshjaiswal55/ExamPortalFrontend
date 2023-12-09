@@ -9,10 +9,8 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import Cardassessment, {
   CardassessmentPlaceholder,
 } from '../../admin/showAssessment/Cardassessment';
-import { SubIdSplit } from '../../../utils/SubIdSplit';
 
 export default function AllAssissmentToStudent() {
-  // const [showCard,setShowCard] = useState();
   const navigate = useNavigate();
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const {
@@ -22,7 +20,7 @@ export default function AllAssissmentToStudent() {
     isSuccess,
   } = useGetAllAssissmentOnstudentPageQuery(stdId.userId);
 
-  const [filterData, setFilterData] = useState(assignmentData);
+  const [filterData, setFilterData] = useState([]);
   const [input, setInput] = useState();
   const [notSearchDataFound, setSearchDataFound] = useState(false);
 
@@ -81,7 +79,7 @@ export default function AllAssissmentToStudent() {
               <IoSearchSharp size={35} className=" cursor-pointer" />
             </span>
           </div>
-          <div className="w-auto col-md-3 mx-2  mb-lg-0 mb-3 col-12  d-flex justify-content-end">
+          {/* <div className="w-auto col-md-3 mx-2  mb-lg-0 mb-3 col-12  d-flex justify-content-end">
             <Form.Select
               aria-label="Table view "
               style={{ borderColor: '#707070' }}
@@ -91,7 +89,7 @@ export default function AllAssissmentToStudent() {
               <option value="company">By name</option>
               <option value="college">By date </option>
             </Form.Select>
-          </div>
+          </div> */}
         </div>
         {/* <h4 className="m-0 text-capitalize fw-bold py-2"> All Assessments</h4> */}
         {isError && <SomethingWentWrong />}
@@ -104,10 +102,6 @@ export default function AllAssissmentToStudent() {
                     ? 'No Such A Data Found!!'
                     : ' No Data Available!!'}
                 </h4>
-                <h6 className="text-capitalize fw-bold text-center">
-                  create assissment by click
-                  <Link to={path.CreateAssessment.path}>here</Link>
-                </h6>
               </div>
             </NoDataFound>
           )}
@@ -119,18 +113,26 @@ export default function AllAssissmentToStudent() {
             ))}
           </div>
         ) : (
-          // <div className=" position-absolute top-50 start-50  translate-middle ">
-          //   <Loader />
-          // </div>
           <div className="row m-0 p-0  ">
+            {filterData?.filter((item) => item._attempted == false).length ===
+            0 ? (
+              <NoDataFound>
+                <h4 className="text-capitalize fw-bold text-center">
+                  No Pending Assissment
+                </h4>
+              </NoDataFound>
+            ) : (
+              ''
+            )}
             {assignmentData &&
-              filterData?.map((assessmentDetails, index) => (
-                <Cardassessment
-                  key={index}
-                  paperId={assessmentDetails.paperId}
-                  {...assessmentDetails}
-                />
-              ))}
+              filterData?.filter((item) => item._attempted == false)
+                ?.map((assessmentDetails, index) => (
+                  <Cardassessment
+                    key={index}
+                    paperId={assessmentDetails.paperId}
+                    {...assessmentDetails}
+                  />
+                ))}
           </div>
         )}
       </div>

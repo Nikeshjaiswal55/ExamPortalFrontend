@@ -21,22 +21,7 @@ const color = [
   'bg-info',
   'bg-dark',
 ];
-// const randomColor = color[Math.floor(Math.random() * color.length)];
 
-// const TopStudent = [
-//   {
-//     studentid: 12,
-//     email: "dixitp034@gmail.com",
-//   },
-//   {
-//     studentid: 13,
-//     email: "kapilj.bca2022@ssism.org",
-//   },
-//   {
-//     studentid: 14,
-//     email: "akashbba2022@ssism.org",
-//   }
-// ]
 const TotalComponent = ({infoText,infoNumber,icon,iconClassName}) => {
   return <>
     <div class="col-12 col-sm-6 h-7 col-md-4 p-2 m-0" style={{height: "150px"}}>

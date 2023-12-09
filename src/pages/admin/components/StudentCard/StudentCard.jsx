@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
-export function StudentCard({ divBoxStyle, studentdetails }) {
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { path } from '../../../../routes/RoutesConstant';
+export function StudentCard({ paperId, divBoxStyle, studentdetails }) {
   const color = [
     'bg-danger',
     'bg-secondary',
@@ -9,7 +11,7 @@ export function StudentCard({ divBoxStyle, studentdetails }) {
     'bg-dark',
   ];
   const randomColor = color[Math.floor(Math.random() * color.length)];
-
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -33,16 +35,26 @@ export function StudentCard({ divBoxStyle, studentdetails }) {
             <p className="card-text mt-3 ">{studentdetails.email}</p>
           </div>
           <div
-            className={`card-footer rounded-bottom-3  p-3`}
+            className={`card-footer rounded-bottom-3 fw-bold  text-light cursor-pointer  p-3`}
             style={{ background: 'var(--grey)' }}
+            onClick={() => {
+              studentdetails._attempted
+                ? navigate(
+                    `${path.examReport.path}/${paperId}/${studentdetails.studentid}`
+                  )
+                : toast.info('student not attempted paper yet!!', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark',
+                  });
+            }}
           >
-            <Link
-              to="/admin/dashboard"
-              className=" fw-bold  text-white"
-              style={{ textDecoration: 'none' }}
-            >
-              Evidence
-            </Link>
+            Evidence
           </div>
         </div>
       </div>

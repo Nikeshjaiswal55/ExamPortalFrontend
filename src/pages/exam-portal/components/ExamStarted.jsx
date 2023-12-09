@@ -1,29 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ExamModal } from './ExamModal';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
 import StudentPaper from '../../student/StudentPaper/StudentPaper';
 import { path } from '../../../routes/RoutesConstant';
+import { useSelector } from 'react-redux';
+
+import { ProgressBar } from 'react-bootstrap';
+import { MediaPermission } from '../utils/MediaPermission';
+import { GetEntireScreen } from '../utils/GetEntireScreen';
+import { ExamModal } from './ExamModal';
+import GiphyEmbed from './GiphyEmbed';
+import { CheckForExtension } from '../utils/CheckForExtension';
+import {
+  useGetAllAssissmentOnstudentPageQuery,
+  useGetAllQuestionsFromPaperIdQuery,
+} from '../../../apis/Service';
+import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 
 export const ExamStarted = () => {
-  const [timeLeft, setTimeLeft] = useState(60 * 60); // 1 hour in seconds
+  const { paperId } = useParams();
+  const [doneProcess, setProcess] = useState(true);
+  const stream = useSelector((state) => state.admin.stream);
   const [capturedImage, setCapturedImage] = useState([]);
-  const [content, setContent] = useState();
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [videoStream, setVideoStream] = useState();
-  const [screenStream, setScreenStream] = useState();
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-  const { paperId } = useParams();
-
-  const screenSharingStreaam = (stream) => {
-    setScreenStream(stream);
-  };
 
   useEffect(() => {
     const constraints = {
@@ -50,10 +57,7 @@ export const ExamStarted = () => {
             .then((base64Image) => {
               console.log(base64Image);
               const currentDateTime = new Date();
-              setCapturedImage((prevImages) => [
-                ...prevImages,
-                { base64Image, timestamp: currentDateTime },
-              ]);
+              setCapturedImage((prevImages) => [...prevImages, base64Image]);
             })
             .catch((error) => {
               console.error('Error capturing photo:', error);
@@ -80,24 +84,6 @@ export const ExamStarted = () => {
     localStorage.setItem('capturedImage', JSON.stringify(capturedImage));
   }, [capturedImage]);
 
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds
-      .toString()
-      .padStart(2, '0')}`;
-  };
-
-  const tick = () => {
-    setTimeLeft((prevTime) => prevTime - 1);
-  };
-
-  // Start the timer when the component mounts
-  useEffect(() => {
-    const timerId = setInterval(tick, 1000);
-    return () => clearInterval(timerId);
-  }, []);
-
   const handleVisibilityChange = (stream) => {
     if (document.hidden && stream) {
       setIsButtonVisible(false);
@@ -123,29 +109,115 @@ export const ExamStarted = () => {
   }, [tabSwitchCount]);
 
   useEffect(() => {
-    const stream = JSON.stringify(localStorage.getItem('stream'));
-    console.log('stream', stream);
     TabSwitch(stream);
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
+  async function cameraStop() {
+    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+  }
+
   async function handleSubmit() {
     // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
-    navigate(path.StudentPaperSubmitted.path);
+    navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
   }
 
-  return (
-    <div>
-      <StudentPaper paperId={paperId} />
-      <ExamModal
-        show={show}
-        content={content}
-        isButtonVisible={isButtonVisible}
-        handleClose={handleClose}
-      />
-    </div>
-  );
+  const [progress, setProgress] = useState(0);
+  const [content, setContent] = useState();
+
+  const callback = () => {
+    MediaPermission(setProgress, callback2, handleShow, setContent);
+  };
+
+  const callback2 = () => {
+    GetEntireScreen(setProgress, handleShow, setContent, TabSwitch);
+  };
+
+  const [decodedData, setDecodedData] = useState(null);
+
+  useEffect(() => {
+    CheckForExtension(handleShow, setContent, setProgress, callback);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (progress == 100) {
+      // navigate(`${path.StudentExamStarted.path}/${paperId}`);
+      setProcess(false);
+    }
+  }, [progress]);
+
+  const { data, isSuccess, isError, isLoading } =
+    useGetAllQuestionsFromPaperIdQuery(paperId);
+
+  useEffect(() => {
+    if (isSuccess) {
+      const decodedString = decodeURIComponent(data.data);
+      const jsonData = JSON.parse(decodedString);
+      console.log('asasssasss', jsonData);
+      setDecodedData(jsonData);
+    }
+  }, [isSuccess]);
+
+  if (isError) {
+    return (
+      <div className="h-100">
+        <SomethingWentWrong />
+      </div>
+    );
+  } else {
+    if (doneProcess) {
+      return (
+        <>
+          <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
+            <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+              <GiphyEmbed />
+              <div className="w-100">
+                <ProgressBar
+                  variant="success"
+                  now={progress}
+                  label={`${progress}%`}
+                />
+              </div>
+              <div>
+                <h6 className="text-center p-0 m-0">
+                  Please wait for upto a minute for the system to be set up.
+                </h6>
+                <h6 className="text-center">if it still does not load</h6>
+              </div>
+            </div>
+          </div>
+          <ExamModal
+            show={show}
+            content={content}
+            isButtonVisible={true}
+            handleClose={handleClose}
+          />
+        </>
+      );
+    } else {
+      return (
+        <div className="h-100">
+          <StudentPaper
+            paperId={paperId}
+            isLoading={isLoading}
+            decodedData={decodedData}
+            handleSubmit={handleSubmit}
+            cameraStop={cameraStop}
+          />
+          <ExamModal
+            show={show}
+            content={content}
+            isButtonVisible={isButtonVisible}
+            handleClose={handleClose}
+          />
+        </div>
+      );
+    }
+  }
 };

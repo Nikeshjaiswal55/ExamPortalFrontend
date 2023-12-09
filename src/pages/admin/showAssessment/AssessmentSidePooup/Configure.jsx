@@ -1,7 +1,7 @@
-import { ErrorMessage, Formik } from 'formik';
+import { ErrorMessage, Formik, Form, Field } from 'formik';
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
-import { InputField } from '../../../../theme/InputField/InputField';
+// import { Form } from 'react-bootstrap';
+// import { InputField } from '../../../../theme/InputField/InputField';
 import { CustomButton } from '../../../../theme/Button/Buttons';
 import * as yup from 'yup';
 
@@ -101,6 +101,7 @@ export default function Configure({ ConfigureProps }) {
     examSession: ConfigureProps.session,
     totalMarks: ConfigureProps.totalMarks,
     minimumMarks: ConfigureProps.minimum_marks,
+    assessementPattern: 'online',
   };
   return (
     <Formik
@@ -110,40 +111,32 @@ export default function Configure({ ConfigureProps }) {
         console.log('values :- ', values);
       }}
     >
-      {({ values, handleSubmit, handleBlur, handleChange }) => (
-        <div className=" w-100 ">
-          <Form onSubmit={(e) => {}}>
-            <div className="row d-flex align-items-center">
-              {InputFieldData.map((inputData, index) =>
-                inputData.Orgtype == 'company' ? (
-                  ''
-                ) : (
-                  <Form.Group className="col-md-6 my-3">
-                    <Form.Label className="text-capitalize fw-bold">
-                      {inputData.labelText}
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name={inputData.inputName}
-                      onChange={
-                        inputData.onInputChange
-                          ? (e) => handleDurationChange(e, handleChange)
-                          : handleChange
-                      }
-                      value={inputData.inputValue}
-                      onBlur={handleBlur}
-                      className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
-                      placeholder={inputData.placeholder}
-                    />
-                    <ErrorMessage
-                      component={'div'}
-                      name={inputData.inputName}
-                      className=" input-error"
-                    />
-                  </Form.Group>
-                )
-              )}
-              {ConfigureProps.branch == '' ? (
+      <div className=" w-100 ">
+        <Form>
+          <div className="row d-flex align-items-center">
+            {InputFieldData.map((inputData, index) =>
+              inputData.Orgtype == 'company' ? (
+                ''
+              ) : (
+                <div className="col-md-6 my-3">
+                  <h6 className="text-capitalize text-dark fw-bold">
+                    {inputData.labelText}
+                  </h6>
+                  <Field
+                    type="text"
+                    name={inputData.inputName}
+                    className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
+                    placeholder={inputData.placeholder}
+                  />
+                  <ErrorMessage
+                    component={'div'}
+                    name={inputData.inputName}
+                    className=" input-error"
+                  />
+                </div>
+              )
+            )}
+            {/* {ConfigureProps.branch == '' ? (
                 ''
               ) : (
                 <div className=" w-100">
@@ -174,22 +167,21 @@ export default function Configure({ ConfigureProps }) {
                     className=" input-error"
                   />
                 </div>
-              )}
-              <div
-                className={
-                  'px-5 my-4 d-flex justify-content-center align-items-center w-100'
-                }
-              >
-                <CustomButton
-                  buttonText={'Save'}
-                  onButtonClick={handleSubmit}
-                  className="w-50"
-                />
-              </div>
+              )} */}
+            <div
+              className={
+                'px-5 my-4 d-flex justify-content-center align-items-center w-100'
+              }
+            >
+              <CustomButton
+                type="submit"
+                buttonText={'Save'}
+                className="w-50"
+              />
             </div>
-          </Form>
-        </div>
-      )}
+          </div>
+        </Form>
+      </div>
     </Formik>
   );
 }

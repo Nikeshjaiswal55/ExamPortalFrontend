@@ -124,7 +124,6 @@ export default function AddAssignment() {
         }
         return true;
       }),
-    questions: yup.array().required('Please enter assessement name'),
     // 'excelFile': yup.mixed().required('File is required'),
   });
 
@@ -169,16 +168,16 @@ export default function AddAssignment() {
       colClassName: 'col-md-6 my-3',
       inputValue: 'Online',
     },
-    {
-      inputId: 'exam-duration',
-      inputName: 'examDuration',
-      formGroupId: 'exam-group-duration',
-      placeholder: 'select assessement duration',
-      labelText: 'assessement duration',
-      colClassName: 'col-md-6 my-3',
-      onInputChange: (e) => handleDurationChange(e, handleChange),
-      inputValue: duration,
-    },
+    // {
+    //   inputId: 'exam-duration',
+    //   inputName: 'examDuration',
+    //   formGroupId: 'exam-group-duration',
+    //   placeholder: 'select assessement duration',
+    //   labelText: 'assessement duration',
+    //   colClassName: 'col-md-6 my-3',
+    //   onInputChange: (e) => handleDurationChange(e, handleChange),
+    //   inputValue: duration,
+    // },
     {
       inputId: 'exam-session',
       inputName: 'examSession',
@@ -203,6 +202,37 @@ export default function AddAssignment() {
       placeholder: 'enter minimum marks',
       labelText: 'enter minimum marks',
       colClassName: 'col-md-6  my-3',
+    },
+  ];
+
+  const durationTimer = [
+    {
+      value: '00:15:00',
+      name: '15 min',
+    },
+    {
+      value: '00:30:00',
+      name: '30 min',
+    },
+    {
+      value: '00:45:00',
+      name: '45 min',
+    },
+    {
+      value: '01:00:00',
+      name: '01 hr',
+    },
+    {
+      value: '01:30:00',
+      name: '1.5 hr',
+    },
+    {
+      value: '02:00:00',
+      name: '02 hr',
+    },
+    {
+      value: '03:00:00',
+      name: '03 hr',
     },
   ];
 
@@ -237,18 +267,17 @@ export default function AddAssignment() {
             excelFile: '',
           }}
           onSubmit={async (values) => {
-            values.examDuration = duration + '';
             if (excel.length || values.email.length || values.branch !== '') {
               const examDetails = {
                 examDuration: values.examDuration,
                 examMode: 'Online',
-                examRounds: 2,
+                examRounds: 1,
                 paperChecked: false,
-                branch: values.examBranch,
+                branch: values.examBranch ? values.examBranch : null,
                 session: values.examSession,
                 assessmentName: values.assessementName,
-                totalMarks: values.totalMarks,
-                minimum_marks: values.minimumMarks,
+                totalMarks: Math.ceil(values.totalMarks),
+                minimum_marks: Math.ceil(values.minimumMarks),
                 is_Active: false,
                 is_Setup: true,
                 is_attempted: false,
@@ -268,6 +297,7 @@ export default function AddAssignment() {
                 orgnizationId: getOrgdata?.orgnizationId,
               }).then((res) => {
                 if (res?.data?.paperId) {
+                  navigate(path.ShowAssessment.path);
                   inviteStudent({
                     userId: res?.data?.userId,
                     paperId: res?.data?.paperId,
@@ -330,6 +360,28 @@ export default function AddAssignment() {
                           />
                         )
                       )}
+                      <Form.Group className="col-md-6  my-3">
+                        <Form.Label className="text-capitalize fw-bold">
+                          Select Assissment Duration
+                        </Form.Label>
+                        <Form.Select
+                          className=" rounded-3 border px-2"
+                          aria-label="Default select duration"
+                          name="examDuration"
+                          value={values.examDuration} // Make sure to set the value prop
+                          onChange={handleChange}
+                        >
+                          <option value="">Select Duration</option>
+                          {durationTimer?.map((durationTimer) => (
+                            <option
+                              key={durationTimer}
+                              value={durationTimer.value}
+                            >
+                              {durationTimer.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
                     </div>
                     {orgType == 'company' ? (
                       ''
@@ -509,126 +561,130 @@ export default function AddAssignment() {
                       Assessment Question
                     </p>
                     {showAssignment && (
-                      <FieldArray name="questions">
-                        {({ push, remove }) => (
-                          <div
-                            className="overflow-auto pe-4"
-                            style={{ height: 'calc(100vh - 16rem)' }}
-                          >
-                            {values.questions.map((question, index) => (
-                              <div key={index}>
-                                <Form.Group>
-                                  <div className="d-flex justify-content-between align-items-center">
-                                    <Form.Label className="py-1 fw-bold">
-                                      Question {index + 1} :-
-                                    </Form.Label>
-                                    {values.questions.length === 1 ? (
-                                      ' '
-                                    ) : (
-                                      <ImCross
-                                        onClick={() => remove(index)}
-                                        className="cursor-pointer"
-                                      />
+                      <>
+                        <FieldArray name="questions">
+                          {({ push, remove }) => (
+                            <div
+                              className="overflow-auto pe-4"
+                              style={{ height: 'calc(100vh - 16rem)' }}
+                            >
+                              {values.questions.map((question, index) => (
+                                <div key={index}>
+                                  <Form.Group>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                      <Form.Label className="py-1 fw-bold">
+                                        Question {index + 1} :-
+                                      </Form.Label>
+                                      {values.questions.length === 1 ? (
+                                        ' '
+                                      ) : (
+                                        <ImCross
+                                          onClick={() => remove(index)}
+                                          className="cursor-pointer"
+                                        />
+                                      )}
+                                    </div>
+                                    <Field
+                                      type="text"
+                                      name={`questions[${index}].questions`}
+                                      placeholder="Enter question"
+                                      className="form-control"
+                                    />
+                                  </Form.Group>
+                                  <Form.Group>
+                                    <FormLabel className="py-2 m-0 fw-bold">
+                                      Options :-
+                                    </FormLabel>
+                                    {question.options.map(
+                                      (option, optionIndex) => (
+                                        <div key={optionIndex}>
+                                          <FormCheck
+                                            type="radio"
+                                            id={`option-${index}-${optionIndex}`}
+                                            name={`questions[${index}].correctAns`}
+                                            value={option}
+                                            label={option}
+                                            onChange={handleChange}
+                                          />
+                                        </div>
+                                      )
                                     )}
-                                  </div>
-                                  <Field
-                                    type="text"
-                                    name={`questions[${index}].questions`}
-                                    placeholder="Enter question"
-                                    className="form-control"
-                                  />
-                                  <ErrorMessage
-                                    name={`questions[${index}].questions`}
-                                    component="div"
-                                  />
-                                </Form.Group>
-                                <Form.Group>
-                                  <FormLabel className="py-2 m-0 fw-bold">
-                                    Options :-
-                                  </FormLabel>
-                                  {question.options.map(
-                                    (option, optionIndex) => (
-                                      <div key={optionIndex}>
-                                        <FormCheck
-                                          type="radio"
-                                          id={`option-${index}-${optionIndex}`}
-                                          name={`questions[${index}].correctAns`}
-                                          value={option}
-                                          label={option}
-                                          onChange={handleChange}
+                                    <p className="mt-2 mb-0 fw-bold">
+                                      NOTE : Please tick on correct option
+                                    </p>
+                                    {/* Single input field for options */}
+                                    <div className="d-flex align-items-center gap-2 pt-3 mb-5">
+                                      <div className="w-50">
+                                        <input
+                                          type="text"
+                                          id={`option-${index}`}
+                                          name={`questions[${index}].options`}
+                                          placeholder="Enter options"
+                                          className="form-control w-100 hello"
+                                          onChange={(e) => {
+                                            setOption(e.target.value);
+                                          }}
+                                          onKeyDown={(e) => {
+                                            if (
+                                              e.key === 'Enter' &&
+                                              option.trim() !== ''
+                                            ) {
+                                              question.options.push(option);
+                                              e.preventDefault();
+                                              setOption('');
+                                            }
+                                          }}
+                                        />
+                                        <ErrorMessage
+                                          name={`questions[${index}].options`}
+                                          component="div"
                                         />
                                       </div>
-                                    )
-                                  )}
-                                  <p className="mt-2 mb-0 fw-bold">
-                                    NOTE : Please tick on correct option
-                                  </p>
-                                  {/* Single input field for options */}
-                                  <div className="d-flex align-items-center gap-2 pt-3 mb-5">
-                                    <div className="w-50">
-                                      <input
-                                        type="text"
-                                        id={`option-${index}`}
-                                        name={`questions[${index}].options`}
-                                        placeholder="Enter options"
-                                        className="form-control w-100 hello"
-                                        onChange={(e) => {
-                                          setOption(e.target.value);
+                                      {/* Add Option Button */}
+                                      <RiAddFill
+                                        size={30}
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                          option === ''
+                                            ? alert('Please enter option')
+                                            : question.options.push(option);
+                                          setOption('');
+                                          document.querySelector(
+                                            '.hello'
+                                          ).value = '';
                                         }}
-                                        onKeyDown={(e) => {
-                                          if (
-                                            e.key === 'Enter' &&
-                                            option.trim() !== ''
-                                          ) {
-                                            question.options.push(option);
-                                            e.preventDefault();
-                                            setOption('');
-                                          }
-                                        }}
-                                      />
-                                      <ErrorMessage
-                                        name={`questions[${index}].options`}
-                                        component="div"
                                       />
                                     </div>
-                                    {/* Add Option Button */}
-                                    <RiAddFill
-                                      size={30}
-                                      className="cursor-pointer"
-                                      onClick={() => {
-                                        option === ''
-                                          ? alert('Please enter option')
-                                          : question.options.push(option);
-                                        setOption('');
-                                        document.querySelector('.hello').value =
-                                          '';
-                                      }}
-                                    />
-                                  </div>
-                                </Form.Group>
+                                  </Form.Group>
 
-                                <hr />
-                              </div>
-                            ))}
-                            <div className="position-relative">
-                              <div
-                                className="position-absolute bottom-50"
-                                style={{ right: '40%' }}
-                              >
-                                <Button
-                                  variant="dark"
-                                  onClick={() => {
-                                    push({ questions: '', options: [] });
-                                  }}
-                                  className="text-capitalize rounded-4"
+                                  <hr />
+                                </div>
+                              ))}
+                              <div className="position-relative">
+                                <div
+                                  className="position-absolute bottom-50"
+                                  style={{ right: '40%' }}
                                 >
-                                  Add More Question
-                                </Button>
+                                  <Button
+                                    variant="dark"
+                                    onClick={() => {
+                                      push({ questions: '', options: [] });
+                                    }}
+                                    className="text-capitalize rounded-4"
+                                  >
+                                    Add More Question
+                                  </Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </FieldArray>
+                          )}
+                        </FieldArray>
+                        <ErrorMessage
+                          component={'div'}
+                          className=" input-error  my-1  mx-5 "
+                          name="questions"
+                        />
+                      </>
                     )}
                   </div>
                   {!showAssignment ? (
@@ -650,12 +706,12 @@ export default function AddAssignment() {
                         ''
                       ) : (
                         <>
-                          <Button
+                          {/* <Button
                             variant="secondary"
                             className="w-100 text-capitalize rounded-4"
                           >
                             Preview
-                          </Button>
+                          </Button> */}
 
                           <Button
                             type="submit"
