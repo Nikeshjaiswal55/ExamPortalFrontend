@@ -121,7 +121,7 @@ export default function AddCourse() {
 
   return (
     <>
-      <div className="row h-100 m-0 p-0">
+      <div className="row box rounded-1 h-100 m-0 p-0">
         <div className=" col-md-6 h-100 m-0 p-0 ">
           <div className="p-3 pe-lg-5 mt-lg-2">
             <p className="text-capitalize fw-bold fs-4 ">Add course</p>

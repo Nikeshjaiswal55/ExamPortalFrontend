@@ -80,3 +80,49 @@
 .bg-yellow{
     background-color: #e6cb0c;
 }
+
+ /* Chrome & Safari */
+ #scrollbar::-webkit-scrollbar-track {
+    border-radius: 10px;
+    width: 12px;
+    height: 5px;
+    background-color: #ffffff42;
+}
+
+#scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 0;
+    background: #0000000f;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+    z-index: 999;
+    width: 4px;
+    background: #7591a778;
+    border-radius: 12px;
+    background-clip: content-box;
+    border: 4px solid #b6b7b900;
+}
+#scrollbar::-webkit-scrollbar-corner{
+    opacity: 0;
+}
+ /* Firefox */
+ #scrollbar{
+    scrollbar-color: #7591a7;
+    scrollbar-width: thin;
+}
+/* IE */
+#scrollbar::-ms-scrollbar-track {
+    border-radius: 10px;
+    width: 12px;
+    height: 5px;
+    background-color: #ffffff00;
+}
+
+#scrollbar::-ms-scrollbar {
+    width: 10px;
+    height: 5px;
+    border-radius: 0;
+    background: #f3f5f700;
+}

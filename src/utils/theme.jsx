@@ -23,7 +23,7 @@ const Mode = () => {
     },[mode])
     return (
         <>
-            <span className="mode_btn mx-3 d-flex justify-content-center align-items-center" onClick={ChangeMode}>{(mode==="dark-theme")?<MdSunny className='icon' />:<FaMoon className='icon' size={22} cursor={'pointer'} onClick={setmode}/>}</span>
+            <span className="mode_btn mx-4 d-flex justify-content-center align-items-center" onClick={ChangeMode}>{(mode==="dark-theme")?<MdSunny size={25} className='icon' />:<FaMoon className='icon' size={22} cursor={'pointer'} onClick={setmode}/>}</span>
         </>
     );
 };

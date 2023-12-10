@@ -24,12 +24,12 @@ const color = [
 
 const TotalComponent = ({infoText,infoNumber,icon,iconClassName}) => {
   return <>
-    <div class="col-12 col-sm-6 h-7 col-md-4 p-2 m-0" style={{height: "150px"}}>
-      <div class=" w-100  d-flex align-items-center gap-2   border m-1 p-2 rounded-2" style={{backgroundColor: "var(--main-div)"}}>
-        <span class={` d-flex justify-content-center align-items-center rounded-2   elevation-1 ${iconClassName}  `} style={{width: "80px ",height: "80px"}}>{icon}</span>
+    <div class="col-12 col-sm-6 h-7 col-md-4 px-0 py-2 pe-2 m-0" style={{height: "85px"}}>
+      <div class=" w-100  d-flex align-items-center gap-2 box m-1 p-2 rounded-2" >
+        <span class={` d-flex justify-content-center align-items-center rounded-2   elevation-1 ${iconClassName}  `} style={{width: "60px ",height: "60px"}}>{icon}</span>
         <div class="  d-flex flex-column">
-          <span class="info-box-text fs-4 fw-bold">{infoText}</span>
-          <span class="info-box-number fs-5">{infoNumber}</span>
+          <span class="info-box-text fs-5 fw-bold">{infoText}</span>
+          <span class="info-box-number fs-6">{infoNumber}</span>
         </div>
       </div>
     </div>
@@ -100,21 +100,21 @@ export const AdminDashboard = () => {
       id: 1,
       infoText: "Total Student",
       infoNumber: totalStudents?.[0] ?? 0,
-      icon: <FaUsers size={50} />,
-      iconClassName: "bg-warning",
+      icon: <FaUsers fill='#fff' size={30} />,
+      iconClassName: "bg-purple",
     },
     {
       id: 2,
       infoText: "Total Assessment",
       infoNumber: totalAssessments?.[0] ?? 0,
-      icon: <MdOutlineAssignment size={50} />,
-      iconClassName: "bg-danger",
+      icon: <MdOutlineAssignment fill='#fff' size={30} />,
+      iconClassName: "bg-orange",
     },{
       id: 3,
       infoText: "Publish Assessment",
       infoNumber: data?.length,
-      icon: <FaShoppingCart size={50} />,
-      iconClassName: "bg-success",
+      icon: <FaShoppingCart fill='#fff' size={30} />,
+      iconClassName: "bg-yellow",
     }
   ];
   const {data: top5Assessment
@@ -152,20 +152,19 @@ export const AdminDashboard = () => {
           <>
             <div className=" w-100 h-100 m-0  p-0 g-md-0 overflow-auto bg-transparent">
               <div className="row w-100  chart-box   p-0 m-0 " style={{height: "20rem"}}>
-                <div className="col-12 col-md-4  d-flex   align-items-center   justify-content-center rounded-3">
-                  {barChatData && barChartLabels && <div className=' chart-parent w-100 h-75  d-flex   align-items-center  rounded-3 py-3 justify-content-center ' style={{backgroundColor: "var(--main-div)"}}>
+                <div className="col-12 col-md-4  d-flex px-1 pb-1 px-md-0  align-items-center   justify-content-center rounded-3">
+                  {barChatData && barChartLabels && <div className=' chart-parent box w-100 d-flex   align-items-center  rounded-3 py-3 justify-content-center' style={{height: "20rem"}}>
                     <BarChart chartLabels={barChartLabels} chartData={barChatData} />
                   </div>}
                 </div>
-                <div className="col-12 col-md-4 h-auto  d-flex   align-items-center    justify-content-center    rounded-3">
-
-                  {barChatData && barChartLabels && <div className=' chart-parent w-100 h-75  d-flex   align-items-center  rounded-3 py-3  justify-content-center ' style={{backgroundColor: "var(--main-div)"}}>
+                <div className="col-12 col-md-4 h-auto d-flex px-md-2 pb-1 px-1  align-items-center    justify-content-center    rounded-3">
+                  {barChatData && barChartLabels && <div className=' chart-parent box w-100 d-flex   align-items-center  rounded-3 py-3  justify-content-center' style={{height: "20rem"}}>
                     <DoughnutChart DoughnutChartData={barChatData} DoughnutChartLabels={barChartLabels} />
                   </div>}
 
                 </div>
-                <div className="col-12 col-md-4 d-flex   align-items-center   justify-content-center    rounded-3">
-                  {barChatData && barChartLabels && <div className=' chart-parent w-100 h-75   d-flex   align-items-center  rounded-3 py-3 justify-content-center ' style={{backgroundColor: "var(--main-div)"}}>
+                <div className="col-12 col-md-4 d-flex pb-1  px-md-0 align-items-center px-1  justify-content-center    rounded-3">
+                  {barChatData && barChartLabels && <div className=' chart-parent box w-100 d-flex  align-items-center  rounded-3 py-3 justify-content-center' style={{height: "20rem"}}>
                     <PieChart PieChartData={barChatData} PieChartLabels={barChartLabels} />
                   </div>}
                 </div>

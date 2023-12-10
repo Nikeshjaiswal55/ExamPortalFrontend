@@ -4,16 +4,26 @@
         background-color: black;
     
     .box {
-        background-color: black;
+        /* background-color: black; */
+        background-color: #131317;
         color: #fff;
     }
 
     .light-box, .main-container, .sidebar  {
-        background-color: #292D33;
+        /* background-color: #292D33; */
+        background-color: rgb(29, 30, 36);
         color: #fff;
     }
     .icon{
         color: #ffff;
+    }
+    .form-select , .form-control{
+        background-color: #16171c;
+        box-shadow: 0 0 #0000, inset 0 0 0 1px #ffffff1a;
+        border: none !important;
+    }
+    .btn-dark{
+        background-color:#131317 ;
     }
 }
 

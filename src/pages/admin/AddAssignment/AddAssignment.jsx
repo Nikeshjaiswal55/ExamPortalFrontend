@@ -243,7 +243,7 @@ export default function AddAssignment() {
 
   return (
     <>
-      <div className="row w-100 rounded-5 m-0 p-0 justify-content-end">
+      <div className="row box w-100 rounded-1 m-0 p-0 justify-content-end">
         {invitedLoading && (
           <Alert key={'primary'} className="py-2" variant={'primary'}>
             <img src={emailGif} height={'40px'} className="mx-3" />
@@ -316,10 +316,9 @@ export default function AddAssignment() {
                 handleSubmits(e, handleSubmit);
               }}
             >
-              <div className="row m-0  d-flex ">
-                <div
-                  className="col-md-6  position-relative"
-                  style={{ height: '90vh' }}
+              <div className="row m-0 box d-flex ">
+                <div className="col-md-6  position-relative"
+                  style={{ height: 'calc(100vh - 77px)' }}
                 >
                   <div className="pt-3 pe-lg-5 mt-lg-2">
                     <p className="text-capitalize fw-bold fs-4  position-sticky top-0  ">
@@ -335,8 +334,8 @@ export default function AddAssignment() {
                     </p>
                   </div>
                   <div
-                    className="overflow-auto"
-                    style={{ height: 'calc(100vh - 16rem)' }}
+                    className="overflow-y-auto overflow-x-hidden px-2" id="scrollbar"
+                    style={{ height: 'calc(100vh - 16rem)' }} 
                   >
                     <div className="row">
                       {InputFieldData.map((inputData) =>
@@ -557,7 +556,7 @@ export default function AddAssignment() {
                 </div>
                 <div className="col-md-6 pe-1 box position-relative">
                   <div className="ps-3  mt-lg-2  ">
-                    <p className="text-capitalize fw-bold fs-4 position-sticky top-0 box pt-3">
+                    <p className="text-capitalize fw-bold fs-4 position-sticky top-0 pt-3">
                       Assessment Question
                     </p>
                     {showAssignment && (
@@ -566,7 +565,7 @@ export default function AddAssignment() {
                           {({ push, remove }) => (
                             <div
                               className="overflow-auto pe-4"
-                              style={{ height: 'calc(100vh - 16rem)' }}
+                              style={{ height: 'calc(100vh - 16rem)' }} id="scrollbar"
                             >
                               {values.questions.map((question, index) => (
                                 <div key={index}>
