@@ -12,7 +12,10 @@ import { GetEntireScreen } from '../utils/GetEntireScreen';
 import { ExamModal } from './ExamModal';
 import GiphyEmbed from './GiphyEmbed';
 import { CheckForExtension } from '../utils/CheckForExtension';
-import { useGetAllQuestionsFromPaperIdQuery } from '../../../apis/Service';
+import {
+  useGetAllAssissmentOnstudentPageQuery,
+  useGetAllQuestionsFromPaperIdQuery,
+} from '../../../apis/Service';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 
 export const ExamStarted = () => {
@@ -112,10 +115,14 @@ export const ExamStarted = () => {
     };
   }, []);
 
+  async function cameraStop() {
+    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+  }
+
   async function handleSubmit() {
     // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
-    navigate(path.StudentPaperSubmitted.path);
+    navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
   }
 
   const [progress, setProgress] = useState(0);
@@ -200,6 +207,8 @@ export const ExamStarted = () => {
             paperId={paperId}
             isLoading={isLoading}
             decodedData={decodedData}
+            handleSubmit={handleSubmit}
+            cameraStop={cameraStop}
           />
           <ExamModal
             show={show}

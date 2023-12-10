@@ -131,7 +131,8 @@ export default function ShowCourse() {
                 <th className="text-center"> SrNo</th>
                 <th>Course Name</th>
                 <th>Created By</th>
-                <th className='text-center'><input placeholder='search here course' className='form-control'/></th>
+                <th></th>
+                {/* <th className='text-center'><input placeholder='search here course' className='form-control'/></th> */}
               </tr>
             </thead>
             <tbody>

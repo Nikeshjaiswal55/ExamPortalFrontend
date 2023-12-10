@@ -35,7 +35,7 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails }) {
             <p className="card-text mt-3 ">{studentdetails.email}</p>
           </div>
           <div
-            className={`card-footer rounded-bottom-3 fw-bold  text-light  p-3`}
+            className={`card-footer rounded-bottom-3 fw-bold  text-light cursor-pointer  p-3`}
             style={{ background: 'var(--grey)' }}
             onClick={() => {
               studentdetails._attempted

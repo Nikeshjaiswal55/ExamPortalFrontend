@@ -174,7 +174,7 @@ export const Routes = () => {
             }
           />
           <Route
-            path={path.StudentPaperSubmitted.path}
+            path={`${path.StudentPaperSubmitted.path}/:paperId`}
             element={<ExamSubmited />}
           />
         </Route>

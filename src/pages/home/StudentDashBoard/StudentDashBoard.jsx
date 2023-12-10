@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Accordion } from 'react-bootstrap';
 import '../component/Chart.css';
-import { FaUsers, FaShoppingCart } from 'react-icons/fa';
+import { FaUsers, FaThumbsUp } from 'react-icons/fa';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import {
+  useGetAllAssissmentOnstudentPageQuery,
   useGetAssignmentQuery,
+  useGetStudentAvidenceQuery,
   useGetTop5AssissmentQuery,
 } from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
@@ -14,6 +16,8 @@ import DoughnutChart from '../component/DoughnutChart';
 // import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import PieChart from '../component/PieChart';
 import { Loader } from '../../../components/Loader/Loader';
+import { StudentCertificate } from '../../student/StudentCertificate/StudentCertificateDownload';
+import { ViewResult } from '../../student/viewResult/ViewResult';
 
 const color = [
   'bg-danger',
@@ -24,43 +28,6 @@ const color = [
   'bg-dark',
 ];
 // const randomColor = color[Math.floor(Math.random() * color.length)];
-const info = [
-  {
-    id: 1,
-    infoText: 'Total Student',
-    infoNumber: '10,333',
-    icon: <FaUsers size={50} />,
-    iconClassName: 'bg-warning',
-  },
-  {
-    id: 2,
-    infoText: 'Total Assessment',
-    infoNumber: '10,333',
-    icon: <MdOutlineAssignment size={50} />,
-    iconClassName: 'bg-danger',
-  },
-  {
-    id: 3,
-    infoText: 'like',
-    infoNumber: '10,333',
-    icon: <FaShoppingCart size={50} />,
-    iconClassName: 'bg-success',
-  },
-];
-// const TopStudent = [
-//     {
-//         id: 12,
-//         email: "dixitp034@gmail.com",
-//     },
-//     {
-//         id: 13,
-//         email: "kapilj.bca2022@ssism.org",
-//     },
-//     {
-//         id: 14,
-//         email: "akashbba2022@ssism.org",
-//     }
-// ]
 
 function TotalComponent({ infoText, infoNumber, icon, iconClassName }) {
   return (
@@ -120,6 +87,14 @@ function TopStudentCard({ email, onEvidenceClick }) {
 export const StudentDashBoard = () => {
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
+  let stdId = JSON.parse(localStorage.getItem('stdData'));
+
+  const {
+    data: assignmentData,
+    isLoading: isAssignmentLoading,
+    isError: isAssignmentError,
+    isSuccess: isAssignmentSuccess,
+  } = useGetAllAssissmentOnstudentPageQuery(stdId.userId);
   const {
     data: xy,
     isLoading,
@@ -137,26 +112,50 @@ export const StudentDashBoard = () => {
 
   const [barChatData, setBarChatData] = useState();
   const [barChartLabels, setBarChatLabels] = useState();
-  const data = [
+  const info = [
     {
       id: 1,
-      assessmentName: ' given assessment',
-      assessmentDate: ' 22-08-2022',
-      assessmentDuration: ' 22:08:20',
+      infoText: 'Total Assissment',
+      infoNumber: assignmentData?.length ?? 0,
+      icon: <FaUsers size={50} />,
+      iconClassName: 'bg-warning',
     },
     {
       id: 2,
-      assessmentName: ' given assessment2',
-      assessmentDate: ' 22-08-2022',
-      assessmentDuration: ' 22:08:20',
+      infoText: 'Attempted Assissment',
+      infoNumber:
+        assignmentData?.filter((item) => item._attempted == true).length ?? 0,
+      icon: <MdOutlineAssignment size={50} />,
+      iconClassName: 'bg-danger',
     },
     {
       id: 3,
-      assessmentName: ' given assessment3',
-      assessmentDate: ' 22-08-2022',
-      assessmentDuration: ' 22:08:20',
+      infoText: 'Passed Assissment',
+      infoNumber: '0',
+      icon: <FaThumbsUp size={50} />,
+      iconClassName: 'bg-success',
     },
   ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     assessmentName: ' given assessment',
+  //     assessmentDate: ' 22-08-2022',
+  //     assessmentDuration: ' 22:08:20',
+  //   },
+  //   {
+  //     id: 2,
+  //     assessmentName: ' given assessment2',
+  //     assessmentDate: ' 22-08-2022',
+  //     assessmentDuration: ' 22:08:20',
+  //   },
+  //   {
+  //     id: 3,
+  //     assessmentName: ' given assessment3',
+  //     assessmentDate: ' 22-08-2022',
+  //     assessmentDuration: ' 22:08:20',
+  //   },
+  // ];
   useEffect(() => {
     const chartData = [];
     const chartLabels = [];
@@ -235,37 +234,41 @@ export const StudentDashBoard = () => {
                 })}
             </div>
 
-            {data?.length ? (
+            {assignmentData?.length ? (
               <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100  p-2   ">
                 <div className=" w-100 py-3 p-md-2   fw-bold ">
                   <h4 className=" ps-3"> Taken Assessment</h4>
                 </div>
                 <Accordion className="  my-2 p-0 p-md-2 ">
-                  {data &&
-                    data?.map((value, index) => {
-                      return (
-                        <>
-                          <div className=" border rounded py-3 px-2 my-1">
-                            {' '}
-                            <div className=" w-100 d-flex  flex-column flex-md-row gap-2  flex-wrap  justify-content-start  align-items-start  align-items-md-center justify-content-md-between fw-bold ">
-                              <div className=" ps-3 ps-md-0 w-auto text-start text-capitalize">
-                                {value?.assessmentName}{' '}
-                              </div>
-                              <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
-                                {value?.assessmentDuration}{' '}
-                              </div>
-                              <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
-                                {value?.assessmentDate}{' '}
-                              </div>
-                              <div className="    d-flex  justify-content-around justify-content-lg-between gap-2">
-                                <CustomButton buttonText={'Check Result'} />
-                                <CustomButton buttonText={'Download Result'} />
+                  {assignmentData &&
+                    assignmentData
+                      ?.filter((item) => item._attempted == true)
+                      ?.map((value, index) => {
+                        return (
+                          <>
+                            <div className=" border rounded py-3 px-2 my-1">
+                              {' '}
+                              <div className=" w-100 d-flex  flex-column flex-md-row gap-2  flex-wrap  justify-content-start  align-items-start  align-items-md-center justify-content-md-between fw-bold ">
+                                <div className=" ps-3 ps-md-0 w-auto text-start text-capitalize">
+                                  {value?.assessmentName}{' '}
+                                </div>
+                                <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
+                                  {value?.examDuration}{' '}
+                                </div>
+                                <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
+                                  {value?.assessmentDate}{' '}
+                                </div>
+                                <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
+                                  <ViewResult paperId={value.paperId} />
+                                  <div>
+                                    <StudentCertificate />
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </>
-                      );
-                    })}
+                          </>
+                        );
+                      })}
                 </Accordion>
               </div>
             ) : null}
