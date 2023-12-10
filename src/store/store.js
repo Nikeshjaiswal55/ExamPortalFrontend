@@ -1,13 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { adminApi } from '../apis/Service'
+import adminReducer from "./adminSlice"
+
+
+const combineReducer = combineReducers({
+    [adminApi.reducerPath]: adminApi.reducer,
+    admin: adminReducer
+})
 
 export const store = configureStore({
-    reducer: {
-        // Add the generated reducer as a specific top-level slice
-        [adminApi.reducerPath]: adminApi.reducer,
-    },
+    reducer: combineReducer,
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) =>

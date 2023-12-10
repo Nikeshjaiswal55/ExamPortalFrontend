@@ -206,9 +206,6 @@ export default function AddCourse() {
                         className=" cursor-pointer border border-0 ms-2 px-1"
                         onClick={() => {
                           if (excel.length && selectedFile) {
-                            console.log(
-                              '======================= onclick show previw'
-                            );
                             setShowPreview(true);
                           } else {
                             alert(excel);

@@ -17,8 +17,6 @@ import SomethingWentWrong from '../../../components/SomethingWentWrong/Something
 import { toast } from 'react-toastify';
 
 export default function ShowAssessment() {
-  // const [showCard,setShowCard] = useState();
-  const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
   const {
@@ -26,7 +24,7 @@ export default function ShowAssessment() {
     isLoading,
     isError,
     isSuccess,
-  } = useGetAssignmentQuery({id: userId });
+  } = useGetAssignmentQuery({ id: userId });
 
   const [
     deleteAssignment,
@@ -38,7 +36,14 @@ export default function ShowAssessment() {
   const [notSearchDataFound, setSearchDataFound] = useState(false);
 
   useEffect(() => {
+    if (dltSuccess) {
+      setFilterData(assignmentData);
+    }
+  }, [dltSuccess]);
+
+  useEffect(() => {
     setFilterData(assignmentData);
+    console.log(filterData, 'filter');
   }, [isSuccess]);
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export default function ShowAssessment() {
     } else {
       setFilterData(assignmentData);
     }
-  }, [input,dltSuccess]);
+  }, [input]);
 
   useEffect(() => {
     if (isError) {
@@ -72,8 +77,8 @@ export default function ShowAssessment() {
 
   return (
     <>
-      <div className="main w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
-        <div className="w-100 row justify-content-between flex-wrap align-items-center  p-lg-3  ">
+      <div className="main w-100 h-100 m-0 p-0 py-2 overflow-auto ">
+        <div className="w-100 row justify-content-between flex-wrap align-items-center pb-3">
           <div
             className=" d-flex col-md-5 mx-3 mb-lg-0 mb-3 col-12 justify-content-between border p-2 fs-4 rounded-4 box  "
             style={{ width: '550px' }}
@@ -82,13 +87,13 @@ export default function ShowAssessment() {
               type="search"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="border-0 focus-ring  focus-ring-light"
+              className="border-0 focus-ring form-control focus-ring-light"
               placeholder="Search here.."
               style={{ width: '90%' }}
               disabled={isError || isLoading ? true : false}
             />
-            <span>
-              <IoSearchSharp size={35} className=" cursor-pointer" />
+            <span className='d-flex align-items-center'>
+              <IoSearchSharp size={25} className=" cursor-pointer" />
             </span>
           </div>
           <div className="w-auto col-md-3 mx-2  mb-lg-0 mb-3 col-12  d-flex justify-content-end">
@@ -130,15 +135,14 @@ export default function ShowAssessment() {
           </div>
         ) : (
           <div className="row m-0 p-0  ">
-            {assignmentData &&
-              filterData?.map((assessmentDetails, index) => (
-                <Cardassessment
-                  key={index}
-                  paperId={assessmentDetails.paperId}
-                  {...assessmentDetails}
-                  deleteAssignment={deleteAssignment}
-                />
-              ))}
+            {filterData?.map((assessmentDetails, index) => (
+              <Cardassessment
+                key={index}
+                paperId={assessmentDetails.paperId}
+                {...assessmentDetails}
+                deleteAssignment={deleteAssignment}
+              />
+            ))}
           </div>
         )}
       </div>

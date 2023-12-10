@@ -1,0 +1,63 @@
+{
+    "getTop5Assesment": [
+        {
+            "studentid": 1,
+            "assessmentName": "Iteg",
+            "marks": 100
+        },
+        {
+            "studentid": 1,
+            "assessmentName": "SVS",
+            "marks": 80
+        },
+        {
+            "studentid": 1,
+            "assessmentName": "SNS",
+            "marks": 45
+        },
+        {
+            "studentid": 1,
+            "assessmentName": "Meg",
+            "marks": 65
+        },
+        {
+            "studentid": 5,
+            "assessmentName": "beg",
+            "marks": 25
+        }
+    ],
+    "totalStudent": [
+        5000
+    ],
+    "totalAssessment": [
+        5345
+    ],
+    "getTop5ExamScoreHigh": [
+        {
+            "id": 3,
+            "assessmentName": "Iteg2a",
+            "marks": 100
+        },
+        {
+            "id": 1,
+            "assessmentName": "SVS2a",
+            "marks": 80
+        },
+        {
+            "id": 1,
+            "assessmentName": "SNS2s",
+            "marks": 45
+        },
+        {
+            "id": 1,
+            "assessmentName": "Meg3a",
+            "marks": 65
+        },
+        {
+            "id": 5,
+            "assessmentName": "beg2b",
+            "marks": 25
+        }
+    ]
+
+}

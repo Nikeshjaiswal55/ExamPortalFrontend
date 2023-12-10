@@ -111,31 +111,21 @@ import { useParams } from 'react-router';
 //     },
 // ];
 
-export default function StudentPaper({ paperId }) {
-  const [setA, setSetA] = useState([]);
+export default function StudentPaper({ paperId, decodedData, isLoading }) {
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
   const handleSubmitShow = () => setShowSubmit(true);
-  const { data, error, isLoading } = useGetAllQuestionsFromPaperIdQuery([
-    localStorage.getItem('accessToken'),
-    paperId,
-  ]);
+  // const { data, isSuccess, isLoading } =
+  //   useGetAllQuestionsFromPaperIdQuery(paperId);
   const [saveResult, otherDetails] = usePostSaveResultMutation();
-  console.log('otherDetails := ', otherDetails);
-  // console.log("data================",data)
   const timeString = '01:45:15';
   const [targetTime, setTargetTime] = useState(null);
   const progressBar = useRef(null);
   const [count, setCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(new Array(setA?.length));
-  // console.log("   selected option := ",selectedOption);
+  const [selectedOption, setSelectedOption] = useState(
+    new Array(decodedData?.questions?.length)
+  );
 
-  // set data
-  useEffect(() => {
-    setSetA(data?.questions);
-    console.log('data================', data);
-  }, [data]);
-  // time
   useEffect(() => {
     const convertTimeStringToMillis = (timeString) => {
       const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -148,36 +138,38 @@ export default function StudentPaper({ paperId }) {
   }, [timeString]);
 
   function getUserAnswereWithQuestion() {
-    const questionsJson = JSON.stringify(data?.questions);
+    const questionsJson = JSON.stringify(decodedData?.questions);
     let questions = JSON.parse(questionsJson);
     console.log('before ', questions);
-    setA.forEach((value, index) => {
+    decodedData?.questions.forEach((value, index) => {
       questions[index].userAns = selectedOption[index];
     });
     console.log('after ', questions);
     return questions;
   }
 
+  const stdData = JSON.parse(localStorage.getItem('stdData'));
   async function submitPaperDetails(params) {
     console.log(selectedOption, 'submited =====================');
+    const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
+    const ss = localStorage.getItem('ss');
+    randomImg.push(ss);
     const questions = getUserAnswereWithQuestion();
+
     const result = {
-      studentID: 'string',
-      paperID: paperId,
+      studentId: stdData.userId,
+      paperId: paperId,
       questions: questions,
       cheating: {
-        // "cheatingId": "string",
-        // "studentId": "string",
+        studentId: stdData.userId,
         paperId: paperId,
-        images: null,
+        images: randomImg,
         audios: null,
+        paperId: paperId,
       },
     };
     console.log('result in submit :  ', result);
-    const resp = await saveResult([
-      localStorage.getItem('accessToken'),
-      result,
-    ]);
+    const resp = await saveResult(result);
     console.log('response save result ;-  ', resp);
     handleSubmitClose();
   }
@@ -187,7 +179,7 @@ export default function StudentPaper({ paperId }) {
     return selectedOption[id] ? true : false;
   }
   function updateProgressBar() {
-    const progress = ((count + 1) / setA?.length) * 100;
+    const progress = ((count + 1) / decodedData?.questions?.length) * 100;
     progressBar.current.style.width = progress + '%';
   }
   function handleChecked(e, id) {
@@ -215,14 +207,16 @@ export default function StudentPaper({ paperId }) {
             <div className="col-lg-8  offset-lg-2 ">
               <div className=" d-flex flex-wrap justify-content-between">
                 <div>
-                  <h1 className=" text-capitalize">java mastery challenge</h1>
+                  <h1 className=" text-capitalize">
+                    {decodedData?.examDetails.assessmentName}
+                  </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
                     {' '}
                     <span>
                       {' '}
                       {targetTime && (
                         <Countdown
-                          date={targetTime} // Set the target time for the countdown
+                          date={decodedData?.examDetails.examDuration} // Set the target time for the countdown
                           renderer={({
                             hours,
                             minutes,
@@ -259,19 +253,19 @@ export default function StudentPaper({ paperId }) {
                       ></div>
                     </div>{' '}
                     <span>
-                      {count}/{setA?.length} question
+                      {count}/{decodedData?.questions?.length} question
                     </span>
                   </div>
                 </div>
                 <div className="d-none d-md-flex justify-content-center align-items-center flex-column">
                   <h1>
-                    Hey shruti 👋
+                    Hey {stdData?.email.split('@')[0]} 👋
                     {/* <PiHandWaving size={35} /> */}
                   </h1>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
-                    <p>min score:30% </p>
-                    <p>max score:100% </p>
+                    <p>min score:{decodedData?.examDetails.minimum_marks}% </p>
+                    <p>max score:{decodedData?.examDetails.totalMarks} </p>
                   </div>
                 </div>
               </div>
@@ -280,8 +274,8 @@ export default function StudentPaper({ paperId }) {
               className="col-lg-8  offset-lg-2 p-lg-4  overflow-auto  "
               style={{ maxHeight: '60vh' }}
             >
-              {setA &&
-                setA.map((value, index) => {
+              {decodedData?.questions &&
+                decodedData?.questions.map((value, index) => {
                   return (
                     <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3">
                       <div className="question d-flex fs-6">

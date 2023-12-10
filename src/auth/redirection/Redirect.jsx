@@ -46,6 +46,7 @@ export const Redirect = () => {
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem('orgData', JSON.stringify(getOrgdata));
+      localStorage.setItem('orgtype', getOrgdata.orgnizationType);
     }
   }, [isSuccess]);
 
@@ -65,7 +66,7 @@ export const Redirect = () => {
         <UserWaiting />
       </div>
     ) : data?.role === 'Student' ? (
-      <Navigate to="/student/dashboard" />
+      <Navigate to={path.StudentDashboard.path} />
     ) : (
       <Navigate to={path.Organisation.path} />
     );

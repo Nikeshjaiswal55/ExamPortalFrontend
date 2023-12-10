@@ -5,10 +5,12 @@ import { AiOutlineFieldTime } from 'react-icons/ai';
 import '../../../styles/common.css';
 import { Button, Placeholder, Spinner } from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
+import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 // import {Button,Placeholder,Spinner} from 'react-bootstrap';
 import SidePooup from './AssessmentSidePooup/SidePooup';
 import Example from './AssessmentSidePooup/Modal';
+import { path } from '../../../routes/RoutesConstant';
 
 export default function Cardassessment({
   deleteAssignment,
@@ -34,7 +36,7 @@ export default function Cardassessment({
             <div className="m-0 p-0">
               <strong
                 className="fs-6 cursor-pointer"
-                onClick={() => setShowCard(true)}
+                onClick={() => (stdData ? '' : setShowCard(true))}
               >
                 {props?.assessmentName}
               </strong>
@@ -43,7 +45,6 @@ export default function Cardassessment({
             </div>
             {props?._Active ? (
               <div className=" d-flex justify-content-evenly   align-items-center">
-                {' '}
                 <Spinner animation="grow" variant="success" size="sm" />{' '}
                 <strong className="ms-2"> Active</strong>
               </div>
@@ -66,7 +67,9 @@ export default function Cardassessment({
             </div>
             {stdData ? (
               <Button
-                onClick={() => navigate(`/student/exam-verify/${paperId}`)}
+                onClick={() =>
+                  navigate(`${path.TermAndCondition.path}/${paperId}`)
+                }
               >
                 GetStarted
               </Button>
@@ -77,19 +80,19 @@ export default function Cardassessment({
                 onClick={() => navigate(`/admin/student-details/${paperId}`)}
               >
                 <div
-                  className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center  bg-danger   "
+                  className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center bg-purple"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b> A</b>{' '}
                 </div>
                 <div
-                  className="border rounded-circle p-0 position-absolute top-0 start-50 text-center bg-secondary  bg-gradient"
+                  className="border rounded-circle p-0 position-absolute top-0 start-50 text-center bg-orange  bg-gradient"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b>B</b>{' '}
                 </div>
                 <div
-                  className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-white "
+                  className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-yellow"
                   style={{ width: '30px', height: '30px' }}
                 >
                   <b> 3+</b>
@@ -100,7 +103,12 @@ export default function Cardassessment({
         </div>
       </div>
 
-      <Example show={showCard} {...props} setShowCard={setShowCard} />
+      <Example
+        show={showCard}
+        {...props}
+        paperId={paperId}
+        setShowCard={setShowCard}
+      />
     </>
   );
 }

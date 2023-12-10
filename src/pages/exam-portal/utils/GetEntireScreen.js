@@ -1,4 +1,6 @@
-export async function GetEntireScreen(setProgress, handleShow, setContent) {
+import { getStream } from "../../../store/adminSlice";
+
+export async function GetEntireScreen(setProgress, handleShow, setContent, TabSwitch) {
     try {
         // Attempt to get a stream with displaySurface set to "monitor"
         const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -8,8 +10,7 @@ export async function GetEntireScreen(setProgress, handleShow, setContent) {
             }
         });
         console.log(stream, 'stream');
-
-
+        TabSwitch(stream)
         if (stream.getVideoTracks().length > 0) {
             const trackSettings = stream.getVideoTracks()[0].getSettings();
             const extend = externalScreen()

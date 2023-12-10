@@ -3,8 +3,11 @@ import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
-// const baseUrl = "http://exam-easy.up.railway.app"
-const baseUrl = "https://exameasy.onrender.com"
+// const baseUrl = "https://exameasy.onrender.com/"
+// const baseUrl = "http://192.168.0.202:9090"
+const baseUrl = "https://exameasy-krishna.onrender.com/"
+// const baseUrl = "http://192.168.0.201:9090"
+
 
 
 export const adminApi = createApi({
@@ -143,21 +146,18 @@ export const adminApi = createApi({
         ),
         getAllQuestionsFromPaperId: builder.query({
             query: (payload) => {
-                const [accessToken, paperID] = payload;
-
                 return {
-                    url: `/getPaperbyPaperId/${paperID}`,
+                    url: `/getPaperbyPaperId/${payload}`,
                     method: 'GET',
                 }
             },
         }),
         postSaveResult: builder.mutation({
             query: (payload) => {
-                const [accessToken, result] = payload;
                 return {
-                    url: "/saveresult",
+                    url: "/checkPaper",
                     method: "POST",
-                    body: result,
+                    body: payload,
                 }
             }
         }),
@@ -165,13 +165,109 @@ export const adminApi = createApi({
             {
                 query: (stdId) => {
                     return {
-                        url: `/getall/Assesment/${stdId}`,
+                        url: `/getAllAssessmentByStudentId/${stdId}`,
                         method: 'get',
                     }
                 }
             }
         ),
-
+        putActivePaper: builder.mutation({
+            query: ({ paperId, paperActive }) => {
+                return {
+                    url: `/activetPaper/${paperId}/${paperActive}`,
+                    method: 'put',
+                }
+            },
+            invalidatesTags: ['getAllAssissment'],
+        }),
+        invitedStudentByMail: builder.mutation({
+            query: (payload) => {
+                return {
+                    url: `/inviteStudents/`,
+                    method: 'post',
+                    body: payload,
+                }
+            }
+        }),
+        getTop5Assissment: builder.query(
+            {
+                query: (adminId) => {
+                    return {
+                        url: ` http://localhost:3000/getTop5Assesment`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTop3AssissmentStudents: builder.query(
+            {
+                query: (AssessmentId) => {
+                    return {
+                        url: `/getTopperByPaperId/${AssessmentId}`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTotalStudentAdmin: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/totalStudent`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getStudentAvidence: builder.query(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/getresultby/student/${stdId}/paperId/${paperId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTotalAssessmentAdmin: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/totalAssessment`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTop5AssesmentScoreByStudentId: builder.query(
+            {
+                query: (organizationId) => {
+                    return {
+                        url: ` http://localhost:3000/getTop5ExamScoreHigh`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        refreshAccessToken: builder.mutation({
+            query: (refreshToken) => {
+                return {
+                    url: '/oauth/token',
+                    method: 'POST',
+                    body: {
+                        grant_type: 'refresh_token',
+                        client_id: 'lA9qLAs5xQxoBuCVM1AJERQoPIsopevs',
+                        client_secret: 'LvKHmQdAdkZ-wj2RWrq32VTZq4GuK_XACwrh9KvUaKdTOYE3UbiwlnI1TPFhU08N',
+                        refresh_token: refreshToken,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                };
+            },
+        }),
     }),
 
 
@@ -179,4 +275,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetTestQuery, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation } = adminApi;
+export const { useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery } = adminApi;
