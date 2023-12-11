@@ -63,9 +63,22 @@ export const adminApi = createApi({
             providesTags: ['getOrgernization']
         }),
         getAllCourses: builder.query({
-            query: ({ accessToken, userId }) => {
+            query: ({userId,page,size,sortField,sortOrder}) => {
+                let bysize = "",bysortField = "",bySortOrder = "",byPage = "";
+                if(size) {
+                    bysize = `&size=${size}`;
+                }
+                if(sortField) {
+                    bysortField = `&sortField=${sortField}`;
+                }
+                if(page || page == 0) {
+                    byPage = `?page=${page}`;
+                }
+                if(sortOrder) {
+                    bySortOrder = `&sortOrder=${sortOrder}`;
+                }
                 return {
-                    url: `course/byUserId/${userId}`,
+                    url: `course/byUserId/${userId}${byPage}${bysortField}${bysize}${bySortOrder}`,
                     method: "GET",
                 }
             },
@@ -116,10 +129,27 @@ export const adminApi = createApi({
             invalidatesTags: ['getAllAssissment'],
         }),
         getAssignment: builder.query({
-            query: (data) => {
-                const { accessToken, id } = data;
+            query: ({accessToken,paper_name,id,Active,createdDate,publishDate,pageno,pageSize,sortOrder,sortField}) => {
+
+                let filter = Active == '' || Active == undefined ? "" : `&filter=is_Active:${Active}`
+                let filterByname = (paper_name == "" || paper_name?.lenght == 0 || paper_name == null) ? "" : `filter=paper_name:${paper_name}`
+                let filterByCreatedDate = createdDate = "" || createdDate == null ? "" : `filter=created_date:${(createdDate?.getFullYear()) + "/" + (createdDate?.getMonth() + 1) + "/" + (createdDate?.getDate())}`
+                let filterByPublishDate = publishDate = "" || publishDate == null ? "" : `filter=created_date:${(publishDate?.getFullYear()) + "/" + (publishDate?.getMonth() + 1) + "/" + (publishDate?.getDate())}`
+                let sortByOrder = "";
+                let bypageSize = "";
+                let bypageNo = ""
+                if(sortOrder) {
+                    sortByOrder = `&sortOrder=${sortOrder}`;
+                }
+                if(pageSize) {
+                    bypageSize = `&pagesize=${pageSize}`;
+                }
+                if(pageno) {
+                    bypageNo = `&pageno=${pageno}`
+                }
                 return {
-                    url: `/getAllPaperbyUserId/${id}`,
+                    url: `/getAllPaperbyUserId/${id}?${filterByname}${filterByCreatedDate}${filter}${sortByOrder}${bypageSize}${bypageNo}`,
+                    // params: {Active,pageno,pagesize: pageSize,sortOrder,sortField},
                     method: 'get',
                 }
             },

@@ -93,7 +93,9 @@ export const AdminDashboard = () => {
     isError,
     isSuccess,
   } = useGetAssignmentQuery({id: userId});
+  console.log("  usegetassigment ",data)
   const {data: totalStudents} = useGetTotalStudentAdminQuery();
+
   const {data: totalAssessments} = useGetTotalAssessmentAdminQuery();
   const info = [
     {
@@ -181,15 +183,15 @@ export const AdminDashboard = () => {
 
               </div>
 
-              {data?.length ? <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100  p-2   ">
+                {data?.data?.length ? <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100  p-2   ">
                 <div className=' w-100 py-3 p-md-2   fw-bold '>
                   <h4 className=' ps-3'> Active Assessment</h4>
                 </div>
                   <Accordion className='  my-1 p-0  ' >
 
-                  {data && data?.map((value,index) => {
+                    {data?.data && data?.data?.map((value,index) => {
 
-                    if(value._Active) {
+                    if(value.is_Active) {
                       return <TopStudentAcordianItem
                         index={index}
                         assessmentId={value?.paperId}
