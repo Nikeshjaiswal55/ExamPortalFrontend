@@ -276,6 +276,7 @@ export const adminApi = createApi({
         getStudentAvidence: builder.query(
             {
                 query: ({ paperId, stdId }) => {
+                    console.log("paperId", paperId, "stdId", stdId)
                     return {
                         url: `/getresultby/student/${stdId}/paperId/${paperId}`,
                         method: 'get',
