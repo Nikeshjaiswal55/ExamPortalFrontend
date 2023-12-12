@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { getNotification } from '../../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
+import { CkEditor } from './CkEditor';
 
 const durationTimer = [
   {
@@ -249,7 +250,10 @@ export const AddAssignmentUpdate = () => {
           onSelect={handleTabSelect}
         >
           <div className="row h-100 gap-3  m-0 p-0">
-            <div className="col-2 px-4 mx-2 bg-white rounded-4">
+            <div
+              style={{ height: 'calc(100vh - 5rem)' }}
+              className="col-2 px-4 mx-2 bg-white rounded-4"
+            >
               <h4 className="text-capitalize fw-bold my-4">
                 Test Configuration
               </h4>
@@ -299,7 +303,7 @@ export const AddAssignmentUpdate = () => {
                 Publish
               </Button>
             </div>
-            <div className="col-7" style={{ flex: 1 }}>
+            <div className="col-7 px-0" style={{ flex: 1 }}>
               <Formik
                 initialValues={initialvalue}
                 validationSchema={validationschema}
@@ -307,12 +311,12 @@ export const AddAssignmentUpdate = () => {
               >
                 {({ values, handleSubmit, handleBlur, handleChange }) => (
                   <Form className="h-100">
-                    <Button
+                    {/* <Button
                       type="subbmit"
-                      className='className=" p-lg-2 w-100 btn-primary mt-5 mb-3 btn my-5'
+                      className='className=" p-lg-2 my-2 btn-primary btn w-25'
                     >
                       submit
-                    </Button>
+                    </Button> */}
                     <Tab.Content>
                       <Tab.Pane
                         eventKey="assessmentSetting"
@@ -352,7 +356,10 @@ export const AddAssignmentUpdate = () => {
 
 const AssesstmentSetting = () => {
   return (
-    <div className=" p-4 rounded-4 h-100 bg-white text-dark">
+    <div
+      className=" p-4 rounded-4 bg-white text-dark"
+      style={{ height: 'calc(100vh - 5rem)' }}
+    >
       <div className="my-3">
         <FormLabel className="text-capitalize fw-bold">
           Assessment Name
@@ -377,7 +384,7 @@ const AssesstmentSetting = () => {
         />
         <ErrorMessage name="shortDescription" className="text-danger" />
       </div>
-      <div className="row gap-1 my-5">
+      <div className="row gap-1 my-3">
         <div className="col-3">
           <FormLabel className="text-capitalize fw-bold">
             Assessment Pattern
@@ -493,6 +500,7 @@ const AssesstmentSetting = () => {
           <ErrorMessage name="assessmentOrder" className="text-danger" />
         </div>
       </div>
+      <CkEditor />
     </div>
   );
 };
@@ -604,8 +612,6 @@ const QuestionManagement = ({ values }) => {
                     />
                   </div>
                 </div>
-
-                <hr />
               </div>
             ))}
             <div className="position-relative">
