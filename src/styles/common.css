@@ -71,3 +71,13 @@
     background-repeat: no-repeat;
     background-position-x: center;
 }
+.page-link {
+    border: 1px solid var(--grey-100);
+    color: #000000 !important;
+}
+
+.active>.page-link,
+.page-link:hover {
+    background-color: black !important;
+    color: white !important;
+}
