@@ -7,7 +7,7 @@ import Configure from './Configure';
 import { usePutActivePaperMutation } from '../../../../apis/Service';
 import { toast } from 'react-toastify';
 function SidePooup({ paperId, handleClose, ...props }) {
-  const [paperActive,setPaperActive] = useState(props.is_Active);
+  const [paperActive, setPaperActive] = useState(props._Active);
   const [publish, { isSuccess, isLoading }] = usePutActivePaperMutation();
   const activePaper = async () => {
     await publish({ paperId, paperActive });
@@ -63,9 +63,9 @@ function SidePooup({ paperId, handleClose, ...props }) {
                 <Nav.Item>
                   <Nav.Link eventKey="configure">Configure</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                {/* <Nav.Item>
                   <Nav.Link eventKey="edit-emails">Edit Emails </Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
               </Nav>
               <Button
                 onClick={(e) => {
@@ -89,9 +89,9 @@ function SidePooup({ paperId, handleClose, ...props }) {
                     <Configure paperId={paperId} ConfigureProps={props} />
                   </div>
                 </Tab.Pane>
-                <Tab.Pane eventKey="edit-emails" className=" bg-transparent">
+                {/* <Tab.Pane eventKey="edit-emails" className=" bg-transparent">
                   Second tab content
-                </Tab.Pane>
+                </Tab.Pane> */}
               </Tab.Content>
             </div>
           </Tab.Container>
