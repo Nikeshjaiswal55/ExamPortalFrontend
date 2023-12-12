@@ -1,4 +1,3 @@
-import { getStream } from "../../../store/adminSlice";
 
 export async function GetEntireScreen(setProgress, handleShow, setContent, TabSwitch) {
     try {

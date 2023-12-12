@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion } from 'react-bootstrap';
+import { Accordion, Button } from 'react-bootstrap';
 import '../component/Chart.css';
 import { FaUsers, FaThumbsUp } from 'react-icons/fa';
 import { MdOutlineAssignment } from 'react-icons/md';
@@ -18,6 +18,8 @@ import PieChart from '../component/PieChart';
 import { Loader } from '../../../components/Loader/Loader';
 import { StudentCertificate } from '../../student/StudentCertificate/StudentCertificateDownload';
 import { ViewResult } from '../../student/viewResult/ViewResult';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../../routes/RoutesConstant';
 
 const color = [
   'bg-danger',
@@ -88,6 +90,7 @@ export const StudentDashBoard = () => {
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = SubIdSplit(userId.sub);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const navigate = useNavigate();
 
   const {
     data: assignmentData,
@@ -247,7 +250,6 @@ export const StudentDashBoard = () => {
                         return (
                           <>
                             <div className=" border rounded py-3 px-2 my-1">
-                              {' '}
                               <div className=" w-100 d-flex  flex-column flex-md-row gap-2  flex-wrap  justify-content-start  align-items-start  align-items-md-center justify-content-md-between fw-bold ">
                                 <div className=" ps-3 ps-md-0 w-auto text-start text-capitalize">
                                   {value?.assessmentName}{' '}
@@ -260,6 +262,16 @@ export const StudentDashBoard = () => {
                                 </div>
                                 <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
                                   <ViewResult paperId={value.paperId} />
+                                  <Button
+                                    variant="dark"
+                                    onClick={() =>
+                                      navigate(
+                                        `${path.StudentViewResult.path}/${value.paperId}`
+                                      )
+                                    }
+                                  >
+                                    view resultssss
+                                  </Button>
                                   <div>
                                     <StudentCertificate />
                                   </div>

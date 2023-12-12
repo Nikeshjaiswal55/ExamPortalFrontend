@@ -191,7 +191,7 @@ export default function ShowCourse() {
         )}
 
         <div className=" position-absolute top-50 start-50  translate-middle ">
-          {list?.length == 0 && (
+          {data?.data.length == 0 && (
             <NoDataFound>
               <div>
                 <h4 className="text-capitalize fw-bold text-center">

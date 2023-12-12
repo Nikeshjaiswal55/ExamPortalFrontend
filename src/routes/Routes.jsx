@@ -32,12 +32,22 @@ import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
 import { AdminDashboard } from '../pages/home/AdminDashBoard/AdminDashboards';
 import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoard';
+import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
+import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
         <Route path={path.home.path} element={<LandingPage />} />
+        <Route
+          path="/demo"
+          element={
+            <Layout>
+              <AddAssignmentUpdate />
+            </Layout>
+          }
+        />
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
         <Route path={path.Redirect.path} element={<Redirect />} />
 
@@ -78,7 +88,7 @@ export const Routes = () => {
               path={path.AddAssessment.path}
               element={
                 <Layout>
-                  <AddAssignment />
+                  <AddAssignmentUpdate />
                 </Layout>
               }
             />
@@ -174,11 +184,22 @@ export const Routes = () => {
             }
           />
           <Route
+            path={`${path.examReport.path}/:paperId/:stdId`}
+            element={
+              <Layout>
+                <ReportCard />
+              </Layout>
+            }
+          />
+          <Route
             path={`${path.StudentPaperSubmitted.path}/:paperId`}
             element={<ExamSubmited />}
           />
+          <Route
+            path={`${path.StudentViewResult.path}/:paperId`}
+            element={<StudentResult />}
+          />
         </Route>
-
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>
