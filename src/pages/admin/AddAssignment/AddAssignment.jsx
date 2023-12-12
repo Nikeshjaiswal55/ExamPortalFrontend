@@ -13,10 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import { InputField } from '../../../theme/InputField/InputField';
 import { ImCross } from 'react-icons/im';
 import { RiAddFill } from 'react-icons/ri';
-import { Formik, FieldArray, Field, ErrorMessage } from 'formik';
 import { IoClose } from 'react-icons/io5';
 import { MdUpload } from 'react-icons/md';
 import * as yup from 'yup';
+import { Formik, FieldArray, Field, ErrorMessage } from 'formik';
 import {
   usePostAssignmentMutation,
   useGetAllCoursesQuery,
@@ -26,8 +26,9 @@ import { path } from '../../../routes/RoutesConstant';
 import { FaEye } from 'react-icons/fa';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
-import emailGif from '../../../assets/gif/mailgif.gif';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { getNotification } from '../../../store/adminSlice';
 export default function AddAssignment() {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -64,10 +65,16 @@ export default function AddAssignment() {
     AssigmnetData,
     { isLoading, data, isSuccess: AssignmentSuccess, isError },
   ] = usePostAssignmentMutation();
-  const [inviteStudent, { isLoading: invitedLoading, isError: inviteError }] =
-    useInvitedStudentByMailMutation();
+  const [
+    inviteStudent,
+    {
+      isLoading: invitedLoading,
+      isError: inviteError,
+      isSuccess: inviteSucessFull,
+    },
+  ] = useInvitedStudentByMailMutation();
   const { data: AllCourse } = useGetAllCoursesQuery({ userId });
-
+  const dipatch = useDispatch();
   useEffect(() => {
     if (AssignmentSuccess) {
       toast.success('assessment created successfully!!🎉', {
@@ -80,7 +87,6 @@ export default function AddAssignment() {
         progress: undefined,
         theme: 'dark',
       });
-
       // navigate(path.ShowAssessment.path);
     }
   }, [AssignmentSuccess]);
@@ -99,6 +105,12 @@ export default function AddAssignment() {
       });
     }
   }, [isError, inviteError]);
+
+  useEffect(() => {
+    if (inviteSucessFull) {
+      dipatch(getNotification(false));
+    }
+  }, [inviteSucessFull]);
 
   const addAssignmentSchema = yup.object().shape({
     assessementName: yup.string().required('Please enter assessement name'),
@@ -244,12 +256,6 @@ export default function AddAssignment() {
   return (
     <>
       <div className="row w-100 rounded-5 m-0 p-0 justify-content-end">
-        {invitedLoading && (
-          <Alert key={'primary'} className="py-2" variant={'primary'}>
-            <img src={emailGif} height={'40px'} className="mx-3" />
-            sending mails to students...
-          </Alert>
-        )}
         <Formik
           initialValues={{
             assessementName: '',
@@ -297,12 +303,29 @@ export default function AddAssignment() {
                 orgnizationId: getOrgdata?.orgnizationId,
               }).then((res) => {
                 if (res?.data?.paperId) {
+                  dipatch(getNotification(true));
                   navigate(path.ShowAssessment.path);
                   inviteStudent({
                     userId: res?.data?.userId,
                     paperId: res?.data?.paperId,
                     orgnizationId: res?.data?.orgnizationId,
                     emails: emails,
+                  }).then((res) => {
+                    console.log('res', res);
+                    if (res.error.originalStatus === 200) {
+                      dipatch(getNotification(false));
+                    } else {
+                      toast.error('student not added successfully!!😑', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark',
+                      });
+                    }
                   });
                 }
               });

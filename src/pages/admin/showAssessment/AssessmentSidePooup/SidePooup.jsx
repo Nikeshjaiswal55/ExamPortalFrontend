@@ -4,13 +4,27 @@ import { Button, Nav, Spinner, Tab } from 'react-bootstrap';
 import { CustomButton } from '../../../../theme/Button/Buttons';
 
 import Configure from './Configure';
-import { usePutActivePaperMutation } from '../../../../apis/Service';
+import {
+  usePutActivePaperMutation,
+  useSentMailToStudentMutation,
+} from '../../../../apis/Service';
 import { toast } from 'react-toastify';
+import { getNotification } from '../../../../store/adminSlice';
+import { useDispatch } from 'react-redux';
 function SidePooup({ paperId, handleClose, ...props }) {
-  const [paperActive, setPaperActive] = useState(props._Active);
+  const dipatch = useDispatch();
+  const [paperActive, setPaperActive] = useState(props.is_Active);
   const [publish, { isSuccess, isLoading }] = usePutActivePaperMutation();
+  const [sendingMail] = useSentMailToStudentMutation();
   const activePaper = async () => {
-    await publish({ paperId, paperActive });
+    publish({ paperId, paperActive }).then(() => {
+      dipatch(getNotification(true));
+      sendingMail(paperId).then((res) => {
+        if (res.error.originalStatus === 200) {
+          dipatch(getNotification(false));
+        }
+      });
+    });
     setPaperActive(!paperActive);
     toast.success('assessment updated successfully!!🎉', {
       position: 'top-right',

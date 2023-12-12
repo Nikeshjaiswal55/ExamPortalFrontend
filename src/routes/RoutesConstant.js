@@ -98,15 +98,19 @@ export const path = {
         desc: 'this is for creating student paper page '
 
     },
-    StudentExamStarted:{
+    StudentExamStarted: {
         path: '/student/exam-started',
         desc: 'this is for creating student paper page '
     },
-    StudentPaperSubmitted:{
+    StudentPaperSubmitted: {
         path: '/student/exam-submited',
         desc: 'this is for creating student paper page '
     },
-    ShowAllAssessmentToStudent:{
+    StudentViewResult: {
+        path: '/student/view-result',
+        desc: 'this is for creating student paper page '
+    },
+    ShowAllAssessmentToStudent: {
         path: '/student/allAssissment',
         desc: 'this is for creating student paper page '
     },

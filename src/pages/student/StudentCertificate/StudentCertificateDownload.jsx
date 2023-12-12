@@ -57,7 +57,6 @@ export const StudentCertificate = ({ nameprops }) => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         onHide={() => setModalShow(false)}
-        style={{ width: '100%' }}
       >
         <Modal.Header closeButton />
         <Modal.Body style={{ width: '100%', height: '80vh' }}>
