@@ -36,12 +36,22 @@ import {TotalStudentOfOrg} from '../pages/admin/totalStudentsOrg/TotalStudents';
 import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
 import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
+import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
+import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 
 export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
         <Route path={path.home.path} element={<LandingPage />} />
+        <Route
+          path="/demo"
+          element={
+            <Layout>
+              <AddAssignmentUpdate />
+            </Layout>
+          }
+        />
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
         <Route path={path.Redirect.path} element={<Redirect />} />
 
@@ -82,7 +92,7 @@ export const Routes = () => {
               path={path.AddAssessment.path}
               element={
                 <Layout>
-                  <AddAssignment />
+                  <AddAssignmentUpdate />
                 </Layout>
               }
             />

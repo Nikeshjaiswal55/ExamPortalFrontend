@@ -66,18 +66,16 @@ export default function AddCourse() {
 
   const [postAddCourse, { isLoading, data, error, isError, isSuccess }] =
     useAddCourseMutation();
-
-  const orgData = JSON.parse(localStorage.getItem('orgData'));
-  const [
-    createCourseInBackground,
-    {
-      isLoading: isMailLoading,
-      data: mailData,
-      error: mailError,
-      isError: isMailError,
-      isSuccess: isMailSuccess,
-    },
-  ] = useCreateCourseInBackgroundMutation();
+  // const [
+  //   sendMailInBackground,
+  //   {
+  //     isLoading: isMailLoading,
+  //     data: mailData,
+  //     error: mailError,
+  //     isError: isMailError,
+  //     isSuccess: isMailSuccess,
+  //   },
+  // ] = useSentMailToStudentMutation();
 
   const orgData = JSON.parse(localStorage.getItem('orgData'));
   const [
