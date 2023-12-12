@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
 import StudentPaper from '../../student/StudentPaper/StudentPaper';
 import { path } from '../../../routes/RoutesConstant';
@@ -15,8 +15,10 @@ import { CheckForExtension } from '../utils/CheckForExtension';
 import {
   useGetAllAssissmentOnstudentPageQuery,
   useGetAllQuestionsFromPaperIdQuery,
+  useGetStudentAvidenceQuery,
 } from '../../../apis/Service';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import { Loader } from '../../../components/Loader/Loader';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -31,8 +33,18 @@ export const ExamStarted = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const {
+    data: attempted,
+    isLoading: ateemptedIsLoading,
+    isError: ateemptedIsError,
+    attemptedSucess,
+  } = useGetStudentAvidenceQuery({
+    paperId,
+    stdId: stdId.userId,
+  });
 
-  useEffect(() => {
+  const captureImage = () => {
     const constraints = {
       video: true,
     };
@@ -75,12 +87,11 @@ export const ExamStarted = () => {
       .catch((error) => {
         console.error('Error accessing the camera:', error);
       });
-  }, []);
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Save the captured images to local storage whenever the state changes
     localStorage.setItem('capturedImage', JSON.stringify(capturedImage));
   }, [capturedImage]);
 
@@ -116,6 +127,7 @@ export const ExamStarted = () => {
   }, []);
 
   async function cameraStop() {
+    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
   }
 
@@ -139,15 +151,21 @@ export const ExamStarted = () => {
   const [decodedData, setDecodedData] = useState(null);
 
   useEffect(() => {
-    CheckForExtension(handleShow, setContent, setProgress, callback);
+    if (attempted?._attempted) {
+      cameraStop();
+      navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
+    } else {
+      CheckForExtension(handleShow, setContent, setProgress, callback);
+    }
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [attemptedSucess]);
 
   useEffect(() => {
     if (progress == 100) {
       // navigate(`${path.StudentExamStarted.path}/${paperId}`);
+      captureImage();
       setProcess(false);
     }
   }, [progress]);
@@ -164,59 +182,70 @@ export const ExamStarted = () => {
     }
   }, [isSuccess]);
 
-  if (isError) {
+  if (ateemptedIsLoading) {
     return (
-      <div className="h-100">
-        <SomethingWentWrong />
+      <div className="h-100 d-flex align-items-center justify-content-center">
+        <Loader />
       </div>
     );
   } else {
-    if (doneProcess) {
+    if (attempted?._attempted) {
+      cameraStop();
       return (
         <>
-          <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
-            <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
-              <GiphyEmbed />
-              <div className="w-100">
-                <ProgressBar
-                  variant="success"
-                  now={progress}
-                  label={`${progress}%`}
-                />
-              </div>
-              <div>
-                <h6 className="text-center p-0 m-0">
-                  Please wait for upto a minute for the system to be set up.
-                </h6>
-                <h6 className="text-center">if it still does not load</h6>
-              </div>
-            </div>
-          </div>
-          <ExamModal
-            show={show}
-            content={content}
-            isButtonVisible={true}
-            handleClose={handleClose}
-          />
+          <Navigate to={`${path.StudentPaperSubmitted.path}/${paperId}`} />
         </>
       );
     } else {
       return (
-        <div className="h-100">
-          <StudentPaper
-            paperId={paperId}
-            isLoading={isLoading}
-            decodedData={decodedData}
-            handleSubmit={handleSubmit}
-            cameraStop={cameraStop}
-          />
-          <ExamModal
-            show={show}
-            content={content}
-            isButtonVisible={isButtonVisible}
-            handleClose={handleClose}
-          />
-        </div>
+        <>
+          {isError ? (
+            <SomethingWentWrong />
+          ) : doneProcess ? (
+            <>
+              <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
+                <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+                  <GiphyEmbed />
+                  <div className="w-100">
+                    <ProgressBar
+                      variant="success"
+                      now={progress}
+                      label={`${progress}%`}
+                    />
+                  </div>
+                  <div>
+                    <h6 className="text-center p-0 m-0">
+                      Please wait for upto a minute for the system to be set up.
+                    </h6>
+                    <h6 className="text-center">if it still does not load</h6>
+                  </div>
+                </div>
+              </div>
+              <ExamModal
+                show={show}
+                content={content}
+                isButtonVisible={true}
+                handleClose={handleClose}
+              />
+            </>
+          ) : (
+            <div className="h-100">
+              <StudentPaper
+                paperId={paperId}
+                isLoading={isLoading}
+                decodedData={decodedData}
+                handleSubmit={handleSubmit}
+                cameraStop={cameraStop}
+              />
+              <ExamModal
+                show={show}
+                content={content}
+                isButtonVisible={isButtonVisible}
+                handleClose={handleClose}
+              />
+            </div>
+          )}
+        </>
       );
     }
   }

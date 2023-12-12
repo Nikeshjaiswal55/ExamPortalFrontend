@@ -9,6 +9,7 @@ import { CustomButton } from '../../../theme/Button/Buttons';
 import * as Yup from 'yup';
 import {
   useAddCourseMutation,
+  useCreateCourseInBackgroundMutation,
   useSentMailToStudentMutation,
 } from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
@@ -65,8 +66,10 @@ export default function AddCourse() {
 
   const [postAddCourse, { isLoading, data, error, isError, isSuccess }] =
     useAddCourseMutation();
+
+  const orgData = JSON.parse(localStorage.getItem('orgData'));
   const [
-    sendMailInBackground,
+    createCourseInBackground,
     {
       isLoading: isMailLoading,
       data: mailData,
@@ -74,7 +77,7 @@ export default function AddCourse() {
       isError: isMailError,
       isSuccess: isMailSuccess,
     },
-  ] = useSentMailToStudentMutation();
+  ] = useCreateCourseInBackgroundMutation();
 
   async function onSubmits(values) {
     const accessToken = localStorage.getItem('accessToken');
@@ -94,9 +97,18 @@ export default function AddCourse() {
             accessToken,
           }).then((res) => {
             console.log(res);
-            if (res) {
+            if (res?.data) {
+              const data = excel.map((data) => {
+                return {
+                  courseId: res.data.course_id,
+                  orgnizationId: orgData.orgnizationId,
+                  branch: data.branch,
+                  email: data.email,
+                  name: data.name,
+                };
+              });
               navigate(path.CreateAssessment.path);
-              sendMailInBackground(excel);
+              createCourseInBackground(data);
             }
           });
         } else {
@@ -161,13 +173,13 @@ export default function AddCourse() {
             {(props) => (
               <Form className=" d-flex flex-column justify-content-evenly ">
                 <div className="row">
-                  <div className="col-md-6 col-12">
+                  <div className=" col-12">
                     {InputFieldData.map((inputData) => (
                       <InputField
                         inputId={inputData.inputId}
                         inputName={inputData.inputName}
                         formGroupId={inputData.formGroupId}
-                        formGroupClassName={'my-1 my-md-4 mx-5 '}
+                        formGroupClassName={'my-1 my-md-2 mx-5 '}
                         placeholder={inputData.placeholder}
                         labelText={inputData.labelText}
                         onInputBlur={props.handleBlur}
@@ -175,24 +187,26 @@ export default function AddCourse() {
                       />
                     ))}
                   </div>
-                  <Form.Group className="my-1 my-md-4 mx-5 mx-md-0 col-md-6 col-12">
-                    <Form.Label className={`text-capitalize fw-bold `}>
-                      Enter course duration
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="add-course-duration"
-                      onChange={props.handleChange}
-                      onBlur={props.handleBlur}
-                      className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
-                      placeholder="enter course duration (example : 4,3,2,1)"
-                    />
-                    <ErrorMessage
-                      component={'div'}
-                      name="add-course-duration"
-                      className=" input-error"
-                    />
-                  </Form.Group>
+                  <div className="col-12">
+                    <Form.Group className="my-1 my-md-2 mx-5">
+                      <Form.Label className={`text-capitalize fw-bold `}>
+                        Enter course duration
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="add-course-duration"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
+                        className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
+                        placeholder="enter course duration (example : 4,3,2,1)"
+                      />
+                      <ErrorMessage
+                        component={'div'}
+                        name="add-course-duration"
+                        className=" input-error"
+                      />
+                    </Form.Group>
+                  </div>
                 </div>
                 <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
                   <>

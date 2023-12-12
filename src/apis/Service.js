@@ -335,6 +335,38 @@ export const adminApi = createApi({
                 }
             }
         ),
+        getStudentAvidenceImage: builder.query(
+            {
+                query: ({ paperId, stdId }) => {
+                    console.log("paperId", paperId, "stdId", stdId)
+                    return {
+                        url: `/getAvidanceofAStudent/${stdId}/paperId/${paperId}`,
+                        method: 'get',
+                    }
+                },
+                providesTags: ['submitExam']
+            }
+        ),
+        paperApproved: builder.mutation(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        method: 'post',
+                    }
+                }
+            }
+        ),
+        paperRejected: builder.mutation(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        method: 'post',
+                    }
+                }
+            }
+        )
     }),
 
 
@@ -342,4 +374,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery } = adminApi;
+export const { usePaperRejectedMutation, usePaperApprovedMutation, useGetStudentAvidenceImageQuery, useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery } = adminApi;

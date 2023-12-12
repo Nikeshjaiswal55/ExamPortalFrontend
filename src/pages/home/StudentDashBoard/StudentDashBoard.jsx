@@ -261,7 +261,7 @@ export const StudentDashBoard = () => {
                                   {value?.assessmentDate}{' '}
                                 </div>
                                 <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
-                                  <ViewResult paperId={value.paperId} />
+                                  {/* <ViewResult paperId={value.paperId} /> */}
                                   <Button
                                     variant="dark"
                                     onClick={() =>
@@ -270,11 +270,9 @@ export const StudentDashBoard = () => {
                                       )
                                     }
                                   >
-                                    view resultssss
+                                    view result
                                   </Button>
-                                  <div>
-                                    <StudentCertificate />
-                                  </div>
+                                  <StudentCertificate />
                                 </div>
                               </div>
                             </div>
