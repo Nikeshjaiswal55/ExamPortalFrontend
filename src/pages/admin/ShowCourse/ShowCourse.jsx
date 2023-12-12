@@ -110,7 +110,7 @@ export default function ShowCourse() {
         )}
 
         <div className=" position-absolute top-50 start-50  translate-middle ">
-          {data?.length == 0 && (
+          {data?.data.length == 0 && (
             <NoDataFound>
               <div>
                 <h4 className="text-capitalize fw-bold text-center">
@@ -124,7 +124,7 @@ export default function ShowCourse() {
           )}
         </div>
 
-        {data && data.length > 0 && (
+        {data?.data && data?.data.length > 0 && (
           <Table striped responsive hover>
             <thead className="t-head ">
               <tr>
@@ -137,7 +137,7 @@ export default function ShowCourse() {
             </thead>
             <tbody>
               {data &&
-                data.map((rowdata, index) => {
+                data?.data.map((rowdata, index) => {
                   console.log(rowdata);
                   return (
                     <ShowCourseTr

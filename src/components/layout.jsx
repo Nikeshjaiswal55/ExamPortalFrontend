@@ -17,8 +17,11 @@ import { CiLogout } from 'react-icons/ci';
 import { useAuth0 } from '@auth0/auth0-react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import exameasy_light_logo from '../assets/exameasy_light_logo.svg'
-import exameasy_short_light_logo from '../assets/exameasy_short_light_logo.svg'
+import exameasy_light_logo from '../assets/exameasy_light_logo.svg';
+import exameasy_short_light_logo from '../assets/exameasy_short_light_logo.svg';
+import emailGif from '../assets/gif/mailgif.gif';
+import { useSelector } from 'react-redux';
+import { Alert } from 'react-bootstrap';
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +30,7 @@ export default function Layout({ children }) {
   const stdData = JSON.parse(localStorage.getItem('stdData'));
   const icon_size = '18px';
   const { logout } = useAuth0();
+  const notificationFlag = useSelector((state) => state.admin.notification);
   const orgOption = [
     {
       path: '/admin/dashboard',
@@ -95,20 +99,20 @@ export default function Layout({ children }) {
   const stdOption = [
     {
       path: '/student/dashboard',
-      className: "",
+      className: '',
       name: 'Dashboard',
       icon: <FaTh size={icon_size} />,
     },
     {
       path: path.ShowAllAssessmentToStudent.path,
       name: 'Assessment List',
-      className: "",
+      className: '',
       icon: <FaClipboardList size={icon_size} />,
     },
     {
       path: '',
       name: 'LogOut',
-      className: " align-self-end",
+      className: ' align-self-end',
       icon: <CiLogout size={icon_size} />,
       onClick: () => {
         logout({ logoutParams: { returnTo: window.location.origin } });
@@ -136,13 +140,20 @@ export default function Layout({ children }) {
           className="sidebar m-2  "
           id="sideNavbar"
         >
-
           <div className="top_section">
-            <div style={{display: isOpen ? 'none' : 'block'}}>
-              <img src={exameasy_short_light_logo} alt="logo" className='' width={"20px"} />
+            <div style={{ display: isOpen ? 'none' : 'block' }}>
+              <img
+                src={exameasy_short_light_logo}
+                alt="logo"
+                className=""
+                width={'20px'}
+              />
             </div>
-            <h1 style={{display: isOpen ? 'block' : 'none'}} className="logo text-center">
-              <img src={exameasy_light_logo} alt="logo" width={"60%"} />
+            <h1
+              style={{ display: isOpen ? 'block' : 'none' }}
+              className="logo text-center"
+            >
+              <img src={exameasy_light_logo} alt="logo" width={'60%'} />
             </h1>
           </div>
 
@@ -181,17 +192,30 @@ export default function Layout({ children }) {
         </div>
 
         <main
-          className="main p-0 m-0 h-100 "
+          className="main p-0 m-0 h-100 overflow-hidden "
           style={{ width: isOpen ? 'calc(100% - 200px)' : 'calc(100% - 60px)' }}
         >
           <Header isOpen={isOpen} />
           <div
-            className="main-container m-0 p-2 w-100  "
+            className="main-container m-0 p-2 w-100"
             style={{ height: 'calc(100vh - 60px)' }}
           >
-            <div className="w-100 h-100 rounded-1 m-0 p-0 bg-white ">
-              {children}
+            <div
+              id="header-container"
+              className={`m-0 h-auto p-1  d-flex  position-sticky top-2  z-2 w-100 bg-white ${
+                notificationFlag ? 'd-block' : 'd-none'
+              }`}
+            >
+              <Alert
+                key={'primary'}
+                className={`py-2 mb-0 w-100`}
+                variant={'primary'}
+              >
+                <img src={emailGif} height={'40px'} className="mx-3" />
+                sending mails to students...
+              </Alert>
             </div>
+            <div className="w-100 h-100 rounded-1 m-0 p-0 ">{children}</div>
           </div>
           <ToastContainer />
         </main>

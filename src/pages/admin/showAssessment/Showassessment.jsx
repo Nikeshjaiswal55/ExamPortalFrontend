@@ -31,18 +31,18 @@ export default function ShowAssessment() {
     { isError: deleteError, isLoading: deleteloading, isSuccess: dltSuccess },
   ] = useDeleteAssignmentMutation();
 
-  const [filterData, setFilterData] = useState(assignmentData);
+  const [filterData, setFilterData] = useState(assignmentData?.data);
   const [input, setInput] = useState();
   const [notSearchDataFound, setSearchDataFound] = useState(false);
 
   useEffect(() => {
     if (dltSuccess) {
-      setFilterData(assignmentData);
+      setFilterData(assignmentData?.data);
     }
   }, [dltSuccess]);
 
   useEffect(() => {
-    setFilterData(assignmentData);
+    setFilterData(assignmentData?.data);
     console.log(filterData, 'filter');
   }, [isSuccess]);
 
@@ -56,7 +56,7 @@ export default function ShowAssessment() {
         : setSearchDataFound(false);
       setFilterData(filterdata);
     } else {
-      setFilterData(assignmentData);
+      setFilterData(assignmentData?.data);
     }
   }, [input]);
 
