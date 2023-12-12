@@ -46,7 +46,7 @@ export default function OrganisationPage() {
         progress: undefined,
         theme: 'dark',
       });
-      navigate(path.AdminDasboard.path)
+      navigate(path.AdminDasboard.path);
     }
   }, [orgCreatedSuccess]);
 
@@ -79,8 +79,10 @@ export default function OrganisationPage() {
       userId: SubIdSplit(users.sub),
       role: 'OG',
     };
-    await postOrgDetails({ ...storeData, accessToken });
-    localStorage.setItem('orgtype', storeData.orgnizationType);
+    postOrgDetails({ ...storeData, accessToken }).then((res) => {
+      localStorage.setItem('orgData', JSON.stringify(res.data));
+      localStorage.setItem('orgtype', storeData.orgnizationType);
+    });
   }
   const orgdata = JSON.parse(localStorage.getItem('orgData'));
 

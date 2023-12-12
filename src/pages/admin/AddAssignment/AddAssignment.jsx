@@ -346,7 +346,7 @@ export default function AddAssignment() {
                 >
                   <div className="pt-3 pe-lg-5 mt-lg-2">
                     <p className="text-capitalize fw-bold fs-4  position-sticky top-0  ">
-                      create assessment
+                      Create Assessment
                     </p>
                     <p>
                       Creating assessments is a breeze! Simply provide the

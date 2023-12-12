@@ -207,7 +207,11 @@ export const Routes = () => {
           />
           <Route
             path={`${path.StudentViewResult.path}/:paperId`}
-            element={<StudentResult />}
+            element={
+              <Layout>
+                <StudentResult />
+              </Layout>
+            }
           />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
