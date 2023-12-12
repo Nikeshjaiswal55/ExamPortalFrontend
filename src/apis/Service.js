@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
+// const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy.onrender.com/"
 // const baseUrl = "http://192.168.0.202:9090"
 // const baseUrl = "http://192.168.73.59:9090"
-// const baseUrl = "http://192.168.0.202:9090"
+const baseUrl = "http://192.168.0.237:9090"
 
 
 
@@ -296,6 +296,38 @@ export const adminApi = createApi({
                 }
             }
         ),
+        getStudentAvidenceImage: builder.query(
+            {
+                query: ({ paperId, stdId }) => {
+                    console.log("paperId", paperId, "stdId", stdId)
+                    return {
+                        url: `/getAvidanceofAStudent/${stdId}/paperId/${paperId}`,
+                        method: 'get',
+                    }
+                },
+                providesTags: ['submitExam']
+            }
+        ),
+        paperApproved: builder.mutation(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        method: 'post',
+                    }
+                }
+            }
+        ),
+        paperRejected: builder.mutation(
+            {
+                query: ({ paperId, stdId }) => {
+                    return {
+                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        method: 'post',
+                    }
+                }
+            }
+        )
     }),
 
 
@@ -303,4 +335,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery } = adminApi;
+export const { usePaperRejectedMutation, usePaperApprovedMutation, useGetStudentAvidenceImageQuery, useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery } = adminApi;

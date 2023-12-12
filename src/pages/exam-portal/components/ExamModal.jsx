@@ -22,7 +22,7 @@ export function ExamModal({ show, content, isButtonVisible, handleClose }) {
         <Modal.Footer className="text-center d-flex justify-content-center">
           {isButtonVisible ? (
             <Button variant="success" onClick={() => location.reload()}>
-              reload
+              Reload
             </Button>
           ) : (
             <Button
@@ -31,7 +31,7 @@ export function ExamModal({ show, content, isButtonVisible, handleClose }) {
                 handleClose();
               }}
             >
-              ok
+              Ok
             </Button>
           )}
         </Modal.Footer>

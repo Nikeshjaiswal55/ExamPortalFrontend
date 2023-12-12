@@ -43,19 +43,19 @@ export const ViewResult = ({ paperId }) => {
             </div>
             <div className="col-6">
               <h6 className="">
-                <span className=" fw-bold">total marks:</span>
+                <span className=" fw-bold">Total Marks:</span>
                 {data?.result.marks ?? 0}
               </h6>
             </div>
             <div className="col-6">
               <h6 className="text-center bg-transparent fs-6 p-0">
-                <span className=" fw-bold"> percentage:</span>{' '}
+                <span className=" fw-bold"> Percentage:</span>{' '}
                 {data?.result.percentage ?? 0} %
               </h6>
             </div>
             <div className="col-6">
               <h6 className="">
-                <span className=" fw-bold">submit date:</span>
+                <span className=" fw-bold">Submit Date:</span>
                 {data?.result.date ?? null}
               </h6>
             </div>

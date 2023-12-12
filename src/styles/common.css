@@ -71,3 +71,7 @@
     background-repeat: no-repeat;
     background-position-x: center;
 }
+
+.ck.ck-editor__main>.ck-editor__editable{
+    height:285px;
+}

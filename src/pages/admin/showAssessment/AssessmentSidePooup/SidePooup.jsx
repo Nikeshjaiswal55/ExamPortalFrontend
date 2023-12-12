@@ -89,7 +89,7 @@ function SidePooup({ paperId, handleClose, ...props }) {
               >
                 {isLoading ? (
                   <Spinner animation="border" size="sm" />
-                ) : paperActive ? (
+                ) : paperActive !== 'false' ? (
                   'End'
                 ) : (
                   'Publish'
