@@ -9,6 +9,7 @@ import {
 } from '../../../apis/Service';
 import { Loader } from '../../../components/Loader/Loader';
 import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 
 export default function StudentPaper({
   paperId,
@@ -32,6 +33,8 @@ export default function StudentPaper({
   const [selectedOption, setSelectedOption] = useState(
     new Array(decodedData?.questions?.length)
   );
+
+  const imagesArray = useSelector((state) => state.admin.image);
 
   useEffect(() => {
     const convertTimeStringToMillis = (timeString) => {
@@ -57,10 +60,10 @@ export default function StudentPaper({
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
   async function submitPaperDetails(params) {
-    console.log(selectedOption, 'submited =====================');
-    const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
-    const ss = localStorage.getItem('ss');
-    randomImg.push(ss);
+    console.log(imagesArray, 'IMageArraay =====================');
+    // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
+    // const ss = localStorage.getItem('ss');
+    // imagesArray.push(ss);
     const questions = getUserAnswereWithQuestion();
 
     const result = {
@@ -70,7 +73,7 @@ export default function StudentPaper({
       cheating: {
         studentId: stdData.userId,
         paperId: paperId,
-        images: randomImg,
+        images: imagesArray,
         audios: null,
         paperId: paperId,
       },

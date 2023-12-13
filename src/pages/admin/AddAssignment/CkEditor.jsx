@@ -29,16 +29,24 @@ export const CkEditor = () => {
 
   return (
     <div>
-      <FormLabel className="text-capitalize fw-bold">
-        Assessment Instruction
-      </FormLabel>
-      <FormSelect
-        value={editorContent}
-        onChange={(e) => setEditorContent(e.target.value)}
-      >
-        <option value={Sample1}>sample1</option>
-        <option value={'<p>wewe</p>'}>sample2</option>
-      </FormSelect>
+      <div className="row justify-content-between align-items-center my-2">
+        <FormLabel className=" col-6 text-capitalize fw-bold">
+          Assessment Instruction
+        </FormLabel>
+        <div className="d-flex col-6 align-items-center justify-content-end">
+          <FormLabel className="text-capitalize fw-bold me-3">
+          Instruction Sample 
+          </FormLabel>
+          <FormSelect
+            className="w-25"
+            value={editorContent}
+            onChange={(e) => setEditorContent(e.target.value)}
+          >
+            <option value={Sample1}>sample1</option>
+            <option value={'<p>wewe</p>'}>sample2</option>
+          </FormSelect>
+        </div>
+      </div>
       <div>
         <CKEditor
           editor={ClassicEditor}
