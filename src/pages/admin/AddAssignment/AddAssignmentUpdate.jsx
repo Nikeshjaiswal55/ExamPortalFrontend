@@ -197,7 +197,6 @@ export const AddAssignmentUpdate = () => {
         instruction: 'string',
         is_Active: true,
         is_setup: true,
-        //   studentId: 'string',
         is_auto_check:
           values.assessmentResultConfig === 'autoCheck' ? true : false,
         is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
@@ -251,8 +250,8 @@ export const AddAssignmentUpdate = () => {
         >
           <div className="row h-100 gap-3  m-0 p-0">
             <div
-              style={{ height: 'calc(100vh - 5rem)' }}
-              className="col-2 px-4 mx-2 bg-white rounded-4"
+              style={{ height: 'calc(100vh - 77px)' }}
+              className="col-2 px-4 bg-white rounded-3"
             >
               <h4 className="text-capitalize fw-bold my-4">
                 Test Configuration
@@ -311,28 +310,28 @@ export const AddAssignmentUpdate = () => {
               >
                 {({ values, handleSubmit, handleBlur, handleChange }) => (
                   <Form className="h-100">
-                    {/* <Button
+                    <Button
                       type="subbmit"
                       className='className=" p-lg-2 my-2 btn-primary btn w-25'
                     >
                       submit
-                    </Button> */}
+                    </Button>
                     <Tab.Content>
                       <Tab.Pane
                         eventKey="assessmentSetting"
-                        className=" bg-transparent"
+                        className=" bg-transparent m-0"
                       >
                         <AssesstmentSetting />
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="questionManagement"
-                        className=" bg-transparent"
+                        className=" bg-transparent m-0"
                       >
                         <QuestionManagement values={values} />
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="manageCandidate"
-                        className=" bg-transparent"
+                        className=" bg-transparent m-0"
                       >
                         <ManageCandidate
                           handleChange={handleChange}
@@ -357,8 +356,8 @@ export const AddAssignmentUpdate = () => {
 const AssesstmentSetting = () => {
   return (
     <div
-      className=" p-4 rounded-4 bg-white text-dark"
-      style={{ height: 'calc(100vh - 5rem)' }}
+      className=" p-4 rounded-3 bg-white text-dark"
+      style={{ height: 'calc(100vh - 77px)' }}
     >
       <div className="my-3">
         <FormLabel className="text-capitalize fw-bold">
@@ -686,7 +685,10 @@ const ManageCandidate = ({
 
   return (
     <>
-      <div className="p-4 bg-white rounded-4 text-dark h-100">
+      <div
+        className="p-4 bg-white rounded-3 text-dark "
+        style={{ height: 'calc(100vh - 77px)' }}
+      >
         {orgType == 'company' ? (
           ''
         ) : (

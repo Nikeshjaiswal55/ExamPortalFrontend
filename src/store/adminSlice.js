@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    notification: false
+    notification: false,
+    image: [],
+    assissment: {}
 };
 
 
@@ -15,11 +17,19 @@ const adminSlice = createSlice({
         getNotification: (state, action) => {
             console.log(action.payload, 'payload')
             state.notification = action.payload
+        },
+        sendImage: (state, action) => {
+            console.log(action.payload, 'payloadd')
+            state.image.push(action.payload)
+
+        },
+        updateAssissmentData: (state, action) => {
+            state.assissment = action.payload
         }
 
     }
 })
 
-export const { getNotification } = adminSlice.actions;
+export const { getNotification, sendImage, updateAssissmentData } = adminSlice.actions;
 export default adminSlice.reducer;
 

@@ -17,7 +17,6 @@ import DoughnutChart from '../component/DoughnutChart';
 import PieChart from '../component/PieChart';
 import { Loader } from '../../../components/Loader/Loader';
 import { StudentCertificate } from '../../student/StudentCertificate/StudentCertificateDownload';
-import { ViewResult } from '../../student/viewResult/ViewResult';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 
