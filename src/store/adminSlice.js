@@ -24,7 +24,6 @@ const adminSlice = createSlice({
 
         },
         updateAssissmentData: (state, action) => {
-            console.log('payload',action.payload)
             state.assissment = action.payload
         }
 
