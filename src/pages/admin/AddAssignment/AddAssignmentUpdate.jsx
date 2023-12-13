@@ -310,12 +310,12 @@ export const AddAssignmentUpdate = () => {
               >
                 {({ values, handleSubmit, handleBlur, handleChange }) => (
                   <Form className="h-100">
-                    {/* <Button
+                    <Button
                       type="subbmit"
                       className='className=" p-lg-2 my-2 btn-primary btn w-25'
                     >
                       submit
-                    </Button> */}
+                    </Button>
                     <Tab.Content>
                       <Tab.Pane
                         eventKey="assessmentSetting"
