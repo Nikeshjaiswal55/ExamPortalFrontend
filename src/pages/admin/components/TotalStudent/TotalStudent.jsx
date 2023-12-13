@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-export function TotalStudent({ totalStudent }) {
-  const [selected, setSelected] = useState(true);
+export function TotalStudent({ totalStudent, selected, setSelected }) {
   return (
     <>
       <div className="card total-assissment-card h-25 d-flex flex-row rounded-3 p-3 gap-3  ">
@@ -21,7 +20,13 @@ export function TotalStudent({ totalStudent }) {
           onClick={() => setSelected(!selected)}
         >
           <h3>Attempted Student</h3>
-          <h3 className="py-2">0</h3>
+          <h3 className="py-2">
+            {
+              totalStudent.filter(
+                (studentdetail) => studentdetail._attempted === true
+              ).length
+            }
+          </h3>
         </div>
       </div>
     </>

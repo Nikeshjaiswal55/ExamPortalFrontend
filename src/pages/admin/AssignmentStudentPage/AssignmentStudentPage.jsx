@@ -12,6 +12,8 @@ export default function AssignmentStudentPage() {
   if (isSuccess) {
     console.log('student', data);
   }
+  const [selected, setSelected] = useState(true);
+
   return (
     <div className="h-100 w-100 m-0 p-0 ">
       {isError && <SomethingWentWrong />}
@@ -22,19 +24,25 @@ export default function AssignmentStudentPage() {
       ) : (
         <>
           <div className=" h-auto ">
-            <TotalStudent totalStudent={data} />
+            <TotalStudent
+              setSelected={setSelected}
+              selected={selected}
+              totalStudent={data}
+            />
           </div>
           <div
             className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto"
             style={{ height: 'calc(100vh - 16rem)' }}
           >
-            {data?.map((studentdetails) => (
-              <StudentCard
-              paperId={paperId}
-                divBoxStyle={'col-lg-2 col-12'}
-                studentdetails={studentdetails}
-              />
-            ))}
+            {data
+              .filter((studentdetail) => studentdetail._attempted !== selected)
+              ?.map((studentdetails) => (
+                <StudentCard
+                  paperId={paperId}
+                  divBoxStyle={'col-lg-2 col-12'}
+                  studentdetails={studentdetails}
+                />
+              ))}
           </div>
         </>
       )}
