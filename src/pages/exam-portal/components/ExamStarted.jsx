@@ -4,7 +4,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
 import StudentPaper from '../../student/StudentPaper/StudentPaper';
 import { path } from '../../../routes/RoutesConstant';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ProgressBar } from 'react-bootstrap';
 import { MediaPermission } from '../utils/MediaPermission';
@@ -17,8 +17,10 @@ import {
   useGetAllQuestionsFromPaperIdQuery,
   useGetStudentAvidenceQuery,
 } from '../../../apis/Service';
+import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { Loader } from '../../../components/Loader/Loader';
+import { sendImage } from '../../../store/adminSlice';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -34,6 +36,7 @@ export const ExamStarted = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const dispatch = useDispatch();
   const {
     data: attempted,
     isLoading: ateemptedIsLoading,
@@ -63,13 +66,21 @@ export const ExamStarted = () => {
               return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(blob);
+                const options = {
+                  maxSizeMB: 0.3,
+                  maxWidthOrHeight: 1920,
+                  useWebWorker: true,
+                };
+                imageCompression(blob, options).then((compressedimg) => {
+                  console.log('coresseding', compressedimg);
+                  reader.readAsDataURL(compressedimg);
+                });
               });
             })
             .then((base64Image) => {
-              console.log(base64Image);
               const currentDateTime = new Date();
-              setCapturedImage((prevImages) => [...prevImages, base64Image]);
+              // setCapturedImage((prevImages) => [...prevImages, base64Image]);
+              dispatch(sendImage(base64Image));
             })
             .catch((error) => {
               console.error('Error capturing photo:', error);
@@ -91,9 +102,9 @@ export const ExamStarted = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.setItem('capturedImage', JSON.stringify(capturedImage));
-  }, [capturedImage]);
+  // useEffect(() => {
+  //   localStorage.setItem('capturedImage', JSON.stringify(capturedImage));
+  // }, [capturedImage]);
 
   const handleVisibilityChange = (stream) => {
     if (document.hidden && stream) {
