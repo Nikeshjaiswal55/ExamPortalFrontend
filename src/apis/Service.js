@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
-const baseUrl = " http://localhost:9090"
+// const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy.onrender.com/"
 // const baseUrl = "http://192.168.0.202:9090"
 // const baseUrl = "http://192.168.73.59:9090"
-// const baseUrl = "http://192.168.0.237:9090"
+const baseUrl = "http://192.168.8.162:9090"
 
 
 
@@ -312,7 +312,7 @@ export const adminApi = createApi({
             {
                 query: ({ paperId, stdId }) => {
                     return {
-                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}`,
                         method: 'post',
                     }
                 }
@@ -322,7 +322,7 @@ export const adminApi = createApi({
             {
                 query: ({ paperId, stdId }) => {
                     return {
-                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}`,
                         method: 'post',
                     }
                 }

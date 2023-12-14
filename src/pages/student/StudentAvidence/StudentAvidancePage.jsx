@@ -8,6 +8,7 @@ import {
   useGetStudentAvidenceImageQuery,
   useGetStudentAvidenceQuery,
   usePaperApprovedMutation,
+  usePaperRejectedMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
@@ -30,7 +31,7 @@ export default function StudentAvidancePage() {
       isLoading: rejectLoading,
       isSuccess: rejectSuccess,
     },
-  ] = usePaperApprovedMutation();
+  ] = usePaperRejectedMutation();
 
   const { data, isLoading, isError } = useGetStudentAvidenceImageQuery({
     paperId,
