@@ -3,8 +3,8 @@ import {SubIdSplit} from '../utils/SubIdSplit'
 
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
-// const baseUrl = "https://exameasy-.onrender.com/"
-const baseUrl = "http://192.168.0.237:9090"
+// const baseUrl = "https://exameasy-krishna.onrender.com/"
+const baseUrl = "http://192.168.8.162:9090"
 // const baseUrl = "http://192.168.180.59:9090"
 // const baseUrl = "http://192.168.1.188:9090"
 
@@ -225,9 +225,20 @@ export const adminApi = createApi({
         }),
         getTop5Assissment: builder.query(
             {
-                query: (adminId) => {
+                query: (orgId) => {
                     return {
                         url: ` http://localhost:3000/getTop5Assesment`,
+                        // url: `/getTop5Assesment/${adminId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+        getTop5StudentsByOrgId: builder.query(
+            {
+                query: (orgId) => {
+                    return {
+                        url: `/getTopRankers/${orgId}`,
                         // url: `/getTop5Assesment/${adminId}`,
                         method: 'get',
                     }
@@ -245,11 +256,11 @@ export const adminApi = createApi({
                 }
             }
         ),
-        getTotalStudentAdmin: builder.query(
+        getTotalStudentAndAssessementByOrgId: builder.query(
             {
                 query: (organizationId) => {
                     return {
-                        url: ` http://localhost:3000/totalStudent`,
+                        url: `/getCountOfStudentAndPaperBy_OGId/${organizationId}`,
                         method: 'get',
                     }
                 }
@@ -266,12 +277,11 @@ export const adminApi = createApi({
                 providesTags: ['submitExam']
             }
         ),
-        getTotalAssessmentAdmin: builder.query(
+        getTop5AssessmentOfOrgId: builder.query(
             {
                 query: (organizationId) => {
                     return {
-                        url: ` http://localhost:3000/totalAssessment`,
-                        // url: `/getTop5Assesment/${adminId}`,
+                        url: `/gettopAssesmentsByOrgnizationId/${organizationId}`,
                         method: 'get',
                     }
                 }
@@ -310,4 +320,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useGetStudentAvidenceQuery,useRefreshAccessTokenMutation,useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalAssessmentAdminQuery,useGetTotalStudentAdminQuery,useGetTop5AssesmentScoreByStudentIdQuery} = adminApi;
+export const {useGetStudentAvidenceQuery,useRefreshAccessTokenMutation,useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5AssesmentScoreByStudentIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery} = adminApi;
