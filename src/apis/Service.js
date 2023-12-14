@@ -358,7 +358,7 @@ export const adminApi = createApi({
             {
                 query: ({ paperId, stdId }) => {
                     return {
-                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        url: `/publisStudentResult/studentId/${stdId}/paperId/${paperId}`,
                         method: 'post',
                     }
                 }
@@ -368,7 +368,7 @@ export const adminApi = createApi({
             {
                 query: ({ paperId, stdId }) => {
                     return {
-                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}}`,
+                        url: `/RejectStudentResult/studentId/${stdId}/paperId/${paperId}`,
                         method: 'post',
                     }
                 }
