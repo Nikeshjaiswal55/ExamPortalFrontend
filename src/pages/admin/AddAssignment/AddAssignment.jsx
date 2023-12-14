@@ -139,7 +139,6 @@ export const AddAssignment = () => {
       isSuccess: inviteSucessFull,
     },
   ] = useInvitedStudentByMailMutation();
-  const { data: AllCourse } = useGetAllCoursesQuery({ userId });
   const dipatch = useDispatch();
   useEffect(() => {
     if (AssignmentSuccess) {

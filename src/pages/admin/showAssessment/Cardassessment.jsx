@@ -54,7 +54,7 @@ export default function Cardassessment({
               <br />
               <span>{props?.ExamDate}</span>
             </div>
-            {props?.is_Active!=='false' ? (
+            {props?.is_Active !== 'false' ? (
               <div className=" d-flex justify-content-evenly   align-items-center">
                 <Spinner animation="grow" variant="success" size="sm" />{' '}
                 <strong className="ms-2"> Active</strong>
