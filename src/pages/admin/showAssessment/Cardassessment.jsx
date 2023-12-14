@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import SidePooup from './AssessmentSidePooup/SidePooup';
 import Example from './AssessmentSidePooup/Modal';
 import { path } from '../../../routes/RoutesConstant';
+import { useDispatch } from 'react-redux';
+import { updateAssissmentData } from '../../../store/adminSlice';
 
 export default function Cardassessment({
   deleteAssignment,
@@ -24,6 +26,7 @@ export default function Cardassessment({
   };
 
   const [showCard, setShowCard] = useState();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -39,15 +42,19 @@ export default function Cardassessment({
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong
+                onClick={() => {
+                  dispatch(updateAssissmentData({ paperId, ...props }));
+                  navigate(path.UpdateAssessment.path);
+                }}
                 className="fs-6 cursor-pointer"
-                onClick={() => (stdData ? '' : setShowCard(true))}
+                // onClick={() => (stdData ? '' : setShowCard(true))}
               >
                 {props?.assessmentName}
               </strong>
               <br />
               <span>{props?.ExamDate}</span>
             </div>
-            {props?.is_Active!=='false' ? (
+            {props?.is_Active !== 'false' ? (
               <div className=" d-flex justify-content-evenly   align-items-center">
                 <Spinner animation="grow" variant="success" size="sm" />{' '}
                 <strong className="ms-2"> Active</strong>

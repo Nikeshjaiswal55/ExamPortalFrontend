@@ -37,6 +37,10 @@ export const path = {
         path: '/admin/add-assessment',
         desc: 'this is for adding assesment page '
     },
+    UpdateAssessment: {
+        path: '/admin/update-assessment',
+        desc: 'this is for adding assesment page '
+    },
     CreateAssessment: {
         path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
