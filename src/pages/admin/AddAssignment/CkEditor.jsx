@@ -4,8 +4,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FormLabel, FormSelect } from 'react-bootstrap';
 import { Sample1 } from './Templates';
 
-export const CkEditor = () => {
+export const CkEditor = ({ handleChange, values }) => {
   const [editor, setEditor] = useState(null);
+  const [editorContent, setEditorContent] = useState(Sample1);
 
   useEffect(() => {
     if (editor) {
@@ -15,7 +16,8 @@ export const CkEditor = () => {
   }, [editor]);
 
   const handleEditorChange = (event, editor) => {
-    console.log(event);
+    console.log(editor);
+    // handleChange(editor.getData());
   };
 
   const handleBlur = (event, editor) => {
@@ -25,7 +27,6 @@ export const CkEditor = () => {
   const handleFocus = (event, editor) => {
     console.log('Focus.', editor);
   };
-  const [editorContent, setEditorContent] = useState(Sample1);
 
   return (
     <div>
@@ -35,12 +36,15 @@ export const CkEditor = () => {
         </FormLabel>
         <div className="d-flex col-6 align-items-center justify-content-end">
           <FormLabel className="text-capitalize fw-bold me-3">
-          Instruction Sample 
+            Instruction Sample
           </FormLabel>
           <FormSelect
             className="w-25"
             value={editorContent}
-            onChange={(e) => setEditorContent(e.target.value)}
+            onChange={(e) => {
+              setEditorContent(e.target.value);
+              handleChange(e.target.value);
+            }}
           >
             <option value={Sample1}>sample1</option>
             <option value={'<p>wewe</p>'}>sample2</option>

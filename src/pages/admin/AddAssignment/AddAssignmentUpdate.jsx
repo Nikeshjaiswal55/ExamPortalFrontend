@@ -1,6 +1,13 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, FormCheck, FormLabel, Nav, Tab } from 'react-bootstrap';
+import {
+  Button,
+  FormCheck,
+  FormLabel,
+  Nav,
+  Spinner,
+  Tab,
+} from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
 import { RiAddFill } from 'react-icons/ri';
 import { IoClose } from 'react-icons/io5';
@@ -11,15 +18,19 @@ import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import * as yup from 'yup';
 import {
   useGetAllCoursesQuery,
+  useGetAllQuestionBYPaperIdQuery,
   useInvitedStudentByMailMutation,
   usePostAssignmentMutation,
+  useUpdateAssignmentMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getNotification } from '../../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
+import { AssessmentModal } from './assessmentModal';
+import { Loader } from '../../../components/Loader/Loader';
 
 const durationTimer = [
   {
@@ -52,60 +63,66 @@ const durationTimer = [
   },
 ];
 
-const initialvalue = {
-  assessmentName: '',
-  shortDescription: '',
-  assessmentPattern: 'online',
-  assessmentDuration: '',
-  assessmentTotalMarks: '',
-  assessmentMinmumMarks: '',
-  assessmentResultConfig: '',
-  assessmentOrder: '',
-  assessmentInstruction: '',
-  questions: [{ questions: '', options: [], correctAns: '', userAns: '' }],
-  examBranch: '',
-  session: '',
-  email: [],
-};
+// const AssesstmentSettingVAlidation = yup.object().shape({
+//   assessmentName: yup.string().required('Assessment name is required*'),
+//   shortDescription: yup
+//     .string()
+//     .required('Assessment short description is required*'),
+//   assessmentPattern: yup.string().required('Assessment pattern is required*'),
+//   assessmentDuration: yup.string().required('Assessment duration is required*'),
+//   assessmentTotalMarks: yup
+//     .number()
+//     .typeError('Assessment total marks must be a number')
+//     .required('Assessment total marks is required*')
+//     .positive('Assessment total marks must be a positive number'),
+//   assessmentMinmumMarks: yup
+//     .number()
+//     .typeError('Assessment minimum marks must be a number')
+//     .required('Assessment minimum marks is required*')
+//     .positive('Assessment minimum marks must be a positive number'),
+//   assessmentResultConfig: yup
+//     .string()
+//     .required('Select any one this is required**'),
+//   assessmentOrder: yup.string().required('Select any one this is required**'),
+//   //   assessmentInstruction: yup.string().required('Assessment name is required*'),
+// });
 
-const AssesstmentSettingVAlidation = yup.object().shape({
-  assessmentName: yup.string().required('Assessment name is required*'),
-  shortDescription: yup
-    .string()
-    .required('Assessment short description is required*'),
-  assessmentPattern: yup.string().required('Assessment pattern is required*'),
-  assessmentDuration: yup.string().required('Assessment duration is required*'),
-  assessmentTotalMarks: yup
-    .number()
-    .typeError('Assessment total marks must be a number')
-    .required('Assessment total marks is required*')
-    .positive('Assessment total marks must be a positive number'),
-  assessmentMinmumMarks: yup
-    .number()
-    .typeError('Assessment minimum marks must be a number')
-    .required('Assessment minimum marks is required*')
-    .positive('Assessment minimum marks must be a positive number'),
-  assessmentResultConfig: yup
-    .string()
-    .required('Select any one this is required**'),
-  assessmentOrder: yup.string().required('Select any one this is required**'),
-  //   assessmentInstruction: yup.string().required('Assessment name is required*'),
-});
-
-const QuestionManagementValidation = yup.object().shape({
-  questions: yup.array().of(
-    yup.object().shape({
-      questions: yup.string().required('Question is required'),
-      options: yup
-        .array()
-        .min(2, 'At least two options are required')
-        .of(yup.string().required('Option is required')),
-      correctAns: yup.string().required('Correct answer is required'),
-    })
-  ),
-});
+// const QuestionManagementValidation = yup.object().shape({
+//   questions: yup.array().of(
+//     yup.object().shape({
+//       questions: yup.string().required('Question is required'),
+//       options: yup
+//         .array()
+//         .min(2, 'At least two options are required')
+//         .of(yup.string().required('Option is required')),
+//       correctAns: yup.string().required('Correct answer is required'),
+//     })
+//   ),
+// });
 
 export const AddAssignmentUpdate = () => {
+  const assissmentData = useSelector((state) => state.admin.assissment);
+  const {
+    data: allQuestion,
+    isLoading: allQuestionLoading,
+    isError: allQuestionError,
+  } = useGetAllQuestionBYPaperIdQuery(assissmentData.paperId);
+  const initialvalue = {
+    assessmentName: assissmentData.assessmentName,
+    shortDescription: assissmentData.description,
+    assessmentPattern: 'online',
+    assessmentDuration: assissmentData.examDuration,
+    assessmentTotalMarks: assissmentData.totalMarks,
+    assessmentMinmumMarks: assissmentData.minimum_marks,
+    assessmentResultConfig:
+      assissmentData._auto_check == true ? 'autoCheck' : 'manualCheck',
+    assessmentOrder:
+      assissmentData._shorted == true ? 'sortOrder' : 'sameOrder',
+    assessmentInstruction: 'string',
+    questions: allQuestion,
+    examBranch: assissmentData.branch,
+    session: assissmentData.session,
+  };
   const [activeTab, setActiveTab] = useState('assessmentSetting');
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -113,21 +130,21 @@ export const AddAssignmentUpdate = () => {
   const orgType = localStorage.getItem('orgtype');
   const getOrgdata = JSON.parse(localStorage.getItem('orgData'));
   const [excel, setExcel] = useState([]);
+  const [show, setModalShow] = useState(false);
+  const [errorContent, setErrorContent] = useState('');
 
-  const validationschema =
-    activeTab === 'assessmentSetting'
-      ? AssesstmentSettingVAlidation
-      : activeTab === 'questionManagement'
-      ? QuestionManagementValidation
-      : '';
+  // const validationschema =
+  //   activeTab === 'assessmentSetting'
+  //     ? AssesstmentSettingVAlidation
+  //     : activeTab === 'questionManagement'
+  //     ? QuestionManagementValidation
+  //     : '';
   const handleTabSelect = (key) => {
     setActiveTab(key);
   };
 
-  const [
-    AssigmnetData,
-    { isLoading, data, isSuccess: AssignmentSuccess, isError },
-  ] = usePostAssignmentMutation();
+  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
+    useUpdateAssignmentMutation();
   const [
     inviteStudent,
     {
@@ -136,10 +153,11 @@ export const AddAssignmentUpdate = () => {
       isSuccess: inviteSucessFull,
     },
   ] = useInvitedStudentByMailMutation();
+
   const dipatch = useDispatch();
   useEffect(() => {
     if (AssignmentSuccess) {
-      toast.success('assessment created successfully!!🎉', {
+      toast.success('assessment updated successfully!!🎉', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -154,7 +172,7 @@ export const AddAssignmentUpdate = () => {
   }, [AssignmentSuccess]);
 
   useEffect(() => {
-    if (isError) {
+    if (allQuestionError) {
       toast.error('something went wrong!!😑', {
         position: 'top-right',
         autoClose: 5000,
@@ -166,7 +184,7 @@ export const AddAssignmentUpdate = () => {
         theme: 'dark',
       });
     }
-  }, [isError, inviteError]);
+  }, [allQuestionError]);
 
   useEffect(() => {
     if (inviteSucessFull) {
@@ -174,162 +192,144 @@ export const AddAssignmentUpdate = () => {
     }
   }, [inviteSucessFull]);
   const submitPaper = (values) => {
-    if (excel.length || values.email.length || values.examBranch !== '') {
-      const sendPaper = {
-        questions: values.questions,
-        examDetails: {
-          examDuration: values.assessmentDuration,
-          examMode: values.assessmentPattern,
-          examRounds: 1,
-          paperChecked: false,
-          branch: values.examBranch ? values.examBranch : null,
-          session: values.session,
-          assessmentName: values.assessmentName,
-          totalMarks: Math.ceil(values.assessmentTotalMarks),
-          minimum_marks: Math.ceil(values.assessmentMinmumMarks),
-          is_Active: false,
-          is_attempted: false,
-          is_Setup: true,
-        },
+    const sendPaper = {
+      questions: values.questions,
+      paperId: assissmentData.paperId,
+      examDetails: {
+        examDuration: values.assessmentDuration,
+        examMode: values.assessmentPattern,
+        examRounds: 1,
+        paperChecked: false,
+        branch: values.examBranch ? values.examBranch : null,
+        session: values.session,
+        assessmentName: values.assessmentName,
+        totalMarks: Math.ceil(values.assessmentTotalMarks),
+        minimum_marks: Math.ceil(values.assessmentMinmumMarks),
+        is_Active: false,
+        is_attempted: false,
+        is_Setup: true,
+      },
+      paper: {
+        paperId: assissmentData.paperId,
         userId: userId,
         orgnizationId: getOrgdata?.orgnizationId,
         description: values.shortDescription,
-        instruction: 'string',
+        instruction: values.assessmentInstruction,
         is_Active: true,
         is_setup: true,
         is_auto_check:
           values.assessmentResultConfig === 'autoCheck' ? true : false,
         is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
-      };
-      let emails = excel.reduce(
-        (arr, currentvalue) => {
-          arr.push(currentvalue.email);
-          return arr;
-        },
-        [...values.email]
-      );
-      AssigmnetData(sendPaper).then((res) => {
-        if (res?.data?.paperId) {
-          dipatch(getNotification(true));
-          navigate(path.ShowAssessment.path);
-          inviteStudent({
-            userId: res?.data?.userId,
-            paperId: res?.data?.paperId,
-            orgnizationId: res?.data?.orgnizationId,
-            emails: emails,
-          }).then((res) => {
-            console.log('res', res);
-            if (res.error.originalStatus === 200) {
-              dipatch(getNotification(false));
-            } else {
-              toast.error('student not added successfully!!😑', {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'dark',
-              });
-            }
-          });
-        }
-      });
-    } else {
-      alert('you have to select emails or branch to invite student');
-    }
+      },
+    };
+
+    AssigmnetData(sendPaper).then((res) => {
+      navigate(path.ShowAssessment.path);
+    });
   };
   return (
     <>
-      <div className="h-100 w-100 rounded-5">
-        <Tab.Container
-          id="left-tabs-SidePooup"
-          defaultActiveKey="assessmentSetting"
-          onSelect={handleTabSelect}
-        >
-          <div className="row h-100 gap-3  m-0 p-0">
-            <div
-              style={{ height: 'calc(100vh - 77px)' }}
-              className="col-2 px-4 bg-white rounded-3"
-            >
-              <h4 className="text-capitalize fw-bold my-4">
-                Test Configuration
-              </h4>
-              <div className="ps-3 my-3">
-                <Nav>
-                  <div>
-                    <Nav.Item>
-                      <Nav.Link
-                        eventKey="assessmentSetting"
-                        className={` text-capitalize my-3 fw-bold cursor-pointer ${
-                          activeTab === 'assessmentSetting'
-                            ? 'active text-primary'
-                            : 'text-dark'
-                        }`}
-                      >
-                        Assessment Setting
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link
-                        eventKey="questionManagement"
-                        className={`text-capitalize my-3 fw-bold cursor-pointer ${
-                          activeTab === 'questionManagement'
-                            ? 'active text-primary'
-                            : 'text-dark'
-                        }`}
-                      >
-                        Question Management
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link
-                        eventKey="manageCandidate"
-                        className={`text-capitalize my-3 fw-bold cursor-pointer ${
-                          activeTab === 'manageCandidate'
-                            ? 'active text-primary'
-                            : 'text-dark'
-                        }`}
-                      >
-                        Manage Candidate
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                </Nav>
-              </div>
-              <Button className='className=" p-lg-2 w-100 btn-dark btn '>
-                Publish
-              </Button>
-            </div>
-            <div className="col-7 px-0" style={{ flex: 1 }}>
-              <Formik
-                initialValues={initialvalue}
-                validationSchema={validationschema}
-                onSubmit={submitPaper}
-              >
-                {({ values, handleSubmit, handleBlur, handleChange }) => (
-                  <Form className="h-100">
-                    <Button
-                      type="subbmit"
-                      className='className=" p-lg-2 my-2 btn-primary btn w-25'
+      {allQuestionLoading ? (
+        <div className=" position-absolute top-50 start-50  translate-middle ">
+          <Loader />
+        </div>
+      ) : (
+        <div className="h-100 w-100 rounded-5">
+          <Formik
+            initialValues={initialvalue}
+            // validationSchema={validationschema}
+            onSubmit={submitPaper}
+          >
+            {({ values, handleSubmit, handleBlur, handleChange }) => (
+              <Form className="h-100">
+                <Tab.Container
+                  id="left-tabs-SidePooup"
+                  defaultActiveKey="assessmentSetting"
+                  onSelect={handleTabSelect}
+                >
+                  <div className="row h-100 gap-3  m-0 p-0">
+                    <div
+                      style={{ height: 'calc(100vh - 77px)' }}
+                      className="col-2 px-4 bg-white rounded-3"
                     >
-                      submit
-                    </Button>
-                    <Tab.Content>
-                      <Tab.Pane
-                        eventKey="assessmentSetting"
-                        className=" bg-transparent m-0"
+                      <h4 className="text-capitalize fw-bold my-4">
+                        Update Configuration & Publish
+                      </h4>
+                      <div className="ps-3 my-3">
+                        <Nav>
+                          <div>
+                            <Nav.Item>
+                              <Nav.Link
+                                eventKey="assessmentSetting"
+                                className={` text-capitalize my-3 fw-bold cursor-pointer ${
+                                  activeTab === 'assessmentSetting'
+                                    ? 'active text-primary'
+                                    : 'text-dark'
+                                }`}
+                              >
+                                Assessment Setting
+                              </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                              <Nav.Link
+                                eventKey="questionManagement"
+                                className={`text-capitalize my-3 fw-bold cursor-pointer ${
+                                  activeTab === 'questionManagement'
+                                    ? 'active text-primary'
+                                    : 'text-dark'
+                                }`}
+                              >
+                                Question Management
+                              </Nav.Link>
+                            </Nav.Item>
+                            {/* <Nav.Item>
+                            <Nav.Link
+                              eventKey="manageCandidate"
+                              className={`text-capitalize my-3 fw-bold cursor-pointer ${
+                                activeTab === 'manageCandidate'
+                                  ? 'active text-primary'
+                                  : 'text-dark'
+                              }`}
+                            >
+                              Manage Candidate
+                            </Nav.Link>
+                          </Nav.Item> */}
+                          </div>
+                        </Nav>
+                      </div>
+                      <Button className='className=" p-lg-2 w-100 btn-dark btn '>
+                        Publish
+                      </Button>
+                      <Button
+                        type="submit"
+                        className='className=" p-lg-2 my-2 btn-primary btn w-100'
                       >
-                        <AssesstmentSetting />
-                      </Tab.Pane>
-                      <Tab.Pane
-                        eventKey="questionManagement"
-                        className=" bg-transparent m-0"
-                      >
-                        <QuestionManagement values={values} />
-                      </Tab.Pane>
-                      <Tab.Pane
+                        {isLoading ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : (
+                          'submit'
+                        )}
+                      </Button>
+                    </div>
+                    <div className="col-7 px-0" style={{ flex: 1 }}>
+                      <Tab.Content>
+                        <Tab.Pane
+                          eventKey="assessmentSetting"
+                          className=" bg-transparent m-0"
+                        >
+                          <AssesstmentSetting
+                            handleChange={handleChange}
+                            values={values}
+                            handleBlur={handleBlur}
+                          />
+                        </Tab.Pane>
+                        <Tab.Pane
+                          eventKey="questionManagement"
+                          className=" bg-transparent m-0"
+                        >
+                          <QuestionManagement values={values} />
+                        </Tab.Pane>
+                        {/* <Tab.Pane
                         eventKey="manageCandidate"
                         className=" bg-transparent m-0"
                       >
@@ -340,20 +340,26 @@ export const AddAssignmentUpdate = () => {
                           excel={excel}
                           setExcel={setExcel}
                         />
-                      </Tab.Pane>
-                    </Tab.Content>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          </div>
-        </Tab.Container>
-      </div>
+                      </Tab.Pane> */}
+                      </Tab.Content>
+                    </div>
+                  </div>
+                </Tab.Container>
+              </Form>
+            )}
+          </Formik>
+          <AssessmentModal
+            show={show}
+            errorContent={errorContent}
+            setModalShow={setModalShow}
+          />
+        </div>
+      )}
     </>
   );
 };
 
-const AssesstmentSetting = () => {
+const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
   return (
     <div
       className=" p-4 rounded-3 bg-white text-dark"
@@ -369,7 +375,9 @@ const AssesstmentSetting = () => {
           className="form-control input-border p-2 border focus-ring text-capitalize focus-ring-light"
           placeholder="Enter Assessment Name"
         />
-        <ErrorMessage name="assessmentName" className="text-danger" />
+        <p className="text-danger">
+          <ErrorMessage name="assessmentName" className="text-danger" />
+        </p>
       </div>
       <div className="my-3">
         <FormLabel className="text-capitalize fw-bold">
@@ -381,7 +389,9 @@ const AssesstmentSetting = () => {
           className="form-control input-border p-2 border focus-ring text-capitalize focus-ring-light"
           placeholder="Enter Short Description"
         />
-        <ErrorMessage name="shortDescription" className="text-danger" />
+        <p className="text-danger">
+          <ErrorMessage name="shortDescription" className="text-danger" />
+        </p>
       </div>
       <div className="row gap-1 my-3">
         <div className="col-3">
@@ -394,7 +404,9 @@ const AssesstmentSetting = () => {
             className="form-control input-border p-2 border focus-ring text-capitalize focus-ring-light"
             placeholder="Enter Short Description"
           />
-          <ErrorMessage name="assessmentPattern" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage name="assessmentPattern" className="text-danger" />
+          </p>
         </div>
         <div className="col-3">
           <FormLabel className="text-capitalize fw-bold">
@@ -412,7 +424,9 @@ const AssesstmentSetting = () => {
               </option>
             ))}
           </Field>
-          <ErrorMessage name="assessmentDuration" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage name="assessmentDuration" className="text-danger" />
+          </p>
         </div>
         <div className="col-3">
           <FormLabel className="text-capitalize fw-bold">Total Marks</FormLabel>
@@ -422,7 +436,9 @@ const AssesstmentSetting = () => {
             className="form-control input-border p-2 border focus-ring text-capitalize focus-ring-light"
             placeholder="Enter Total Marks"
           />
-          <ErrorMessage name="assessmentTotalMarks" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage name="assessmentTotalMarks" className="text-danger" />
+          </p>
         </div>
         <div className="col-2">
           <FormLabel className="text-capitalize fw-bold">
@@ -434,7 +450,12 @@ const AssesstmentSetting = () => {
             className="form-control input-border p-2 border focus-ring text-capitalize focus-ring-light"
             placeholder="Enter Minimum Passing Marks"
           />
-          <ErrorMessage name="assessmentMinmumMarks" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage
+              name="assessmentMinmumMarks"
+              className="text-danger"
+            />
+          </p>
         </div>
       </div>
       <div className="row  my-3">
@@ -466,7 +487,12 @@ const AssesstmentSetting = () => {
               </FormLabel>
             </div>
           </div>
-          <ErrorMessage name="assessmentResultConfig" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage
+              name="assessmentResultConfig"
+              className="text-danger"
+            />
+          </p>
         </div>
         <div className=" col-6 ">
           <FormLabel className="text-capitalize fw-bold">
@@ -496,10 +522,16 @@ const AssesstmentSetting = () => {
               </FormLabel>
             </div>
           </div>
-          <ErrorMessage name="assessmentOrder" className="text-danger" />
+          <p className="text-danger">
+            <ErrorMessage name="assessmentOrder" className="text-danger" />
+          </p>
         </div>
       </div>
-      <CkEditor />
+      <CkEditor
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        values={values}
+      />
     </div>
   );
 };
@@ -516,7 +548,7 @@ const QuestionManagement = ({ values }) => {
         {({ push, remove }) => (
           <>
             {' '}
-            {values.questions.map((question, index) => (
+            {values.questions?.map((question, index) => (
               <div key={index} className="p-4 mb-3 bg-white rounded-4">
                 <div>
                   <div className="d-flex justify-content-between align-items-center">
@@ -538,6 +570,7 @@ const QuestionManagement = ({ values }) => {
                     placeholder="Enter question"
                     className="form-control"
                   />
+                  <p className="text-danger"></p>
                   <ErrorMessage
                     name={`questions[${index}].questions`}
                     className="text-danger"
@@ -545,7 +578,7 @@ const QuestionManagement = ({ values }) => {
                 </div>
                 <div>
                   <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
-                  {question.options.map((option, optionIndex) => (
+                  {question.options?.map((option, optionIndex) => (
                     <>
                       <div
                         key={optionIndex}
@@ -561,6 +594,7 @@ const QuestionManagement = ({ values }) => {
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
                         </FormLabel>
                       </div>
+                      <p className="text-danger"></p>
                       <ErrorMessage
                         name={`questions[${index}].correctAns`}
                         className="text-danger"
@@ -605,6 +639,7 @@ const QuestionManagement = ({ values }) => {
                         }}
                       />
                     </div>
+                    <p className="text-danger"></p>
                     <ErrorMessage
                       name={`questions[${index}].options`}
                       className="text-danger"
@@ -672,6 +707,7 @@ const ManageCandidate = ({
       const selectedCourse = AllCourse?.data.find(
         (course) => course.course_name === values.examBranch
       );
+      console.log(selectedCourse);
       if (selectedCourse) {
         const courseDuration = selectedCourse.duration;
         const years = Array.from(
@@ -696,7 +732,7 @@ const ManageCandidate = ({
             <div className="row">
               <div className="col-6">
                 <label className="text-capitalize fw-bold">
-                  Select Candidate Course{' '}
+                  Select Candidate Course
                   <span className="fw-normal">
                     (note: only selected course student will get exam link)
                   </span>
@@ -715,7 +751,7 @@ const ManageCandidate = ({
                   <option value="">Select Course</option>
                   {AllCourse?.data.map((branch) => {
                     return (
-                      <option key={branch} value={branch.course_name}>
+                      <option key={branch.course_id} value={branch.course_id}>
                         {branch.course_name}
                       </option>
                     );
@@ -792,6 +828,7 @@ const ManageCandidate = ({
               </div>
             )}
           </FieldArray>
+          <p className="text-danger"></p>
           <ErrorMessage
             name="email"
             component={'div'}
@@ -867,6 +904,7 @@ const ManageCandidate = ({
           ) : null}
         </div>
 
+        <p className="text-danger"></p>
         <ErrorMessage
           component={'div'}
           className=" input-error  my-1  mx-5 "
