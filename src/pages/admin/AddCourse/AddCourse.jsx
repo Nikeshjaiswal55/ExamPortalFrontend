@@ -79,18 +79,6 @@ export default function AddCourse() {
     },
   ] = useCreateCourseInBackgroundMutation();
 
-  const orgData = JSON.parse(localStorage.getItem('orgData'));
-  const [
-    createCourseInBackground,
-    {
-      isLoading: isMailLoading,
-      data: mailData,
-      error: mailError,
-      isError: isMailError,
-      isSuccess: isMailSuccess,
-    },
-  ] = useCreateCourseInBackgroundMutation();
-
   async function onSubmits(values) {
     const accessToken = localStorage.getItem('accessToken');
     let users = JSON.parse(localStorage.getItem('users'));
