@@ -223,12 +223,11 @@ export const adminApi = createApi({
             },
             invalidatesTags: ['getAllAssissment'],
         }),
-        getTop5Assissment: builder.query(
+        getAllStudentOfOrg: builder.query(
             {
                 query: (orgId) => {
                     return {
-                        url: ` http://localhost:3000/getTop5Assesment`,
-                        // url: `/getTop5Assesment/${adminId}`,
+                        url: `/getAllStudentsBy/orgnizationId/${orgId}`,
                         method: 'get',
                     }
                 }
@@ -239,7 +238,6 @@ export const adminApi = createApi({
                 query: (orgId) => {
                     return {
                         url: `/getTopRankers/${orgId}`,
-                        // url: `/getTop5Assesment/${adminId}`,
                         method: 'get',
                     }
                 }
@@ -250,7 +248,6 @@ export const adminApi = createApi({
                 query: (AssessmentId) => {
                     return {
                         url: `/getTopperByPaperId/${AssessmentId}`,
-                        // url: `/getTop5Assesment/${adminId}`,
                         method: 'get',
                     }
                 }
@@ -281,7 +278,7 @@ export const adminApi = createApi({
             {
                 query: (organizationId) => {
                     return {
-                        url: `/gettopAssesmentsByOrgnizationId/${organizationId}`,
+                        url: `/getTopAssesmentByOrgnizationId/${organizationId}`,
                         method: 'get',
                     }
                 }
@@ -289,15 +286,25 @@ export const adminApi = createApi({
         ),
         getTop5AssesmentScoreByStudentId: builder.query(
             {
-                query: (organizationId) => {
+                query: (studentid) => {
                     return {
-                        url: ` http://localhost:3000/getTop5ExamScoreHigh`,
-                        // url: `/getTop5Assesment/${adminId}`,
+                        url: `/getTop5ResultOfStudent/${studentid}`,
                         method: 'get',
                     }
                 }
             }
         ),
+        getPassedAssessmentByStudentId: builder.query(
+            {
+                query: (stdId) => {
+                    return {
+                        url: `/getAllPassedResultByStudentId/{studentId}?studentId=${stdId}`,
+                        method: 'get',
+                    }
+                }
+            }
+        ),
+
         refreshAccessToken: builder.mutation({
             query: (refreshToken) => {
                 return {
@@ -320,4 +327,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {useGetStudentAvidenceQuery,useRefreshAccessTokenMutation,useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTop5AssissmentQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5AssesmentScoreByStudentIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery} = adminApi;
+export const {useGetStudentAvidenceQuery,useRefreshAccessTokenMutation,useInvitedStudentByMailMutation,useGetTestQuery,usePutActivePaperMutation,useGetAllAssissmentOnstudentPageQuery,useDeleteAssignmentMutation,useGetAllCoursesQuery,useDeleteCourseMutation,useUpdateCourseMutation,usePostOrganisationDetailsMutation,useAddCourseMutation,useGetOrgernizationQuery,usePostAssignmentMutation,useGetAssignmentQuery,useGetStudentOnPerticularAssignmentQuery,useGetUserQuery,useGetAllQuestionsFromPaperIdQuery,usePostSaveResultMutation,useGetTop3AssissmentStudentsQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5AssesmentScoreByStudentIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery,useGetAllStudentOfOrgQuery,useGetPassedAssessmentByStudentIdQuery} = adminApi;

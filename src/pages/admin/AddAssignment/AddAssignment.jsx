@@ -407,7 +407,7 @@ export default function AddAssignment() {
                           }
                         >
                           <option value="">Select Course</option>
-                          {AllCourse?.map((branch) => (
+                            {AllCourse?.data?.map((branch) => (
                             <option key={branch} value={branch.course_name}>
                               {branch.course_name}
                             </option>
