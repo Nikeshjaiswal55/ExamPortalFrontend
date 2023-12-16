@@ -6,12 +6,10 @@ import { useRefreshAccessTokenMutation } from '../apis/Service';
 export const getAccessToken = async (getAccessTokenSilently, user) => {
   try {
     localStorage.setItem('users', JSON.stringify(user ?? {}));
-    const accessToken = await getAccessTokenSilently(
-      {
-        audience: 'https://exam-easy',
-        scope: "openid profile email offline_access",
-      }
-    );
+    const accessToken = await getAccessTokenSilently({
+      audience: 'https://exam-easy',
+      scope: 'openid profile email offline_access',
+    });
     localStorage.setItem('accessToken', accessToken);
     const refresh_token = new LocalStorageCache();
     console.log('refesh_token : ', refresh_token);

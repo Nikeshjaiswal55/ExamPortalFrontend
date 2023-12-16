@@ -8,7 +8,7 @@ import { TotalComponent } from '../component/TotalComponent';
 import graphError from '../../../assets/gif/graph/graph-error.gif';
 import graphAnalysis from '../../../assets/gif/graph/graph-analysis.gif';
 import { StudentCertificate } from '../../student/StudentCertificate/StudentCertificateDownload';
-import { ViewResult } from '../../student/viewResult/ViewResult';
+// import { ViewResult } from '../../student/viewResult/ViewResult';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import noAssessmentFound from '../../../assets/gif/graph/noAssesmentFound.png';
 import { FaArrowRight, FaThumbsUp, FaUsers } from 'react-icons/fa';

@@ -131,7 +131,7 @@ export default function ShowAssessment() {
               />
             </div>
           </div>
-          <div
+          {/* <div
             className="col-12  d-flex col-md-3 mx-3 mb-lg-0 mb-3 justify-content-between border py-1 fs-6 rounded-4 bg-white  "
             style={{ width: '350px' }}
           >
@@ -158,7 +158,7 @@ export default function ShowAssessment() {
                 }}
               />
             </span>
-          </div>
+          </div> */}
           <div className=" col-12 w-auto  col-lg-8 mx-0  mb-lg-0 mb-3 d-flex  py-0 px-0 justify-content-md-end flex-wrap ">
             {/* <ReactDatePicker
               selected={publishDate}
