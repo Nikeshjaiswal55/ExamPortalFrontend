@@ -16,6 +16,7 @@ import {
   useGetAllAssissmentOnstudentPageQuery,
   useGetAllQuestionsFromPaperIdQuery,
   useGetStudentAvidenceQuery,
+  useUploadImageBase64Mutation,
 } from '../../../apis/Service';
 import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
@@ -37,15 +38,18 @@ export const ExamStarted = () => {
   const handleClose = () => setShow(false);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const dispatch = useDispatch();
-  const {
-    data: attempted,
-    isLoading: ateemptedIsLoading,
-    isError: ateemptedIsError,
-    attemptedSucess,
-  } = useGetStudentAvidenceQuery({
-    paperId,
-    stdId: stdId.userId,
-  });
+  // const {
+  //   data: attempted,
+  //   isLoading: ateemptedIsLoading,
+  //   isError: ateemptedIsError,
+  //   attemptedSucess,
+  // } = useGetStudentAvidenceQuery({
+  //   paperId,
+  //   stdId: stdId.userId,
+  // });
+
+  const [imageUpload, { isError: uploadError }] =
+    useUploadImageBase64Mutation();
 
   const captureImage = () => {
     const constraints = {
@@ -80,6 +84,12 @@ export const ExamStarted = () => {
             .then((base64Image) => {
               const currentDateTime = new Date();
               // setCapturedImage((prevImages) => [...prevImages, base64Image]);
+              // imageUpload(base64Image)
+              //   .then((res) => {
+              //     console.log(res);
+              //   })
+              //   .catch((err) => {});
+              // dispatch(sendImage(base64Image));
               dispatch(sendImage(base64Image));
             })
             .catch((error) => {
@@ -162,7 +172,7 @@ export const ExamStarted = () => {
   const [decodedData, setDecodedData] = useState(null);
 
   useEffect(() => {
-    if (attempted?._attempted) {
+    if (decodedData?.examDetails?._attempted) {
       cameraStop();
       navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
     } else {
@@ -171,7 +181,7 @@ export const ExamStarted = () => {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [attemptedSucess]);
+  }, []);
 
   useEffect(() => {
     if (progress == 100) {
@@ -193,71 +203,71 @@ export const ExamStarted = () => {
     }
   }, [isSuccess]);
 
-  if (ateemptedIsLoading) {
+  // if (ateemptedIsLoading) {
+  //   return (
+  //     <div className="h-100 d-flex align-items-center justify-content-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // } else {
+  if (decodedData?.examDetails?._attempted) {
+    cameraStop();
     return (
-      <div className="h-100 d-flex align-items-center justify-content-center">
-        <Loader />
-      </div>
+      <>
+        <Navigate to={`${path.StudentPaperSubmitted.path}/${paperId}`} />
+      </>
     );
   } else {
-    if (attempted?._attempted) {
-      cameraStop();
-      return (
-        <>
-          <Navigate to={`${path.StudentPaperSubmitted.path}/${paperId}`} />
-        </>
-      );
-    } else {
-      return (
-        <>
-          {isError ? (
-            <SomethingWentWrong />
-          ) : doneProcess ? (
-            <>
-              <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
-                <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
-                  <GiphyEmbed />
-                  <div className="w-100">
-                    <ProgressBar
-                      variant="success"
-                      now={progress}
-                      label={`${progress}%`}
-                    />
-                  </div>
-                  <div>
-                    <h6 className="text-center p-0 m-0">
-                      Please wait for upto a minute for the system to be set up.
-                    </h6>
-                    <h6 className="text-center">if it still does not load</h6>
-                  </div>
+    return (
+      <>
+        {isError ? (
+          <SomethingWentWrong />
+        ) : doneProcess ? (
+          <>
+            <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
+              <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+                <GiphyEmbed />
+                <div className="w-100">
+                  <ProgressBar
+                    variant="success"
+                    now={progress}
+                    label={`${progress}%`}
+                  />
+                </div>
+                <div>
+                  <h6 className="text-center p-0 m-0">
+                    Please wait for upto a minute for the system to be set up.
+                  </h6>
+                  <h6 className="text-center">if it still does not load</h6>
                 </div>
               </div>
-              <ExamModal
-                show={show}
-                content={content}
-                isButtonVisible={true}
-                handleClose={handleClose}
-              />
-            </>
-          ) : (
-            <div className="h-100">
-              <StudentPaper
-                paperId={paperId}
-                isLoading={isLoading}
-                decodedData={decodedData}
-                handleSubmit={handleSubmit}
-                cameraStop={cameraStop}
-              />
-              <ExamModal
-                show={show}
-                content={content}
-                isButtonVisible={isButtonVisible}
-                handleClose={handleClose}
-              />
             </div>
-          )}
-        </>
-      );
-    }
+            <ExamModal
+              show={show}
+              content={content}
+              isButtonVisible={true}
+              handleClose={handleClose}
+            />
+          </>
+        ) : (
+          <div className="h-100">
+            <StudentPaper
+              paperId={paperId}
+              isLoading={isLoading}
+              decodedData={decodedData}
+              handleSubmit={handleSubmit}
+              cameraStop={cameraStop}
+            />
+            <ExamModal
+              show={show}
+              content={content}
+              isButtonVisible={isButtonVisible}
+              handleClose={handleClose}
+            />
+          </div>
+        )}
+      </>
+    );
   }
+  // }
 };

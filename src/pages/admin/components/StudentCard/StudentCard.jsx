@@ -40,7 +40,7 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails }) {
             onClick={() => {
               studentdetails._attempted
                 ? navigate(
-                    `${path.examReport.path}/${paperId}/${studentdetails.studentid}`
+                    `${path.examReportOnAdmin.path}/${paperId}/${studentdetails.studentid}`
                   )
                 : toast.info('student not attempted paper yet!!', {
                     position: 'top-right',

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import '../../../styles/common.css';
 import { path } from '../../../routes/RoutesConstant';
 import { Button, Spinner, Table } from 'react-bootstrap';
@@ -11,10 +11,10 @@ import {
   usePaperRejectedMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
-import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { Loader } from '../../../components/Loader/Loader';
+import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 
-export default function StudentAvidancePage() {
+export default function StudentAvidancePageOnAdmin() {
   const { paperId, stdId } = useParams();
   const [
     approved,
@@ -140,7 +140,7 @@ export default function StudentAvidancePage() {
                 <p> {data?.result.student_email ?? 'user'}</p>
               </p>
             </div>
-            {/* <div className="fw-bold">
+            <div className="fw-bold">
               <h5>Publish Result</h5>
               <div className="d-flex gap-2 align-items-center justify-content-center">
                 <Button
@@ -166,7 +166,7 @@ export default function StudentAvidancePage() {
                   )}
                 </Button>
               </div>
-            </div> */}
+            </div>
           </div>
 
           <div className="w-100 m-0 row gap-2 align-items-center justify-content-evenly text-center">

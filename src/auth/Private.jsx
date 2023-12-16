@@ -1,4 +1,4 @@
-import { useAuth0 } from '@auth0/auth0-react';
+import { LocalStorageCache, useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import { Outlet } from 'react-router';
 import { useRefreshAccessTokenMutation } from '../apis/Service';
@@ -6,8 +6,19 @@ import { useRefreshAccessTokenMutation } from '../apis/Service';
 export const getAccessToken = async (getAccessTokenSilently, user) => {
   try {
     localStorage.setItem('users', JSON.stringify(user ?? {}));
-    const accessToken = await getAccessTokenSilently();
+    const accessToken = await getAccessTokenSilently(
+      {
+        audience: 'https://exam-easy',
+        scope: "openid profile email offline_access",
+      }
+    );
     localStorage.setItem('accessToken', accessToken);
+    const refresh_token = new LocalStorageCache();
+    console.log('refesh_token : ', refresh_token);
+    const key = refresh_token.allKeys().find((key) => key.includes('auth0spa'));
+    const refresh_token_value = refresh_token.get(key);
+    const ref_token = refresh_token_value?.body?.refresh_token;
+    localStorage.setItem('refreshToken', ref_token);
     console.log(`Access token: ${accessToken}`);
     return true;
   } catch (e) {

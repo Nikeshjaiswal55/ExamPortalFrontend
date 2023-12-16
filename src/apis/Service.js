@@ -1,22 +1,104 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { SubIdSplit } from '../utils/SubIdSplit'
+import { LocalStorageCache } from '@auth0/auth0-spa-js';
 
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9090"
 // const baseUrl = "https://exameasy-krishna.onrender.com/"
-const baseUrl = "http://192.168.8.162:9090"
-// const baseUrl = "http://192.168.180.59:9090"
 // const baseUrl = "http://192.168.8.162:9090"
+// const baseUrl = "http://192.168.180.59:9090"
+const baseUrl = "http://192.168.137.252:9090"
+
+// const baseQuery = fetchBaseQuery({
+//     baseUrl: baseUrl,
+//     prepareHeaders: (headers, { getState }) => {
+//         const refreshToken = localStorage.getItem('isRefeshToken');
+//         console.log(refreshToken, refreshToken);
+//         const accessToken = localStorage.getItem('accessToken');
+//         // if (accessToken) {
+//         //     headers.set('Authorization', `Bearer ${accessToken}`);
+//         // }
+//         if (refreshToken) {
+//             console.log('after refresh token');
+//             headers.set('Content-Type', 'application/x-www-form-urlencoded');
+//             return headers;
+//         } else {
+//             console.log('after else refresh token');
+//             headers.set('Content-Type', 'application/json');
+//             headers.set('Authorization', `Bearer ${accessToken}`);
+//             return headers;
+
+//         }
+//     },
+// });
+
+// const baseQueryWithReauth = async (args, api, extraOptions) => {
+//     const ref_token = localStorage.getItem('refreshToken');
+
+//     let result = await baseQuery(args, api, extraOptions);
+//     console.log('result : ', result);
+//     localStorage.setItem('isRefeshToken', false);
+
+//     if (result.error && result.error.status === 401) {
+//         console.log('inside 401')
+//         localStorage.setItem('isRefeshToken', true);
+//         try {
+//             const refreshResult = await baseQuery(
+//                 {
+//                     url: 'https://dev-uil1ecwkoehr31jg.us.auth0.com/oauth/token',
+//                     method: 'POST',
+//                     body: new URLSearchParams({
+//                         grant_type: 'refresh_token',
+//                         client_id: 'lA9qLAs5xQxoBuCVM1AJERQoPIsopevs',
+//                         client_secret: 'LvKHmQdAdkZ-wj2RWrq32VTZq4GuK_XACwrh9KvUaKdTOYE3UbiwlnI1TPFhU08N',
+//                         refresh_token: ref_token,
+//                     }),
+//                     mode: 'no-cors',
+//                 },
+//                 api,
+//                 extraOptions
+//             );
+//             console.log('refreshResult', refreshResult.body);
+//             // if (refreshResult.data) {
+//             //     console.log('inside refreshResult.data')
+//             //     localStorage.setItem('token', refreshResult.data?.access_token);
+//             //     localStorage.setItem(
+//             //         'refreshToken',
+//             //         refreshResult.data?.refresh_token
+//             //     );
+//             //     console.log('refreshResult.data', refreshResult.data);
+//             //     result = await baseQuery(args, api, extraOptions);
+//             // }
+//             if (refreshResult.error.status === 403) {
+//                 localStorage.clear();
+//                 window.location.href = '/';
+//             }
+//         } catch (error) {
+//             console.log('logout after refresh error -', error);
+//         }
+//     }
+//     return result;
+// };
+
 
 
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
     tagTypes: ['getAllCourse', 'getAllAssissment', 'getOrgernization', 'submitExam'],
+    // baseQuery: baseQueryWithReauth,
     baseQuery: fetchBaseQuery({
         baseUrl: baseUrl,
+        refetchOnReconnect: true,
         prepareHeaders: (headers, { getState }) => {
-            const accessToken = localStorage.getItem('accessToken');
+            // localStorage.setItem('accessToken', accessToken);
+            const access_token = new LocalStorageCache();
+            console.log('refesh_token : ', access_token);
+            const key = access_token.allKeys().find((key) => key.includes('auth0spa'));
+            const access_token_value = access_token.get(key);
+            const accessToken = access_token_value?.body?.access_token;
+            console.log('accessToken localllll : ', accessToken);
+            // const accessToken = localStorage.getItem('accessToken');
             if (accessToken) {
                 headers.set('Authorization', `Bearer ${accessToken}`);
             }
@@ -83,6 +165,7 @@ export const adminApi = createApi({
                 }
             },
             providesTags: ['getAllCourse'],
+            keepUnusedDataFor: 0,
         }),
         deleteCourse: builder.mutation({
             query: (payload) => {
@@ -192,6 +275,7 @@ export const adminApi = createApi({
                     method: 'GET',
                 }
             },
+            keepUnusedDataFor: 0,
         }),
         postSaveResult: builder.mutation({
             query: (payload) => {
@@ -217,7 +301,7 @@ export const adminApi = createApi({
         putActivePaper: builder.mutation({
             query: ({ paperId, paperActive }) => {
                 return {
-                    url: `/activetPaper/${paperId}/${paperActive}`,
+                    url: `/activetPaper/${paperId}`,
                     method: 'put',
                 }
             },
@@ -284,14 +368,15 @@ export const adminApi = createApi({
                         method: 'get',
                     }
                 },
-                providesTags: ['submitExam']
+                providesTags: ['submitExam'],
+                keepUnusedDataFor: 0,
             }
         ),
         getTop5AssessmentOfOrgId: builder.query(
             {
                 query: (organizationId) => {
                     return {
-                        url: `/gettopAssesmentsByOrgnizationId/${organizationId}`,
+                        url: `/getTopAssesmentsByOrgnizationId/${organizationId}`,
                         method: 'get',
                     }
                 }
@@ -377,6 +462,17 @@ export const adminApi = createApi({
                 }
             }
         ),
+        uploadImageBase64: builder.mutation(
+            {
+                query: (base64) => {
+                    return {
+                        url: `/uploadSingleImageAtaTmie`,
+                        method: 'post',
+                        body: base64
+                    }
+                }
+            }
+        ),
         getAllQuestionBYPaperId: builder.query(
             {
                 query: (paperId) => ({
@@ -392,4 +488,4 @@ export const adminApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { usePaperRejectedMutation, usePaperApprovedMutation, useGetStudentAvidenceImageQuery, useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery,useGetTotalStudentAndAssessementByOrgIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTop5AssessmentOfOrgIdQuery } = adminApi;
+export const { useUploadImageBase64Mutation, useGetAllQuestionBYPaperIdQuery, useUpdateAssignmentMutation, usePaperRejectedMutation, usePaperApprovedMutation, useGetStudentAvidenceImageQuery, useCreateCourseInBackgroundMutation, useSentMailToStudentMutation, useGetStudentAvidenceQuery, useRefreshAccessTokenMutation, useInvitedStudentByMailMutation, useGetTestQuery, usePutActivePaperMutation, useGetAllAssissmentOnstudentPageQuery, useDeleteAssignmentMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useUpdateCourseMutation, usePostOrganisationDetailsMutation, useAddCourseMutation, useGetOrgernizationQuery, usePostAssignmentMutation, useGetAssignmentQuery, useGetStudentOnPerticularAssignmentQuery, useGetUserQuery, useGetAllQuestionsFromPaperIdQuery, usePostSaveResultMutation, useGetTop3AssissmentStudentsQuery, useGetTop5AssissmentQuery, useGetTotalAssessmentAdminQuery, useGetTotalStudentAdminQuery, useGetTop5AssesmentScoreByStudentIdQuery, useGetTotalStudentAndAssessementByOrgIdQuery, useGetTop5StudentsByOrgIdQuery, useGetTop5AssessmentOfOrgIdQuery } = adminApi;

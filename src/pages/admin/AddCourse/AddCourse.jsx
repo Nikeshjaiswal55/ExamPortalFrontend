@@ -105,6 +105,7 @@ export default function AddCourse() {
                   branch: data.branch,
                   email: data.email,
                   name: data.name,
+                  year: data.year,
                 };
               });
               navigate(path.CreateAssessment.path);

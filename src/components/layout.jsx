@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
   const orgData = JSON.parse(localStorage.getItem('orgData'));
   const stdData = JSON.parse(localStorage.getItem('stdData'));

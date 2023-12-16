@@ -11,6 +11,8 @@ import { Loader } from '../../../components/Loader/Loader';
 import { FormateDate } from '../../../utils/FormateDate';
 import { Field } from 'formik';
 import { Pending } from '../ResultState/Pending';
+import { Pass } from '../ResultState/Pass';
+import { Fail } from '../ResultState/Fail';
 
 export function StudentResult() {
   const { paperId } = useParams();
@@ -19,6 +21,7 @@ export function StudentResult() {
     paperId,
     stdId: stdId.userId,
   });
+  console.log(data, 'data');
 
   return (
     <>
@@ -30,9 +33,11 @@ export function StudentResult() {
         <div className="h-100 d-flex align-items-center justify-content-center">
           <Loader />
         </div>
-      ) : data.is_published === 'requested' ? (
+      ) : data?.is_published == 'requested' ? (
         <div className="h-100 d-flex align-items-center justify-content-center bg-white">
           <Pending />
+          {/* <Pass /> */}
+          {/* <Fail /> */}
         </div>
       ) : (
         <div className="w-100 h-100 overflow-auto">

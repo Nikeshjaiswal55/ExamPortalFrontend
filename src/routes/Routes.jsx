@@ -34,6 +34,7 @@ import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoar
 import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
 import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
+import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
 
 export const Routes = () => {
   return (
@@ -46,6 +47,14 @@ export const Routes = () => {
         <Route path={path.Organisation.path} element={<OrganisationPage />} />
         <Route path="/" element={<Private />}>
           <Route path="/admin/" element={<CollegePrivate />}>
+            <Route
+              path={`${path.examReportOnAdmin.path}/:paperId/:stdId`}
+              element={
+                <Layout>
+                  <StudentAvidancePageOnAdmin />
+                </Layout>
+              }
+            />
             <Route
               path={path.AddCourse.path}
               element={
