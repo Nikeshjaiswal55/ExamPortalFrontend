@@ -177,11 +177,11 @@ export const StudentDashBoard = () => {
                       <p className=' text-center'  > No Result Found   </p></div>
                   </div>
                 </div>}
-                {top15StudentsIsError ? <div className='  d-flex w-100 h-100  flex-column'>
+                {top15StudentsIsError ? <div className='   d-flex justify-content-center align-items-center w-100 h-100  flex-column'>
                   <div className=' d-flex justify-content-around w-100 h-50'>
                     <img src={graphError} alt="error" width={"200px"} height={"200px"} />
                   </div>
-                  <div className=' w-100 h-50 d-flex  j align-items-center flex-column'>
+                  <div className=' w-100  d-flex  j align-items-center flex-column'>
                     <p className=' text-center'  > something went wrong while fetching graph data </p>
                     <CustomButton buttonText={" Reload "} className={" mx-auto"} onButtonClick={() => {window.location.reload();}} />
                   </div>  </div> : null}
@@ -218,9 +218,8 @@ export const StudentDashBoard = () => {
 
                 {<div className="row m-0  d-flex flex-column justify-content-start bg-white  rounded-3 w-100 h-100 overflow-auto  p-0   ">
 
-                  <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100  p-2   ">
+                  <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100 h-100  p-2   ">
                     <div className=" w-100 py-3 p-md-2   fw-bold ">
-
                       <h4 className=" ps-3  d-flex justify-content-start align-items-center"> Attempted Assessment  {isAssignmentLoading && isAssignmentFetching ? <>  <Spinner className=' text-primary ms-3 ' animation="border" size='sm' />  </> : null}</h4>
                     </div>
                     {isAttemptedAssessment == 0 && !isAssignmentLoading && !isAssignmentFetching && !isAssignmentError ? <><div className='  d-flex w-100 h-100 justify-content-center align-items-center  flex-column'>
@@ -230,7 +229,7 @@ export const StudentDashBoard = () => {
                       <div className=' w-100  d-flex  justify-content-around align-items-center flex-column'>
                         <p className=' text-center'  > No Attempted Assessment Found </p>
                       </div>  </div> </> : null}
-                    {isAssignmentError ? <>  <div className='  d-flex w-100 h-100  flex-column justify-content-center align-items-center'>
+                    {isAssignmentError ? <>  <div className='  d-flex w-100 h-75  flex-column justify-content-center align-items-center'>
                       <div className=' d-flex justify-content-center align-items-center w-100  '>
                         <img src={AttemptedFailed} alt="error" width={"100px"} height={"100px"} />
                       </div>
