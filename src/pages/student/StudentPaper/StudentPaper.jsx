@@ -26,7 +26,8 @@ export default function StudentPaper({
   //   useGetAllQuestionsFromPaperIdQuery(paperId);
   const [saveResult, { isSucess, isLoading: submitPaperLoading }] =
     usePostSaveResultMutation();
-  const timeString = '01:45:15';
+  // const timeString = '01:45:15';
+  const timeString = decodedData?.examDetails.examDuration;
   const [targetTime, setTargetTime] = useState(null);
   const progressBar = useRef(null);
   const [count, setCount] = useState(0);
@@ -111,7 +112,7 @@ export default function StudentPaper({
     <>
       {isLoading ? (
         <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <Loader />{' '}
+          <Loader />
         </div>
       ) : (
         <div className="row w-100 gap-4  p-3 ">
@@ -123,12 +124,11 @@ export default function StudentPaper({
                     {decodedData?.examDetails.assessmentName}
                   </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
-                    {' '}
                     <span>
-                      {' '}
                       {targetTime && (
                         <Countdown
-                          date={decodedData?.examDetails.examDuration} // Set the target time for the countdown
+                          // date={decodedData?.examDetails.examDuration} // Set the target time for the countdown
+                          date={targetTime}
                           renderer={({
                             hours,
                             minutes,
@@ -192,7 +192,7 @@ export default function StudentPaper({
                     <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
-                        <p>{value.questions}?</p>
+                        <p>{value.questions.replaceAll('+', ' ')}?</p>
                       </div>
                       <ul className="options text-wrap  fs-6 list-unstyled">
                         {value.options &&

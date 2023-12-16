@@ -33,7 +33,7 @@ export default function Cardassessment({
       <div className="col-12 col-lg-6 mb-4 h-25 ">
         <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
           <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
-            {stdData ? (
+            {stdData||props?.is_Active !== 'false' ? (
               ''
             ) : (
               <MdDelete color="red" onClick={removeAssisstment} />

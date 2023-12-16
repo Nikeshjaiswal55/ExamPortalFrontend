@@ -62,7 +62,10 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
         <td className="custom-table-td-width text-center">{props.srNo}</td>
         <td className="custom-table-td-width">{props.courseName}</td>
         <td className="custom-table-td-width">{props.createdBy}</td>
-        <td className="custom-table-td-width d-flex justify-content-evenly">
+        <td
+          className="custom-table-td-width d-flex justify-content-evenly"
+          style={{ paddingBottom: '12px' }}
+        >
           {' '}
           <RiDeleteBin6Line
             className=" mx-2"
@@ -70,8 +73,14 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
             color="red"
             cursor={'pointer'}
             size={20}
+            height="41px"
           />
-          <FaRegEdit cursor={'pointer'} size={20} onClick={handleEdit} />{' '}
+          <FaRegEdit
+            cursor={'pointer'}
+            size={20}
+            onClick={handleEdit}
+            height="41px"
+          />{' '}
         </td>
       </tr>
 

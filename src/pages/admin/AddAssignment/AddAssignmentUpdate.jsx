@@ -16,11 +16,15 @@ import { FaEye } from 'react-icons/fa';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import * as yup from 'yup';
+import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
+import { VscSettings } from 'react-icons/vsc';
 import {
   useGetAllCoursesQuery,
   useGetAllQuestionBYPaperIdQuery,
   useInvitedStudentByMailMutation,
   usePostAssignmentMutation,
+  usePutActivePaperMutation,
+  useSentMailToStudentMutation,
   useUpdateAssignmentMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
@@ -107,6 +111,9 @@ export const AddAssignmentUpdate = () => {
     isLoading: allQuestionLoading,
     isError: allQuestionError,
   } = useGetAllQuestionBYPaperIdQuery(assissmentData.paperId);
+  const [sendingMail] = useSentMailToStudentMutation();
+
+  console.log(assissmentData, 'assissmentData');
   const initialvalue = {
     assessmentName: assissmentData.assessmentName,
     shortDescription: assissmentData.description,
@@ -141,6 +148,36 @@ export const AddAssignmentUpdate = () => {
   //     : '';
   const handleTabSelect = (key) => {
     setActiveTab(key);
+  };
+
+  // const [paperActive, setPaperActive] = useState(assissmentData.is_Active);
+  const [publish, { isSuccess, isLoading: publishloading }] =
+    usePutActivePaperMutation();
+
+  const activePaper = async () => {
+    publish({ paperId: assissmentData.paperId }).then((res) => {
+      navigate(path.ShowAssessment.path);
+
+      if (res.data.data === 'is_published') {
+        dipatch(getNotification(true));
+        sendingMail(assissmentData.paperId).then((res) => {
+          if (res.error.originalStatus === 200) {
+            dipatch(getNotification(false));
+          }
+        });
+      }
+      // setPaperActive(true);
+      toast.success('assessment updated successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    });
   };
 
   const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
@@ -205,17 +242,18 @@ export const AddAssignmentUpdate = () => {
         assessmentName: values.assessmentName,
         totalMarks: Math.ceil(values.assessmentTotalMarks),
         minimum_marks: Math.ceil(values.assessmentMinmumMarks),
-        is_Active: false,
+        is_Active: 'false',
         is_attempted: false,
         is_Setup: true,
+        examid: assissmentData.examid,
       },
       paper: {
         paperId: assissmentData.paperId,
         userId: userId,
         orgnizationId: getOrgdata?.orgnizationId,
-        description: values.shortDescription,
+        description: values.description,
         instruction: values.assessmentInstruction,
-        is_Active: true,
+        is_Active: 'false',
         is_setup: true,
         is_auto_check:
           values.assessmentResultConfig === 'autoCheck' ? true : false,
@@ -247,38 +285,43 @@ export const AddAssignmentUpdate = () => {
                   defaultActiveKey="assessmentSetting"
                   onSelect={handleTabSelect}
                 >
-                  <div className="row h-100 gap-3  m-0 p-0">
+                  <div className="row h-100 gap-2  m-0 p-0">
                     <div
                       style={{ height: 'calc(100vh - 77px)' }}
                       className="col-2 px-4 bg-white rounded-3"
                     >
                       <h4 className="text-capitalize fw-bold my-4">
-                        Update Configuration & Publish
+                        Update Configuration
                       </h4>
-                      <div className="ps-3 my-3">
+                      <div className=" mb-3">
                         <Nav>
                           <div>
                             <Nav.Item>
                               <Nav.Link
                                 eventKey="assessmentSetting"
-                                className={` text-capitalize my-3 fw-bold cursor-pointer ${
+                                className={` text-capitalize my-3 fw-bold cursor-pointer px-0 mx-0 ${
                                   activeTab === 'assessmentSetting'
                                     ? 'active text-primary'
                                     : 'text-dark'
                                 }`}
                               >
+                                <RiUserSettingsLine
+                                  size={23}
+                                  className="me-2"
+                                />
                                 Assessment Setting
                               </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                               <Nav.Link
                                 eventKey="questionManagement"
-                                className={`text-capitalize my-3 fw-bold cursor-pointer ${
+                                className={`text-capitalize my-3 fw-bold cursor-pointer px-0 mx-0 ${
                                   activeTab === 'questionManagement'
                                     ? 'active text-primary'
                                     : 'text-dark'
                                 }`}
                               >
+                                <VscSettings size={23} className="me-2" />{' '}
                                 Question Management
                               </Nav.Link>
                             </Nav.Item>
@@ -297,9 +340,6 @@ export const AddAssignmentUpdate = () => {
                           </div>
                         </Nav>
                       </div>
-                      <Button className='className=" p-lg-2 w-100 btn-dark btn '>
-                        Publish
-                      </Button>
                       <Button
                         type="submit"
                         className='className=" p-lg-2 my-2 btn-primary btn w-100'
@@ -307,7 +347,19 @@ export const AddAssignmentUpdate = () => {
                         {isLoading ? (
                           <Spinner animation="border" size="sm" />
                         ) : (
-                          'submit'
+                          'save'
+                        )}
+                      </Button>
+                      <Button
+                        onClick={activePaper}
+                        className=" p-lg-2 w-100 btn-dark btn"
+                      >
+                        {publishloading ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : assissmentData.is_Active !== 'false' ? (
+                          'End'
+                        ) : (
+                          'Publish'
                         )}
                       </Button>
                     </div>
@@ -365,7 +417,7 @@ const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
       className=" p-4 rounded-3 bg-white text-dark"
       style={{ height: 'calc(100vh - 77px)' }}
     >
-      <div className="my-3">
+      <div className="mb-3">
         <FormLabel className="text-capitalize fw-bold">
           Assessment Name
         </FormLabel>

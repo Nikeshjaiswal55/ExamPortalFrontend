@@ -93,6 +93,10 @@ export const path = {
         path: '/student/exam-verify',
         desc: 'this is for student system varification page'
     },
+    examReportOnAdmin: {
+        path: '/admin/exam-report',
+        desc: 'this is for student summery page'
+    },
     examReport: {
         path: '/student/exam-report',
         desc: 'this is for student summery page'

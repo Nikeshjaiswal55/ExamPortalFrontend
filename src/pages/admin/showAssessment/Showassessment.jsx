@@ -103,15 +103,15 @@ export default function ShowAssessment() {
   };
   return (
     <>
-      <div className="main w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
-        <div className="w-100 row justify-content-between flex-wrap align-items-center  p-lg-3  ">
-          <div className=" row m-0  p-2 d-flex justify-content-between align-items-center">
+      <div className="w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
+        <div className="w-100 row justify-content-between flex-wrap align-items-center  pb-lg-3  ">
+          <div className=" col-12 m-0  p-2 d-flex justify-content-between align-items-center">
             <h4 className="m-0 col-md-5 justify-content-start  align-items-center text-capitalize fw-bold">
               All Assessment
             </h4>
 
             <div className=" col-md-7 mx-0  mb-lg-0 mb-3   d-flex align-items-lg-center py-2 justify-content-between justify-content-sm-end  flex-wrap">
-              <Form.Select
+              {/* <Form.Select
                 aria-label="by order "
                 style={{ borderColor: '#707070' }}
                 className="  w-auto  input-border fs-6 py-2  border focus-ring focus-ring-light me-1 "
@@ -123,7 +123,7 @@ export default function ShowAssessment() {
                 <option value="">Sort by order</option>
                 <option value="asc">By asc</option>
                 <option value="desc">By desc </option>
-              </Form.Select>
+              </Form.Select> */}
               <CustomButton
                 className={'  rounded-4  float-start'}
                 buttonText={'Add Assessment'}
@@ -155,13 +155,12 @@ export default function ShowAssessment() {
                   setCreateDate(null);
                   setPublishDate(null);
                   setSearchByName(input);
-                  console.log('       input       ', input);
                 }}
               />
             </span>
           </div>
-          <div className=" col-12 w-auto  col-lg-8 mx-0  mb-lg-0 mb-3 d-flex  py-2 justify-content-md-end flex-wrap ">
-            <ReactDatePicker
+          <div className=" col-12 w-auto  col-lg-8 mx-0  mb-lg-0 mb-3 d-flex  py-0 px-0 justify-content-md-end flex-wrap ">
+            {/* <ReactDatePicker
               selected={publishDate}
               className=" py-2 px-1 border fs-6 me-1 rounded-2 focus-ring focus-ring-light "
               placeholderText="Search by publish date"
@@ -182,8 +181,8 @@ export default function ShowAssessment() {
                 );
               }}
               disabled={isError || isLoading || isFetching ? true : false}
-            />
-            <ReactDatePicker
+            /> */}
+            {/* <ReactDatePicker
               selected={createdDate}
               className=" py-2 px-1 border fs-6 me-1 rounded-2  focus-ring focus-ring-light "
               onChangeRaw={(e) => console.log('raw :- ', e)}
@@ -210,7 +209,20 @@ export default function ShowAssessment() {
                     date2.getDate()
                 );
               }}
-            />
+            /> */}
+            <Form.Select
+              aria-label="by order "
+              style={{ borderColor: '#707070' }}
+              className="  w-auto  input-border fs-6 py-2  border focus-ring focus-ring-light me-1 "
+              onChange={(e) => {
+                setSortOrder(e.target.value);
+              }}
+              disabled={isError || isLoading || isFetching ? true : false}
+            >
+              <option value="">Sort by name</option>
+              <option value="asc">By asc</option>
+              <option value="desc">By desc </option>
+            </Form.Select>
             <Form.Select
               aria-label="by active "
               style={{ borderColor: '#707070' }}
@@ -262,19 +274,19 @@ export default function ShowAssessment() {
         ) : (
           <>
             {assignmentData?.data?.length > 0 && !isError && (
-              <div className="row m-0 p-0  h-75 ">
+              <div className="row m-0 p-0 ">
                 {assignmentData?.data?.length > 0 && !isError && (
                   <>
-                    <div className="row p-0 m-0 h-100 w-100">
-                      {assignmentData?.data?.map((assessmentDetails, index) => (
-                        <Cardassessment
-                          key={index}
-                          paperId={assessmentDetails.paperId}
-                          {...assessmentDetails}
-                          deleteAssignment={deleteAssignment}
-                        />
-                      ))}
-                    </div>
+                    {/* <div className="row p-0 m-0 h-100 w-100"> */}
+                    {assignmentData?.data?.map((assessmentDetails, index) => (
+                      <Cardassessment
+                        key={index}
+                        paperId={assessmentDetails.paperId}
+                        {...assessmentDetails}
+                        deleteAssignment={deleteAssignment}
+                      />
+                    ))}
+                    {/* </div> */}
                     <div className="col-12 h-auto align-self-end  my-3 d-flex justify-content-start justify-content-md-end pe-4 overflow-auto">
                       <div className=" fs-5  d-flex justify-content-start  align-items-baseline p-0 py-2 m-0">
                         <div className=" w-auto d-flex align-items-baseline me-2 ">

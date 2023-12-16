@@ -1,6 +1,13 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, FormCheck, FormLabel, Nav, Tab } from 'react-bootstrap';
+import {
+  Button,
+  FormCheck,
+  FormLabel,
+  Nav,
+  Spinner,
+  Tab,
+} from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
 import { RiAddFill } from 'react-icons/ri';
 import { IoClose } from 'react-icons/io5';
@@ -21,6 +28,8 @@ import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
 import { AssessmentModal } from './assessmentModal';
+import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
+import { VscSettings } from 'react-icons/vsc';
 
 const durationTimer = [
   {
@@ -196,7 +205,7 @@ export const AddAssignment = () => {
               assessmentName: values.assessmentName,
               totalMarks: Math.ceil(values.assessmentTotalMarks),
               minimum_marks: Math.ceil(values.assessmentMinmumMarks),
-              is_Active: false,
+              is_Active: 'false',
               is_attempted: false,
               is_Setup: true,
             },
@@ -275,7 +284,7 @@ export const AddAssignment = () => {
                 defaultActiveKey="assessmentSetting"
                 onSelect={handleTabSelect}
               >
-                <div className="row h-100 gap-3  m-0 p-0">
+                <div className="row h-100 gap-2  m-0 p-0">
                   <div
                     style={{ height: 'calc(100vh - 77px)' }}
                     className="col-2 px-4 bg-white rounded-3"
@@ -283,42 +292,45 @@ export const AddAssignment = () => {
                     <h4 className="text-capitalize fw-bold my-4">
                       Test Configuration
                     </h4>
-                    <div className="ps-3 my-3">
+                    <div className=" mb-3">
                       <Nav>
                         <div>
                           <Nav.Item>
                             <Nav.Link
                               eventKey="assessmentSetting"
-                              className={` text-capitalize my-3 fw-bold cursor-pointer ${
+                              className={` text-capitalize my-3 mx-0 px-0 fw-bold cursor-pointer ${
                                 activeTab === 'assessmentSetting'
                                   ? 'active text-primary'
                                   : 'text-dark'
                               }`}
                             >
+                              <RiUserSettingsLine size={23} className="me-2" />{' '}
                               Assessment Setting
                             </Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
                             <Nav.Link
                               eventKey="questionManagement"
-                              className={`text-capitalize my-3 fw-bold cursor-pointer ${
+                              className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'questionManagement'
                                   ? 'active text-primary'
                                   : 'text-dark'
                               }`}
                             >
+                              <VscSettings size={23} className="me-2" />{' '}
                               Question Management
                             </Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
                             <Nav.Link
                               eventKey="manageCandidate"
-                              className={`text-capitalize my-3 fw-bold cursor-pointer ${
+                              className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'manageCandidate'
                                   ? 'active text-primary'
                                   : 'text-dark'
                               }`}
                             >
+                              <RiMailSettingsLine size={23} className="me-2" />
                               Manage Candidate
                             </Nav.Link>
                           </Nav.Item>
@@ -332,7 +344,11 @@ export const AddAssignment = () => {
                       type="subbmit"
                       className='className=" p-lg-2 my-2 btn-primary btn w-100'
                     >
-                      Save
+                      {isLoading ? (
+                        <Spinner animation="border" size="sm" />
+                      ) : (
+                        'Submit'
+                      )}
                     </Button>
                   </div>
                   <div className="col-7 px-0" style={{ flex: 1 }}>
@@ -728,9 +744,9 @@ const ManageCandidate = ({
     // Update the available years based on the selected course's duration
     if (values.examBranch) {
       const selectedCourse = AllCourse?.data.find(
-        (course) => course.course_name === values.examBranch
+        (course) => course.course_id == values.examBranch
       );
-      console.log(selectedCourse);
+      console.log(selectedCourse, 'selectcourse');
       if (selectedCourse) {
         const courseDuration = selectedCourse.duration;
         const years = Array.from(
@@ -851,16 +867,17 @@ const ManageCandidate = ({
               </div>
             )}
           </FieldArray>
-          <p className="text-danger"></p>
-          <ErrorMessage
-            name="email"
-            component={'div'}
-            className=" input-error"
-          />
+          <p className="text-danger">
+            <ErrorMessage
+              name="email"
+              component={'div'}
+              className=" input-error"
+            />
+          </p>
         </div>
 
         <p className="text-capitalize fw-bold m-0 p-0 text-center">OR</p>
-        <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+        <div className=" my-3 d-flex justify-content-center align-items-center border border-dark-subtle my-1 my-md-2  w-auto text-center rounded-3 h-25 my-3 ">
           <>
             <label for="files" className=" cursor-pointer">
               Upload student email excel list
