@@ -32,6 +32,8 @@ import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
 import { AdminDashboard } from '../pages/home/AdminDashBoard/AdminDashboards';
 import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoard';
+import {TotalStudent} from '../pages/admin/components/TotalStudent/TotalStudent';
+import {TotalStudentOfOrg} from '../pages/admin/totalStudentsOrg/TotalStudents';
 
 export const Routes = () => {
   return (
@@ -88,6 +90,14 @@ export const Routes = () => {
               element={
                 <Layout>
                   <AssignmentStudentPage />
+                </Layout>
+              }
+            />
+            <Route
+              path={path.showStudentOfOrg.path}
+              element={
+                <Layout>
+                  <TotalStudentOfOrg />
                 </Layout>
               }
             />

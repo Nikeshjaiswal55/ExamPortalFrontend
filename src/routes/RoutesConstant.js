@@ -57,6 +57,9 @@ export const path = {
     showStudent: {
         path: '/admin/student-details/:paperId',
         desc: 'this is a for student detail page'
+    },showStudentOfOrg: {
+        path: '/admin/total-student/:orgId',
+        desc: 'this is a for student detail page'
     },
     ShowAssessment: {
         path: '/admin/show-assessment',

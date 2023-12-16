@@ -1,19 +1,21 @@
 /* eslint-disable react/prop-types */
 import {useEffect,useState} from 'react';
-import {Accordion} from 'react-bootstrap';
-import '../component/Chart.css'
-import {FaUsers,FaArrowRight} from "react-icons/fa";
+import {Accordion,Spinner} from 'react-bootstrap';
+import {FaUsers} from "react-icons/fa";
 import {MdOutlineCastForEducation} from "react-icons/md";
 import {MdOutlineAssignment} from "react-icons/md"; import {FaLeanpub} from "react-icons/fa6";
 import {CustomButton} from '../../../theme/Button/Buttons'
 import {useGetAllCoursesQuery,useGetAssignmentQuery,useGetTop3AssissmentStudentsQuery,useGetTop5AssessmentOfOrgIdQuery,useGetTop5StudentsByOrgIdQuery,useGetTotalStudentAndAssessementByOrgIdQuery} from '../../../apis/Service';
 import {SubIdSplit} from '../../../utils/SubIdSplit';
 import {path} from '../../../routes/RoutesConstant'
+import graphError from '../../../assets/gif/graph/graph-error.gif'
+// import graphAnalysis from '../../../assets/gif/graph/graph-analysis.gif'
+import assessmentfailded from '../../../assets/gif/graph/assessment-error.png'
 import {Loader} from '../../../components/Loader/Loader';
-import BarChart from './BarChart';
-import SolidGauge from './SolidGauge';
+import BarChart from '../component/BarChart';
+import SolidGauge from '../component/SolidGauge';
 import {useNavigate} from 'react-router-dom';
-// import RadarChart from './SolidGauge';
+import {TotalComponent} from '../component/TotalComponent';
 
 
 const color = [
@@ -38,25 +40,7 @@ const color = [
 //   email: "dixip034@gmail.com"
 // }
 // ]
-const TotalComponent = ({infoText,infoNumber,icon,onViewClick}) => {
-  return <>
-    <div className="col-12 col-md-6 p-0 pe-1  pt-1  h-50  m-0"  >
-      <div className=" w-100 h-100   d-flex  justify-content-center flex-column align-items-baseline bg-white   border m-0 p-0 rounded-2"  >
-        <div className="w-100 h-50  d-flex   gap-4 p-2 ">
-          <div className={` d-flex justify-content-center align-items-center rounded-circle   elevation-1   bg-primary-subtle text-primary p-2  `} style={{width: "40px ",height: "40px"}}>{icon}</div>
-          <div className="info-box-text fs-5 fw-bold">{infoText}</div>
-        </div>
-        <div className=' w-100 h-25 m-0 p-0 '>
-          <span className="info-box-number fs-5 ps-3">{infoNumber}</span>
-        </div>
-        <div className=' w-100 text-center h-25 m-0 p-0'>
-          <hr className=' m-0 p-0' />
-          <span className=' fs-5 text-center p-0 m-0 h-100 d-flex justify-content-center align-items-center py-2 mx-2 cursor-pointer' onClick={() => {onViewClick();}}> View More <FaArrowRight className=' px-2' size={30} /></span>
-        </div>
-      </div>
-    </div>
-  </>
-}
+
 
 const TopStudentCard = ({email,onEvidenceClick}) => {
   const randomColor = color[Math.floor(Math.random() * color.length)];
@@ -117,9 +101,8 @@ export const AdminDashboard = () => {
     isError,
     // isSuccess,
   } = useGetAssignmentQuery({id: userId});
-  const {data: courses} = useGetAllCoursesQuery({userId});
-  const {data: totalStudentsAndAssessment} = useGetTotalStudentAndAssessementByOrgIdQuery(organizationId);
-  // const {data: totalAssessments} = useGetTotalAssessmentAdminQuery();
+  const {data: courses,isLoading: coursesLoading} = useGetAllCoursesQuery({userId});
+  const {data: totalStudentsAndAssessment,isLoading: totalStudentsAndAssessmentLoading,isError: totalStudentsAndAssessmentError} = useGetTotalStudentAndAssessementByOrgIdQuery(organizationId);
   function getCountOfActiveAssessment() {
     let count = 0;
     data?.data && data?.data?.forEach((value) => {
@@ -131,8 +114,8 @@ export const AdminDashboard = () => {
     return count;
 
   }
-  const {data: topRankers} = useGetTop5StudentsByOrgIdQuery(organizationId);
-  const {data: topAssessmentOrgRanking} = useGetTop5AssessmentOfOrgIdQuery(organizationId);
+  const {data: topRankers,isLoading: topRankersLoading,isFetching: topRankersFetching,isError: topRankersError} = useGetTop5StudentsByOrgIdQuery(organizationId);
+  const {data: topAssessmentOrgRanking,isLoading: topAssessmentOfOrgLoading,isError: topAssessmentOfOrgIsError} = useGetTop5AssessmentOfOrgIdQuery(organizationId);
   const [topStudentOfOrg,setTopStudentOfOrg] = useState();
   const [topAssessmentOfOrg,setTopAssessmentOfOrg] = useState();
   function getTopRankersStudentsData() {
@@ -164,17 +147,20 @@ export const AdminDashboard = () => {
       infoNumber: totalStudentsAndAssessment?.[1] ?? 0,
       icon: <MdOutlineAssignment size={50} />,
       iconClassName: " ",
+      children: <> {totalStudentsAndAssessmentLoading ? <Spinner size='sm' variant='primary' className=' ms-2' animation="border" /> : null} </>,
       onViewClick: () => {navigate(path.showAssessment.path);},
     },{
       id: 1,
       infoText: "Total Student",
-      infoNumber: totalStudentsAndAssessment?.[0] ?? 500,
+      infoNumber: totalStudentsAndAssessment?.[0] ?? 0,
+      children: <> {totalStudentsAndAssessmentLoading ? <Spinner size='sm' variant='primary' className=' ms-2' animation="border" /> : null} </>,
       icon: <FaUsers size={50} />,
-      onViewClick: () => {},
+      onViewClick: () => {navigate(`/admin/total-student/${organizationId}`)},
       iconClassName: "bg-warning",
     },{
       id: 3,
       infoText: "Publish Assessment",
+      children: <> {isLoading ? <Spinner size='sm' variant='primary' className=' ms-2' animation="border" /> : null}</>,
       infoNumber: getCountOfActiveAssessment(),
       icon: <FaLeanpub size={50} />,
       iconClassName: "bg-success",
@@ -184,6 +170,7 @@ export const AdminDashboard = () => {
       infoText: "Total course",
       infoNumber: courses?.data?.length ?? 0,
       icon: <MdOutlineCastForEducation size={50} />,
+      children: <> {coursesLoading ? <Spinner size='sm' variant='primary' className=' ms-2' animation="border" /> : null}</>,
       onViewClick: () => {navigate(path.ShowCourse.path)},
       iconClassName: "bg-success",
     }
@@ -192,11 +179,11 @@ export const AdminDashboard = () => {
   return (
     <>
       {
-        isLoading ? (
-          <div className=" position-absolute top-50 start-50  translate-middle " >
-            <Loader />
-          </div >
-        ) : (
+        // isLoading ? (
+        //   <div className=" position-absolute top-50 start-50  translate-middle " >
+        //     <Loader />
+        //   </div >
+        // ) : (
           <>
             <div className=" w-100 h-100 m-0  p-0 g-md-0 overflow-auto bg-transparent">
                 <div className="row w-100   chart-box    p-1 m-0 h-50" >
@@ -204,7 +191,7 @@ export const AdminDashboard = () => {
                     <div className="row m-0 p-0 w-100 h-100   d-flex justify-content-center  align-items-baseline " >
                       {info && info.map((value) => {
                         return <>
-                          <TotalComponent key={value.id} infoText={value.infoText} infoNumber={value.infoNumber} icon={value.icon} onViewClick={value.onViewClick} iconClassName={value.iconClassName} />
+                          <TotalComponent key={value.id} infoText={value.infoText} infoNumber={value.infoNumber} icon={value.icon} onViewClick={value.onViewClick} iconClassName={value.iconClassName} >{value?.children}</TotalComponent>
                         </>
                       })
                       }
@@ -214,10 +201,10 @@ export const AdminDashboard = () => {
                   </div>
                   <div className="col-12 col-md-6 d-flex  p-0 px-1    flex-column align-items-center    justify-content-center rounded-3">
                     <div className=' w-100 h-100 bg-white rounded-3 '>
-                      <h5 className=' ps-5 pt-2 m-0'> Top Rank Assessment</h5>
-                      <div className=' m-0 p-0  w-100' style={{height: "90%"}}>
-                        {topAssessmentOfOrg && topAssessmentOfOrg?.length ? <div className=' chart-parent w-100 h-100    d-flex    align-items-center   rounded-3 py-3 justify-content-center '>
+                  <h5 className=' ps-5 pt-2 m-0 d-flex justify-content-start align-items-center'> Top Rank Assessment    {topAssessmentOfOrgLoading && <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />}</h5>
 
+                      <div className=' m-0 p-0  w-100' style={{height: "90%"}}>
+                    {topAssessmentOfOrg && topAssessmentOfOrg?.length > 0 && <div className=' chart-parent w-100 h-100    d-flex    align-items-center   rounded-3 py-3 justify-content-center '>
                           <BarChart
                             assessemnt1={topAssessmentOfOrg?.[0]?.assesment_Name ?? 'Not present'}
                             assessemnt2={topAssessmentOfOrg?.[1]?.assesment_Name ?? 'Not present'}
@@ -229,11 +216,31 @@ export const AdminDashboard = () => {
                             value3={topAssessmentOfOrg?.[2]?.percentage ?? 0}
                             value4={topAssessmentOfOrg?.[3]?.percentage ?? 0}
                             value5={topAssessmentOfOrg?.[4]?.percentage ?? 0}
-                          />
-                        </div> : <div className='  d-flex flex-column'>
-                          something went wrong
-                          <CustomButton buttonText={" Reload "} className={" m-auto"} onButtonClick={() => {window.location.reload();}} />
-                        </div>}
+                      />
+                    </div>}
+                    {topAssessmentOfOrg && topAssessmentOfOrg?.length == 0 && !topAssessmentOfOrgIsError && !topAssessmentOfOrgLoading && <div className=' chart-parent w-100 h-100    d-flex    align-items-center   rounded-3 py-3 justify-content-center '>
+                      <BarChart
+                        assessemnt1={'Not present'}
+                        assessemnt2={'Not present'}
+                        assessemnt3={'Not present'}
+                        assessemnt4={'Not present'}
+                        assessemnt5={'Not present'}
+                        value1={0.01}
+                        value2={0.01}
+                        value3={0.01}
+                        value4={0.01}
+                        value5={0.01}
+                      />
+                      {/* <img src={graphAnalysis} alt="error" width={"200px"} height={"200px"} /> */}
+                    </div>}
+                    {topAssessmentOfOrgIsError && <div className='  d-flex w-100 h-100 justify-content-center align-items-center  flex-column'>
+                      <div className=' d-flex justify-content-around w-100 '>
+                        <img src={graphError} alt="error" width={"200px"} height={"200px"} />
+                      </div>
+                      <div className=' w-100  d-flex  justify-content-around align-items-center flex-column'>
+                        <p className=' text-center'  > Something went wrong  </p>
+                        <CustomButton buttonText={" Reload "} className={" mx-auto"} onButtonClick={() => {window.location.reload();}} />
+                      </div>  </div>}
                       </div>
                     </div>
                   </div>
@@ -247,10 +254,10 @@ export const AdminDashboard = () => {
                       <div className=' chart-parent w-100 h-100  d-flex   align-items-start  rounded-3  justify-content-center bg-white ' >
 
                         {<div className="row m-0  d-flex flex-column justify-content-start bg-white  rounded-3 w-100 h-100 overflow-auto  p-0   ">
-                          <div className='col-12 w-100 py- p-md-0 m-0   fw-bold '>
-                            <h5 className=' ps-4 pt-3'> Active Assessment</h5>
+                      <div className='col-12 w-100  p-md-0 m-0   fw-bold '>
+                        <h5 className=' ps-4 pt-3 d-flex align-items-center justify-content-start'> Active Assessment  {topAssessmentOfOrgLoading && <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />}</h5>
                           </div>
-                          <Accordion className='col-12 w-100 p-0  ' >
+                      <Accordion className='col-12 w-100 h-75 p-0  ' >
                             {data?.data && data?.data?.map((value,index) => {
                               if(value.is_Active == "true") {
                                 return <TopStudentAcordianItem
@@ -266,19 +273,38 @@ export const AdminDashboard = () => {
                             }
                             )
                             }
-                            {data?.data?.length == 0 ? <>no data available</> : null}
-                            {isError ? <> something went wrong </> : null}         
+                        {data?.data?.length == 0 ? <>no data available</> : null}
+                        {isError ? <>  <div className='  d-flex w-100 h-100  flex-column justify-content-center align-items-center'>
+                          <div className=' d-flex justify-content-center align-items-center w-100  '>
+                            <img src={assessmentfailded} alt="error" width={"100px"} height={"100px"} />
+                          </div>
+                          <div className=' w-100  h-25  d-flex   align-items-center flex-column'>
+                            <p className=' text-center  '  > Something went wrong  </p>
+                            <CustomButton buttonText={" Reload "} className={" mx-auto"} onButtonClick={() => {window.location.reload();}} />
+                          </div>  </div> </> : null}     
                           </Accordion>
                         </div>}
                       </div>
                     </div>
-                    <div className="col-12 col-md-4 px-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto">
+                <div className="col-12 col-md-4 px-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto">
+                  <div className=" w-100  h-100  d-flex flex-column bg-white   align-items-center    justify-content-start   rounded-3">
+                    <h5 className=' ps-3 pt-2 align-self-start d-flex justify-content-start align-items-center'> Top Ranking Student    {topRankersLoading && <>
+                      <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />
+                    </>}</h5>
 
 
-                      <div className=" w-100  h-100  d-flex flex-column bg-white   align-items-center    justify-content-start   rounded-3">
-                        <h5 className=' ps-3 pt-2 align-self-start'> Top Ranking Student  </h5>
-
-                        {topStudentOfOrg && <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '>
+                    {topRankersError ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '> <SolidGauge
+                      assessemnt1={'Not present'}
+                      assessemnt2={'Not present'}
+                      assessemnt3={'Not present'}
+                      assessemnt4={'Not present'}
+                      assessemnt5={'Not present'}
+                      value1={0}
+                      value2={0}
+                      value3={0}
+                      value4={0}
+                      value5={0} /> </div> : null}
+                    {topStudentOfOrg && topStudentOfOrg?.length && !topRankersLoading && !topRankersFetching ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '>
                           <SolidGauge
                             assessemnt1={topStudentOfOrg?.[0]?.name ?? 'Not present'}
                             assessemnt2={topStudentOfOrg?.[1]?.name ?? 'Not present'}
@@ -290,17 +316,15 @@ export const AdminDashboard = () => {
                             value3={topStudentOfOrg?.[2]?.topMarks ?? 0}
                             value4={topStudentOfOrg?.[3]?.topMarks ?? 0}
                             value5={topStudentOfOrg?.[4]?.topMarks ?? 0} />
-                        </div>}
+                    </div> : null}
 
                       </div>
                     </div>
                   </div></div>
 
-
-
             </div>
           </>
-        )
+        // )
       }
 
     </>
