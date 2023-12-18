@@ -30,7 +30,7 @@ export const Pass = ({ paperId, stdId, data }) => {
             variant="dark me-4 mt-5"
             onClick={() => navigate(path.StudentDashboard.path)}
           >
-            View Certificate
+            Back To Dashboard
           </Button>
           <Button
             variant="dark mt-5"

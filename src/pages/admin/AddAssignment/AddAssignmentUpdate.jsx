@@ -33,7 +33,7 @@ import { getNotification } from '../../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
-import { AssessmentModal } from './assessmentModal';
+import { AssessmentModal } from './AssessmentModal';
 import { Loader } from '../../../components/Loader/Loader';
 
 const durationTimer = [

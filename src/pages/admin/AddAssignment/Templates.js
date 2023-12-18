@@ -1,4 +1,4 @@
-export const Sample1 = ` <div className="col-lg-6 col-md-12">
+export const Sample1 = `
 <div className="text-center">
   <h3>Online Exam Rules</h3>
 </div>
@@ -52,10 +52,9 @@ export const Sample1 = ` <div className="col-lg-6 col-md-12">
   </p>
 </section>
 </div>
-</div>`
+`
 
 export const Sample2 = `
-  <div className="col-lg-6 col-md-12">
     <div className="text-center">
       <h3 className="bg alert">Company Terms and Conditions</h3>
     </div>
@@ -126,5 +125,5 @@ export const Sample2 = `
       </p>
     </section>
   </div>
-</div>`;
+`;
 
