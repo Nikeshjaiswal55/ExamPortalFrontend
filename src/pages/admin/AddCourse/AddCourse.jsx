@@ -7,7 +7,11 @@ import { ErrorMessage, Formik } from 'formik';
 import { InputField } from '../../../theme/InputField/InputField';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import * as Yup from 'yup';
-import { useAddCourseMutation } from '../../../apis/Service';
+import {
+  useAddCourseMutation,
+  useCreateCourseInBackgroundMutation,
+  useSentMailToStudentMutation,
+} from '../../../apis/Service';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import { MdUpload } from 'react-icons/md';
@@ -22,6 +26,9 @@ const SignupSchema = Yup.object().shape({
     .max(25)
     .required('Course name is required'),
   excelFile: Yup.mixed().required('File is required'),
+  'add-course-duration': Yup.number()
+    .min(1, 'Course duration must be greater than or equal to 1')
+    .required('Course duration is required'),
 });
 
 const InputFieldData = [
@@ -59,6 +66,28 @@ export default function AddCourse() {
 
   const [postAddCourse, { isLoading, data, error, isError, isSuccess }] =
     useAddCourseMutation();
+  // const [
+  //   sendMailInBackground,
+  //   {
+  //     isLoading: isMailLoading,
+  //     data: mailData,
+  //     error: mailError,
+  //     isError: isMailError,
+  //     isSuccess: isMailSuccess,
+  //   },
+  // ] = useSentMailToStudentMutation();
+
+  const orgData = JSON.parse(localStorage.getItem('orgData'));
+  const [
+    createCourseInBackground,
+    {
+      isLoading: isMailLoading,
+      data: mailData,
+      error: mailError,
+      isError: isMailError,
+      isSuccess: isMailSuccess,
+    },
+  ] = useCreateCourseInBackgroundMutation();
 
   async function onSubmits(values) {
     const accessToken = localStorage.getItem('accessToken');
@@ -68,18 +97,31 @@ export default function AddCourse() {
         let addCourseName = {
           course_name: `${values['add-course-name']}`,
           userId: SubIdSplit(users.sub),
-          emailsDto: excel,
           token: accessToken,
+          duration: values['add-course-duration'],
         };
 
         if (accessToken) {
-          const promise = await postAddCourse({
+          postAddCourse({
             ...addCourseName,
             accessToken,
+          }).then((res) => {
+            console.log(res);
+            if (res?.data) {
+              const data = excel.map((data) => {
+                return {
+                  courseId: res.data.course_id,
+                  orgnizationId: orgData.orgnizationId,
+                  branch: data.branch,
+                  email: data.email,
+                  name: data.name,
+                  year: data.year,
+                };
+              });
+              navigate(path.CreateAssessment.path);
+              createCourseInBackground(data);
+            }
           });
-          if (promise.data) {
-            navigate(path.CreateAssessment.path);
-          }
         } else {
           alert('user not login or signup');
         }
@@ -121,7 +163,7 @@ export default function AddCourse() {
 
   return (
     <>
-      <div className="row h-100 m-0 p-0">
+      <div className="row bg-white rounded-2 h-100 m-0 p-0">
         <div className=" col-md-6 h-100 m-0 p-0 ">
           <div className="p-3 pe-lg-5 mt-lg-2">
             <p className="text-capitalize fw-bold fs-4 ">Add course</p>
@@ -133,7 +175,7 @@ export default function AddCourse() {
           <Formik
             initialValues={{
               'add-course-name': '',
-              'add-course-email': '',
+              'add-course-duration': '',
               excelFile: '',
             }}
             validationSchema={SignupSchema}
@@ -141,19 +183,42 @@ export default function AddCourse() {
           >
             {(props) => (
               <Form className=" d-flex flex-column justify-content-evenly ">
-                {InputFieldData.map((inputData) => (
-                  <InputField
-                    inputId={inputData.inputId}
-                    inputName={inputData.inputName}
-                    formGroupId={inputData.formGroupId}
-                    formGroupClassName={'my-1 my-md-4 mx-5 '}
-                    placeholder={inputData.placeholder}
-                    labelText={inputData.labelText}
-                    onInputBlur={props.handleBlur}
-                    onInputChange={props.handleChange}
-                  />
-                ))}
-
+                <div className="row">
+                  <div className=" col-12">
+                    {InputFieldData.map((inputData) => (
+                      <InputField
+                        inputId={inputData.inputId}
+                        inputName={inputData.inputName}
+                        formGroupId={inputData.formGroupId}
+                        formGroupClassName={'my-1 my-md-2 mx-5 '}
+                        placeholder={inputData.placeholder}
+                        labelText={inputData.labelText}
+                        onInputBlur={props.handleBlur}
+                        onInputChange={props.handleChange}
+                      />
+                    ))}
+                  </div>
+                  <div className="col-12">
+                    <Form.Group className="my-1 my-md-2 mx-5">
+                      <Form.Label className={`text-capitalize fw-bold `}>
+                        Enter course duration
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="add-course-duration"
+                        onChange={props.handleChange}
+                        onBlur={props.handleBlur}
+                        className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
+                        placeholder="enter course duration (example : 4,3,2,1)"
+                      />
+                      <ErrorMessage
+                        component={'div'}
+                        name="add-course-duration"
+                        className=" input-error"
+                      />
+                    </Form.Group>
+                  </div>
+                </div>
                 <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
                   <>
                     <label for="files" className=" cursor-pointer">
@@ -188,8 +253,8 @@ export default function AddCourse() {
                   </>
                   <MdUpload size={30} className=" p-1" />
                 </div>
-                <div className="my-0 py-1 d-flex justify-content-center  ">
-                  {selectedFile ? (
+                {selectedFile ? (
+                  <div className="my-0 py-1 d-flex justify-content-center  ">
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <span>{selectedFile.name}</span>
                       <button
@@ -216,8 +281,8 @@ export default function AddCourse() {
                         <FaEye />{' '}
                       </button>
                     </div>
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
 
                 <ErrorMessage
                   component={'div'}

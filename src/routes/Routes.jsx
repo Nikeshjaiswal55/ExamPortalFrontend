@@ -18,7 +18,6 @@ import AssignmentStudentPage from '../pages/admin/AssignmentStudentPage/Assignme
 import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
-import AddAssignment from '../pages/admin/AddAssignment/AddAssignment';
 import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
 import LandingPage from '../pages/LandingPage/LandingPage';
 import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
@@ -32,8 +31,14 @@ import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
 import { AdminDashboard } from '../pages/home/AdminDashBoard/AdminDashboards';
 import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoard';
-import {TotalStudent} from '../pages/admin/components/TotalStudent/TotalStudent';
-import {TotalStudentOfOrg} from '../pages/admin/totalStudentsOrg/TotalStudents';
+import { TotalStudent } from '../pages/admin/components/TotalStudent/TotalStudent';
+import { TotalStudentOfOrg } from '../pages/admin/totalStudentsOrg/TotalStudents';
+import { StudentResult } from '../pages/student/StudentResult/StudentResult';
+// import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
+import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
+// import { StudentResult } from '../pages/student/StudentResult/StudentResult';
+import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
+import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
 
 export const Routes = () => {
   return (
@@ -46,6 +51,14 @@ export const Routes = () => {
         <Route path={path.Organisation.path} element={<OrganisationPage />} />
         <Route path="/" element={<Private />}>
           <Route path="/admin/" element={<CollegePrivate />}>
+            <Route
+              path={`${path.examReportOnAdmin.path}/:paperId/:stdId`}
+              element={
+                <Layout>
+                  <StudentAvidancePageOnAdmin />
+                </Layout>
+              }
+            />
             <Route
               path={path.AddCourse.path}
               element={
@@ -81,6 +94,15 @@ export const Routes = () => {
               element={
                 <Layout>
                   <AddAssignment />
+                </Layout>
+              }
+            />
+
+            <Route
+              path={path.UpdateAssessment.path}
+              element={
+                <Layout>
+                  <AddAssignmentUpdate />
                 </Layout>
               }
             />
@@ -184,11 +206,26 @@ export const Routes = () => {
             }
           />
           <Route
+            path={`${path.examReport.path}/:paperId/:stdId`}
+            element={
+              <Layout>
+                <ReportCard />
+              </Layout>
+            }
+          />
+          <Route
             path={`${path.StudentPaperSubmitted.path}/:paperId`}
             element={<ExamSubmited />}
           />
+          <Route
+            path={`${path.StudentViewResult.path}/:paperId`}
+            element={
+              <Layout>
+                <StudentResult />
+              </Layout>
+            }
+          />
         </Route>
-
         <Route path={path.error.path} element={<h1>page not found</h1>} />
       </ReactRoute>
     </BrowserRouter>

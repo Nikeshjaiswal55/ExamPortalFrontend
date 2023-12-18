@@ -16,21 +16,25 @@ import { FaEye } from 'react-icons/fa';
 import { ExcelDataReader } from '../../../utils/ExcelDataReader';
 import ExcelShower from '../../../theme/ExcelShower/ExcelShower';
 import * as yup from 'yup';
+import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
+import { VscSettings } from 'react-icons/vsc';
 import {
   useGetAllCoursesQuery,
+  useGetAllQuestionBYPaperIdQuery,
   useInvitedStudentByMailMutation,
   usePostAssignmentMutation,
+  usePutActivePaperMutation,
+  useSentMailToStudentMutation,
+  useUpdateAssignmentMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getNotification } from '../../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
 import { AssessmentModal } from './assessmentModal';
-import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
-import { VscSettings } from 'react-icons/vsc';
-import { Sample1 } from './Templates';
+import { Loader } from '../../../components/Loader/Loader';
 
 const durationTimer = [
   {
@@ -63,60 +67,69 @@ const durationTimer = [
   },
 ];
 
-const initialvalue = {
-  assessmentName: '',
-  shortDescription: '',
-  assessmentPattern: 'online',
-  assessmentDuration: '',
-  assessmentTotalMarks: '',
-  assessmentMinmumMarks: '',
-  assessmentResultConfig: '',
-  assessmentOrder: '',
-  assessmentInstruction: '',
-  questions: [{ questions: '', options: [], correctAns: '', userAns: '' }],
-  examBranch: '',
-  session: '',
-  email: [],
-};
+// const AssesstmentSettingVAlidation = yup.object().shape({
+//   assessmentName: yup.string().required('Assessment name is required*'),
+//   shortDescription: yup
+//     .string()
+//     .required('Assessment short description is required*'),
+//   assessmentPattern: yup.string().required('Assessment pattern is required*'),
+//   assessmentDuration: yup.string().required('Assessment duration is required*'),
+//   assessmentTotalMarks: yup
+//     .number()
+//     .typeError('Assessment total marks must be a number')
+//     .required('Assessment total marks is required*')
+//     .positive('Assessment total marks must be a positive number'),
+//   assessmentMinmumMarks: yup
+//     .number()
+//     .typeError('Assessment minimum marks must be a number')
+//     .required('Assessment minimum marks is required*')
+//     .positive('Assessment minimum marks must be a positive number'),
+//   assessmentResultConfig: yup
+//     .string()
+//     .required('Select any one this is required**'),
+//   assessmentOrder: yup.string().required('Select any one this is required**'),
+//   //   assessmentInstruction: yup.string().required('Assessment name is required*'),
+// });
 
-const AssesstmentSettingVAlidation = yup.object().shape({
-  assessmentName: yup.string().required('Assessment name is required*'),
-  shortDescription: yup
-    .string()
-    .required('Assessment short description is required*'),
-  assessmentPattern: yup.string().required('Assessment pattern is required*'),
-  assessmentDuration: yup.string().required('Assessment duration is required*'),
-  assessmentTotalMarks: yup
-    .number()
-    .typeError('Assessment total marks must be a number')
-    .required('Assessment total marks is required*')
-    .positive('Assessment total marks must be a positive number'),
-  assessmentMinmumMarks: yup
-    .number()
-    .typeError('Assessment minimum marks must be a number')
-    .required('Assessment minimum marks is required*')
-    .positive('Assessment minimum marks must be a positive number'),
-  assessmentResultConfig: yup
-    .string()
-    .required('Select any one this is required**'),
-  assessmentOrder: yup.string().required('Select any one this is required**'),
-  //   assessmentInstruction: yup.string().required('Assessment name is required*'),
-});
+// const QuestionManagementValidation = yup.object().shape({
+//   questions: yup.array().of(
+//     yup.object().shape({
+//       questions: yup.string().required('Question is required'),
+//       options: yup
+//         .array()
+//         .min(2, 'At least two options are required')
+//         .of(yup.string().required('Option is required')),
+//       correctAns: yup.string().required('Correct answer is required'),
+//     })
+//   ),
+// });
 
-const QuestionManagementValidation = yup.object().shape({
-  questions: yup.array().of(
-    yup.object().shape({
-      questions: yup.string().required('Question is required'),
-      options: yup
-        .array()
-        .min(2, 'At least two options are required')
-        .of(yup.string().required('Option is required')),
-      correctAns: yup.string().required('Correct answer is required'),
-    })
-  ),
-});
+export const AddAssignmentUpdate = () => {
+  const assissmentData = useSelector((state) => state.admin.assissment);
+  const {
+    data: allQuestion,
+    isLoading: allQuestionLoading,
+    isError: allQuestionError,
+  } = useGetAllQuestionBYPaperIdQuery(assissmentData.paperId);
+  const [sendingMail] = useSentMailToStudentMutation();
 
-export const AddAssignment = () => {
+  console.log(assissmentData, 'assissmentData');
+  const initialvalue = {
+    assessmentName: assissmentData.assessmentName,
+    shortDescription: assissmentData.description,
+    assessmentPattern: 'online',
+    assessmentDuration: assissmentData.examDuration,
+    assessmentTotalMarks: assissmentData.totalMarks,
+    assessmentMinmumMarks: assissmentData.minimum_marks,
+    assessmentResultConfig:
+      assissmentData._auto_check == true ? 'autoCheck' : 'manualCheck',
+    assessmentOrder:
+      assissmentData._shorted == true ? 'sortOrder' : 'sameOrder',
+    assessmentInstruction: 'string',
+    questions: allQuestion,
+    examBranch: assissmentData.branch,
+    session: assissmentData.session,
+  };
   const [activeTab, setActiveTab] = useState('assessmentSetting');
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -126,23 +139,49 @@ export const AddAssignment = () => {
   const [excel, setExcel] = useState([]);
   const [show, setModalShow] = useState(false);
   const [errorContent, setErrorContent] = useState('');
-  const [instruction, setInstruction] = useState(Sample1);
-  const [option, setOption] = useState('');
 
-  const validationschema =
-    activeTab === 'assessmentSetting'
-      ? AssesstmentSettingVAlidation
-      : activeTab === 'questionManagement'
-      ? QuestionManagementValidation
-      : '';
+  // const validationschema =
+  //   activeTab === 'assessmentSetting'
+  //     ? AssesstmentSettingVAlidation
+  //     : activeTab === 'questionManagement'
+  //     ? QuestionManagementValidation
+  //     : '';
   const handleTabSelect = (key) => {
     setActiveTab(key);
   };
 
-  const [
-    AssigmnetData,
-    { isLoading, data, isSuccess: AssignmentSuccess, isError },
-  ] = usePostAssignmentMutation();
+  // const [paperActive, setPaperActive] = useState(assissmentData.is_Active);
+  const [publish, { isSuccess, isLoading: publishloading }] =
+    usePutActivePaperMutation();
+
+  const activePaper = async () => {
+    publish({ paperId: assissmentData.paperId }).then((res) => {
+      navigate(path.ShowAssessment.path);
+
+      if (res.data.data === 'is_published') {
+        dipatch(getNotification(true));
+        sendingMail(assissmentData.paperId).then((res) => {
+          if (res.error.originalStatus === 200) {
+            dipatch(getNotification(false));
+          }
+        });
+      }
+      // setPaperActive(true);
+      toast.success('assessment updated successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    });
+  };
+
+  const [AssigmnetData, { isLoading, isSuccess: AssignmentSuccess, isError }] =
+    useUpdateAssignmentMutation();
   const [
     inviteStudent,
     {
@@ -151,10 +190,11 @@ export const AddAssignment = () => {
       isSuccess: inviteSucessFull,
     },
   ] = useInvitedStudentByMailMutation();
+
   const dipatch = useDispatch();
   useEffect(() => {
     if (AssignmentSuccess) {
-      toast.success('assessment created successfully!!🎉', {
+      toast.success('assessment updated successfully!!🎉', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -169,7 +209,7 @@ export const AddAssignment = () => {
   }, [AssignmentSuccess]);
 
   useEffect(() => {
-    if (isError) {
+    if (allQuestionError) {
       toast.error('something went wrong!!😑', {
         position: 'top-right',
         autoClose: 5000,
@@ -181,199 +221,167 @@ export const AddAssignment = () => {
         theme: 'dark',
       });
     }
-  }, [isError, inviteError]);
+  }, [allQuestionError]);
 
   useEffect(() => {
     if (inviteSucessFull) {
       dipatch(getNotification(false));
     }
   }, [inviteSucessFull]);
-  const submitPaper = (values, resetForm) => {
-    if (values.assessmentName !== '') {
-      if (
-        values.questions[0].questions !== '' ||
-        values.questions[0].options.lenght ||
-        values.questions[0].correctAns !== ''
-      ) {
-        if (excel.length || values.email.length || values.examBranch !== '') {
-          const sendPaper = {
-            questions: values.questions,
-            examDetails: {
-              examDuration: values.assessmentDuration,
-              examMode: values.assessmentPattern,
-              examRounds: 1,
-              paperChecked: false,
-              branch: values.examBranch ? values.examBranch : null,
-              session: values.session,
-              assessmentName: values.assessmentName,
-              totalMarks: Math.ceil(values.assessmentTotalMarks),
-              minimum_marks: Math.ceil(values.assessmentMinmumMarks),
-              is_Active: 'false',
-              is_attempted: false,
-              is_Setup: true,
-            },
-            paper: {
-              userId: userId,
-              orgnizationId: getOrgdata?.orgnizationId,
-              description: values.shortDescription,
-              instruction: instruction,
-              is_Active: true,
-              is_setup: true,
-              is_auto_check:
-                values.assessmentResultConfig === 'autoCheck' ? true : false,
-              is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
-            },
-          };
-          let emails = excel.reduce(
-            (arr, currentvalue) => {
-              arr.push(currentvalue.email);
-              return arr;
-            },
-            [...values.email]
-          );
-          AssigmnetData(sendPaper).then((res) => {
-            if (res?.data?.paperId) {
-              dipatch(getNotification(true));
-              navigate(path.ShowAssessment.path);
-              inviteStudent({
-                userId: res?.data?.userId,
-                paperId: res?.data?.paperId,
-                orgnizationId: res?.data?.orgnizationId,
-                emails: emails,
-              }).then((res) => {
-                resetForm();
-                console.log('res', res);
-                if (res.error.originalStatus === 200) {
-                  dipatch(getNotification(false));
-                } else {
-                  toast.error('student not added successfully!!😑', {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'dark',
-                  });
-                }
-              });
-            }
-          });
-        } else {
-          setModalShow(true);
-          setErrorContent('Manage Candidate Form');
-        }
-      } else {
-        setModalShow(true);
-        setErrorContent('Question Management Form');
-      }
-    } else {
-      setModalShow(true);
-      setErrorContent('Assessment Setting Form');
-    }
+  const submitPaper = (values) => {
+    const sendPaper = {
+      questions: values.questions,
+      paperId: assissmentData.paperId,
+      examDetails: {
+        examDuration: values.assessmentDuration,
+        examMode: values.assessmentPattern,
+        examRounds: 1,
+        paperChecked: false,
+        branch: values.examBranch ? values.examBranch : null,
+        session: values.session,
+        assessmentName: values.assessmentName,
+        totalMarks: Math.ceil(values.assessmentTotalMarks),
+        minimum_marks: Math.ceil(values.assessmentMinmumMarks),
+        is_Active: 'false',
+        is_attempted: false,
+        is_Setup: true,
+        examid: assissmentData.examid,
+      },
+      paper: {
+        paperId: assissmentData.paperId,
+        userId: userId,
+        orgnizationId: getOrgdata?.orgnizationId,
+        description: values.description,
+        instruction: values.assessmentInstruction,
+        is_Active: 'false',
+        is_setup: true,
+        is_auto_check:
+          values.assessmentResultConfig === 'autoCheck' ? true : false,
+        is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
+      },
+    };
+
+    AssigmnetData(sendPaper).then((res) => {
+      navigate(path.ShowAssessment.path);
+    });
   };
   return (
     <>
-      <div className="h-100 w-100 rounded-5">
-        <Formik
-          initialValues={initialvalue}
-          validationSchema={validationschema}
-          onSubmit={(values, { resetForm }) => submitPaper(values, resetForm)}
-        >
-          {({ values, handleBlur, handleChange }) => (
-            <Form className="h-100">
-              <Tab.Container
-                id="left-tabs-SidePooup"
-                defaultActiveKey="assessmentSetting"
-                onSelect={handleTabSelect}
-              >
-                <div className="row h-100 gap-2  m-0 p-0">
-                  <div
-                    style={{ height: 'calc(100vh - 77px)' }}
-                    className="col-2 px-4 bg-white rounded-3"
-                  >
-                    <h4 className="text-capitalize fw-bold my-4">
-                      Test Configuration
-                    </h4>
-                    <div className=" mb-3">
-                      <Nav>
-                        <div>
-                          <Nav.Item>
-                            <Nav.Link
-                              eventKey="assessmentSetting"
-                              className={` text-capitalize my-3 mx-0 px-0 fw-bold cursor-pointer ${
-                                activeTab === 'assessmentSetting'
-                                  ? 'active text-primary'
-                                  : 'text-dark'
-                              }`}
-                            >
-                              <RiUserSettingsLine size={23} className="me-2" />{' '}
-                              Assessment Setting
-                            </Nav.Link>
-                          </Nav.Item>
-                          <Nav.Item>
-                            <Nav.Link
-                              eventKey="questionManagement"
-                              className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
-                                activeTab === 'questionManagement'
-                                  ? 'active text-primary'
-                                  : 'text-dark'
-                              }`}
-                            >
-                              <VscSettings size={23} className="me-2" />{' '}
-                              Question Management
-                            </Nav.Link>
-                          </Nav.Item>
-                          <Nav.Item>
+      {allQuestionLoading ? (
+        <div className=" position-absolute top-50 start-50  translate-middle ">
+          <Loader />
+        </div>
+      ) : (
+        <div className="h-100 w-100 rounded-5">
+          <Formik
+            initialValues={initialvalue}
+            // validationSchema={validationschema}
+            onSubmit={submitPaper}
+          >
+            {({ values, handleSubmit, handleBlur, handleChange }) => (
+              <Form className="h-100">
+                <Tab.Container
+                  id="left-tabs-SidePooup"
+                  defaultActiveKey="assessmentSetting"
+                  onSelect={handleTabSelect}
+                >
+                  <div className="row h-100 gap-2  m-0 p-0">
+                    <div
+                      style={{ height: 'calc(100vh - 77px)' }}
+                      className="col-2 px-4 bg-white rounded-3"
+                    >
+                      <h4 className="text-capitalize fw-bold my-4">
+                        Update Configuration
+                      </h4>
+                      <div className=" mb-3">
+                        <Nav>
+                          <div>
+                            <Nav.Item>
+                              <Nav.Link
+                                eventKey="assessmentSetting"
+                                className={` text-capitalize my-3 fw-bold cursor-pointer px-0 mx-0 ${
+                                  activeTab === 'assessmentSetting'
+                                    ? 'active text-primary'
+                                    : 'text-dark'
+                                }`}
+                              >
+                                <RiUserSettingsLine
+                                  size={23}
+                                  className="me-2"
+                                />
+                                Assessment Setting
+                              </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                              <Nav.Link
+                                eventKey="questionManagement"
+                                className={`text-capitalize my-3 fw-bold cursor-pointer px-0 mx-0 ${
+                                  activeTab === 'questionManagement'
+                                    ? 'active text-primary'
+                                    : 'text-dark'
+                                }`}
+                              >
+                                <VscSettings size={23} className="me-2" />{' '}
+                                Question Management
+                              </Nav.Link>
+                            </Nav.Item>
+                            {/* <Nav.Item>
                             <Nav.Link
                               eventKey="manageCandidate"
-                              className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
+                              className={`text-capitalize my-3 fw-bold cursor-pointer ${
                                 activeTab === 'manageCandidate'
                                   ? 'active text-primary'
                                   : 'text-dark'
                               }`}
                             >
-                              <RiMailSettingsLine size={23} className="me-2" />
                               Manage Candidate
                             </Nav.Link>
-                          </Nav.Item>
-                        </div>
-                      </Nav>
+                          </Nav.Item> */}
+                          </div>
+                        </Nav>
+                      </div>
+                      <Button
+                        type="submit"
+                        className='className=" p-lg-2 my-2 btn-primary btn w-100'
+                      >
+                        {isLoading ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : (
+                          'save'
+                        )}
+                      </Button>
+                      <Button
+                        onClick={activePaper}
+                        className=" p-lg-2 w-100 btn-dark btn"
+                      >
+                        {publishloading ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : assissmentData.is_Active !== 'false' ? (
+                          'End'
+                        ) : (
+                          'Publish'
+                        )}
+                      </Button>
                     </div>
-                    {/* <Button className='className=" p-lg-2 w-100 btn-dark btn '>
-                      Publish
-                    </Button> */}
-                    <Button
-                      type="subbmit"
-                      className='className=" p-lg-2 my-2 btn-primary btn w-100'
-                    >
-                      {isLoading ? (
-                        <Spinner animation="border" size="sm" />
-                      ) : (
-                        'Submit'
-                      )}
-                    </Button>
-                  </div>
-                  <div className="col-7 px-0" style={{ flex: 1 }}>
-                    <Tab.Content>
-                      <Tab.Pane
-                        eventKey="assessmentSetting"
-                        className=" bg-transparent m-0"
-                      >
-                        <AssesstmentSetting setInstruction={setInstruction} />
-                      </Tab.Pane>
-                      <Tab.Pane
-                        eventKey="questionManagement"
-                        className=" bg-transparent m-0"
-                      >
-                        <QuestionManagement
-                          values={values}
-                          setOption={setOption}
-                          option={option}
-                        />
-                      </Tab.Pane>
-                      <Tab.Pane
+                    <div className="col-7 px-0" style={{ flex: 1 }}>
+                      <Tab.Content>
+                        <Tab.Pane
+                          eventKey="assessmentSetting"
+                          className=" bg-transparent m-0"
+                        >
+                          <AssesstmentSetting
+                            handleChange={handleChange}
+                            values={values}
+                            handleBlur={handleBlur}
+                          />
+                        </Tab.Pane>
+                        <Tab.Pane
+                          eventKey="questionManagement"
+                          className=" bg-transparent m-0"
+                        >
+                          <QuestionManagement values={values} />
+                        </Tab.Pane>
+                        {/* <Tab.Pane
                         eventKey="manageCandidate"
                         className=" bg-transparent m-0"
                       >
@@ -384,31 +392,32 @@ export const AddAssignment = () => {
                           excel={excel}
                           setExcel={setExcel}
                         />
-                      </Tab.Pane>
-                    </Tab.Content>
+                      </Tab.Pane> */}
+                      </Tab.Content>
+                    </div>
                   </div>
-                </div>
-              </Tab.Container>
-            </Form>
-          )}
-        </Formik>
-        <AssessmentModal
-          show={show}
-          errorContent={errorContent}
-          setModalShow={setModalShow}
-        />
-      </div>
+                </Tab.Container>
+              </Form>
+            )}
+          </Formik>
+          <AssessmentModal
+            show={show}
+            errorContent={errorContent}
+            setModalShow={setModalShow}
+          />
+        </div>
+      )}
     </>
   );
 };
 
-const AssesstmentSetting = ({ setInstruction }) => {
+const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
   return (
     <div
       className=" p-4 rounded-3 bg-white text-dark"
       style={{ height: 'calc(100vh - 77px)' }}
     >
-      <div className="my-3">
+      <div className="mb-3">
         <FormLabel className="text-capitalize fw-bold">
           Assessment Name
         </FormLabel>
@@ -570,12 +579,18 @@ const AssesstmentSetting = ({ setInstruction }) => {
           </p>
         </div>
       </div>
-      <CkEditor setInstruction={setInstruction} />
+      <CkEditor
+        handleBlur={handleBlur}
+        handleChange={handleChange}
+        values={values}
+      />
     </div>
   );
 };
 
-const QuestionManagement = ({ values, option, setOption }) => {
+const QuestionManagement = ({ values }) => {
+  const [option, setOption] = useState('');
+
   return (
     <div
       className="text-dark overflow-auto"
@@ -585,7 +600,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
         {({ push, remove }) => (
           <>
             {' '}
-            {values.questions.map((question, index) => (
+            {values.questions?.map((question, index) => (
               <div key={index} className="p-4 mb-3 bg-white rounded-4">
                 <div>
                   <div className="d-flex justify-content-between align-items-center">
@@ -615,7 +630,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
                 </div>
                 <div>
                   <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
-                  {question.options.map((option, optionIndex) => (
+                  {question.options?.map((option, optionIndex) => (
                     <>
                       <div
                         key={optionIndex}
@@ -742,9 +757,9 @@ const ManageCandidate = ({
     // Update the available years based on the selected course's duration
     if (values.examBranch) {
       const selectedCourse = AllCourse?.data.find(
-        (course) => course.course_id == values.examBranch
+        (course) => course.course_name === values.examBranch
       );
-      console.log(selectedCourse, 'selectcourse');
+      console.log(selectedCourse);
       if (selectedCourse) {
         const courseDuration = selectedCourse.duration;
         const years = Array.from(
@@ -865,17 +880,16 @@ const ManageCandidate = ({
               </div>
             )}
           </FieldArray>
-          <p className="text-danger">
-            <ErrorMessage
-              name="email"
-              component={'div'}
-              className=" input-error"
-            />
-          </p>
+          <p className="text-danger"></p>
+          <ErrorMessage
+            name="email"
+            component={'div'}
+            className=" input-error"
+          />
         </div>
 
         <p className="text-capitalize fw-bold m-0 p-0 text-center">OR</p>
-        <div className=" my-3 d-flex justify-content-center align-items-center border border-dark-subtle my-1 my-md-2  w-auto text-center rounded-3 h-25 my-3 ">
+        <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
           <>
             <label for="files" className=" cursor-pointer">
               Upload student email excel list

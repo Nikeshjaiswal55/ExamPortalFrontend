@@ -81,3 +81,8 @@
     background-color: black !important;
     color: white !important;
 }
+
+.ck.ck-editor__main>.ck-editor__editable{
+    height:315px;
+}
+

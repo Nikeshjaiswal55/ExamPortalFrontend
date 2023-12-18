@@ -92,20 +92,20 @@ export default function AllAssissmentToStudent() {
           </div> */}
         </div>
         {/* <h4 className="m-0 text-capitalize fw-bold py-2"> All Assessments</h4> */}
-        {isError && <SomethingWentWrong />}
         <div className=" position-absolute top-50 start-50  translate-middle ">
-          {filterData?.length === 0 && (
-            <NoDataFound>
-              <div>
-                <h4 className="text-capitalize fw-bold text-center">
-                  {notSearchDataFound
-                    ? 'No Such A Data Found!!'
-                    : ' No Data Available!!'}
-                </h4>
-              </div>
-            </NoDataFound>
-          )}
+          {isError && <SomethingWentWrong />}
         </div>
+        {filterData?.length === 0 && (
+          <NoDataFound>
+            <div>
+              <h4 className="text-capitalize fw-bold text-center">
+                {notSearchDataFound
+                  ? 'No Such A Data Found!!'
+                  : ' No Data Available!!'}
+              </h4>
+            </div>
+          </NoDataFound>
+        )}
         {isLoading ? (
           <div className="row m-0 p-0  ">
             {[1, 2, 3, 4, 5, 6].map((item) => (
@@ -125,7 +125,8 @@ export default function AllAssissmentToStudent() {
               ''
             )}
             {assignmentData &&
-              filterData?.filter((item) => item._attempted == false)
+              filterData
+                ?.filter((item) => item._attempted == false)
                 ?.map((assessmentDetails, index) => (
                   <Cardassessment
                     key={index}

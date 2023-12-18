@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    stream: null
+    notification: false,
+    image: [],
+    assissment: {}
 };
 
 
@@ -12,13 +14,23 @@ const adminSlice = createSlice({
         getIndivisualPost: (state, action) => {
             return action.payload;
         },
-        getStream: (state, action) => {
-            console.log(action, 'payload')
-            state.stream = action.payload;
+        getNotification: (state, action) => {
+            console.log(action.payload, 'payload')
+            state.notification = action.payload
+        },
+        sendImage: (state, action) => {
+            console.log(action.payload, 'payloadd')
+            state.image.push(action.payload)
+
+        },
+        updateAssissmentData: (state, action) => {
+            console.log('payload',action.payload)
+            state.assissment = action.payload
         }
+
     }
 })
 
-export const { getIndivisualPost, getStream } = adminSlice.actions;
+export const { getNotification, sendImage, updateAssissmentData } = adminSlice.actions;
 export default adminSlice.reducer;
 

@@ -5,16 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import '../../../styles/common.css';
 
 export const StudentCertificate = ({ nameprops }) => {
   const [modalShow, setModalShow] = React.useState(false);
-  const stdName = JSON.parse(localStorage.getItem('stdData'));
-  let name = nameprops ?? stdName.email;
-  name = name.split('@')[0];
 
-  const DownloadCertificate = () => {
+  const downloadCertificate = () => {
     const pdfUrl = '/Sample.pdf';
+
     fetch(pdfUrl)
       .then((response) => response.blob())
       .then((blob) => {
@@ -57,7 +54,6 @@ export const StudentCertificate = ({ nameprops }) => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
         onHide={() => setModalShow(false)}
-        style={{ width: '100%' }}
       >
         <Modal.Header closeButton />
         <Modal.Body style={{ width: '100%', height: '80vh' }}>
@@ -70,7 +66,9 @@ export const StudentCertificate = ({ nameprops }) => {
                 className="card position-absolute text-center border-0 "
                 style={{ bottom: '270px', width: '400px', height: '80px' }}
               >
-                <h2 className="text-center bg-transparent fs-4 p-5">{name}</h2>
+                <h2 className="text-center bg-transparent fs-4 p-5">
+                  {nameprops}
+                </h2>
               </div>
               <div
                 className="card position-absolute    border-0  p-4"

@@ -37,6 +37,10 @@ export const path = {
         path: '/admin/add-assessment',
         desc: 'this is for adding assesment page '
     },
+    UpdateAssessment: {
+        path: '/admin/update-assessment',
+        desc: 'this is for adding assesment page '
+    },
     CreateAssessment: {
         path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
@@ -89,6 +93,10 @@ export const path = {
         path: '/student/exam-verify',
         desc: 'this is for student system varification page'
     },
+    examReportOnAdmin: {
+        path: '/admin/exam-report',
+        desc: 'this is for student summery page'
+    },
     examReport: {
         path: '/student/exam-report',
         desc: 'this is for student summery page'
@@ -98,15 +106,19 @@ export const path = {
         desc: 'this is for creating student paper page '
 
     },
-    StudentExamStarted:{
+    StudentExamStarted: {
         path: '/student/exam-started',
         desc: 'this is for creating student paper page '
     },
-    StudentPaperSubmitted:{
+    StudentPaperSubmitted: {
         path: '/student/exam-submited',
         desc: 'this is for creating student paper page '
     },
-    ShowAllAssessmentToStudent:{
+    StudentViewResult: {
+        path: '/student/view-result',
+        desc: 'this is for creating student paper page '
+    },
+    ShowAllAssessmentToStudent: {
         path: '/student/allAssissment',
         desc: 'this is for creating student paper page '
     },
