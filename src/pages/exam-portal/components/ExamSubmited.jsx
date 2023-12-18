@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { useGetStudentAvidenceQuery } from '../../../apis/Service';
 import { Fail } from '../../student/ResultState/Fail';
+import { Pending } from '../../student/ResultState/Pending';
 import { Pass } from '../../student/ResultState/Pass';
 import { Loader } from '../../../components/Loader/Loader';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
@@ -51,13 +52,20 @@ export const ExamSubmited = () => {
         <div className="h-100 d-flex align-items-center justify-content-center">
           <Loader />
         </div>
-      ) : data.is_published === 'approved' &&
-        data?.result.resultStatus == 'pass' ? (
-        <Pass stdId={stdId} paperId={paperId} data={data?.result} />
-      ) : data?.result.resultStatus !== 'pass' ? (
-        <Fail stdId={stdId} paperId={paperId} data={data?.result} />
+      ) : data.is_published === 'approved' ? (
+        data?.result.resultStatus === 'pass' ? (
+          <div className="h-100 d-flex align-items-center justify-content-center">
+            <Pass stdId={stdId} paperId={paperId} data={data?.result} />
+          </div>
+        ) : data?.result.resultStatus === 'fail' ? (
+          <div className="h-100 d-flex align-items-center justify-content-center">
+            <Fail stdId={stdId} paperId={paperId} data={data?.result} />
+          </div>
+        ) : null
       ) : (
-        <Pending />
+        <div className="h-100 d-flex align-items-center justify-content-center">
+          <Pending />
+        </div>
       )}
     </>
   );

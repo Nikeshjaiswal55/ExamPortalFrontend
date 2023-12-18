@@ -30,6 +30,7 @@ import { CkEditor } from './CkEditor';
 import { AssessmentModal } from './assessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
+import { Sample1 } from './Templates';
 
 const durationTimer = [
   {
@@ -71,7 +72,7 @@ const initialvalue = {
   assessmentMinmumMarks: '',
   assessmentResultConfig: '',
   assessmentOrder: '',
-  assessmentInstruction: 'string',
+  assessmentInstruction: '',
   questions: [{ questions: '', options: [], correctAns: '', userAns: '' }],
   examBranch: '',
   session: '',
@@ -125,6 +126,8 @@ export const AddAssignment = () => {
   const [excel, setExcel] = useState([]);
   const [show, setModalShow] = useState(false);
   const [errorContent, setErrorContent] = useState('');
+  const [instruction, setInstruction] = useState(Sample1);
+  const [option, setOption] = useState('');
 
   const validationschema =
     activeTab === 'assessmentSetting'
@@ -185,7 +188,7 @@ export const AddAssignment = () => {
       dipatch(getNotification(false));
     }
   }, [inviteSucessFull]);
-  const submitPaper = (values) => {
+  const submitPaper = (values, resetForm) => {
     if (values.assessmentName !== '') {
       if (
         values.questions[0].questions !== '' ||
@@ -213,7 +216,7 @@ export const AddAssignment = () => {
               userId: userId,
               orgnizationId: getOrgdata?.orgnizationId,
               description: values.shortDescription,
-              instruction: values.assessmentInstruction,
+              instruction: instruction,
               is_Active: true,
               is_setup: true,
               is_auto_check:
@@ -238,6 +241,7 @@ export const AddAssignment = () => {
                 orgnizationId: res?.data?.orgnizationId,
                 emails: emails,
               }).then((res) => {
+                resetForm();
                 console.log('res', res);
                 if (res.error.originalStatus === 200) {
                   dipatch(getNotification(false));
@@ -275,9 +279,9 @@ export const AddAssignment = () => {
         <Formik
           initialValues={initialvalue}
           validationSchema={validationschema}
-          onSubmit={submitPaper}
+          onSubmit={(values, { resetForm }) => submitPaper(values, resetForm)}
         >
-          {({ values, handleSubmit, handleBlur, handleChange }) => (
+          {({ values, handleBlur, handleChange }) => (
             <Form className="h-100">
               <Tab.Container
                 id="left-tabs-SidePooup"
@@ -357,17 +361,17 @@ export const AddAssignment = () => {
                         eventKey="assessmentSetting"
                         className=" bg-transparent m-0"
                       >
-                        <AssesstmentSetting
-                          handleChange={handleChange}
-                          values={values}
-                          handleBlur={handleBlur}
-                        />
+                        <AssesstmentSetting setInstruction={setInstruction} />
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="questionManagement"
                         className=" bg-transparent m-0"
                       >
-                        <QuestionManagement values={values} />
+                        <QuestionManagement
+                          values={values}
+                          setOption={setOption}
+                          option={option}
+                        />
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="manageCandidate"
@@ -398,7 +402,7 @@ export const AddAssignment = () => {
   );
 };
 
-const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
+const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
       className=" p-4 rounded-3 bg-white text-dark"
@@ -566,18 +570,12 @@ const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
           </p>
         </div>
       </div>
-      <CkEditor
-        handleBlur={handleBlur}
-        handleChange={handleChange}
-        values={values}
-      />
+      <CkEditor setInstruction={setInstruction} />
     </div>
   );
 };
 
-const QuestionManagement = ({ values }) => {
-  const [option, setOption] = useState('');
-
+const QuestionManagement = ({ values, option, setOption }) => {
   return (
     <div
       className="text-dark overflow-auto"

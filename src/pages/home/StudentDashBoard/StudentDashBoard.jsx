@@ -16,7 +16,7 @@ import { MdOutlineAssignment } from 'react-icons/md';
 import { Loader } from '../../../components/Loader/Loader';
 import BarChart from '../component/BarChart';
 import { CustomButton } from '../../../theme/Button/Buttons';
-import { Accordion, Spinner } from 'react-bootstrap';
+import { Accordion, Button, Spinner } from 'react-bootstrap';
 import AttemptedFailed from '../../../assets/gif/graph/assessment-error.png';
 import { BarChartStudentDashboard } from '../component/BarChartStudentDashboard';
 import { useNavigate } from 'react-router-dom';
@@ -138,7 +138,7 @@ export const StudentDashBoard = () => {
       id: 2,
       infoText: 'Atempted Assessment',
       infoNumber:
-        assignmentData?.filter((item) => item.is_attempted == true).length ?? 0,
+        assignmentData?.filter((item) => item._attempted == true).length ?? 0,
       icon: <MdOutlineAssignment size={50} />,
       children: (
         <>
@@ -184,10 +184,10 @@ export const StudentDashBoard = () => {
   useEffect(() => {
     let count = 0;
     assignmentData?.filter((item) => {
-      if (item.is_attempted) {
+      if (item._attempted) {
         count += 1;
       }
-      return item.is_attempted == true;
+      return item._attempted == true;
     });
     setIsAttemptedAssessment(count);
   }, [assignmentData]);
@@ -370,7 +370,7 @@ export const StudentDashBoard = () => {
                       <Accordion className="  my-2 p-0 p-md-2 ">
                         {assignmentData &&
                           assignmentData
-                            ?.filter((item) => item.is_attempted == true)
+                            ?.filter((item) => item._attempted == true)
                             ?.map((value) => {
                               return (
                                 <>
@@ -387,7 +387,8 @@ export const StudentDashBoard = () => {
                                         {value?.published_date}{' '}
                                       </div>
                                       <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
-                                        <ViewResult paperId={value.paperId} />
+                                        {/* <ViewResult paperId={value.paperId} /> */}
+                                        <Button onClick={()=>navigate(`${path.StudentViewResult.path}/${value.paperId}`)}>view result</Button>
                                         <div>
                                           <StudentCertificate />
                                         </div>
