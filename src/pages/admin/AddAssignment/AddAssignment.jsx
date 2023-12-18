@@ -27,7 +27,7 @@ import { getNotification } from '../../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
-import { AssessmentModal } from './assessmentModal';
+import { AssessmentModal } from './AssessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
 import { Sample1 } from './Templates';

@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
 
-export const Fail = ({ paperId, stdId ,data}) => {
+export const Fail = ({ paperId, stdId, data }) => {
   const navigate = useNavigate();
 
   return (
@@ -23,7 +23,7 @@ export const Fail = ({ paperId, stdId ,data}) => {
             variant="dark me-4 mt-5"
             onClick={() => navigate(path.StudentDashboard.path)}
           >
-            View Certificate
+            Back To Dashboard
           </Button>
           <Button
             variant="dark mt-5"

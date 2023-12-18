@@ -295,11 +295,11 @@ export const StudentDashBoard = () => {
                   })}
               </div>
             </div>
-            <div className="col-12 col-sm-6 col-md-7 h-auto  p-0 pe-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto">
+            <div className="col-12 col-sm-6 col-md-7 h-100  p-0 pe-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto">
               <div className=" chart-parent w-100 h-100  d-flex   align-items-start  rounded-3  justify-content-center bg-white ">
                 {
                   <div className="row m-0  d-flex flex-column justify-content-start bg-white  rounded-3 w-100 h-100 overflow-auto  p-0   ">
-                    <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100 h-100  p-2   ">
+                    <div className="row m-0  d-flex justify-content-between bg-white  rounded-3 w-100   p-2   ">
                       <div className=" w-100 py-3 p-md-2   fw-bold ">
                         <h4 className=" ps-3  d-flex justify-content-start align-items-center">
                           {' '}
@@ -388,7 +388,15 @@ export const StudentDashBoard = () => {
                                       </div>
                                       <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
                                         {/* <ViewResult paperId={value.paperId} /> */}
-                                        <Button onClick={()=>navigate(`${path.StudentViewResult.path}/${value.paperId}`)}>view result</Button>
+                                        <Button
+                                          onClick={() =>
+                                            navigate(
+                                              `${path.StudentViewResult.path}/${value.paperId}`
+                                            )
+                                          }
+                                        >
+                                          view result
+                                        </Button>
                                         <div>
                                           <StudentCertificate />
                                         </div>
