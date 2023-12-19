@@ -31,7 +31,7 @@ import { AssessmentModal } from './AssessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
 import { Sample1 } from './Templates';
-
+import {RiDeleteBin6Line} from 'react-icons/ri';
 const durationTimer = [
   {
     value: '00:15:00',
@@ -234,6 +234,7 @@ export const AddAssignment = () => {
           AssigmnetData(sendPaper).then((res) => {
             if (res?.data?.paperId) {
               dipatch(getNotification(true));
+              resetForm();
               navigate(path.ShowAssessment.path);
               inviteStudent({
                 userId: res?.data?.userId,
@@ -395,7 +396,7 @@ export const AddAssignment = () => {
         <AssessmentModal
           show={show}
           errorContent={errorContent}
-          setModalShow={setModalShow}
+          setModalShow={setModalShow} 
         />
       </div>
     </>
@@ -576,6 +577,8 @@ const AssesstmentSetting = ({ setInstruction }) => {
 };
 
 const QuestionManagement = ({ values, option, setOption }) => {
+  const inputref = useRef();
+  console.log("============inputref",inputref)
   return (
     <div
       className="text-dark overflow-auto"
@@ -621,14 +624,25 @@ const QuestionManagement = ({ values, option, setOption }) => {
                         key={optionIndex}
                         className="d-flex align-items-center"
                       >
-                        <FormLabel className="d-flex align-items-center">
+                        <FormLabel className="d-flex align-items-center justify-content-between">
                           <Field
                             type="radio"
                             id={`option-${index}-${optionIndex}`}
                             name={`questions[${index}].correctAns`}
                             value={option}
+
                           />
+
+
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              console.log("options ",values.questions[index].options[optionIndex])
+                              // console.log("options ",values?.questions?.[index]?.options?.splice(optionIndex,1))
+                              values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
+                            }}
+                            className="cursor-pointer input-error  d-block  float-start"
+                          />
                         </FormLabel>
                       </div>
                       <p className="text-danger"></p>
@@ -650,16 +664,21 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           id={`option-${index}`}
                           name={`questions[${index}].options`}
                           placeholder="Enter options"
-                          className="form-control w-100 input-border p-2 border focus-ring focus-ring-light hello"
+                          className="form-control hello w-100 input-border p-2 border focus-ring focus-ring-light hello"
+                          ref={inputref}
+
                           onChange={(e) => {
                             setOption(e.target.value);
                           }}
-                          value={option}
+                          // value={option}
+                          // value={values}
+                          // value={inputref.current.value}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && option.trim() !== '') {
                               question.options.push(option);
                               e.preventDefault();
                               setOption('');
+                              document.querySelector('.hello').innerHTML = '';
                             }
                           }}
                         />
@@ -673,6 +692,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
                             ? alert('Please enter option')
                             : question.options.push(option);
                           setOption('');
+                          inputref.current.value = "";
                         }}
                       />
                     </div>

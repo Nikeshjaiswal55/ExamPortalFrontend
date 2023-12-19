@@ -9,7 +9,7 @@ import {
   Tab,
 } from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
-import { RiAddFill } from 'react-icons/ri';
+import {RiAddFill,RiDeleteBin6Line} from 'react-icons/ri';
 import { IoClose } from 'react-icons/io5';
 import { MdUpload } from 'react-icons/md';
 import { FaEye } from 'react-icons/fa';
@@ -595,6 +595,13 @@ const QuestionManagement = ({ values }) => {
                             value={option}
                           />
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              console.log("options ",values.questions[index].options[optionIndex])
+                              values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
+                            }}
+                            className="cursor-pointer input-error  d-block  float-start"
+                          />
                         </FormLabel>
                       </div>
                       <p className="text-danger"></p>
