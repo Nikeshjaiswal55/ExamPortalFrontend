@@ -7,7 +7,7 @@ import { LocalStorageCache } from '@auth0/auth0-spa-js';
 // const baseUrl = "https://exameasy-krishna.onrender.com/"
 // const baseUrl = "http://192.168.8.162:9090"
 // const baseUrl = "http://192.168.180.59:9090"
-const baseUrl = "http://192.168.8.162:9090"
+const baseUrl = "http://192.168.3.161:9090"
 
 // const baseQuery = fetchBaseQuery({
 //     baseUrl: baseUrl,
