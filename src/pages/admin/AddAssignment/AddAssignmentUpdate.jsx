@@ -35,6 +35,7 @@ import { path } from '../../../routes/RoutesConstant';
 import { CkEditor } from './CkEditor';
 import { AssessmentModal } from './AssessmentModal';
 import { Loader } from '../../../components/Loader/Loader';
+import { Sample1 } from './Templates';
 
 const durationTimer = [
   {
@@ -67,43 +68,6 @@ const durationTimer = [
   },
 ];
 
-// const AssesstmentSettingVAlidation = yup.object().shape({
-//   assessmentName: yup.string().required('Assessment name is required*'),
-//   shortDescription: yup
-//     .string()
-//     .required('Assessment short description is required*'),
-//   assessmentPattern: yup.string().required('Assessment pattern is required*'),
-//   assessmentDuration: yup.string().required('Assessment duration is required*'),
-//   assessmentTotalMarks: yup
-//     .number()
-//     .typeError('Assessment total marks must be a number')
-//     .required('Assessment total marks is required*')
-//     .positive('Assessment total marks must be a positive number'),
-//   assessmentMinmumMarks: yup
-//     .number()
-//     .typeError('Assessment minimum marks must be a number')
-//     .required('Assessment minimum marks is required*')
-//     .positive('Assessment minimum marks must be a positive number'),
-//   assessmentResultConfig: yup
-//     .string()
-//     .required('Select any one this is required**'),
-//   assessmentOrder: yup.string().required('Select any one this is required**'),
-//   //   assessmentInstruction: yup.string().required('Assessment name is required*'),
-// });
-
-// const QuestionManagementValidation = yup.object().shape({
-//   questions: yup.array().of(
-//     yup.object().shape({
-//       questions: yup.string().required('Question is required'),
-//       options: yup
-//         .array()
-//         .min(2, 'At least two options are required')
-//         .of(yup.string().required('Option is required')),
-//       correctAns: yup.string().required('Correct answer is required'),
-//     })
-//   ),
-// });
-
 export const AddAssignmentUpdate = () => {
   const assissmentData = useSelector((state) => state.admin.assissment);
   const {
@@ -112,6 +76,7 @@ export const AddAssignmentUpdate = () => {
     isError: allQuestionError,
   } = useGetAllQuestionBYPaperIdQuery(assissmentData.paperId);
   const [sendingMail] = useSentMailToStudentMutation();
+  const [instruction, setInstruction] = useState(Sample1);
 
   console.log(assissmentData, 'assissmentData');
   const initialvalue = {
@@ -122,10 +87,10 @@ export const AddAssignmentUpdate = () => {
     assessmentTotalMarks: assissmentData.totalMarks,
     assessmentMinmumMarks: assissmentData.minimum_marks,
     assessmentResultConfig:
-      assissmentData._auto_check == true ? 'autoCheck' : 'manualCheck',
+      assissmentData.is_auto_check === 'true' ? 'autoCheck' : 'manualCheck',
     assessmentOrder:
       assissmentData._shorted == true ? 'sortOrder' : 'sameOrder',
-    assessmentInstruction: 'string',
+    assessmentInstruction: assissmentData?.instruction,
     questions: allQuestion,
     examBranch: assissmentData.branch,
     session: assissmentData.session,
@@ -140,12 +105,6 @@ export const AddAssignmentUpdate = () => {
   const [show, setModalShow] = useState(false);
   const [errorContent, setErrorContent] = useState('');
 
-  // const validationschema =
-  //   activeTab === 'assessmentSetting'
-  //     ? AssesstmentSettingVAlidation
-  //     : activeTab === 'questionManagement'
-  //     ? QuestionManagementValidation
-  //     : '';
   const handleTabSelect = (key) => {
     setActiveTab(key);
   };
@@ -252,7 +211,7 @@ export const AddAssignmentUpdate = () => {
         userId: userId,
         orgnizationId: getOrgdata?.orgnizationId,
         description: values.description,
-        instruction: values.assessmentInstruction,
+        instruction: instruction,
         is_Active: 'false',
         is_setup: true,
         is_auto_check:
@@ -369,11 +328,7 @@ export const AddAssignmentUpdate = () => {
                           eventKey="assessmentSetting"
                           className=" bg-transparent m-0"
                         >
-                          <AssesstmentSetting
-                            handleChange={handleChange}
-                            values={values}
-                            handleBlur={handleBlur}
-                          />
+                          <AssesstmentSetting setInstruction={setInstruction} />
                         </Tab.Pane>
                         <Tab.Pane
                           eventKey="questionManagement"
@@ -411,7 +366,7 @@ export const AddAssignmentUpdate = () => {
   );
 };
 
-const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
+const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
       className=" p-4 rounded-3 bg-white text-dark"
@@ -579,11 +534,7 @@ const AssesstmentSetting = ({ handleBlur, values, handleChange }) => {
           </p>
         </div>
       </div>
-      <CkEditor
-        handleBlur={handleBlur}
-        handleChange={handleChange}
-        values={values}
-      />
+      <CkEditor setInstruction={setInstruction} />
     </div>
   );
 };
