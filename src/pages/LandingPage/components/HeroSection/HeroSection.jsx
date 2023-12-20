@@ -42,7 +42,7 @@ const HeroSection = () => {
           animate="animate"
         >
           <motion.h2 variant={textVariants} className="text-h2">
-            welcome to ExamEasy!!
+            Welcome to ExamEasy!!
           </motion.h2>
           <motion.h1 variant={textVariants} className="text-h1">
             With Moto Your Action Our Reaction...

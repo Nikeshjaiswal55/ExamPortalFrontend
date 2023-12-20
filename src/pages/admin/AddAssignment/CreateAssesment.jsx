@@ -13,7 +13,7 @@ export default function CreateAssesment() {
       e.stopPropagation();
       navigate('/admin/add-assessment');
     },
-    buttonText: 'create assesment',
+    buttonText: 'create assessment',
   };
   return (
     <>
