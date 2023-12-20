@@ -168,8 +168,8 @@ export default function AddCourse() {
           <div className="p-3 pe-lg-5 mt-lg-2">
             <p className="text-capitalize fw-bold fs-4 ">Add course</p>
             <p>
-              Adding a course is easy! Just provide the course name and the Head
-              of Department's (HOD) email, and you're good to go.
+              Adding a course is easy! Just provide the course name & course
+              duration, and the list of email in excel, and you're good to go.
             </p>
           </div>
           <Formik
@@ -209,7 +209,7 @@ export default function AddCourse() {
                         onChange={props.handleChange}
                         onBlur={props.handleBlur}
                         className="input-border p-2 border focus-ring text-capitalize focus-ring-light"
-                        placeholder="enter course duration (example : 4,3,2,1)"
+                        placeholder="enter course year (example : 4,3,2,1)"
                       />
                       <ErrorMessage
                         component={'div'}

@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { FaRegEdit } from 'react-icons/fa';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { InputField } from '../../../theme/InputField/InputField';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 const editValidation = Yup.object({
   courseName: Yup.string().min(2).required('course name required'),
 });
-export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
-  //   const [updateCourse, responseUpdate] = useUpdateCourseMutation();
-  //   const [deleteCourse, responseDelete] = useDeleteCourseMutation();
+export function ShowCourseTr({
+  deleteCourse,
+  updateCourse,
+  updateLoading,
+  deleteLoading,
+  ...props
+}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,6 +60,38 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
       alert('user access token not present ');
     }
   }
+
+  useEffect(() => {
+    if (props.updateSuccess) {
+      toast.success('course updated successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      handleClose();
+    }
+  }, [props.updateSuccess]);
+
+  useEffect(() => {
+    if (props.deleteSuccess) {
+      toast.success('course deleted successfully!!🎉', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      handleClose();
+    }
+  }, [props.deleteSuccess]);
 
   return (
     <>
@@ -105,7 +142,6 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
             onSubmit={(values) => {
               console.log('submit form', values);
               updateData(values.courseName, props.courseId);
-              handleClose();
             }}
           >
             {({ values, handleBlur, handleChange, handleSubmit }) => (
@@ -137,7 +173,11 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
                       className="rounded-4 w-100"
                       type="submit"
                     >
-                      Edit
+                      {updateLoading ? (
+                        <Spinner animation="border" size="sm" />
+                      ) : (
+                        'Edit'
+                      )}
                     </Button>
                   </div>
                 </Modal.Footer>
@@ -182,7 +222,11 @@ export function ShowCourseTr({ deleteCourse, updateCourse, ...props }) {
                   handleDeleteClose();
                 }}
               >
-                Delete
+                {deleteLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  'Delete'
+                )}
               </Button>
             </div>
           </Modal.Footer>

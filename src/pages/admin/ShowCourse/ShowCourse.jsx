@@ -35,7 +35,7 @@ export default function ShowCourse() {
   // const [assessmentName,setAssessmentName] = useState('');
   // get total pages then
   const [totalPages, setTotalPages] = useState(10);
-  const { data, isError, isLoading } = useGetAllCoursesQuery({
+  const { data, isError, isLoading, isFetching } = useGetAllCoursesQuery({
     userId,
     page: page - 1,
     size: Per_Page,
@@ -67,37 +67,7 @@ export default function ShowCourse() {
   }
 
   useEffect(() => {
-    if (updateSuccess) {
-      toast.success('course updated successfully!!🎉', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
-  }, [updateSuccess]);
-
-  useEffect(() => {
-    if (deleteSuccess) {
-      toast.success('course deleted successfully!!🎉', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
-  }, [deleteSuccess]);
-
-  useEffect(() => {
-    if (isError || updateError || deleteError) {
+    if (isError) {
       toast.error('something went wrong!!😑', {
         position: 'top-right',
         autoClose: 5000,
@@ -109,7 +79,36 @@ export default function ShowCourse() {
         theme: 'dark',
       });
     }
-  }, [updateError, deleteError, isError]);
+  }, [isError]);
+  useEffect(() => {
+    if (updateError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [updateError]);
+
+  useEffect(() => {
+    if (deleteError) {
+      toast.error('something went wrong!!😑', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [deleteError]);
 
   useEffect(() => {
     setList(data?.data);
@@ -134,7 +133,7 @@ export default function ShowCourse() {
       </Pagination.Item>
     );
   }
-  if (isLoading || updateLoading || deleteLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className=" position-absolute top-50 start-50  translate-middle ">
         <Loader />
@@ -187,10 +186,10 @@ export default function ShowCourse() {
               />
             </div>
           </div>
-          {isError && <SomethingWentWrong />}
-
-          <div className=" position-absolute top-50 start-50  translate-middle ">
-            {data?.data.length == 0 && (
+          {isError ? (
+            <SomethingWentWrong />
+          ) : data?.data.length == 0 ? (
+            <div className=" position-absolute top-50 start-50  translate-middle ">
               <NoDataFound>
                 <div>
                   <h4 className="text-capitalize fw-bold text-center">
@@ -201,102 +200,106 @@ export default function ShowCourse() {
                   </h6>
                 </div>
               </NoDataFound>
-            )}
-          </div>
-
-          <div className=" row m-0 p-0  w-100" style={{ height: '92%' }}>
-            {list && list?.length > 0 && (
-              <Table striped responsive hover>
-                <thead className="t-head ">
-                  <tr>
-                    <th className="text-center"> SrNo</th>
-                    <th>
-                      Course Name
-                      {sortOrder === 'asc' ? (
-                        <BiSolidUpArrowAlt
-                          className="cursor-pointer"
-                          size={25}
-                          onClick={() => setSortOrder('desc')}
-                        />
-                      ) : (
-                        <BiSolidDownArrowAlt
-                          className="cursor-pointer"
-                          size={25}
-                          onClick={() => setSortOrder('asc')}
-                        />
-                      )}
-                    </th>
-                    <th>Created By</th>
-                    <th></th>
-                    {/* <th className='text-center'><input placeholder='search here course' className='form-control'/></th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.data &&
-                    data?.data?.map((rowdata, index) => {
-                      console.log(rowdata);
-                      return (
-                        <ShowCourseTr
-                          key={index}
-                          updateCourse={updateCourse}
-                          deleteCourse={deleteCourse}
-                          srNo={index + 1}
-                          courseId={rowdata['course_id']}
-                          courseName={rowdata['course_name']}
-                          createdBy={rowdata['userName']}
-                        />
-                      );
-                    })}
-                </tbody>
-              </Table>
-            )}
-            {list && list?.length > 0 && (
-              <div className="col-12 h-auto align-self-end  d-flex justify-content-start justify-content-md-end pe-4 overflow-auto">
-                <div className=" fs-5  d-flex justify-content-start  align-items-baseline p-0  m-0">
-                  <div className=" w-auto d-flex align-items-baseline me-2 align-baseline ">
-                    <label htmlFor="per-page" className="  fs-6 me-2">
-                      Per-page
-                    </label>
-                    <FormControl
-                      type="number"
-                      name="per-page"
-                      className=" w-auto h-50 rounded-1 border   btn btn-outline-light text-black  "
-                      id="per-page"
-                      width={'50px'}
-                      min={1}
-                      max={100}
-                      defaultValue={Per_Page}
-                      onChange={(e) => {
-                        setPer_Page(e.target.value);
-                        console.log(e.target.value);
-                      }}
-                    />
+            </div>
+          ) : (
+            <div className=" row m-0 p-0  w-100" style={{ height: '92%' }}>
+              {list && list?.length > 0 && (
+                <Table striped responsive hover>
+                  <thead className="t-head ">
+                    <tr>
+                      <th className="text-center"> SrNo</th>
+                      <th>
+                        Course Name
+                        {sortOrder === 'asc' ? (
+                          <BiSolidUpArrowAlt
+                            className="cursor-pointer"
+                            size={25}
+                            onClick={() => setSortOrder('desc')}
+                          />
+                        ) : (
+                          <BiSolidDownArrowAlt
+                            className="cursor-pointer"
+                            size={25}
+                            onClick={() => setSortOrder('asc')}
+                          />
+                        )}
+                      </th>
+                      <th>Created By</th>
+                      <th></th>
+                      {/* <th className='text-center'><input placeholder='search here course' className='form-control'/></th> */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data?.data &&
+                      data?.data?.map((rowdata, index) => {
+                        console.log(rowdata);
+                        return (
+                          <ShowCourseTr
+                            key={index}
+                            updateCourse={updateCourse}
+                            deleteCourse={deleteCourse}
+                            srNo={index + 1}
+                            courseId={rowdata['course_id']}
+                            courseName={rowdata['course_name']}
+                            createdBy={rowdata['userName']}
+                            updateLoading={updateLoading}
+                            deleteLoading={deleteLoading}
+                            updateSuccess={updateSuccess}
+                            deleteSuccess={deleteSuccess}
+                          />
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+              {list && list?.length > 0 && (
+                <div className="col-12 h-auto align-self-end  d-flex justify-content-start justify-content-md-end pe-4 overflow-auto">
+                  <div className=" fs-5  d-flex justify-content-start  align-items-baseline p-0  m-0">
+                    <div className=" w-auto d-flex align-items-baseline me-2 align-baseline ">
+                      <label htmlFor="per-page" className="  fs-6 me-2">
+                        Per-page
+                      </label>
+                      <FormControl
+                        type="number"
+                        name="per-page"
+                        className=" w-auto h-50 rounded-1 border   btn btn-outline-light text-black  "
+                        id="per-page"
+                        width={'50px'}
+                        min={1}
+                        max={100}
+                        defaultValue={Per_Page}
+                        onChange={(e) => {
+                          setPer_Page(e.target.value);
+                          console.log(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <Pagination className="m-0">
+                      <Pagination.First
+                        onClick={() => handlePaginationClick(1)}
+                      />
+                      <Pagination.Prev
+                        onClick={() =>
+                          handlePaginationClick(page - 1 > 0 ? page - 1 : 1)
+                        }
+                      />
+                      {paginationItems}
+                      <Pagination.Next
+                        onClick={() =>
+                          handlePaginationClick(
+                            page + 1 <= totalPages ? page + 1 : totalPages
+                          )
+                        }
+                      />
+                      <Pagination.Last
+                        onClick={() => handlePaginationClick(totalPages)}
+                      />
+                    </Pagination>
                   </div>
-                  <Pagination className="m-0">
-                    <Pagination.First
-                      onClick={() => handlePaginationClick(1)}
-                    />
-                    <Pagination.Prev
-                      onClick={() =>
-                        handlePaginationClick(page - 1 > 0 ? page - 1 : 1)
-                      }
-                    />
-                    {paginationItems}
-                    <Pagination.Next
-                      onClick={() =>
-                        handlePaginationClick(
-                          page + 1 <= totalPages ? page + 1 : totalPages
-                        )
-                      }
-                    />
-                    <Pagination.Last
-                      onClick={() => handlePaginationClick(totalPages)}
-                    />
-                  </Pagination>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </>
     );
