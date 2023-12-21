@@ -121,7 +121,7 @@ export default function StudentPaper({
       ) : (
         <div className="row w-100 gap-4  p-3 ">
           <>
-            <div className="col-lg-8  offset-lg-2 ">
+            <div className="col-lg-8 offset-lg-2 ">
               <div className=" d-flex flex-wrap justify-content-between">
                 <div>
                   <h1 className=" text-capitalize">
@@ -175,7 +175,7 @@ export default function StudentPaper({
               {decodedData?.questions &&
                 decodedData?.questions.map((value, index) => {
                   return (
-                    <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3">
+                    <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
                         <p>{value.questions.replaceAll('+', ' ')}?</p>

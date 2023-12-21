@@ -250,7 +250,7 @@ export const ExamStarted = () => {
             />
           </>
         ) : (
-          <div className="h-100">
+          <div className="h-100" style={{ backgroundColor: 'var(--main-div)' }}>
             <StudentPaper
               paperId={paperId}
               isLoading={isLoading}
