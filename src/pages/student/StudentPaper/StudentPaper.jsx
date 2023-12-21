@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PiHandWaving } from 'react-icons/pi';
-import Countdown from 'react-countdown-now';
+// import Countdown from 'react-countdown-now';
+import CountdownTimer from '../../../utils/CountDownTimer';
 import { CustomButton } from '../../../theme/Button/Buttons';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import {
@@ -37,16 +38,16 @@ export default function StudentPaper({
 
   const imagesArray = useSelector((state) => state.admin.image);
 
-  useEffect(() => {
-    const convertTimeStringToMillis = (timeString) => {
-      const [hours, minutes, seconds] = timeString.split(':').map(Number);
-      return ((hours * 60 + minutes) * 60 + seconds) * 1000;
-    };
-    const milliseconds = convertTimeStringToMillis(timeString);
-    const currentTimestamp = Date.now();
-    const target = currentTimestamp + milliseconds;
-    setTargetTime(target);
-  }, [timeString]);
+  // useEffect(() => {
+  //   const convertTimeStringToMillis = (timeString) => {
+  //     const [hours, minutes, seconds] = timeString.split(':').map(Number);
+  //     return ((hours * 60 + minutes) * 60 + seconds) * 1000;
+  //   };
+  //   const milliseconds = convertTimeStringToMillis(timeString);
+  //   const currentTimestamp = Date.now();
+  //   const target = currentTimestamp + milliseconds;
+  //   setTargetTime(target);
+  // }, [timeString]);
 
   function getUserAnswereWithQuestion() {
     const questionsJson = JSON.stringify(decodedData?.questions);
@@ -76,7 +77,6 @@ export default function StudentPaper({
         paperId: paperId,
         images: imagesArray,
         audios: null,
-        paperId: paperId,
       },
     };
     cameraStop();
@@ -108,6 +108,10 @@ export default function StudentPaper({
     console.log('update ========================', update);
   }
 
+  const handleTimerEnd = useCallback(() => {
+    submitPaperDetails();
+  }, []);
+
   return (
     <>
       {isLoading ? (
@@ -126,27 +130,9 @@ export default function StudentPaper({
                   <div className=" d-flex align-items-center px-3 fs-6">
                     <span>
                       {targetTime && (
-                        <Countdown
-                          // date={decodedData?.examDetails.examDuration} // Set the target time for the countdown
-                          date={targetTime}
-                          renderer={({
-                            hours,
-                            minutes,
-                            seconds,
-                            completed,
-                          }) => {
-                            if (completed) {
-                              return <span>Countdown expired</span>;
-                            } else {
-                              return (
-                                <span>
-                                  {hours.toString().padStart(2, '0')}:
-                                  {minutes.toString().padStart(2, '0')}:
-                                  {seconds.toString().padStart(2, '0')}
-                                </span>
-                              );
-                            }
-                          }}
+                        <CountdownTimer
+                          initialTime={decodedData?.examDetails.examDuration}
+                          onTimerEnd={handleTimerEnd}
                         />
                       )}
                     </span>{' '}

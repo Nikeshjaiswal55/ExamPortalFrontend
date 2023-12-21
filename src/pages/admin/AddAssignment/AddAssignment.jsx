@@ -34,31 +34,31 @@ import { Sample1 } from './Templates';
 
 const durationTimer = [
   {
-    value: '00:15:00',
+    value: '900',
     name: '15 min',
   },
   {
-    value: '00:30:00',
+    value: '1800',
     name: '30 min',
   },
   {
-    value: '00:45:00',
+    value: '2700',
     name: '45 min',
   },
   {
-    value: '01:00:00',
+    value: '3600',
     name: '01 hr',
   },
   {
-    value: '01:30:00',
+    value: '5400',
     name: '1.5 hr',
   },
   {
-    value: '02:00:00',
+    value: '7200',
     name: '02 hr',
   },
   {
-    value: '03:00:00',
+    value: '10800',
     name: '03 hr',
   },
 ];
