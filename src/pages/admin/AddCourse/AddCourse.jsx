@@ -165,7 +165,7 @@ export default function AddCourse() {
     <>
       <div className="row bg-white rounded-2 h-100 m-0 p-0">
         <div className=" col-md-6 h-100 m-0 p-0 ">
-          <div className="p-3 pe-lg-5 mt-lg-2">
+          <div className="p-3 pe-lg-5 mt-lg-2  ms-md-4   ">
             <p className="text-capitalize fw-bold fs-4 ">Add course</p>
             <p>
               Adding a course is easy! Just provide the course name & course
@@ -190,7 +190,7 @@ export default function AddCourse() {
                         inputId={inputData.inputId}
                         inputName={inputData.inputName}
                         formGroupId={inputData.formGroupId}
-                        formGroupClassName={'my-1 my-md-2 mx-5 '}
+                        formGroupClassName={' my-1 my-md-2 mx-3 mx-sm-5'}
                         placeholder={inputData.placeholder}
                         labelText={inputData.labelText}
                         onInputBlur={props.handleBlur}
@@ -199,7 +199,7 @@ export default function AddCourse() {
                     ))}
                   </div>
                   <div className="col-12">
-                    <Form.Group className="my-1 my-md-2 mx-5">
+                    <Form.Group className=" my-1 my-md-2 mx-3 mx-sm-5">
                       <Form.Label className={`text-capitalize fw-bold `}>
                         Enter course duration
                       </Form.Label>
@@ -219,7 +219,7 @@ export default function AddCourse() {
                     </Form.Group>
                   </div>
                 </div>
-                <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+                <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
                   <>
                     <label for="files" className=" cursor-pointer">
                       Upload student email excel list
@@ -300,7 +300,7 @@ export default function AddCourse() {
                   }
                   onButtonClick={props.handleSubmit}
                   className={
-                    'm-auto d-block px-5 m-3 mx-5 mt-3  text-capitalize  rounded-4'
+                    'm-auto d-block px-5  my-1 my-md-2 mx-3 mx-sm-5 mt-4  text-capitalize  rounded-4'
                   }
                 />
               </Form>

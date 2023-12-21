@@ -30,8 +30,8 @@ export default function Cardassessment({
 
   return (
     <>
-      <div className="col-12 col-lg-6 mb-4 h-25 ">
-        <div className=" white-box px-4 pt-2 pb-4 position-relative border rounded-4  bg-white">
+      <div className="col-12 col-lg-6 mb-2 p-0 px-1 h-25  ">
+        <div className=" white-box px-3 pt-2 pb-4 position-relative border rounded-4  bg-white">
           <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
             {stdData||props?.is_Active !== 'false' ? (
               ''
@@ -55,7 +55,7 @@ export default function Cardassessment({
               <span>{props?.ExamDate}</span>
             </div>
             {props?.is_Active !== 'false' ? (
-              <div className=" d-flex justify-content-evenly   align-items-center">
+              <div className=" d-flex justify-content-evenly my-2   align-items-center">
                 <Spinner animation="grow" variant="success" size="sm" />{' '}
                 <strong className="ms-2"> Active</strong>
               </div>

@@ -1,0 +1,14 @@
+@media screen and (max-width:767px) {
+    .admin-top-row-container {
+        height: auto !important;
+    }
+
+    .admin-top-rank-container {
+        height: 400px !important;
+    }
+
+    .top-rank-student-container,
+    .active-assessment-container {
+        height: 400px !important;
+    }
+}

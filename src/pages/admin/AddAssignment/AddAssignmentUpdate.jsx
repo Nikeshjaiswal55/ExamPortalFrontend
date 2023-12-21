@@ -124,9 +124,32 @@ export const AddAssignmentUpdate = () => {
             dipatch(getNotification(false));
           }
         });
+        toast.success('assessment publish successfully!!🎉',{
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
       }
+      else if(res.data.data === 'is_deactivated') {
+        toast.success('assessment  ended successfully!!🎉',{
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+
+      } else {
       // setPaperActive(true);
-      toast.success('assessment updated successfully!!🎉', {
+        toast.success('assessment update successfully!!🎉',{
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -136,6 +159,7 @@ export const AddAssignmentUpdate = () => {
         progress: undefined,
         theme: 'dark',
       });
+      }
     });
   };
 

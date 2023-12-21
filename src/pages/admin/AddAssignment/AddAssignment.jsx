@@ -192,7 +192,7 @@ export const AddAssignment = () => {
     if (values.assessmentName !== '') {
       if (
         values.questions[0].questions !== '' ||
-        values.questions[0].options.lenght ||
+        values.questions[0].options.length ||
         values.questions[0].correctAns !== ''
       ) {
         if (excel.length || values.email.length || values.examBranch !== '') {
@@ -234,7 +234,7 @@ export const AddAssignment = () => {
           AssigmnetData(sendPaper).then((res) => {
             if (res?.data?.paperId) {
               dipatch(getNotification(true));
-              resetForm();
+              // resetForm();
               navigate(path.ShowAssessment.path);
               inviteStudent({
                 userId: res?.data?.userId,
@@ -242,8 +242,8 @@ export const AddAssignment = () => {
                 orgnizationId: res?.data?.orgnizationId,
                 emails: emails,
               }).then((res) => {
-                resetForm();
-                console.log('res', res);
+                // resetForm();
+
                 if (res.error.originalStatus === 200) {
                   dipatch(getNotification(false));
                 } else {
@@ -261,6 +261,10 @@ export const AddAssignment = () => {
               });
             }
           });
+          resetForm();
+          console.log("===============reset values after change ",values);
+          // resetForm();
+
         } else {
           setModalShow(true);
           setErrorContent('Manage Candidate Form');
@@ -577,8 +581,11 @@ const AssesstmentSetting = ({ setInstruction }) => {
 };
 
 const QuestionManagement = ({ values, option, setOption }) => {
-  const inputref = useRef();
-  console.log("============inputref",inputref)
+
+  const refArray = useRef([]);
+  useEffect(() => {
+    refArray.current = Array.from({length: values.questions.length},() => React.createRef());
+  },[values.questions]);
   return (
     <div
       className="text-dark overflow-auto"
@@ -637,8 +644,6 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
                           <RiDeleteBin6Line
                             onClick={() => {
-                              console.log("options ",values.questions[index].options[optionIndex])
-                              // console.log("options ",values?.questions?.[index]?.options?.splice(optionIndex,1))
                               values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
                             }}
                             className="cursor-pointer input-error  d-block  float-start"
@@ -665,20 +670,18 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           name={`questions[${index}].options`}
                           placeholder="Enter options"
                           className="form-control hello w-100 input-border p-2 border focus-ring focus-ring-light hello"
-                          ref={inputref}
-
+                          ref={refArray.current[index]}
+                          value={refArray.current[index]?.current?.value}
                           onChange={(e) => {
                             setOption(e.target.value);
                           }}
-                          // value={option}
-                          // value={values}
-                          // value={inputref.current.value}
+
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && option.trim() !== '') {
                               question.options.push(option);
                               e.preventDefault();
                               setOption('');
-                              document.querySelector('.hello').innerHTML = '';
+                              refArray.current[index].current.value = "";
                             }
                           }}
                         />
@@ -691,8 +694,9 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           option === ''
                             ? alert('Please enter option')
                             : question.options.push(option);
+
                           setOption('');
-                          inputref.current.value = "";
+                          refArray.current[index].current.value = "";
                         }}
                       />
                     </div>
@@ -764,7 +768,6 @@ const ManageCandidate = ({
       const selectedCourse = AllCourse?.data.find(
         (course) => course.course_id == values.examBranch
       );
-      console.log(selectedCourse, 'selectcourse');
       if (selectedCourse) {
         const courseDuration = selectedCourse.duration;
         const years = Array.from(
@@ -917,13 +920,11 @@ const ManageCandidate = ({
                 handleFileChange(e);
                 handleChange(e);
                 let arr = await ExcelDataReader(e.target.files[0]);
-                if (arr instanceof String) {
-                  console.log(arr);
+                if(arr instanceof String) {
                   setExcel(arr);
                   handleErrorShow();
                 } else {
                   setExcel([...arr]);
-                  console.log('excel data =========', arr);
                 }
               }}
               onBlur={handleBlur}

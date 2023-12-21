@@ -1,0 +1,5 @@
+@media (min-width:768px) {
+    .student-total-container {
+        height: 100% !important;
+    }
+}

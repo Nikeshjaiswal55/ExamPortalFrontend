@@ -49,7 +49,7 @@ export const TotalStudentOfOrg = () => {
                     </div> */}
               <div
                 className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto"
-                style={{ height: 'calc(100vh - 16rem)' }}
+                  style={{height: 'calc(100vh - 7rem)'}}
               >
                 {data?.map((studentdetails) => (
                   <StudentCard
