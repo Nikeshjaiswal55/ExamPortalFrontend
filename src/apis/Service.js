@@ -3,11 +3,11 @@ import { SubIdSplit } from '../utils/SubIdSplit'
 import { LocalStorageCache } from '@auth0/auth0-spa-js';
 
 // Define a service using a base URL and expected endpoints
-// const baseUrl = " http://localhost:9090"
-// const baseUrl = "https://exameasy-krishna.onrender.com/"
+// const baseUrl = " http://localhost:9091"
+const baseUrl = "https://exameasy-krishna.onrender.com"
 // const baseUrl = "http://192.168.8.162:9090"
 // const baseUrl = "http://192.168.180.59:9090"
-const baseUrl = "http://192.168.3.161:9090"
+// const baseUrl = "http://192.168.162.59:9091"
 
 // const baseQuery = fetchBaseQuery({
 //     baseUrl: baseUrl,
@@ -298,6 +298,17 @@ export const adminApi = createApi({
                 providesTags: ['submitExam']
             }
         ),
+        // getTotalAssissmentOnstudentPage: builder.query(
+        //     {
+        //         query: (stdId) => {
+        //             return {
+        //                 url: `/getTotalAssessmentBy/StudentId/${stdId}`,
+        //                 method: 'get',
+        //             }
+        //         },
+        //         providesTags: ['submitExam']
+        //     }
+        // ),
         putActivePaper: builder.mutation({
             query: ({ paperId, paperActive }) => {
                 return {

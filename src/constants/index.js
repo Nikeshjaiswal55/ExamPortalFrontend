@@ -3,4 +3,5 @@ export const AUTH0KEYS = {
     CLIENT_ID: "lA9qLAs5xQxoBuCVM1AJERQoPIsopevs",
     AUDIENCE: "https://exam-easy",
     REDIRECT_URL: "http://localhost:5173/get-started"
+    // REDIRECT_URL: "https://exam-easy.netlify.app/get-started"
 }
