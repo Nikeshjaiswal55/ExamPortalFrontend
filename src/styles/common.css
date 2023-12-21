@@ -82,7 +82,12 @@
     color: white !important;
 }
 
-.ck.ck-editor__main>.ck-editor__editable{
-    height:315px;
+.ck.ck-editor__main>.ck-editor__editable {
+    height: 315px;
 }
 
+@media (max-width:768px) {
+    .assesment-side-panel {
+        height: auto !important;
+    }
+}
