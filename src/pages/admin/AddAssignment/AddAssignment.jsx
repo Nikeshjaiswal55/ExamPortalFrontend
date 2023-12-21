@@ -31,7 +31,7 @@ import { AssessmentModal } from './AssessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
 import { Sample1 } from './Templates';
-
+import {RiDeleteBin6Line} from 'react-icons/ri';
 const durationTimer = [
   {
     value: '900',
@@ -192,7 +192,7 @@ export const AddAssignment = () => {
     if (values.assessmentName !== '') {
       if (
         values.questions[0].questions !== '' ||
-        values.questions[0].options.lenght ||
+        values.questions[0].options.length ||
         values.questions[0].correctAns !== ''
       ) {
         if (excel.length || values.email.length || values.examBranch !== '') {
@@ -234,6 +234,7 @@ export const AddAssignment = () => {
           AssigmnetData(sendPaper).then((res) => {
             if (res?.data?.paperId) {
               dipatch(getNotification(true));
+              // resetForm();
               navigate(path.ShowAssessment.path);
               inviteStudent({
                 userId: res?.data?.userId,
@@ -241,8 +242,8 @@ export const AddAssignment = () => {
                 orgnizationId: res?.data?.orgnizationId,
                 emails: emails,
               }).then((res) => {
-                resetForm();
-                console.log('res', res);
+                // resetForm();
+
                 if (res.error.originalStatus === 200) {
                   dipatch(getNotification(false));
                 } else {
@@ -260,6 +261,10 @@ export const AddAssignment = () => {
               });
             }
           });
+          resetForm();
+          console.log("===============reset values after change ",values);
+          // resetForm();
+
         } else {
           setModalShow(true);
           setErrorContent('Manage Candidate Form');
@@ -395,7 +400,7 @@ export const AddAssignment = () => {
         <AssessmentModal
           show={show}
           errorContent={errorContent}
-          setModalShow={setModalShow}
+          setModalShow={setModalShow} 
         />
       </div>
     </>
@@ -576,6 +581,11 @@ const AssesstmentSetting = ({ setInstruction }) => {
 };
 
 const QuestionManagement = ({ values, option, setOption }) => {
+
+  const refArray = useRef([]);
+  useEffect(() => {
+    refArray.current = Array.from({length: values.questions.length},() => React.createRef());
+  },[values.questions]);
   return (
     <div
       className="text-dark overflow-auto"
@@ -621,14 +631,23 @@ const QuestionManagement = ({ values, option, setOption }) => {
                         key={optionIndex}
                         className="d-flex align-items-center"
                       >
-                        <FormLabel className="d-flex align-items-center">
+                        <FormLabel className="d-flex align-items-center justify-content-between">
                           <Field
                             type="radio"
                             id={`option-${index}-${optionIndex}`}
                             name={`questions[${index}].correctAns`}
                             value={option}
+
                           />
+
+
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
+                            }}
+                            className="cursor-pointer input-error  d-block  float-start"
+                          />
                         </FormLabel>
                       </div>
                       <p className="text-danger"></p>
@@ -650,16 +669,19 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           id={`option-${index}`}
                           name={`questions[${index}].options`}
                           placeholder="Enter options"
-                          className="form-control w-100 input-border p-2 border focus-ring focus-ring-light hello"
+                          className="form-control hello w-100 input-border p-2 border focus-ring focus-ring-light hello"
+                          ref={refArray.current[index]}
+                          value={refArray.current[index]?.current?.value}
                           onChange={(e) => {
                             setOption(e.target.value);
                           }}
-                          value={option}
+
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && option.trim() !== '') {
                               question.options.push(option);
                               e.preventDefault();
                               setOption('');
+                              refArray.current[index].current.value = "";
                             }
                           }}
                         />
@@ -672,7 +694,9 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           option === ''
                             ? alert('Please enter option')
                             : question.options.push(option);
+
                           setOption('');
+                          refArray.current[index].current.value = "";
                         }}
                       />
                     </div>
@@ -744,7 +768,6 @@ const ManageCandidate = ({
       const selectedCourse = AllCourse?.data.find(
         (course) => course.course_id == values.examBranch
       );
-      console.log(selectedCourse, 'selectcourse');
       if (selectedCourse) {
         const courseDuration = selectedCourse.duration;
         const years = Array.from(
@@ -897,13 +920,11 @@ const ManageCandidate = ({
                 handleFileChange(e);
                 handleChange(e);
                 let arr = await ExcelDataReader(e.target.files[0]);
-                if (arr instanceof String) {
-                  console.log(arr);
+                if(arr instanceof String) {
                   setExcel(arr);
                   handleErrorShow();
                 } else {
                   setExcel([...arr]);
-                  console.log('excel data =========', arr);
                 }
               }}
               onBlur={handleBlur}

@@ -9,9 +9,11 @@ import {useGetAllCoursesQuery,useGetAssignmentQuery,useGetTop3AssissmentStudents
 import {SubIdSplit} from '../../../utils/SubIdSplit';
 import {path} from '../../../routes/RoutesConstant'
 import graphError from '../../../assets/gif/graph/graph-error.gif'
+
 // import graphAnalysis from '../../../assets/gif/graph/graph-analysis.gif'
 import assessmentfailded from '../../../assets/gif/graph/assessment-error.png'
 import {Loader} from '../../../components/Loader/Loader';
+import './AdminDashboards.css'
 import BarChart from '../component/BarChart';
 import SolidGauge from '../component/SolidGauge';
 import {useNavigate} from 'react-router-dom';
@@ -186,7 +188,7 @@ export const AdminDashboard = () => {
         // ) : (
           <>
             <div className=" w-100 h-100 m-0  p-0 g-md-0 overflow-auto bg-transparent">
-                <div className="row w-100   chart-box    p-1 m-0 h-50" >
+            <div className="row w-100   chart-box  p-1 m-0 h-50 admin-top-row-container" >
                   <div className="col-12 col-md-6  m-0 p-0 h-100  d-flex    align-items-center   justify-content-center   rounded-3">
                     <div className="row m-0 p-0 w-100 h-100   d-flex justify-content-center  align-items-baseline " >
                       {info && info.map((value) => {
@@ -199,8 +201,8 @@ export const AdminDashboard = () => {
 
 
                   </div>
-                  <div className="col-12 col-md-6 d-flex  p-0 px-1    flex-column align-items-center    justify-content-center rounded-3">
-                    <div className=' w-100 h-100 bg-white rounded-3 '>
+              <div className="col-12 col-md-6 d-flex  p-0 px-md-1    flex-column align-items-center    justify-content-center rounded-3 admin-top-rank-container">
+                <div className=' w-100 h-100 mt-1 m-md-0 bg-white rounded-3 '>
                   <h5 className=' ps-5 pt-2 m-0 d-flex justify-content-start align-items-center'> Top Rank Assessment    {topAssessmentOfOrgLoading && <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />}</h5>
 
                       <div className=' m-0 p-0  w-100' style={{height: "90%"}}>
@@ -248,10 +250,10 @@ export const AdminDashboard = () => {
 
                 </div>
 
-                <div className=" m-0 p-1  d-flex justify-content-between  rounded-3 w-100 " style={{height: "50%"}}>
+            <div className=" m-0 p-1  d-flex justify-content-between  rounded-3 w-100 h-50 admin-top-row-container " >
                   <div className="row w-100 h-100  chart-box   p-0  m-0 " >
-                    <div className="col-12 col-md-8 h-auto  p-0 pe-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto">
-                      <div className=' chart-parent w-100 h-100  d-flex   align-items-start  rounded-3  justify-content-center bg-white ' >
+                <div className="col-12 col-md-8 h-auto  p-0 pe-lg-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto active-assessment-container">
+                  <div className=' chart-parent w-100 h-100 mb-2 m-md-0 d-flex   align-items-start  rounded-3  justify-content-center bg-white ' >
 
                         {<div className="row m-0  d-flex flex-column justify-content-start bg-white  rounded-3 w-100 h-100 overflow-auto  p-0   ">
                       <div className='col-12 w-100  p-md-0 m-0   fw-bold '>
@@ -286,7 +288,7 @@ export const AdminDashboard = () => {
                         </div>}
                       </div>
                     </div>
-                <div className="col-12 col-md-4 px-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto">
+                <div className="col-12 col-md-4 px-0 px-md-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto top-rank-student-container">
                   <div className=" w-100  h-100  d-flex flex-column bg-white   align-items-center    justify-content-start   rounded-3">
                     <h5 className=' ps-3 pt-2 align-self-start d-flex justify-content-start align-items-center'> Top Ranking Student    {topRankersLoading && <>
                       <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />

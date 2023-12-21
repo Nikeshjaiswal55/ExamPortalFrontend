@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "./StudentDashBoard.css"
 import {
   useGetAllAssissmentOnstudentPageQuery,
   useGetPassedAssessmentByStudentIdQuery,
@@ -11,10 +12,9 @@ import { StudentCertificate } from '../../student/StudentCertificate/StudentCert
 // import { ViewResult } from '../../student/viewResult/ViewResult';
 import { SubIdSplit } from '../../../utils/SubIdSplit';
 import noAssessmentFound from '../../../assets/gif/graph/noAssesmentFound.png';
-import { FaArrowRight, FaThumbsUp, FaUsers } from 'react-icons/fa';
+import {FaThumbsUp,FaUsers} from 'react-icons/fa';
 import { MdOutlineAssignment } from 'react-icons/md';
-import { Loader } from '../../../components/Loader/Loader';
-import BarChart from '../component/BarChart';
+
 import { CustomButton } from '../../../theme/Button/Buttons';
 import { Accordion, Button, Spinner } from 'react-bootstrap';
 import AttemptedFailed from '../../../assets/gif/graph/assessment-error.png';
@@ -268,12 +268,12 @@ export const StudentDashBoard = () => {
         </div>
 
         <div
-          className=" m-0 p-1  d-flex justify-content-between  rounded-3 w-100 "
-          style={{ height: '50%' }}
+          className=" m-0 p-1  d-flex justify-content-between  rounded-3 w-100  h-50 "
+
         >
           <div className="row w-100 h-100  chart-box   p-0  m-0 ">
             <div className="col-12 col-sm-6 col-md-5 px-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto">
-              <div className="row m-0 p-0  w-100 h-100  ">
+              <div className="row m-0 p-0  w-100  student-total-container  ">
                 {info &&
                   info.map((value) => {
                     return (

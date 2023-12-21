@@ -9,7 +9,7 @@ import {
   Tab,
 } from 'react-bootstrap';
 import { ImCross } from 'react-icons/im';
-import { RiAddFill } from 'react-icons/ri';
+import {RiAddFill,RiDeleteBin6Line} from 'react-icons/ri';
 import { IoClose } from 'react-icons/io5';
 import { MdUpload } from 'react-icons/md';
 import { FaEye } from 'react-icons/fa';
@@ -124,9 +124,32 @@ export const AddAssignmentUpdate = () => {
             dipatch(getNotification(false));
           }
         });
+        toast.success('assessment publish successfully!!🎉',{
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
       }
+      else if(res.data.data === 'is_deactivated') {
+        toast.success('assessment  ended successfully!!🎉',{
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+
+      } else {
       // setPaperActive(true);
-      toast.success('assessment updated successfully!!🎉', {
+        toast.success('assessment update successfully!!🎉',{
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -136,6 +159,7 @@ export const AddAssignmentUpdate = () => {
         progress: undefined,
         theme: 'dark',
       });
+      }
     });
   };
 
@@ -595,6 +619,13 @@ const QuestionManagement = ({ values }) => {
                             value={option}
                           />
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
+                          <RiDeleteBin6Line
+                            onClick={() => {
+                              console.log("options ",values.questions[index].options[optionIndex])
+                              values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
+                            }}
+                            className="cursor-pointer input-error  d-block  float-start"
+                          />
                         </FormLabel>
                       </div>
                       <p className="text-danger"></p>

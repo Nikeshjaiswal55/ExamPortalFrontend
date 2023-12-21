@@ -103,14 +103,14 @@ export default function ShowAssessment() {
   };
   return (
     <>
-      <div className="w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
-        <div className="w-100 row justify-content-between flex-wrap align-items-center  pb-lg-3  ">
-          <div className=" col-12 m-0  p-2 d-flex justify-content-between align-items-center">
+      <div className="w-100 px-md-3 h-100 m-0 p-0 py-2 overflow-auto ">
+        <div className="w-100  justify-content-between flex-wrap align-items-center  pb-lg-3  ">
+          <div className=" col-12 m-0  p-md-2 d-flex justify-content-between align-items-center">
             <h4 className="m-0 col-md-5 justify-content-start  align-items-center text-capitalize fw-bold">
               All Assessment
             </h4>
 
-            <div className=" col-md-7 mx-0  mb-lg-0 mb-3   d-flex align-items-lg-center py-2 justify-content-between justify-content-sm-end  flex-wrap">
+            <div className=" col-md-7 mx-0  mb-lg-0    d-flex align-items-center py-2 justify-content-between justify-content-sm-end  flex-wrap">
               {/* <Form.Select
                 aria-label="by order "
                 style={{ borderColor: '#707070' }}
@@ -159,7 +159,7 @@ export default function ShowAssessment() {
               />
             </span>
           </div> */}
-          <div className=" col-12 w-auto  col-lg-8 mx-0  mb-lg-0 mb-3 d-flex  py-0 px-0 justify-content-md-end flex-wrap ">
+          <div className=" col-12 w-auto  col-lg-8 mx-0  mb-lg-0 mb-3 d-flex  py-0 px-0 justify-content-end flex-wrap ">
             {/* <ReactDatePicker
               selected={publishDate}
               className=" py-2 px-1 border fs-6 me-1 rounded-2 focus-ring focus-ring-light "
@@ -213,7 +213,7 @@ export default function ShowAssessment() {
             <Form.Select
               aria-label="by order "
               style={{ borderColor: '#707070' }}
-              className="  w-auto  input-border fs-6 py-2  border focus-ring focus-ring-light me-1 "
+              className="    w-auto input-border fs-6 py-2 px-5 ps-2  border focus-ring focus-ring-light me-1  form-select "
               onChange={(e) => {
                 setSortOrder(e.target.value);
               }}
@@ -226,7 +226,7 @@ export default function ShowAssessment() {
             <Form.Select
               aria-label="by active "
               style={{ borderColor: '#707070' }}
-              className="  fs-6 w-auto input-border  border focus-ring focus-ring-light me-1 py-2 "
+              className="   fs-6 w-auto input-border px-2  border focus-ring focus-ring-light me-0 py-2  form-select "
               onChange={changeStatusByActive}
               disabled={isError || isLoading || isFetching ? true : false}
             >

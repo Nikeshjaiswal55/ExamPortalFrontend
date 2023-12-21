@@ -143,12 +143,12 @@ export default function ShowCourse() {
     return (
       <>
         <div className="w-100 h-100 m-0  overflow-auto">
-          <div className=" row m-0  p-2 d-flex justify-content-between align-items-center">
-            <h4 className="m-0 col-12 col-sm-3 justify-content-start  align-items-center text-capitalize fw-bold">
+          <div className=" row m-0  p-2 d-flex mb-3 justify-content-between align-items-center">
+            <h4 className="m-0 col-6 col-sm-3 justify-content-start  align-items-center text-capitalize fw-bold">
               All Courses
             </h4>
 
-            <div className=" col-12  col-sm-9 mx-0  mb-lg-0 mb-3 d-flex align-items-lg-center justify-content-between justify-content-sm-end  flex-wrap">
+            <div className=" col-6  col-sm-9 mx-0  mb-lg-0  d-flex align-items-center  justify-content-end  flex-wrap">
               {/* <div
                 className="d-flex  mx-3 mb-lg-0 mb-3  justify-content-between border py-1 px-2  fs-5 rounded-4 bg-white  "
   
