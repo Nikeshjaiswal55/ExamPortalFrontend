@@ -33,35 +33,35 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="hero">
-      <div className="hero-wrapper">
+    <div className="hero row justify-content-center ps-md-4">
+      <div className="hero-wrapper col-md-4 col-12 ps-md-5 d-flex align-items-center">
         <motion.div
           className="text-container"
           variants={textVariants}
           initial="initial"
           animate="animate"
         >
-          <motion.h2 variant={textVariants} className="text-h2">
-            Welcome to ExamEasy!!
+          <motion.h2 variant={textVariants} className="text-h2 h4 mb-5">
+            Welcome To ExamEasy!!
           </motion.h2>
-          <motion.h1 variant={textVariants} className="text-h1">
+          <motion.h1 variant={textVariants} className="display-2 px-1 text-bold px-md-0">
             With Moto Your Action Our Reaction...
           </motion.h1>
-          <motion.a href="#contact" variant={textVariants} className="buttons">
-            contact us
-          </motion.a>
+          <motion.a href="#contact" variant={textVariants} className="buttons"> Contact Us </motion.a>
         </motion.div>
       </div>
       <motion.div
-        className="slidingTextContainer"
+        className="slidingTextContainer col-12"
         variants={sliderVariants}
         initial="initial"
         animate="animate"
       >
         NO MORE CHEATING
       </motion.div>
+      <div className="col-md-5 col-12">
       <div className="imageContainer">
         <img src={landingPage} alt="" />
+      </div>
       </div>
     </div>
   );

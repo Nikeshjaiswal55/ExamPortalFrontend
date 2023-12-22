@@ -10,11 +10,11 @@ export const TotalComponent = ({infoText,infoNumber,icon,onViewClick,colClassNam
                 </div>
                 <div className=' w-100 h-50 d-flex justify-content-center align-items-center m-0 p-0 '>
 
-                    <span className="info-box-number text-center fs-3 px-1 rounded-circle ">{infoNumber}</span>
+                    <span className="info-box-number text-center fs-1 px-1 rounded-circle ">{infoNumber}</span>
                 </div>
                 <div className=' w-100 text-center h-25 m-0 p-0'>
                     <hr className=' m-0 p-0' />
-                    <span className=' fs-5 text-center p-0 m-0 h-100 d-flex justify-content-center align-items-center py-2 mx-2 cursor-pointer' onClick={() => {onViewClick();}}> View More <FaArrowRight className=' px-2' size={30} /></span>
+                    <span className='fs-6 text-center p-0 m-0 h-100 d-flex justify-content-center align-items-center py-2 mx-2 cursor-pointer' onClick={() => {onViewClick();}}> View More <FaArrowRight className=' px-2' size={26} /></span>
                 </div>
             </div>
         </div>

@@ -47,11 +47,11 @@ const Single = ({ item }) => {
   return (
     <section className="section">
       <div className="portfolio-container">
-        <div className="portfolio-wrapper">
-          <div className="portfolio-image-container" ref={ref}>
+        <div className="portfolio-wrapper row">
+          <div className="portfolio-image-container col-md-6 col-sm-12" ref={ref}>
             <img src={item.img} className="portfolio-img" alt="" />
           </div>
-          <motion.div className="portfolio-text-container" style={{ y }}>
+          <motion.div className="portfolio-text-container col-md-6 col-sm-12" style={{ y }}>
             <h2 className="portfolio-text-h2">{item.title}</h2>
             <p className="portfolio-text-p">{item.desc}</p>
             {/* <button className="portfolio-button">See Demo</button> */}

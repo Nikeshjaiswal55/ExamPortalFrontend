@@ -189,19 +189,7 @@ export const AdminDashboard = () => {
           <>
             <div className=" w-100 h-100 m-0  p-0 g-md-0 overflow-auto bg-transparent">
             <div className="row w-100   chart-box  p-1 m-0 h-50 admin-top-row-container" >
-                  <div className="col-12 col-md-6  m-0 p-0 h-100  d-flex    align-items-center   justify-content-center   rounded-3">
-                    <div className="row m-0 p-0 w-100 h-100   d-flex justify-content-center  align-items-baseline " >
-                      {info && info.map((value) => {
-                        return <>
-                          <TotalComponent key={value.id} infoText={value.infoText} infoNumber={value.infoNumber} icon={value.icon} onViewClick={value.onViewClick} iconClassName={value.iconClassName} >{value?.children}</TotalComponent>
-                        </>
-                      })
-                      }
-                    </div>
-
-
-                  </div>
-              <div className="col-12 col-md-6 d-flex  p-0 px-md-1    flex-column align-items-center    justify-content-center rounded-3 admin-top-rank-container">
+            <div className="col-12 col-md-6 d-flex  p-0 px-md-1    flex-column align-items-center    justify-content-center rounded-3 admin-top-rank-container">
                 <div className=' w-100 h-100 mt-1 m-md-0 bg-white rounded-3 '>
                   <h5 className=' ps-5 pt-2 m-0 d-flex justify-content-start align-items-center'> Top Rank Assessment    {topAssessmentOfOrgLoading && <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />}</h5>
 
@@ -246,13 +234,57 @@ export const AdminDashboard = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="col-12 col-md-6  m-0 p-0 h-100  d-flex    align-items-center   justify-content-center   rounded-3">
+                    <div className="row m-0 p-0 w-100 h-100   d-flex justify-content-center  align-items-baseline " >
+                      {info && info.map((value) => {
+                        return <>
+                          <TotalComponent key={value.id} infoText={value.infoText} infoNumber={value.infoNumber} icon={value.icon} onViewClick={value.onViewClick} iconClassName={value.iconClassName} >{value?.children}</TotalComponent>
+                        </>
+                      })
+                      }
+                    </div>
 
 
+                  </div>
                 </div>
 
             <div className=" m-0 p-1  d-flex justify-content-between  rounded-3 w-100 h-50 admin-top-row-container " >
                   <div className="row w-100 h-100  chart-box   p-0  m-0 " >
-                <div className="col-12 col-md-8 h-auto  p-0 pe-lg-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto active-assessment-container">
+                  <div className="col-12 col-md-4 px-0 px-md-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto top-rank-student-container">
+                  <div className=" w-100  h-100  d-flex flex-column bg-white   align-items-center    justify-content-start   rounded-3">
+                    <h5 className=' ps-3 pt-2 align-self-start d-flex justify-content-start align-items-center'> Top Ranking Student    {topRankersLoading && <>
+                      <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />
+                    </>}</h5>
+
+
+                    {topRankersError ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '> <SolidGauge
+                      assessemnt1={'Not present'}
+                      assessemnt2={'Not present'}
+                      assessemnt3={'Not present'}
+                      assessemnt4={'Not present'}
+                      assessemnt5={'Not present'}
+                      value1={0}
+                      value2={0}
+                      value3={0}
+                      value4={0}
+                      value5={0} /> </div> : null}
+                    {topStudentOfOrg && topStudentOfOrg?.length && !topRankersLoading && !topRankersFetching ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '>
+                          <SolidGauge
+                            assessemnt1={topStudentOfOrg?.[0]?.name ?? 'Not present'}
+                            assessemnt2={topStudentOfOrg?.[1]?.name ?? 'Not present'}
+                            assessemnt3={topStudentOfOrg?.[2]?.name ?? 'Not present'}
+                            assessemnt4={topStudentOfOrg?.[3]?.name ?? 'Not present'}
+                            assessemnt5={topStudentOfOrg?.[4]?.name ?? 'Not present'}
+                            value1={topStudentOfOrg?.[0]?.topMarks ?? 0}
+                            value2={topStudentOfOrg?.[1]?.topMarks ?? 0}
+                            value3={topStudentOfOrg?.[2]?.topMarks ?? 0}
+                            value4={topStudentOfOrg?.[3]?.topMarks ?? 0}
+                            value5={topStudentOfOrg?.[4]?.topMarks ?? 0} />
+                    </div> : null}
+
+                      </div>
+                    </div>
+                  <div className="col-12 col-md-8 h-auto  p-0 pe-lg-1 d-flex  align-items-center    justify-content-center rounded-3 overflow-auto active-assessment-container">
                   <div className=' chart-parent w-100 h-100 mb-2 m-md-0 d-flex   align-items-start  rounded-3  justify-content-center bg-white ' >
 
                         {<div className="row m-0  d-flex flex-column justify-content-start bg-white  rounded-3 w-100 h-100 overflow-auto  p-0   ">
@@ -288,40 +320,7 @@ export const AdminDashboard = () => {
                         </div>}
                       </div>
                     </div>
-                <div className="col-12 col-md-4 px-0 px-md-1  h-auto overflow-auto  d-flex   align-items-center    justify-content-start   rounded-3 overflow-auto top-rank-student-container">
-                  <div className=" w-100  h-100  d-flex flex-column bg-white   align-items-center    justify-content-start   rounded-3">
-                    <h5 className=' ps-3 pt-2 align-self-start d-flex justify-content-start align-items-center'> Top Ranking Student    {topRankersLoading && <>
-                      <Spinner size='sm' variant='primary' className=' ms-2' animation="border" />
-                    </>}</h5>
-
-
-                    {topRankersError ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '> <SolidGauge
-                      assessemnt1={'Not present'}
-                      assessemnt2={'Not present'}
-                      assessemnt3={'Not present'}
-                      assessemnt4={'Not present'}
-                      assessemnt5={'Not present'}
-                      value1={0}
-                      value2={0}
-                      value3={0}
-                      value4={0}
-                      value5={0} /> </div> : null}
-                    {topStudentOfOrg && topStudentOfOrg?.length && !topRankersLoading && !topRankersFetching ? <div className=' chart-parent w-100 d-flex  h-100  align-items-center  rounded-3 py-3  justify-content-center '>
-                          <SolidGauge
-                            assessemnt1={topStudentOfOrg?.[0]?.name ?? 'Not present'}
-                            assessemnt2={topStudentOfOrg?.[1]?.name ?? 'Not present'}
-                            assessemnt3={topStudentOfOrg?.[2]?.name ?? 'Not present'}
-                            assessemnt4={topStudentOfOrg?.[3]?.name ?? 'Not present'}
-                            assessemnt5={topStudentOfOrg?.[4]?.name ?? 'Not present'}
-                            value1={topStudentOfOrg?.[0]?.topMarks ?? 0}
-                            value2={topStudentOfOrg?.[1]?.topMarks ?? 0}
-                            value3={topStudentOfOrg?.[2]?.topMarks ?? 0}
-                            value4={topStudentOfOrg?.[3]?.topMarks ?? 0}
-                            value5={topStudentOfOrg?.[4]?.topMarks ?? 0} />
-                    </div> : null}
-
-                      </div>
-                    </div>
+              
                   </div></div>
 
             </div>
