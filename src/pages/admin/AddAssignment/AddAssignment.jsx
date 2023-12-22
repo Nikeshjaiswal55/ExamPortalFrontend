@@ -293,14 +293,14 @@ export const AddAssignment = () => {
                 defaultActiveKey="assessmentSetting"
                 onSelect={handleTabSelect}
               >
-                <div className="row h-100 gap-2  m-0 p-0">
+                <div className="row h-100 gap-2  m-0 p-0 overflow-auto">
                   <div
                     style={{ height: 'calc(100vh - 77px)' }}
-                    className="col-2 px-4 bg-white rounded-3"
+                    className="col-12 col-md-2 px-4 bg-white rounded-3 assesment-side-panel"
                   >
-                    <h4 className="text-capitalize fw-bold my-4">
+                    <h6 className="text-capitalize fw-bold  my-4">
                       Test Configuration
-                    </h4>
+                    </h6>
                     <div className=" mb-3">
                       <Nav>
                         <div>
@@ -360,7 +360,7 @@ export const AddAssignment = () => {
                       )}
                     </Button>
                   </div>
-                  <div className="col-7 px-0" style={{ flex: 1 }}>
+                  <div className="col-12 col-md-7 px-0" style={{flex: 1}}>
                     <Tab.Content>
                       <Tab.Pane
                         eventKey="assessmentSetting"
@@ -410,7 +410,7 @@ export const AddAssignment = () => {
 const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
-      className=" p-4 rounded-3 bg-white text-dark"
+      className=" p-4 rounded-3 bg-white text-dark overflow-auto"
       style={{ height: 'calc(100vh - 77px)' }}
     >
       <div className="my-3">
@@ -441,8 +441,8 @@ const AssesstmentSetting = ({ setInstruction }) => {
           <ErrorMessage name="shortDescription" className="text-danger" />
         </p>
       </div>
-      <div className="row gap-1 my-3">
-        <div className="col-3">
+      <div className="row  my-3">
+        <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column justify-content-between ">
           <FormLabel className="text-capitalize fw-bold">
             Assessment Pattern
           </FormLabel>
@@ -456,7 +456,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             <ErrorMessage name="assessmentPattern" className="text-danger" />
           </p>
         </div>
-        <div className="col-3">
+        <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column justify-content-between ">
           <FormLabel className="text-capitalize fw-bold">
             Assessment Duration
           </FormLabel>
@@ -476,7 +476,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             <ErrorMessage name="assessmentDuration" className="text-danger" />
           </p>
         </div>
-        <div className="col-3">
+        <div className="col-12 col-sm-6  col-lg-3 d-flex flex-column justify-content-between ">
           <FormLabel className="text-capitalize fw-bold">Total Marks</FormLabel>
           <Field
             type="number"
@@ -488,7 +488,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             <ErrorMessage name="assessmentTotalMarks" className="text-danger" />
           </p>
         </div>
-        <div className="col-2">
+        <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column justify-content-between ">
           <FormLabel className="text-capitalize fw-bold">
             Minimum Passing Marks
           </FormLabel>
@@ -507,7 +507,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
         </div>
       </div>
       <div className="row  my-3">
-        <div className="col-6">
+        <div className="col-12 col-sm-6">
           <FormLabel className="text-capitalize fw-bold">
             Assessment Result Configuration
           </FormLabel>
@@ -542,7 +542,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             />
           </p>
         </div>
-        <div className=" col-6 ">
+        <div className=" col-12 col-sm-6 ">
           <FormLabel className="text-capitalize fw-bold">
             Assessment Order
           </FormLabel>
@@ -790,7 +790,7 @@ const ManageCandidate = ({
         ) : (
           <>
             <div className="row">
-              <div className="col-6">
+                <div className="col-12 col-md-6">
                 <label className="text-capitalize fw-bold">
                   Select Candidate Course
                   <span className="fw-normal">
@@ -818,7 +818,7 @@ const ManageCandidate = ({
                   })}
                 </Field>
               </div>
-              <div className="col-6">
+                <div className="col-12 col-md-6">
                 <label className="text-capitalize fw-bold">Select Year</label>
                 <Field
                   as="select"
