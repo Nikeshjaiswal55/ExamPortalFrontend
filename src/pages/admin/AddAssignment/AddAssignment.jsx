@@ -445,8 +445,8 @@ export const AddAssignment = () => {
 const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
-      className=" p-4 rounded-3 bg-white text-dark overflow-auto"
-      style={{ height: 'calc(100vh - 77px)' }}
+      className=" p-4 rounded-3 bg-white text-dark"
+      style={{ height: 'calc(100vh - 120px)' }}
     >
       <div className="my-3">
         <FormLabel className="text-capitalize fw-bold">
