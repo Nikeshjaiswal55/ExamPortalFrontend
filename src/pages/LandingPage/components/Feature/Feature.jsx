@@ -8,30 +8,31 @@ import rulebreakk from '../../../../assets/gif/rule-break.gif';
 const items = [
   {
     id: 1,
-    title: 'Taking ScreenShot On Tab Switch',
+    title: 'Seamlessly Grabbing Screenshots When Switching Tabs',
     img: screentshot,
     // img: 'https://images.pexels.com/photos/18073372/pexels-photo-18073372/free-photo-of-young-man-sitting-in-a-car-on-a-night-street.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ab id ad nesciunt quo aut corporis modi? Voluptate, quos sunt dolorum facilis, id eum sequi placeat accusantium saepe eos laborum.',
+    desc: 'Automatically capture screenshots when a student switches tabs on our secure exam portal. This proactive feature ensures exam integrity, providing real-time monitoring and deterring any attempt to navigate away. Enhance the reliability of your online exams with seamless and automated tab-switching screenshot capture for a secure testing environment.',
   },
   {
     id: 2,
-    title: 'Random Picture Click on Time Interval',
+    title:
+      'Snapshots: Time-Triggered Image Capture for Cheat Detection',
     img: randomclick,
     // img: 'https://images.pexels.com/photos/18023772/pexels-photo-18023772/free-photo-of-close-up-of-a-person-holding-a-wristwatch.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ab id ad nesciunt quo aut corporis modi? Voluptate, quos sunt dolorum facilis, id eum sequi placeat accusantium saepe eos laborum.',
+    desc: 'Implement a customizable snapshot interval by clicking, allowing users to set the frequency of screenshots during exams on our portal. This feature provides flexibility, enabling fine-tuned monitoring based on individual preferences or specific exam requirements',
   },
-  {
-    id: 3,
-    title: 'Audio Record',
-    img: 'https://images.pexels.com/photos/6894528/pexels-photo-6894528.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ab id ad nesciunt quo aut corporis modi? Voluptate, quos sunt dolorum facilis, id eum sequi placeat accusantium saepe eos laborum.',
-  },
+  // {
+  //   id: 3,
+  //   title: 'Audio Record',
+  //   img: 'https://images.pexels.com/photos/6894528/pexels-photo-6894528.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
+  //   desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ab id ad nesciunt quo aut corporis modi? Voluptate, quos sunt dolorum facilis, id eum sequi placeat accusantium saepe eos laborum.',
+  // },
   {
     id: 4,
-    title: 'On Violence Rules Auto Submit',
+    title: 'Automated Enforcement: Instant Submission of Violation Reports',
     img: rulebreakk,
     // img: 'https://images.pexels.com/photos/18540208/pexels-photo-18540208/free-photo-of-wood-landscape-water-hill.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ab id ad nesciunt quo aut corporis modi? Voluptate, quos sunt dolorum facilis, id eum sequi placeat accusantium saepe eos laborum.',
+    desc: 'Incorporate an auto-submit feature based on predefined violence detection rules in our exam portal. Enhance security by automatically submitting the exam if any violent content is detected, ensuring a safe and controlled testing environment.',
   },
 ];
 

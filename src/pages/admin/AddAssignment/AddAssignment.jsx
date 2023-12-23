@@ -31,7 +31,7 @@ import { AssessmentModal } from './AssessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
 import { Sample1 } from './Templates';
-import {RiDeleteBin6Line} from 'react-icons/ri';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 const durationTimer = [
   {
     value: '900',
@@ -77,6 +77,7 @@ const initialvalue = {
   examBranch: '',
   session: '',
   email: [],
+  checkbox: '',
 };
 
 const AssesstmentSettingVAlidation = yup.object().shape({
@@ -189,95 +190,112 @@ export const AddAssignment = () => {
     }
   }, [inviteSucessFull]);
   const submitPaper = (values, resetForm) => {
-    if (values.assessmentName !== '') {
-      if (
-        values.questions[0].questions !== '' ||
-        values.questions[0].options.length ||
-        values.questions[0].correctAns !== ''
-      ) {
-        if (excel.length || values.email.length || values.examBranch !== '') {
-          const sendPaper = {
-            questions: values.questions,
-            examDetails: {
-              examDuration: values.assessmentDuration,
-              examMode: values.assessmentPattern,
-              examRounds: 1,
-              paperChecked: false,
-              branch: values.examBranch ? values.examBranch : null,
-              session: values.session,
-              assessmentName: values.assessmentName,
-              totalMarks: Math.ceil(values.assessmentTotalMarks),
-              minimum_marks: Math.ceil(values.assessmentMinmumMarks),
-              is_Active: 'false',
-              is_attempted: false,
-              is_Setup: true,
-            },
-            paper: {
-              userId: userId,
-              orgnizationId: getOrgdata?.orgnizationId,
-              description: values.shortDescription,
-              instruction: instruction,
-              is_Active: true,
-              is_setup: true,
-              is_auto_check:
-                values.assessmentResultConfig === 'autoCheck' ? true : false,
-              is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
-            },
-          };
-          let emails = excel.reduce(
-            (arr, currentvalue) => {
-              arr.push(currentvalue.email);
-              return arr;
-            },
-            [...values.email]
-          );
-          AssigmnetData(sendPaper).then((res) => {
-            if (res?.data?.paperId) {
-              dipatch(getNotification(true));
-              // resetForm();
-              navigate(path.ShowAssessment.path);
-              inviteStudent({
-                userId: res?.data?.userId,
-                paperId: res?.data?.paperId,
-                orgnizationId: res?.data?.orgnizationId,
-                emails: emails,
-              }).then((res) => {
+    console.log('inside submit');
+    if (activeTab == 'manageCandidate') {
+      console.log('inside submit manage candidate');
+      if (values.assessmentName !== '') {
+        if (
+          values.questions[0].questions !== '' ||
+          values.questions[0].options.length ||
+          values.questions[0].correctAns !== ''
+        ) {
+          if (excel.length || values.email.length || values.examBranch !== '') {
+            const sendPaper = {
+              questions: values.questions,
+              examDetails: {
+                examDuration: values.assessmentDuration,
+                examMode: values.assessmentPattern,
+                examRounds: 1,
+                paperChecked: false,
+                branch: values.examBranch ? values.examBranch : null,
+                session: values.session,
+                assessmentName: values.assessmentName,
+                totalMarks: Math.ceil(values.assessmentTotalMarks),
+                minimum_marks: Math.ceil(values.assessmentMinmumMarks),
+                is_Active: 'false',
+                is_attempted: false,
+                is_Setup: true,
+              },
+              paper: {
+                userId: userId,
+                orgnizationId: getOrgdata?.orgnizationId,
+                description: values.shortDescription,
+                instruction: instruction,
+                is_Active: true,
+                is_setup: true,
+                is_auto_check:
+                  values.assessmentResultConfig === 'autoCheck' ? true : false,
+                is_shorted:
+                  values.assessmentOrder === 'sortOrder' ? true : false,
+              },
+            };
+            let emails = excel.reduce(
+              (arr, currentvalue) => {
+                arr.push(currentvalue.email);
+                return arr;
+              },
+              [...values.email]
+            );
+            AssigmnetData(sendPaper).then((res) => {
+              if (res?.data?.paperId) {
+                dipatch(getNotification(true));
                 // resetForm();
+                navigate(path.ShowAssessment.path);
+                inviteStudent({
+                  userId: res?.data?.userId,
+                  paperId: res?.data?.paperId,
+                  orgnizationId: res?.data?.orgnizationId,
+                  emails: emails,
+                }).then((res) => {
+                  // resetForm();
 
-                if (res.error.originalStatus === 200) {
-                  dipatch(getNotification(false));
-                } else {
-                  toast.error('student not added successfully!!😑', {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'dark',
-                  });
-                }
-              });
-            }
-          });
-          resetForm();
-          console.log("===============reset values after change ",values);
-          // resetForm();
-
+                  if (res.error.originalStatus === 200) {
+                    dipatch(getNotification(false));
+                  } else {
+                    toast.error('student not added successfully!!😑', {
+                      position: 'top-right',
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: 'dark',
+                    });
+                  }
+                });
+              }
+            });
+            resetForm();
+            console.log('===============reset values after change ', values);
+            // resetForm();
+          } else {
+            setModalShow(true);
+            setErrorContent('Manage Candidate Form');
+          }
         } else {
           setModalShow(true);
-          setErrorContent('Manage Candidate Form');
+          setErrorContent('Question Management Form');
         }
       } else {
         setModalShow(true);
-        setErrorContent('Question Management Form');
+        setErrorContent('Assessment Setting Form');
       }
     } else {
-      setModalShow(true);
-      setErrorContent('Assessment Setting Form');
+      if (activeTab == 'assessmentSetting') {
+        navLinkRef.current.click();
+        setActiveTab('questionManagement');
+
+        console.log('inside submit assessmentSetting ', navLinkRef.current);
+      }
+      if (activeTab == 'questionManagement') {
+        navLinkRef.current.click();
+        setActiveTab('manageCandidate');
+        console.log('inside submit manageCandidate ');
+      }
     }
   };
+  const navLinkRef = useRef(null);
   return (
     <>
       <div className="h-100 w-100 rounded-5">
@@ -306,6 +324,7 @@ export const AddAssignment = () => {
                         <div>
                           <Nav.Item>
                             <Nav.Link
+                              ref={navLinkRef}
                               eventKey="assessmentSetting"
                               className={` text-capitalize my-3 mx-0 px-0 fw-bold cursor-pointer ${
                                 activeTab === 'assessmentSetting'
@@ -319,6 +338,7 @@ export const AddAssignment = () => {
                           </Nav.Item>
                           <Nav.Item>
                             <Nav.Link
+                              ref={navLinkRef}
                               eventKey="questionManagement"
                               className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'questionManagement'
@@ -332,6 +352,7 @@ export const AddAssignment = () => {
                           </Nav.Item>
                           <Nav.Item>
                             <Nav.Link
+                              ref={navLinkRef}
                               eventKey="manageCandidate"
                               className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'manageCandidate'
@@ -349,7 +370,7 @@ export const AddAssignment = () => {
                     {/* <Button className='className=" p-lg-2 w-100 btn-dark btn '>
                       Publish
                     </Button> */}
-                    <Button
+                    {/* <Button
                       type="subbmit"
                       className='className=" p-lg-2 my-2 btn-primary btn w-100'
                     >
@@ -358,7 +379,7 @@ export const AddAssignment = () => {
                       ) : (
                         'Submit'
                       )}
-                    </Button>
+                    </Button> */}
                   </div>
                   <div className="col-12 col-md-7 px-0" style={{flex: 1}}>
                     <Tab.Content>
@@ -391,6 +412,20 @@ export const AddAssignment = () => {
                         />
                       </Tab.Pane>
                     </Tab.Content>
+                    <div className="d-flex justify-content-end">
+                      <Button
+                        type="subbmit"
+                        className='className="p-lg-2 my-2 btn-primary btn w-25'
+                      >
+                        {isLoading ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : activeTab == 'manageCandidate' ? (
+                          'Submit'
+                        ) : (
+                          ' Next'
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Tab.Container>
@@ -400,7 +435,7 @@ export const AddAssignment = () => {
         <AssessmentModal
           show={show}
           errorContent={errorContent}
-          setModalShow={setModalShow} 
+          setModalShow={setModalShow}
         />
       </div>
     </>
@@ -581,15 +616,16 @@ const AssesstmentSetting = ({ setInstruction }) => {
 };
 
 const QuestionManagement = ({ values, option, setOption }) => {
-
   const refArray = useRef([]);
   useEffect(() => {
-    refArray.current = Array.from({length: values.questions.length},() => React.createRef());
-  },[values.questions]);
+    refArray.current = Array.from({ length: values.questions.length }, () =>
+      React.createRef()
+    );
+  }, [values.questions]);
   return (
     <div
       className="text-dark overflow-auto"
-      style={{ height: 'calc(100vh - 6rem)' }}
+      style={{ height: 'calc(100vh - 7rem)' }}
     >
       <FieldArray name="questions">
         {({ push, remove }) => (
@@ -602,14 +638,25 @@ const QuestionManagement = ({ values, option, setOption }) => {
                     <FormLabel className="py-1 fw-bold">
                       Question {index + 1} :-
                     </FormLabel>
-                    {values.questions.length === 1 ? (
-                      ' '
-                    ) : (
-                      <ImCross
-                        onClick={() => remove(index)}
-                        className="cursor-pointer"
-                      />
-                    )}
+                    <div>
+                      <FormLabel className="mx-3">
+                        <Field
+                          type="checkbox"
+                          className="form-check-input mx-2"
+                          name="checkbox"
+                          id={`checkbox-${index}`}
+                        />
+                        Multiple Correct Answer
+                      </FormLabel>
+                      {values.questions.length === 1 ? (
+                        ' '
+                      ) : (
+                        <ImCross
+                          onClick={() => remove(index)}
+                          className="cursor-pointer"
+                        />
+                      )}
+                    </div>
                   </div>
                   <Field
                     type="text"
@@ -624,6 +671,27 @@ const QuestionManagement = ({ values, option, setOption }) => {
                   />
                 </div>
                 <div>
+                  {/* <div className="row align-items-center">
+                    <div className="col-2">
+                      <FormLabel className="py-2 m-0 fw-bold">
+                        Options :-
+                      </FormLabel>
+                    </div>
+                    <div className='col-3'>
+                      <Field
+                        as="select"
+                        name="assessmentDuration"
+                        className="form-select input-border p-2 border focus-ring text-capitalize focus-ring-light col-3"
+                      >
+                        <option value="">Multiple Correct Option</option>
+                        {['multiple', 'single']?.map((name, index) => (
+                          <option key={index} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                  </div> */}
                   <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
                   {question.options.map((option, optionIndex) => (
                     <>
@@ -633,18 +701,19 @@ const QuestionManagement = ({ values, option, setOption }) => {
                       >
                         <FormLabel className="d-flex align-items-center justify-content-between">
                           <Field
-                            type="radio"
+                            type={values.checkbox ? 'checkbox' : 'radio'}
                             id={`option-${index}-${optionIndex}`}
                             name={`questions[${index}].correctAns`}
                             value={option}
-
                           />
-
 
                           <h6 className="mx-2 mb-1 mb-0">{option}</h6>
                           <RiDeleteBin6Line
                             onClick={() => {
-                              values.questions[index].options = values?.questions?.[index]?.options?.filter((vlaue,index) => index !== optionIndex);
+                              values.questions[index].options =
+                                values?.questions?.[index]?.options?.filter(
+                                  (vlaue, index) => index !== optionIndex
+                                );
                             }}
                             className="cursor-pointer input-error  d-block  float-start"
                           />
@@ -675,13 +744,12 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           onChange={(e) => {
                             setOption(e.target.value);
                           }}
-
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && option.trim() !== '') {
                               question.options.push(option);
                               e.preventDefault();
                               setOption('');
-                              refArray.current[index].current.value = "";
+                              refArray.current[index].current.value = '';
                             }
                           }}
                         />
@@ -696,7 +764,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
                             : question.options.push(option);
 
                           setOption('');
-                          refArray.current[index].current.value = "";
+                          refArray.current[index].current.value = '';
                         }}
                       />
                     </div>
@@ -783,7 +851,7 @@ const ManageCandidate = ({
     <>
       <div
         className="p-4 bg-white rounded-3 text-dark "
-        style={{ height: 'calc(100vh - 77px)' }}
+        style={{ height: 'calc(100vh - 120px)' }}
       >
         {orgType == 'company' ? (
           ''
@@ -920,7 +988,7 @@ const ManageCandidate = ({
                 handleFileChange(e);
                 handleChange(e);
                 let arr = await ExcelDataReader(e.target.files[0]);
-                if(arr instanceof String) {
+                if (arr instanceof String) {
                   setExcel(arr);
                   handleErrorShow();
                 } else {

@@ -56,10 +56,11 @@ export const StudentCertificate = ({ nameprops }) => {
         onHide={() => setModalShow(false)}
       >
         <Modal.Header closeButton />
-        <Modal.Body style={{ width: '100%', height: '80vh' }}>
+        <Modal.Body style={{ width: '100%' }}>
           <div
             ref={divRef}
-            className="certificate-img h-100 w-100 position-relative"
+            className="certificate-img  w-100 position-relative"
+            style={{ height: '34rem' }}
           >
             <div className="row justify-content-center">
               <div
