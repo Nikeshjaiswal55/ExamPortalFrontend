@@ -27,9 +27,7 @@ export default function StudentPaper({
   //   useGetAllQuestionsFromPaperIdQuery(paperId);
   const [saveResult, { isSucess, isLoading: submitPaperLoading }] =
     usePostSaveResultMutation();
-  // const timeString = '01:45:15';
-  const timeString = decodedData?.examDetails.examDuration;
-  const [targetTime, setTargetTime] = useState(null);
+  const [showOnTimeOver, setShowOnTimeOver] = useState(false);
   const progressBar = useRef(null);
   const [count, setCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState(
@@ -37,17 +35,6 @@ export default function StudentPaper({
   );
 
   const imagesArray = useSelector((state) => state.admin.image);
-
-  // useEffect(() => {
-  //   const convertTimeStringToMillis = (timeString) => {
-  //     const [hours, minutes, seconds] = timeString.split(':').map(Number);
-  //     return ((hours * 60 + minutes) * 60 + seconds) * 1000;
-  //   };
-  //   const milliseconds = convertTimeStringToMillis(timeString);
-  //   const currentTimestamp = Date.now();
-  //   const target = currentTimestamp + milliseconds;
-  //   setTargetTime(target);
-  // }, [timeString]);
 
   function getUserAnswereWithQuestion() {
     const questionsJson = JSON.stringify(decodedData?.questions);
@@ -109,6 +96,8 @@ export default function StudentPaper({
   }
 
   const handleTimerEnd = useCallback(() => {
+    setShowOnTimeOver(true);
+    cameraStop();
     submitPaperDetails();
   }, []);
 
@@ -128,14 +117,11 @@ export default function StudentPaper({
                     {decodedData?.examDetails.assessmentName}
                   </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
-                    <span>
-                      {targetTime && (
-                        <CountdownTimer
-                          initialTime={decodedData?.examDetails.examDuration}
-                          onTimerEnd={handleTimerEnd}
-                        />
-                      )}
-                    </span>{' '}
+                    <CountdownTimer
+                      initialTime={+decodedData?.examDetails.examDuration}
+                      // initialTime={40}
+                      onTimerEnd={handleTimerEnd}
+                    />
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
                       style={{ width: '200px', height: '10px' }}
@@ -253,6 +239,40 @@ export default function StudentPaper({
                   <Spinner animation="border" size="sm" />
                 ) : (
                   'Submit'
+                )}
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      )}
+      {showOnTimeOver && (
+        <Modal
+          show={showOnTimeOver}
+          onHide={handleSubmitClose}
+          backdrop="static"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          keyboard={false}
+        >
+          <Modal.Header>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Just wait a minute..
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Your Exam is Over</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="d-flex w-100 gap-3">
+              <Button
+                variant="success"
+                className="rounded-4 w-100"
+                onClick={handleSubmit}
+              >
+                {submitPaperLoading ? (
+                  <Spinner animation="border" size="sm" />
+                ) : (
+                  'ok'
                 )}
               </Button>
             </div>

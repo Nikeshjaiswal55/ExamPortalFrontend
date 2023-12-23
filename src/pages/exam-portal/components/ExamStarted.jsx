@@ -30,6 +30,7 @@ export const ExamStarted = () => {
   const [capturedImage, setCapturedImage] = useState([]);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [videoStream, setVideoStream] = useState();
+  const [screenStream, setScreenStream] = useState();
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
@@ -76,7 +77,6 @@ export const ExamStarted = () => {
                   useWebWorker: true,
                 };
                 imageCompression(blob, options).then((compressedimg) => {
-                  console.log('coresseding', compressedimg);
                   reader.readAsDataURL(compressedimg);
                 });
               });
@@ -86,11 +86,11 @@ export const ExamStarted = () => {
               // setCapturedImage((prevImages) => [...prevImages, base64Image]);
               // imageUpload(base64Image)
               //   .then((res) => {
-              //     console.log(res);
+              //     console.log('res', res);
               //   })
               //   .catch((err) => {});
-              // dispatch(sendImage(base64Image));
               dispatch(sendImage(base64Image));
+              // dispatch(sendImage(base64Image));
             })
             .catch((error) => {
               console.error('Error capturing photo:', error);
@@ -148,12 +148,14 @@ export const ExamStarted = () => {
   }, []);
 
   async function cameraStop() {
-    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+    console.log('iside camera stop function');
+    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
   }
 
   async function handleSubmit() {
-    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+    console.log('iside handle submit stop function');
+    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
   }
@@ -166,7 +168,13 @@ export const ExamStarted = () => {
   };
 
   const callback2 = () => {
-    GetEntireScreen(setProgress, handleShow, setContent, TabSwitch);
+    GetEntireScreen(
+      setProgress,
+      handleShow,
+      setContent,
+      TabSwitch,
+      setScreenStream
+    );
   };
 
   const [decodedData, setDecodedData] = useState(null);
