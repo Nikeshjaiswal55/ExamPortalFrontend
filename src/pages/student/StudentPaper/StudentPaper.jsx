@@ -114,7 +114,7 @@ export default function StudentPaper({
               <div className=" d-flex flex-wrap justify-content-between">
                 <div>
                   <h1 className=" text-capitalize">
-                    {decodedData?.examDetails.assessmentName}
+                    {decodedData?.examDetails.assessmentName.replaceAll('+', ' ')}
                   </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
                     <CountdownTimer

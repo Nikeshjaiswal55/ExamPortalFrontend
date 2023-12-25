@@ -398,7 +398,7 @@ export const StudentDashBoard = () => {
                                           view result
                                         </Button>
                                         <div>
-                                          <StudentCertificate />
+                                          <StudentCertificate nameprops={userId.email}/>
                                         </div>
                                       </div>
                                     </div>

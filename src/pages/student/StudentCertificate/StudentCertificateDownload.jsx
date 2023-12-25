@@ -8,6 +8,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 export const StudentCertificate = ({ nameprops }) => {
   const [modalShow, setModalShow] = React.useState(false);
+  const stdData=JSON.parse(localStorage.getItem('stdData'))
 
   const downloadCertificate = () => {
     const pdfUrl = '/Sample.pdf';
@@ -68,7 +69,7 @@ export const StudentCertificate = ({ nameprops }) => {
                 style={{ bottom: '270px', width: '400px', height: '80px' }}
               >
                 <h2 className="text-center bg-transparent fs-4 p-5">
-                  {nameprops}
+                  {stdData.email.split('@')[0].toUpperCase()}
                 </h2>
               </div>
               <div

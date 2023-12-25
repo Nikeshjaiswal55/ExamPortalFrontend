@@ -22,6 +22,9 @@ import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { Loader } from '../../../components/Loader/Loader';
 import { sendImage } from '../../../store/adminSlice';
+import * as tf from '@tensorflow/tfjs';
+import * as facemesh from '@tensorflow-models/facemesh';
+import Webcam from 'react-webcam';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -31,6 +34,7 @@ export const ExamStarted = () => {
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [videoStream, setVideoStream] = useState();
   const [screenStream, setScreenStream] = useState();
+  const [facedetect, setfaceDetect] = useState(0);
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
@@ -52,11 +56,52 @@ export const ExamStarted = () => {
   const [imageUpload, { isError: uploadError }] =
     useUploadImageBase64Mutation();
 
+  const webcamRef = useRef(null);
   const captureImage = () => {
+    //face detect
+
+    const runFacemesh = async () => {
+      console.log('runfacemesh');
+      const net = await facemesh.load({
+        inputResolution: { width: 640, height: 480 },
+        scale: 0.8,
+      });
+      setInterval(() => {
+        detect(net);
+      }, 100);
+    };
+
+    const detect = async (net, track) => {
+      if (
+        typeof webcamRef.current !== 'undefined' &&
+        webcamRef.current !== null &&
+        webcamRef.current.video.readyState === 4
+      ) {
+        const video = webcamRef.current.video;
+
+        const face = await net.estimateFaces(video);
+        if (face.length <= 0) {
+          setContent('Dont cover up your face with anything.!!');
+          handleShow();
+          setIsButtonVisible(false);
+        }
+        if (face.length > 1) {
+          const lengths = face.length;
+          setfaceDetect(lengths);
+          console.log(lengths, 'face', face);
+        }
+        //  const ctx=canvasRef.current.getContext("2d");
+        //  drawMesh(face,ctx)
+      }
+    };
+
     const constraints = {
       video: true,
     };
 
+    runFacemesh();
+
+    // if (facedetect > 1) {
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
@@ -90,6 +135,7 @@ export const ExamStarted = () => {
               //   })
               //   .catch((err) => {});
               dispatch(sendImage(base64Image));
+              setfaceDetect(0);
               // dispatch(sendImage(base64Image));
             })
             .catch((error) => {
@@ -108,6 +154,7 @@ export const ExamStarted = () => {
       .catch((error) => {
         console.error('Error accessing the camera:', error);
       });
+    // }
   };
 
   const navigate = useNavigate();
@@ -259,6 +306,17 @@ export const ExamStarted = () => {
           </>
         ) : (
           <div className="h-100" style={{ backgroundColor: 'var(--main-div)' }}>
+            <Webcam
+              ref={webcamRef}
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                zIndex: 9,
+                width: 100,
+                heght: 100,
+              }}
+            />
             <StudentPaper
               paperId={paperId}
               isLoading={isLoading}
