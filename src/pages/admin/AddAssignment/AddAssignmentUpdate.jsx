@@ -872,6 +872,7 @@ const ManageCandidate = ({
 
         <p className="text-capitalize fw-bold m-0 p-0 text-center">OR</p>
         <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle   my-1 my-md-2 mx-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+        <MdUpload size={30} className=" p-1" />
           <>
             <label for="files" className=" cursor-pointer">
               Upload student email excel list
@@ -906,7 +907,6 @@ const ManageCandidate = ({
               type="file"
             />
           </>
-          <MdUpload size={30} className=" p-1" />
         </div>
         <div className="my-0 py-1 d-flex justify-content-center  ">
           {selectedFile ? (

@@ -85,7 +85,7 @@ export function StudentResult() {
               </p> */}
             </div>
           </div>
-          <div className=" w-100 row justify-content-between align-items-center p-3 flex-wrap ">
+          <div className=" w-100 d-flex justify-content-between align-items-center p-3 flex-wrap ">
             <div className="fw-bold">
               <h6 className="text-capitalize">
                 Total Marks:

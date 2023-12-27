@@ -97,27 +97,29 @@ export function ShowCourseTr({
     <>
       <tr>
         <td className="custom-table-td-width text-center">{props.srNo}</td>
-        <td className="custom-table-td-width">{props.courseName}</td>
-        <td className="custom-table-td-width">{props.createdBy}</td>
+        <td className="custom-table-td-width">
+          {props.courseName.toUpperCase()}
+        </td>
+        <td className="custom-table-td-width text-capitalize">{props.createdBy}</td>
         <td
-          className="custom-table-td-width d-flex justify-content-evenly"
-          style={{ paddingBottom: '12px' }}
+          className="custom-table-td-width d-flex justify-content-center"
+          // style={{ paddingBottom: '12px' }}
         >
-          {' '}
+          <FaRegEdit
+            className="my-1 mx-2"
+            cursor={'pointer'}
+            size={20}
+            onClick={handleEdit}
+            height="41px"
+          />{' '}
           <RiDeleteBin6Line
-            className=" mx-2"
+            className="my-1 mx-2"
             onClick={handleDelete}
             color="red"
             cursor={'pointer'}
             size={20}
             height="41px"
           />
-          <FaRegEdit
-            cursor={'pointer'}
-            size={20}
-            onClick={handleEdit}
-            height="41px"
-          />{' '}
         </td>
       </tr>
 
@@ -162,8 +164,8 @@ export function ShowCourseTr({
                 <Modal.Footer>
                   <div className="d-flex w-100 gap-3">
                     <Button
-                      variant="danger"
-                      className="rounded-4 w-100"
+                      variant="light"
+                      className="rounded-4 w-100 border border-dark"
                       onClick={handleClose}
                     >
                       Cancel
@@ -198,18 +200,17 @@ export function ShowCourseTr({
         >
           <Modal.Header>
             <Modal.Title id="contained-modal-title-vcenter">
-              {' '}
-              Are You Sure ?
+            Delete Course
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>do you want to delete the course</p>
+            <p>Do you want to delete this course?</p>
           </Modal.Body>
           <Modal.Footer>
             <div className="d-flex w-100 gap-3">
               <Button
-                variant="dark"
-                className="rounded-4 w-100"
+            variant='light'
+                className="rounded-4 w-100 border border-dark"
                 onClick={handleDeleteClose}
               >
                 Cancel

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // http://localhost:9090/course/byUserId/105410884551884874922?page=0&size=2&sortField=course_name&sortOrder=asc
-import { Form, FormControl, Pagination, Table } from 'react-bootstrap';
+import { Form, FormControl, Pagination, Spinner, Table } from 'react-bootstrap';
 import { ShowCourseTr } from './showCourseTr';
 import {
   useDeleteCourseMutation,
@@ -133,7 +133,7 @@ export default function ShowCourse() {
       </Pagination.Item>
     );
   }
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <div className=" position-absolute top-50 start-50  translate-middle ">
         <Loader />
@@ -142,10 +142,18 @@ export default function ShowCourse() {
   } else {
     return (
       <>
-        <div className="w-100 h-100 m-0  overflow-auto">
+        <div className="w-100 h-100 m-0  overflow-auto bg-white rounded-1">
           <div className=" row m-0  p-2 d-flex mb-3 justify-content-between align-items-center">
             <h4 className="m-0 col-6 col-sm-3 justify-content-start  align-items-center text-capitalize fw-bold">
               All Courses
+              {isFetching && (
+                <Spinner
+                  size="sm"
+                  variant="primary"
+                  className="mx-2"
+                  animation="border"
+                />
+              )}
             </h4>
 
             <div className=" col-6  col-sm-9 mx-0  mb-lg-0  d-flex align-items-center  justify-content-end  flex-wrap">
@@ -232,7 +240,6 @@ export default function ShowCourse() {
                   <tbody>
                     {data?.data &&
                       data?.data?.map((rowdata, index) => {
-                        console.log(rowdata);
                         return (
                           <ShowCourseTr
                             key={index}

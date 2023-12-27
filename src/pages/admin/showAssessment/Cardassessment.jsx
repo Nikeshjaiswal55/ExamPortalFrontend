@@ -13,6 +13,38 @@ import Example from './AssessmentSidePooup/Modal';
 import { path } from '../../../routes/RoutesConstant';
 import { useDispatch } from 'react-redux';
 import { updateAssissmentData } from '../../../store/adminSlice';
+import { DateAndTimeFormate, TimeFormate } from '../../../utils/utils';
+
+const color = ['#966CFF', '#FF8533', '#E6CB0E', '#0ea4e6', '#0ee670'];
+
+const alphabet = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z',
+];
 
 export default function Cardassessment({
   deleteAssignment,
@@ -33,7 +65,7 @@ export default function Cardassessment({
       <div className="col-12 col-lg-6 mb-2 p-0 px-1 h-25  ">
         <div className=" white-box px-3 pt-2 pb-4 position-relative border rounded-4  bg-white">
           <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
-            {stdData||props?.is_Active !== 'false' ? (
+            {stdData || props?.is_Active !== 'false' ? (
               ''
             ) : (
               <MdDelete color="red" onClick={removeAssisstment} />
@@ -46,18 +78,37 @@ export default function Cardassessment({
                   dispatch(updateAssissmentData({ paperId, ...props }));
                   navigate(path.UpdateAssessment.path);
                 }}
-                className="fs-6 cursor-pointer"
+                className="fs-6 cursor-pointer text-capitalize"
                 // onClick={() => (stdData ? '' : setShowCard(true))}
               >
                 {props?.assessmentName}
               </strong>
               <br />
-              <span>{props?.ExamDate}</span>
+              <p style={{ fontSize: '14px' }} className="mt-1 mb-0 p-0">
+                {DateAndTimeFormate(props?.created_date)}
+              </p>
             </div>
             {props?.is_Active !== 'false' ? (
-              <div className=" d-flex justify-content-evenly my-2   align-items-center">
-                <Spinner animation="grow" variant="success" size="sm" />{' '}
-                <strong className="ms-2"> Active</strong>
+              <div className=" d-flex my-2   align-items-center">
+                <div className="position-relative d-flex justify-content-center align-items-center">
+                  <Spinner
+                    animation="grow"
+                    className="position-absolute"
+                    size="sm"
+                    style={{ color: '#14c2183b' }}
+                  />
+                  <Spinner
+                    animation="grow"
+                    className="position-absolute"
+                    style={{ height: '12px', width: '12px', color: '#14c21866' }}
+                  />
+                  <Spinner
+                    animation="grow"
+                    className="position-absolute"
+                    style={{ height: '8px', width: '8px', color: '#14c218' }}
+                  />
+                </div>
+                <strong className="ms-2 ps-1"> Active</strong>
               </div>
             ) : (
               <div>
@@ -74,7 +125,7 @@ export default function Cardassessment({
           <div className=" d-flex justify-content-between flex-wrap align-baseline pt-3 ps-2">
             <div className=" d-flex  align-items-center  justify-content-evenly">
               <AiOutlineFieldTime size={30} />
-              <span className="ms-2"> {props?.examDuration}</span>{' '}
+              <span className="ms-2">{TimeFormate(props?.examDuration)}</span>
             </div>
             {stdData ? (
               <Button
@@ -90,23 +141,33 @@ export default function Cardassessment({
                 style={{ width: '50px', height: '10px' }}
                 onClick={() => navigate(`/admin/student-details/${paperId}`)}
               >
+                {[1, 2].map((item) => (
+                  <div
+                    className={` border-light rounded-circle border p-0 position-absolute top-0 d-flex justify-content-center align-items-center ${
+                      item == 1
+                        ? 'start-25'
+                        : item == 2
+                        ? 'start-50'
+                        : 'start-75'
+                    }  text-center`}
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      backgroundColor:
+                        color[Math.floor(Math.random() * color.length)],
+                    }}
+                  >
+                    <span className="text-light m-0 p-0">
+                      {alphabet[Math.floor(Math.random() * alphabet.length)]}
+                    </span>
+                  </div>
+                ))}
+
                 <div
-                  className=" rounded-circle border p-0 position-absolute top-0 start-25  text-center  bg-danger   "
+                  className="border border-light rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-white d-flex justify-content-center align-items-center"
                   style={{ width: '30px', height: '30px' }}
                 >
-                  <b> A</b>{' '}
-                </div>
-                <div
-                  className="border rounded-circle p-0 position-absolute top-0 start-50 text-center bg-secondary  bg-gradient"
-                  style={{ width: '30px', height: '30px' }}
-                >
-                  <b>B</b>{' '}
-                </div>
-                <div
-                  className="border rounded-circle p-0 position-absolute  top-0 start-100 text-center bg-white "
-                  style={{ width: '30px', height: '30px' }}
-                >
-                  <b> 3+</b>
+                  <span> 3+</span>
                 </div>
               </div>
             )}

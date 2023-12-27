@@ -26,10 +26,10 @@ const LandingPage = () => {
       {/* <div className="section" id={linkIds.features}>
         <Parallex type={'feature'} />
       </div> */}
-      {/* <Feature />
+      <Feature />
       <div className="section" id={linkIds.contact}>
         <Contact />
-      </div> */}
+      </div>
     </>
   );
 };

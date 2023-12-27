@@ -7,7 +7,7 @@ const baseUrl = " http://localhost:9091"
 // const baseUrl = "https://exameasy-krishna.onrender.com"
 // const baseUrl = "http://192.168.8.162:9090"
 // const baseUrl = "http://192.168.180.59:9090"
-// const baseUrl = "http://192.168.58.59:9091"
+// const baseUrl = "http://192.168.122.59:9091"
 
 // const baseQuery = fetchBaseQuery({
 //     baseUrl: baseUrl,
@@ -482,13 +482,11 @@ export const adminApi = createApi({
         uploadImageBase64: builder.mutation(
             {
                 query: (base64) => {
-                    const form = new FormData();
-                    form.append("image", base64)
+
                     return {
-                        url: `/upload`,
+                        url: `/uploadAtS3`,
                         method: 'post',
-                        body: form,
-                        headers: { 'Content-Type': 'multipart/form-data' }
+                        body: base64,
                     }
                 }
             }

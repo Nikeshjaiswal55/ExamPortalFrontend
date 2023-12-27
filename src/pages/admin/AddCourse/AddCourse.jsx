@@ -167,9 +167,12 @@ export default function AddCourse() {
         <div className=" col-md-6 h-100 m-0 p-0 ">
           <div className="p-3 pe-lg-5 mt-lg-2  ms-md-4   ">
             <p className="text-capitalize fw-bold fs-4 ">Add course</p>
-            <p>
+            <p className='mb-0'>
               Adding a course is easy! Just provide the course name & course
-              duration, and the list of email in excel, and you're good to go.
+              duration, and the list of email in excel,
+            </p>
+            <p  className='mt-0'>
+              and you're good to go.
             </p>
           </div>
           <Formik
@@ -220,6 +223,7 @@ export default function AddCourse() {
                   </div>
                 </div>
                 <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 ">
+                <MdUpload size={30} className=" p-1" />
                   <>
                     <label for="files" className=" cursor-pointer">
                       Upload student email excel list
@@ -251,7 +255,6 @@ export default function AddCourse() {
                       type="file"
                     />
                   </>
-                  <MdUpload size={30} className=" p-1" />
                 </div>
                 {selectedFile ? (
                   <div className="my-0 py-1 d-flex justify-content-center  ">

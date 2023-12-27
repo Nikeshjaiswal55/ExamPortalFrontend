@@ -35,6 +35,7 @@ export const ExamStarted = () => {
   const [videoStream, setVideoStream] = useState();
   const [screenStream, setScreenStream] = useState();
   const [facedetect, setfaceDetect] = useState(0);
+  const [tabSitchSubmit, setTabSitchSubmit] = useState(false);
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
@@ -42,6 +43,7 @@ export const ExamStarted = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
   // const {
   //   data: attempted,
@@ -84,12 +86,16 @@ export const ExamStarted = () => {
           setContent('Dont cover up your face with anything.!!');
           handleShow();
           setIsButtonVisible(false);
+        } else if (face.length > 1) {
+          setContent('mulpitle face detected.!');
+          handleShow();
+          setIsButtonVisible(false);
         }
-        if (face.length > 1) {
-          const lengths = face.length;
-          setfaceDetect(lengths);
-          console.log(lengths, 'face', face);
-        }
+        // if (face.length > 1) {
+        //   const lengths = face.length;
+        //   setfaceDetect(lengths);
+        //   console.log(lengths, 'face', face);
+        // }
         //  const ctx=canvasRef.current.getContext("2d");
         //  drawMesh(face,ctx)
       }
@@ -129,13 +135,12 @@ export const ExamStarted = () => {
             .then((base64Image) => {
               const currentDateTime = new Date();
               // setCapturedImage((prevImages) => [...prevImages, base64Image]);
-              // imageUpload(base64Image)
-              //   .then((res) => {
-              //     console.log('res', res);
-              //   })
-              //   .catch((err) => {});
-              dispatch(sendImage(base64Image));
-              setfaceDetect(0);
+              imageUpload(base64Image)
+                .then((res) => {
+                  console.log('res', res?.data?.data);
+                  dispatch(sendImage(res?.data?.data));
+                })
+                .catch((err) => {});
               // dispatch(sendImage(base64Image));
             })
             .catch((error) => {
@@ -159,9 +164,7 @@ export const ExamStarted = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   localStorage.setItem('capturedImage', JSON.stringify(capturedImage));
-  // }, [capturedImage]);
+ 
 
   const handleVisibilityChange = (stream) => {
     if (document.hidden && stream) {
@@ -183,7 +186,8 @@ export const ExamStarted = () => {
 
   useEffect(() => {
     if (tabSwitchCount > 1) {
-      handleSubmit();
+      // handleSubmit();
+      setTabSitchSubmit(true);
     }
   }, [tabSwitchCount]);
 
@@ -323,6 +327,7 @@ export const ExamStarted = () => {
               decodedData={decodedData}
               handleSubmit={handleSubmit}
               cameraStop={cameraStop}
+              tabSitchSubmit={tabSitchSubmit}
             />
             <ExamModal
               show={show}

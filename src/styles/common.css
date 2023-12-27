@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Poppins:wght@100;300;600;700&display=swap');
+
+*{
+    padding: 0;
+    margin: 0%;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
 :root {
     --blue: #6729FF;
     --yellow: #E6CB0C;
@@ -16,13 +25,28 @@
     transition: all 0.5s;
 }
 
-#root {
-    width: 100vw;
-    height: 100vh;
-    padding: 0%;
-    margin: 0%;
-    box-sizing: border-box;
-}
+body {
+    --sb-track-color: #c1c1c1;
+    --sb-thumb-color: #6011ff;
+    --sb-size: 6px;
+  
+    scrollbar-color: var(--sb-thumb-color) 
+                     var(--sb-track-color);
+  }
+  
+::-webkit-scrollbar {
+    width: var(--sb-size) 
+  }
+  
+::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+    }
 
 .main-container {
     background-color: var(--main-div);
@@ -83,11 +107,25 @@
 }
 
 .ck.ck-editor__main>.ck-editor__editable {
-    height: 315px;
+    height: 22rem;
 }
 
 @media (max-width:768px) {
     .assesment-side-panel {
         height: auto !important;
     }
+}
+.accordion-button:not(.collapsed) {
+    color: var(--bs-accordion-active-color);
+    background-color: transparent !important;
+    box-shadow: 3px 1px #cccccc7a !important;
+    border-left: 5px solid #8067dc  !important;
+}
+.accordion-button {
+    color: var(--bs-accordion-active-color);
+    background-color: transparent;
+    border-left: 5px solid rgba(0, 0, 255, 0)  !important;
+}
+.active{
+  margin: 0px !important;
 }

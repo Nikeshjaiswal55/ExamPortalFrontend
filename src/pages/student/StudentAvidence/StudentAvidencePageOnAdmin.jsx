@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import '../../../styles/common.css';
 import { path } from '../../../routes/RoutesConstant';
 import { Button, Spinner, Table } from 'react-bootstrap';
+import Avtar from '../../../assets/Avatar3.png';
 import {
   useGetStudentAvidenceImageQuery,
   useGetStudentAvidenceQuery,
@@ -130,9 +131,10 @@ export default function StudentAvidancePageOnAdmin() {
               style={{ width: '300px' }}
             >
               <img
-                src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+                // src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
                 className="img-thumbnail img-fluid rounded-circle mx-2   m-auto p-0 mt-1  border-dark border-3"
                 alt="Student Image"
+                src={Avtar}
                 style={{ width: '60px', height: '60px' }}
               />
 
@@ -170,6 +172,14 @@ export default function StudentAvidancePageOnAdmin() {
           </div>
 
           <div className="w-100 m-0 row gap-2 align-items-center justify-content-evenly text-center">
+            <div className="col-6 col-md-2 py-2 bg-light rounded-3">
+              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                Assessment Name
+              </p>
+              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                {data?.result.assesment_Name}
+              </p>
+            </div>
             <div className="col-6 col-md-2 bg-light rounded-3">
               <p className="white-box py-4 px-2 rounded-4 fw-bold mb-0 ">
                 Rule violation
@@ -184,14 +194,6 @@ export default function StudentAvidancePageOnAdmin() {
               <p className="white-box py-4 px-2  rounded-4 fw-bold mb-0 ">
                 {data?.cheating.images.length} random photos
                 {/* {randomImage?.length} Random photos */}
-              </p>
-            </div>
-            <div className="col-6 col-md-2 py-2 bg-light rounded-3">
-              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
-                Assessment Name
-              </p>
-              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
-                {data?.result.assesment_Name}
               </p>
             </div>
           </div>
@@ -219,7 +221,7 @@ export default function StudentAvidancePageOnAdmin() {
                           key={index}
                           className="img-fluid"
                           style={{ height: '10rem' }}
-                          src={image}
+                          src={`https://exameasybucket.s3.amazonaws.com/${image}`}
                           alt={`Captured Image ${index + 1}`}
                         />
                       </td>

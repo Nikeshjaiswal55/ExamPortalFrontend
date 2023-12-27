@@ -104,7 +104,7 @@ export default function ShowAssessment() {
   return (
     <>
       <div className="w-100 px-md-3 h-100 m-0 p-0 py-2 overflow-auto ">
-        <div className="w-100  justify-content-between flex-wrap align-items-center  pb-lg-3  ">
+        <div className="w-100  justify-content-between flex-wrap align-items-center  pb-lg-2  ">
           <div className=" col-12 m-0  p-md-2 d-flex justify-content-between align-items-center">
             <h4 className="m-0 col-md-5 justify-content-start  align-items-center text-capitalize fw-bold">
               All Assessment
@@ -124,8 +124,32 @@ export default function ShowAssessment() {
                 <option value="asc">By asc</option>
                 <option value="desc">By desc </option>
               </Form.Select> */}
+              <Form.Select
+                aria-label="by order "
+                style={{ borderColor: '#707070' }}
+                className="mx-2    w-auto input-border fs-6 py-2 px-5 ps-2  border focus-ring focus-ring-light me-1  form-select "
+                onChange={(e) => {
+                  setSortOrder(e.target.value);
+                }}
+                disabled={isError || isLoading || isFetching ? true : false}
+              >
+                <option value="">Sort by name</option>
+                <option value="asc">By asc</option>
+                <option value="desc">By desc </option>
+              </Form.Select>
+              <Form.Select
+                aria-label="by active "
+                style={{ borderColor: '#707070' }}
+                className="mx-2   fs-6 w-auto input-border px-2  border focus-ring focus-ring-light me-0 py-2  form-select "
+                onChange={changeStatusByActive}
+                disabled={isError || isLoading || isFetching ? true : false}
+              >
+                <option value="">Filter by status </option>
+                <option value="true">Active</option>
+                <option value="false"> Setup in progress </option>
+              </Form.Select>
               <CustomButton
-                className={'  rounded-4  float-start'}
+                className={' mx-2  rounded-4  float-start'}
                 buttonText={'Add Assessment'}
                 onButtonClick={() => navigate(path.AddAssessment.path)}
               />
@@ -210,7 +234,7 @@ export default function ShowAssessment() {
                 );
               }}
             /> */}
-            <Form.Select
+            {/* <Form.Select
               aria-label="by order "
               style={{ borderColor: '#707070' }}
               className="    w-auto input-border fs-6 py-2 px-5 ps-2  border focus-ring focus-ring-light me-1  form-select "
@@ -233,7 +257,7 @@ export default function ShowAssessment() {
               <option value="">Filter by status </option>
               <option value="true">Active</option>
               <option value="false"> Setup in progress </option>
-            </Form.Select>
+            </Form.Select> */}
 
             {/* <Form.Select
               aria-label="by order "

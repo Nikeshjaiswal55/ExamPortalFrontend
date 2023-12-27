@@ -19,6 +19,7 @@ export default function StudentPaper({
   handleSubmit,
   paperSubmit,
   cameraStop,
+  tabSitchSubmit,
 }) {
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
@@ -33,6 +34,12 @@ export default function StudentPaper({
   const [selectedOption, setSelectedOption] = useState(
     new Array(decodedData?.questions?.length)
   );
+
+  useEffect(() => {
+    if (tabSitchSubmit) {
+      submitPaperDetails();
+    }
+  }, [tabSitchSubmit]);
 
   const imagesArray = useSelector((state) => state.admin.image);
 
@@ -114,7 +121,10 @@ export default function StudentPaper({
               <div className=" d-flex flex-wrap justify-content-between">
                 <div>
                   <h1 className=" text-capitalize">
-                    {decodedData?.examDetails.assessmentName.replaceAll('+', ' ')}
+                    {decodedData?.examDetails.assessmentName.replaceAll(
+                      '+',
+                      ' '
+                    )}
                   </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
                     <CountdownTimer

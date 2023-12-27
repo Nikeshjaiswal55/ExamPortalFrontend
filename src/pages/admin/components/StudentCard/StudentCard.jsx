@@ -27,7 +27,6 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails }) {
               className={`${randomColor} img-thumbnail d-flex justify-content-center align-items-center rounded-circle  bg w-50 h-50 m-auto p-0  mt-4  border-dark border-4`}
             >
               <h1 className="fw-bold text-capitalize text-light">
-                {' '}
                 {studentdetails.email.charAt(0).toUpperCase()}
               </h1>
             </div>

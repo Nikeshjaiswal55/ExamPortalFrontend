@@ -381,7 +381,10 @@ export const AddAssignment = () => {
                       )}
                     </Button> */}
                   </div>
-                  <div className="col-12 col-md-7 px-0" style={{flex: 1}}>
+                  <div
+                    className="col-12 col-md-7 px-0 bg-white rounded-3"
+                    style={{ flex: 1, height: 'calc(100vh - 77px)' }}
+                  >
                     <Tab.Content>
                       <Tab.Pane
                         eventKey="assessmentSetting"
@@ -412,7 +415,7 @@ export const AddAssignment = () => {
                         />
                       </Tab.Pane>
                     </Tab.Content>
-                    <div className="d-flex justify-content-end">
+                    <div className="d-flex justify-content-end me-3">
                       <Button
                         type="subbmit"
                         className='className="p-lg-2 my-2 btn-primary btn w-25'
@@ -446,7 +449,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
       className=" p-4 rounded-3 bg-white text-dark"
-      style={{ height: 'calc(100vh - 120px)' }}
+      style={{ height: 'calc(100vh - 135px)' }}
     >
       <div className="my-3">
         <FormLabel className="text-capitalize fw-bold">
@@ -858,7 +861,7 @@ const ManageCandidate = ({
         ) : (
           <>
             <div className="row">
-                <div className="col-12 col-md-6">
+              <div className="col-12 col-md-6">
                 <label className="text-capitalize fw-bold">
                   Select Candidate Course
                   <span className="fw-normal">
@@ -886,7 +889,7 @@ const ManageCandidate = ({
                   })}
                 </Field>
               </div>
-                <div className="col-12 col-md-6">
+              <div className="col-12 col-md-6">
                 <label className="text-capitalize fw-bold">Select Year</label>
                 <Field
                   as="select"
@@ -967,6 +970,7 @@ const ManageCandidate = ({
 
         <p className="text-capitalize fw-bold m-0 p-0 text-center">OR</p>
         <div className=" my-3 d-flex justify-content-center align-items-center border border-dark-subtle my-1 my-md-2  w-auto text-center rounded-3 h-25 my-3 ">
+          <MdUpload size={30} className=" p-1" />
           <>
             <label for="files" className=" cursor-pointer">
               Upload student email excel list
@@ -999,7 +1003,6 @@ const ManageCandidate = ({
               type="file"
             />
           </>
-          <MdUpload size={30} className=" p-1" />
         </div>
         <div className="my-0 py-1 d-flex justify-content-center  ">
           {selectedFile ? (
