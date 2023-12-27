@@ -4,6 +4,7 @@ import {
   Button,
   FormCheck,
   FormLabel,
+  Modal,
   Nav,
   Spinner,
   Tab,
@@ -819,6 +820,9 @@ const ManageCandidate = ({
   const [showError, setShowError] = useState(false);
   const [email, setEmail] = useState();
   const [duration, setDuration] = useState();
+
+  const handleErrorClose = () => setShowError(false);
+  const handleErrorShow = () => setShowError(true);
   const inputFile = useRef(null);
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);

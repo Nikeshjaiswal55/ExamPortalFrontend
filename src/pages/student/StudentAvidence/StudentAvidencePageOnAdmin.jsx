@@ -7,13 +7,13 @@ import { Button, Spinner, Table } from 'react-bootstrap';
 import Avtar from '../../../assets/Avatar3.png';
 import {
   useGetStudentAvidenceImageQuery,
-  useGetStudentAvidenceQuery,
   usePaperApprovedMutation,
   usePaperRejectedMutation,
 } from '../../../apis/Service';
 import { toast } from 'react-toastify';
 import { Loader } from '../../../components/Loader/Loader';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import { DateAndTimeFormate, TimeFormate } from '../../../utils/utils';
 
 export default function StudentAvidancePageOnAdmin() {
   const { paperId, stdId } = useParams();
@@ -125,6 +125,14 @@ export default function StudentAvidancePageOnAdmin() {
         </div>
       ) : (
         <div className="w-100 h-100 overflow-auto">
+          <div className=" w-100 d-flex justify-content-between align-items-center px-3 pt-3 pb-0 flex-wrap ">
+            <h3 className="m-0 fw-bold p-0 text-capitalize">
+              {data?.result.assesment_Name}
+            </h3>
+            <h6 className="m-0 fw-bold p-0 text-capitalize">
+              {DateAndTimeFormate(data?.result.date)}
+            </h6>
+          </div>
           <div className=" w-100 d-flex justify-content-between align-items-center p-3 flex-wrap ">
             <div
               className=" d-flex align-items-center"
@@ -239,7 +247,7 @@ export default function StudentAvidancePageOnAdmin() {
                           key={index}
                           className="img-fluid"
                           style={{ height: '10rem' }}
-                          src={`https://myexameasybucket.s3.ap-south-1.amazonaws.com/Cheating/${image}`}
+                          src={`https://myexameasybucket.s3.ap-south-1.amazonaws.com/${image}`}
                           alt={`Captured Image ${index + 1}`}
                         />
                       </td>
