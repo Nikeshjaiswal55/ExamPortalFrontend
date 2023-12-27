@@ -48,16 +48,18 @@ export const TotalStudentOfOrg = () => {
                         <TotalStudent totalStudent={data} />
                     </div> */}
               <div
-                className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto"
-                  style={{height: 'calc(100vh - 7rem)'}}
+                className="m-0 p-0"
+                style={{ height: 'calc(100vh - 16rem)' }}
               >
-                {data?.map((studentdetails) => (
-                  <StudentCard
-                    // paperId={paperId}
-                    divBoxStyle={'col-lg-2 col-12'}
-                    studentdetails={studentdetails}
-                  />
-                ))}
+                <div className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto">
+                  {data?.map((studentdetails) => (
+                    <StudentCard
+                      // paperId={paperId}
+                      divBoxStyle={'col-lg-2 col-12'}
+                      studentdetails={studentdetails}
+                    />
+                  ))}
+                </div>
               </div>
             </>
           )}

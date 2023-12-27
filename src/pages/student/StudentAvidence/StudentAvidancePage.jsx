@@ -219,7 +219,7 @@ export default function StudentAvidancePage() {
                           key={index}
                           className="img-fluid"
                           style={{ height: '10rem' }}
-                          src={`https://exameasybucket.s3.amazonaws.com/${image}`}
+                          src={`https://myexameasybucket.s3.ap-south-1.amazonaws.com/Cheating/${image}`}
                           alt={`Captured Image ${index + 1}`}
                         />
                       </td>

@@ -139,7 +139,9 @@ export default function StudentAvidancePageOnAdmin() {
               />
 
               <p className="fw-bold mt-2 m-0">
-                <p> {data?.result.student_email ?? 'user'}</p>
+                <p className="m-0 p-0">
+                  {data?.result.student_email ?? 'user'}
+                </p>
               </p>
             </div>
             <div className="fw-bold">
@@ -171,34 +173,50 @@ export default function StudentAvidancePageOnAdmin() {
             </div>
           </div>
 
-          <div className="w-100 m-0 row gap-2 align-items-center justify-content-evenly text-center">
-            <div className="col-6 col-md-2 py-2 bg-light rounded-3">
-              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
-                Assessment Name
-              </p>
-              <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
-                {data?.result.assesment_Name}
-              </p>
+          <div className="w-100 m-0 row align-items-center justify-content-evenly text-center">
+            <div className="col-6 col-md-3 ">
+              <div className=" py-2 bg-light rounded-3">
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  Total Marks
+                </p>
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  {data?.result.marks}
+                </p>
+              </div>
             </div>
-            <div className="col-6 col-md-2 bg-light rounded-3">
-              <p className="white-box py-4 px-2 rounded-4 fw-bold mb-0 ">
-                Rule violation
-              </p>
+            <div className="col-6 col-md-3 ">
+              <div className="py-2  bg-light rounded-3">
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  Percentage
+                </p>
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  {data?.result.percentage}%
+                </p>
+              </div>
             </div>
-            <div className="col-6 col-md-2 bg-light rounded-3">
-              <p className="white-box py-4 px-2 rounded-4 fw-bold mb-0 ">
-                Tap switched
-              </p>
+            <div className="col-6 col-md-3 ">
+              <div className=" py-2 bg-light rounded-3">
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  Result Status
+                </p>
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  {data?.result.resultStatus}
+                </p>
+              </div>
             </div>
-            <div className="col-6 col-md-2 bg-light rounded-3">
-              <p className="white-box py-4 px-2  rounded-4 fw-bold mb-0 ">
-                {data?.cheating.images.length} random photos
-                {/* {randomImage?.length} Random photos */}
-              </p>
+            <div className="col-6 col-md-3 ">
+              <div className="py-2 bg-light rounded-3">
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  Peper Status
+                </p>
+                <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
+                  {data?.result.is_published}
+                </p>
+              </div>
             </div>
           </div>
-          <div className="white-box overflow  p-4 m-4 border border-black ">
-            <Table className="mt-3" striped bordered hover size="sm">
+          <div className="white-box px-3 overflow  py-4">
+            <Table className="mt-3 mx-0" striped bordered hover size="sm">
               <thead>
                 <tr>
                   <th className="text-center">#</th>
@@ -221,7 +239,7 @@ export default function StudentAvidancePageOnAdmin() {
                           key={index}
                           className="img-fluid"
                           style={{ height: '10rem' }}
-                          src={`https://exameasybucket.s3.amazonaws.com/${image}`}
+                          src={`https://myexameasybucket.s3.ap-south-1.amazonaws.com/Cheating/${image}`}
                           alt={`Captured Image ${index + 1}`}
                         />
                       </td>

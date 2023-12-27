@@ -628,7 +628,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
   return (
     <div
       className="text-dark overflow-auto"
-      style={{ height: 'calc(100vh - 7rem)' }}
+      style={{ height: 'calc(100vh - 9rem)' }}
     >
       <FieldArray name="questions">
         {({ push, remove }) => (
@@ -854,7 +854,7 @@ const ManageCandidate = ({
     <>
       <div
         className="p-4 bg-white rounded-3 text-dark "
-        style={{ height: 'calc(100vh - 120px)' }}
+        style={{ height: 'calc(100vh - 140px)' }}
       >
         {orgType == 'company' ? (
           ''

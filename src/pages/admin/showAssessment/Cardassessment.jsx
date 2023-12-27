@@ -64,7 +64,11 @@ export default function Cardassessment({
     <>
       <div className="col-12 col-lg-6 mb-2 p-0 px-1 h-25  ">
         <div className=" white-box px-3 pt-2 pb-4 position-relative border rounded-4  bg-white">
-          <div className="w-100 d-flex pb-3 pt-1 cursor-pointer justify-content-end align-items-center">
+          <div
+            className={`w-100 d-flex ${
+              stdData || props?.is_Active !== 'false' ? 'pb-4 mb-1' : 'pb-3'
+            } pt-1 cursor-pointer justify-content-end align-items-center`}
+          >
             {stdData || props?.is_Active !== 'false' ? (
               ''
             ) : (
@@ -100,7 +104,11 @@ export default function Cardassessment({
                   <Spinner
                     animation="grow"
                     className="position-absolute"
-                    style={{ height: '12px', width: '12px', color: '#14c21866' }}
+                    style={{
+                      height: '12px',
+                      width: '12px',
+                      color: '#14c21866',
+                    }}
                   />
                   <Spinner
                     animation="grow"

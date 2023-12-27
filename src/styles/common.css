@@ -2,8 +2,8 @@
 
 *{
     padding: 0;
-    margin: 0%;
-    box-sizing: border-box;
+    margin: 0;
+    box-sizing:border-box;
     font-family: 'Poppins';
 }
 
@@ -126,6 +126,5 @@ body {
     background-color: transparent;
     border-left: 5px solid rgba(0, 0, 255, 0)  !important;
 }
-.active{
-  margin: 0px !important;
-}
+
+
