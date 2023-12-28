@@ -20,6 +20,7 @@ export default function StudentPaper({
   paperSubmit,
   cameraStop,
   tabSitchSubmit,
+  tabBlurCount,
 }) {
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
@@ -36,10 +37,24 @@ export default function StudentPaper({
   );
 
   useEffect(() => {
-    if (tabSitchSubmit) {
-      submitPaperDetails();
+    if (
+      (tabSitchSubmit > 1 && tabSitchSubmit < 3) ||
+      (tabBlurCount > 4 && tabBlurCount < 6)
+    ) {
+      if (!isPaperSubmitted) {
+        console.log(
+          'ONe time submitted =================================================='
+        );
+        setIsPaperSubmitted(true);
+        submitPaperDetails();
+      }
+      console.log(
+        'submitted successfully checking result ===============================================  ',
+        tabSitchSubmit,
+        tabBlurCount
+      );
     }
-  }, [tabSitchSubmit]);
+  }, [tabSitchSubmit, tabBlurCount]);
 
   const imagesArray = useSelector((state) => state.admin.image);
 
@@ -110,7 +125,7 @@ export default function StudentPaper({
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || tabSitchSubmit > 1 || tabBlurCount > 4 ? (
         <div className="w-100 h-100 d-flex justify-content-center align-items-center">
           <Loader />
         </div>
@@ -191,7 +206,7 @@ export default function StudentPaper({
                                   id={`ques${index}-opt${indexopt}`}
                                 />
                                 <label for={`ques${index}-opt${indexopt + 1}`}>
-                                  {valueopt}
+                                  {valueopt.replaceAll('+', ' ')}
                                 </label>
                               </li>
                             );

@@ -15,6 +15,7 @@ import { CheckForExtension } from '../utils/CheckForExtension';
 import {
   useGetAllAssissmentOnstudentPageQuery,
   useGetAllQuestionsFromPaperIdQuery,
+  useGetCheckAttemptedStudentQuery,
   useGetStudentAvidenceQuery,
   useUploadImageBase64Mutation,
 } from '../../../apis/Service';
@@ -45,6 +46,17 @@ export const ExamStarted = () => {
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
+  const {
+    data: attempted,
+    isLoading: ateemptedIsLoading,
+    isError: ateemptedIsError,
+    attemptedSucess,
+  } = useGetCheckAttemptedStudentQuery({
+    paperId,
+    stdId: stdId.userId,
+  });
+
+  console.log(attempted, 'attempted');
 
   const [imageUpload, { isError: uploadError }] =
     useUploadImageBase64Mutation();
@@ -153,43 +165,67 @@ export const ExamStarted = () => {
   const navigate = useNavigate();
 
   const handleVisibilityChange = (stream) => {
+    console.log('handle visibility changed call ');
     if (document.hidden && stream) {
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
       setTabSwitchCount((prev) => prev + 1);
-      setContent(
-        'Please dont switch your tab, Your exam will automatically submited.'
-      );
-      handleShow();
+      console.log('Value Changed of setTabSwitch');
     }
   };
 
+  const handleBlurChange = (stream) => {
+    console.log('handle blur call =============');
+    setIsButtonVisible(false);
+    TabSwitchScreenShot(stream);
+    setTabBlurCount((prev) => prev + 1);
+  };
   function TabSwitch(stream) {
     document.addEventListener('visibilitychange', () =>
       handleVisibilityChange(stream)
     );
+    console.log('blur event added -===================');
+    window.addEventListener('blur', () => {
+      handleBlurChange(stream);
+    });
   }
+  useEffect(() => {
+    if (tabBlurCount > 2 && tabBlurCount < 5) {
+      setContent(
+        "please don't Open tab other on  a tab, your exam will automatically submitted."
+      );
+      handleShow();
+    }
+    console.log('blur count := ', tabBlurCount);
+  }, [tabBlurCount]);
 
   useEffect(() => {
-    if (tabSwitchCount > 1) {
-      setTabSitchSubmit(true);
+    if (tabSwitchCount > 0 && tabSwitchCount < 2) {
+      setContent(
+        "please don't switch your tab other, your exam will automatically submitted."
+      );
+      handleShow();
     }
+    console.log('tab switch  count := ', tabSwitchCount);
   }, [tabSwitchCount]);
 
   useEffect(() => {
     TabSwitch(stream);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+
+    // return () => {
+    // document.addEventListener('visibilitychange',handleVisibilityChange);
+    // window.addEventListener("blur",handleBlurChange);
+    // };
   }, []);
 
   async function cameraStop() {
-    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+    console.log('inside camera stop function');
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
   }
 
   async function handleSubmit() {
-    console.log('iside handle submit stop function');
+    console.log('inside handle submit stop function');
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
@@ -215,17 +251,16 @@ export const ExamStarted = () => {
   const [decodedData, setDecodedData] = useState(null);
 
   useEffect(() => {
-    if (decodedData?.examDetails?._attempted) {
+    if (attemptedSucess && attempted?.data == 'true') {
       cameraStop();
-      console.log('inside decoded data');
       navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
     } else {
       CheckForExtension(handleShow, setContent, setProgress, callback);
     }
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
+    // return () => {
+    //   document.removeEventListener('visibilitychange',handleVisibilityChange);
+    // };
+  }, [attemptedSucess]);
 
   useEffect(() => {
     if (progress == 100) {
@@ -255,7 +290,7 @@ export const ExamStarted = () => {
   //     </div>
   //   );
   // } else {
-  if (decodedData?.examDetails?._attempted) {
+  if (attempted?.data == 'true') {
     cameraStop();
     return (
       <>
@@ -268,36 +303,32 @@ export const ExamStarted = () => {
         {isError ? (
           <SomethingWentWrong />
         ) : doneProcess ? (
-          decodedData?.examDetails?._attempted ? (
-            <Navigate to={`${path.StudentPaperSubmitted.path}/${paperId}`} />
-          ) : (
-            <>
-              <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
-                <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
-                  <GiphyEmbed />
-                  <div className="w-100">
-                    <ProgressBar
-                      variant="success"
-                      now={progress}
-                      label={`${progress}%`}
-                    />
-                  </div>
-                  <div>
-                    <h6 className="text-center p-0 m-0">
-                      Please wait for upto a minute for the system to be set up.
-                    </h6>
-                    <h6 className="text-center">if it still does not load</h6>
-                  </div>
+          <>
+            <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
+              <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+                <GiphyEmbed />
+                <div className="w-100">
+                  <ProgressBar
+                    variant="success"
+                    now={progress}
+                    label={`${progress}%`}
+                  />
+                </div>
+                <div>
+                  <h6 className="text-center p-0 m-0">
+                    Please wait for upto a minute for the system to be set up.
+                  </h6>
+                  <h6 className="text-center">if it still does not load</h6>
                 </div>
               </div>
-              <ExamModal
-                show={show}
-                content={content}
-                isButtonVisible={true}
-                handleClose={handleClose}
-              />
-            </>
-          )
+            </div>
+            <ExamModal
+              show={show}
+              content={content}
+              isButtonVisible={true}
+              handleClose={handleClose}
+            />
+          </>
         ) : (
           <div className="h-100" style={{ backgroundColor: 'var(--main-div)' }}>
             <Webcam
@@ -317,7 +348,8 @@ export const ExamStarted = () => {
               decodedData={decodedData}
               handleSubmit={handleSubmit}
               cameraStop={cameraStop}
-              tabSitchSubmit={tabSitchSubmit}
+              tabSitchSubmit={tabSwitchCount}
+              tabBlurCount={tabBlurCount}
             />
             <ExamModal
               show={show}
