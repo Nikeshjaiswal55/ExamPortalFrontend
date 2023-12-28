@@ -76,7 +76,7 @@ export const BarChartStudentDashboard = ({studentData}) => {
                 name: studentData?.[1]?.assesment_Name ?? 'Not present',
                 xAxis: xAxis,
                 yAxis: yAxis,
-                valueYField: "value1",
+                valueYField: "value2",
                 categoryXField: "category"
             })
         );
@@ -87,7 +87,7 @@ export const BarChartStudentDashboard = ({studentData}) => {
                 name: studentData?.[2]?.assesment_Name ?? 'Not present',
                 xAxis: xAxis,
                 yAxis: yAxis,
-                valueYField: "value2",
+                valueYField: "value3",
                 categoryXField: "category"
             })
         );
@@ -97,7 +97,7 @@ export const BarChartStudentDashboard = ({studentData}) => {
                 name: studentData?.[3]?.assesment_Name ?? 'Not present',
                 xAxis: xAxis,
                 yAxis: yAxis,
-                valueYField: "value3",
+                valueYField: "value4",
                 categoryXField: "category"
             })
         );
@@ -108,7 +108,7 @@ export const BarChartStudentDashboard = ({studentData}) => {
                 name: studentData?.[4]?.assesment_Name ?? 'Not present',
                 xAxis: xAxis,
                 yAxis: yAxis,
-                valueYField: "value4",
+                valueYField: "value5",
                 categoryXField: "category"
             })
         );

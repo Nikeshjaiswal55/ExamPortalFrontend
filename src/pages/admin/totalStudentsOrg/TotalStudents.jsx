@@ -52,11 +52,12 @@ export const TotalStudentOfOrg = () => {
                 style={{ height: 'calc(100vh - 16rem)' }}
               >
                 <div className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto">
-                  {data?.map((studentdetails) => (
+                  {data?.map((studentdetails, index) => (
                     <StudentCard
                       // paperId={paperId}
                       divBoxStyle={'col-lg-2 col-12'}
                       studentdetails={studentdetails}
+                      index={index}
                     />
                   ))}
                 </div>

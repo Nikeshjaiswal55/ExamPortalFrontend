@@ -45,67 +45,55 @@ export const ExamStarted = () => {
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
-  // const {
-  //   data: attempted,
-  //   isLoading: ateemptedIsLoading,
-  //   isError: ateemptedIsError,
-  //   attemptedSucess,
-  // } = useGetStudentAvidenceQuery({
-  //   paperId,
-  //   stdId: stdId.userId,
-  // });
 
   const [imageUpload, { isError: uploadError }] =
     useUploadImageBase64Mutation();
 
   const webcamRef = useRef(null);
-  const captureImage = () => {
-    //face detect
 
-    const runFacemesh = async () => {
-      console.log('runfacemesh');
-      const net = await facemesh.load({
-        inputResolution: { width: 640, height: 480 },
-        scale: 0.8,
-      });
-      setInterval(() => {
-        detect(net);
-      }, 100);
-    };
+  const runFacemesh = async () => {
+    console.log('runfacemesh');
+    const net = await facemesh.load({
+      inputResolution: { width: 640, height: 480 },
+      scale: 0.8,
+    });
+    setInterval(() => {
+      detect(net);
+    }, 100);
+  };
 
-    const detect = async (net, track) => {
-      if (
-        typeof webcamRef.current !== 'undefined' &&
-        webcamRef.current !== null &&
-        webcamRef.current.video.readyState === 4
-      ) {
-        const video = webcamRef.current.video;
+  const detect = async (net, track) => {
+    if (
+      typeof webcamRef.current !== 'undefined' &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
 
-        const face = await net.estimateFaces(video);
-        if (face.length <= 0) {
-          setContent('Dont cover up your face with anything.!!');
-          handleShow();
-          setIsButtonVisible(false);
-        } else if (face.length > 1) {
-          setContent('mulpitle face detected.!');
-          handleShow();
-          setIsButtonVisible(false);
-        }
-        // if (face.length > 1) {
-        //   const lengths = face.length;
-        //   setfaceDetect(lengths);
-        //   console.log(lengths, 'face', face);
-        // }
-        //  const ctx=canvasRef.current.getContext("2d");
-        //  drawMesh(face,ctx)
+      const face = await net.estimateFaces(video);
+      if (face.length <= 0) {
+        setContent(`Don't cover your face with anything.!`);
+        handleShow();
+        setIsButtonVisible(false);
+      } else if (face.length > 1) {
+        setContent('Multiple face detected.!');
+        handleShow();
+        setIsButtonVisible(false);
       }
-    };
+      // if (face.length > 1) {
+      //   const lengths = face.length;
+      //   setfaceDetect(lengths);
+      //   console.log(lengths, 'face', face);
+      // }
+      //  const ctx=canvasRef.current.getContext("2d");
+      //  drawMesh(face,ctx)
+    }
+  };
 
+  const captureImage = () => {
     const constraints = {
       video: true,
     };
-
-    runFacemesh();
 
     // if (facedetect > 1) {
     navigator.mediaDevices
@@ -164,15 +152,13 @@ export const ExamStarted = () => {
 
   const navigate = useNavigate();
 
- 
-
   const handleVisibilityChange = (stream) => {
     if (document.hidden && stream) {
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
       setTabSwitchCount((prev) => prev + 1);
       setContent(
-        'please dont switch your tab other, your exam will automatically submited.'
+        'Please dont switch your tab, Your exam will automatically submited.'
       );
       handleShow();
     }
@@ -186,7 +172,6 @@ export const ExamStarted = () => {
 
   useEffect(() => {
     if (tabSwitchCount > 1) {
-      // handleSubmit();
       setTabSitchSubmit(true);
     }
   }, [tabSwitchCount]);
@@ -199,9 +184,8 @@ export const ExamStarted = () => {
   }, []);
 
   async function cameraStop() {
-    console.log('iside camera stop function');
-    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
   }
 
   async function handleSubmit() {
@@ -233,6 +217,7 @@ export const ExamStarted = () => {
   useEffect(() => {
     if (decodedData?.examDetails?._attempted) {
       cameraStop();
+      console.log('inside decoded data');
       navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
     } else {
       CheckForExtension(handleShow, setContent, setProgress, callback);
@@ -247,6 +232,7 @@ export const ExamStarted = () => {
       // navigate(`${path.StudentExamStarted.path}/${paperId}`);
       captureImage();
       setProcess(false);
+      runFacemesh();
     }
   }, [progress]);
 
@@ -282,32 +268,36 @@ export const ExamStarted = () => {
         {isError ? (
           <SomethingWentWrong />
         ) : doneProcess ? (
-          <>
-            <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
-              <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
-                <GiphyEmbed />
-                <div className="w-100">
-                  <ProgressBar
-                    variant="success"
-                    now={progress}
-                    label={`${progress}%`}
-                  />
-                </div>
-                <div>
-                  <h6 className="text-center p-0 m-0">
-                    Please wait for upto a minute for the system to be set up.
-                  </h6>
-                  <h6 className="text-center">if it still does not load</h6>
+          decodedData?.examDetails?._attempted ? (
+            <Navigate to={`${path.StudentPaperSubmitted.path}/${paperId}`} />
+          ) : (
+            <>
+              <div className="d-flex flex-column justify-content-center align-items-center vh-100  ">
+                <div className="w-50 d-flex flex-column justify-content-center align-items-center gap-3">
+                  <GiphyEmbed />
+                  <div className="w-100">
+                    <ProgressBar
+                      variant="success"
+                      now={progress}
+                      label={`${progress}%`}
+                    />
+                  </div>
+                  <div>
+                    <h6 className="text-center p-0 m-0">
+                      Please wait for upto a minute for the system to be set up.
+                    </h6>
+                    <h6 className="text-center">if it still does not load</h6>
+                  </div>
                 </div>
               </div>
-            </div>
-            <ExamModal
-              show={show}
-              content={content}
-              isButtonVisible={true}
-              handleClose={handleClose}
-            />
-          </>
+              <ExamModal
+                show={show}
+                content={content}
+                isButtonVisible={true}
+                handleClose={handleClose}
+              />
+            </>
+          )
         ) : (
           <div className="h-100" style={{ backgroundColor: 'var(--main-div)' }}>
             <Webcam

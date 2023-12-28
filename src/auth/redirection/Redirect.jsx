@@ -62,7 +62,10 @@ export const Redirect = () => {
     }
   } else {
     return isLoading || orgLoading ? (
-      <div className="d-flex justify-content-center align-items-center w-100 h-100">
+      <div
+        className="d-flex justify-content-center align-items-center w-100 h-100"
+        style={{ height: '100vh', width: '100vw' }}
+      >
         <UserWaiting />
       </div>
     ) : data?.role === 'Student' ? (
