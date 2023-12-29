@@ -19,6 +19,7 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import { Loader } from '../../../components/Loader/Loader';
 import { FaSort } from 'react-icons/fa';
 import { BiSolidDownArrowAlt, BiSolidUpArrowAlt } from 'react-icons/bi';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 
 export default function ShowCourse() {
   const navigate = useNavigate();
@@ -144,7 +145,12 @@ export default function ShowCourse() {
       <>
         <div className="w-100 h-100 m-0  overflow-auto bg-white rounded-1">
           <div className=" row m-0  p-2 d-flex mb-3 justify-content-between align-items-center">
-            <h4 className="m-0 col-6 col-sm-3 justify-content-start  align-items-center text-capitalize fw-bold">
+            <h4 className="m-0 px-0 col-6 col-sm-3 justify-content-start  align-items-center text-capitalize fw-bold">
+              <IoMdArrowRoundBack
+                size={30}
+                className="cursor-pointer p-0"
+                onClick={() => navigate(path.AdminDasboard.path)}
+              />
               All Courses
               {isFetching && (
                 <Spinner

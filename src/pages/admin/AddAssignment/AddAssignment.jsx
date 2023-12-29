@@ -504,7 +504,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             name="assessmentDuration"
             className="form-select input-border p-2 border focus-ring text-capitalize focus-ring-light"
           >
-            <option value="">Select Assissment Duration</option>
+            <option value="">Select Assessment Duration</option>
             {durationTimer?.map((durationTimer, index) => (
               <option key={index} value={durationTimer.value}>
                 {durationTimer.name}
@@ -668,11 +668,12 @@ const QuestionManagement = ({ values, option, setOption }) => {
                     placeholder="Enter question"
                     className="form-control"
                   />
-                  <p className="text-danger"></p>
-                  <ErrorMessage
-                    name={`questions[${index}].questions`}
-                    className="text-danger"
-                  />
+                  <p className="text-danger">
+                    <ErrorMessage
+                      name={`questions[${index}].questions`}
+                      className="text-danger"
+                    />
+                  </p>
                 </div>
                 <div>
                   {/* <div className="row align-items-center">
@@ -723,11 +724,12 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           />
                         </FormLabel>
                       </div>
-                      <p className="text-danger"></p>
-                      <ErrorMessage
-                        name={`questions[${index}].correctAns`}
-                        className="text-danger"
-                      />
+                      <p className="text-danger">
+                        <ErrorMessage
+                          name={`questions[${index}].correctAns`}
+                          className="text-danger"
+                        />
+                      </p>
                     </>
                   ))}
                   <p className="mt-2 mb-0 fw-bold">
@@ -772,11 +774,12 @@ const QuestionManagement = ({ values, option, setOption }) => {
                         }}
                       />
                     </div>
-                    <p className="text-danger"></p>
-                    <ErrorMessage
-                      name={`questions[${index}].options`}
-                      className="text-danger"
-                    />
+                    <p className="text-danger">
+                      <ErrorMessage
+                        name={`questions[${index}].options`}
+                        className="text-danger"
+                      />
+                    </p>
                   </div>
                 </div>
               </div>

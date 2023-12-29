@@ -89,11 +89,11 @@ export function StudentResult() {
             <div className="fw-bold">
               <h6 className="text-capitalize">
                 Total Marks:
-                <span>{decodedData?.examDetails.totalMarks} </span>
+                <b>{decodedData?.examDetails.totalMarks} </b>
               </h6>
               <h6>
                 Minimum Marks:
-                {decodedData?.examDetails.minimum_marks}%
+                <b> {decodedData?.examDetails.minimum_marks}%</b>
               </h6>
             </div>
             <div className="fw-bold">
@@ -106,12 +106,12 @@ export function StudentResult() {
                       : 'text-success'
                   }`}
                 >
-                  {data?.result.resultStatus}
+                  <b> {data?.result.resultStatus}</b>
                 </span>
               </h6>
               <h6 className="text-capitalize">
                 Result Percentage:
-                {data?.result.percentage}%
+                <b>{data?.result.percentage}%</b>
               </h6>
             </div>
           </div>

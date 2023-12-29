@@ -448,7 +448,7 @@ const AssesstmentSetting = ({ setInstruction }) => {
             name="assessmentDuration"
             className="form-select input-border p-2 border focus-ring text-capitalize focus-ring-light"
           >
-            <option value="">Select Assissment Duration</option>
+            <option value="">Select Assessment Duration</option>
             {durationTimer?.map((durationTimer, index) => (
               <option key={index} value={durationTimer.value}>
                 {durationTimer.name}

@@ -169,7 +169,7 @@ export const AdminDashboard = () => {
       onViewClick: () => {},
     },{
       id: 4,
-      infoText: "Total course",
+      infoText: "Total Course",
       infoNumber: courses?.data?.length ?? 0,
       icon: <MdOutlineCastForEducation size={50} />,
       children: <> {coursesLoading ? <Spinner size='sm' variant='primary' className=' ms-2' animation="border" /> : null}</>,

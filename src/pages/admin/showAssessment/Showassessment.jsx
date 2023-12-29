@@ -20,6 +20,7 @@ import { toast } from 'react-toastify';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CustomButton } from '../../../theme/Button/Buttons';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 
 export default function ShowAssessment() {
   const navigate = useNavigate();
@@ -94,6 +95,21 @@ export default function ShowAssessment() {
       });
     }
   }, [isError, deleteError]);
+  useEffect(() => {
+    if (dltSuccess) {
+      toast.error('assessment delete sucessfully!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [dltSuccess]);
+
   const changeStatusByActive = (e) => {
     console.log('active status  :- ', e.target.value);
     setCreateDate(null);
@@ -107,6 +123,11 @@ export default function ShowAssessment() {
         <div className="w-100  justify-content-between flex-wrap align-items-center  pb-lg-2  ">
           <div className=" col-12 m-0  p-md-2 d-flex justify-content-between align-items-center">
             <h4 className="m-0 col-md-5 justify-content-start  align-items-center text-capitalize fw-bold">
+              <IoMdArrowRoundBack
+                size={30}
+                className="cursor-pointer p-0"
+                onClick={() => navigate(path.AdminDasboard.path)}
+              />
               All Assessment
             </h4>
 

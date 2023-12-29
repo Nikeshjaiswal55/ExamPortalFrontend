@@ -143,7 +143,9 @@ export default function StudentPaper({
                   </h1>
                   <div className=" d-flex align-items-center px-3 fs-6">
                     <CountdownTimer
-                      initialTime={+decodedData?.examDetails.examDuration}
+                      initialTime={parseInt(
+                        decodedData?.examDetails.examDuration
+                      )}
                       // initialTime={40}
                       onTimerEnd={handleTimerEnd}
                     />
@@ -162,7 +164,7 @@ export default function StudentPaper({
                       ></div>
                     </div>{' '}
                     <span>
-                      {count}/{decodedData?.questions?.length} question
+                      {count}/{decodedData?.questions?.length} Question
                     </span>
                   </div>
                 </div>
@@ -239,12 +241,11 @@ export default function StudentPaper({
         >
           <Modal.Header>
             <Modal.Title id="contained-modal-title-vcenter">
-              {' '}
               Are You Sure ?
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>confirm you want Submit </p>
+            <p>Confirm you want Submit </p>
           </Modal.Body>
           <Modal.Footer>
             <div className="d-flex w-100 gap-3">
