@@ -14,7 +14,7 @@ const LandingPage = () => {
     contact: 'contact',
   };
   return (
-    <>
+    <div className="m-0 p-0">
       <div className="section w-100" id={linkIds.home}>
         <LandingPageNavbar />
         <HeroSection />
@@ -30,7 +30,7 @@ const LandingPage = () => {
       <div className="section" id={linkIds.contact}>
         <Contact />
       </div>
-    </>
+    </div>
   );
 };
 

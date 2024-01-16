@@ -3,7 +3,7 @@ import './Feature.css';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import screentshot from '../../../../assets/gif/screent-shot-gif.gif';
 import randomclick from '../../../../assets/gif/random-click.gif';
-import rulebreakk from '../../../../assets/gif/rule-break.gif';
+import rulebreakk from '../../../../assets/auto-voilence-submit-img.png';
 
 const items = [
   {
@@ -15,8 +15,7 @@ const items = [
   },
   {
     id: 2,
-    title:
-      'Snapshots: Time-Triggered Image Capture for Cheat Detection',
+    title: 'Snapshots: Time-Triggered Image Capture for Cheat Detection',
     img: randomclick,
     // img: 'https://images.pexels.com/photos/18023772/pexels-photo-18023772/free-photo-of-close-up-of-a-person-holding-a-wristwatch.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
     desc: 'Implement a customizable snapshot interval by clicking, allowing users to set the frequency of screenshots during exams on our portal. This feature provides flexibility, enabling fine-tuned monitoring based on individual preferences or specific exam requirements',
@@ -49,10 +48,16 @@ const Single = ({ item }) => {
     <section className="section">
       <div className="portfolio-container">
         <div className="portfolio-wrapper row">
-          <div className="portfolio-image-container col-md-6 col-sm-12" ref={ref}>
+          <div
+            className="portfolio-image-container d-flex align-items-center justify-content-center col-md-6 col-sm-12"
+            ref={ref}
+          >
             <img src={item.img} className="portfolio-img" alt="" />
           </div>
-          <motion.div className="portfolio-text-container col-md-6 col-sm-12" style={{ y }}>
+          <motion.div
+            className="portfolio-text-container col-md-6 col-sm-12"
+            style={{ y }}
+          >
             <h2 className="portfolio-text-h2">{item.title}</h2>
             <p className="portfolio-text-p">{item.desc}</p>
             {/* <button className="portfolio-button">See Demo</button> */}

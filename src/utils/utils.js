@@ -1,6 +1,5 @@
 export const DateAndTimeFormate = (originalDateString) => {
     const originalDate = new Date(originalDateString);
-
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'

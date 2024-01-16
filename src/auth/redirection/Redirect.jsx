@@ -63,7 +63,7 @@ export const Redirect = () => {
   } else {
     return isLoading || orgLoading ? (
       <div
-        className="d-flex justify-content-center align-items-center w-100 h-100"
+        className="d-flex justify-content-center align-items-center "
         style={{ height: '100vh', width: '100vw' }}
       >
         <UserWaiting />

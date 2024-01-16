@@ -182,13 +182,7 @@ export function StudentResult() {
                                 // question.correctAns === option
                               }
                             />
-                            <p
-                              className={`mx-2 mb-1 mb-0 ${
-                                question.userAns == question.correctAns
-                                  ? 'text-success'
-                                  : ''
-                              }`}
-                            >
+                            <p className="mx-2 mb-1 mb-0">
                               {option.replaceAll('+', ' ')}
                             </p>
                           </FormLabel>

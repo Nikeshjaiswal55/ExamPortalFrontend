@@ -30,7 +30,7 @@ export default function TermandConditionPage() {
     );
   } else {
     return (
-      <div className="row w-100 h-100">
+      <div className="row w-100 h-100 overflow-auto bg-white mx-1 ms-0 rounded-3">
         {isError ? (
           <SomethingWentWrong />
         ) : (
@@ -38,7 +38,7 @@ export default function TermandConditionPage() {
             <div className="col-lg-6 d-flex align-items-center col-md-12 mb-4 mb-lg-0">
               <img src={Ima} className="img-fluid" alt="Rules" />
             </div>
-            <div className="col-lg-6    col-md-12 " id="innerHtml">
+            <div className="col-lg-6 col-md-12 mt-3 " id="innerHtml">
               {/* <div className="text-center">
                 <h3>Online Exam Rules</h3>
               </div>

@@ -253,6 +253,23 @@ export default function StudentAvidancePageOnAdmin() {
                       </td>
                     </tr>
                   ))}
+                {data?.cheating &&
+                  data?.cheating.audios?.map((audio, index) => (
+                    <tr key={index}>
+                      <td className="p-5 text-center">1</td>
+                      <td className="p-5 text-center">Random audio</td>
+                      {/* <td className="p-5">{image?.timestamp.toString()}</td> */}
+                      <td className="p-5 text-center">
+                        <audio controls>
+                          <source
+                            src={`data:audio/wav;base64,${audio}`}
+                            type="audio/wav"
+                          />
+                          Your browser does not support the audio tag.
+                        </audio>
+                      </td>
+                    </tr>
+                  ))}
                 {/* {ssImage && (
                   <tr>
                     <td className="p-5">2</td>

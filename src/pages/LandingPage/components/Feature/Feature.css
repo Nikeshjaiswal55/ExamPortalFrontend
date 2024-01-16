@@ -46,16 +46,17 @@
 
 
 .portfolio-image-container {
-  /* flex: 1; */
-  height: 50%;
+  height: 100%;
 }
 
 
 
 .portfolio-img {
-  width: 100%;
+  /* width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; */
+  width: 30rem;
+  height: 30rem;
 }
 
 .portfolio .container .wrapper.mobile .imageContainer img {

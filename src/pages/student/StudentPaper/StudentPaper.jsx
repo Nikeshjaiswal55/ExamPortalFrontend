@@ -21,10 +21,12 @@ export default function StudentPaper({
   cameraStop,
   tabSitchSubmit,
   tabBlurCount,
+  recordedData,
 }) {
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
   const handleSubmitShow = () => setShowSubmit(true);
+  const [isPaperSubmitted, setIsPaperSubmitted] = useState(false);
   // const { data, isSuccess, isLoading } =
   //   useGetAllQuestionsFromPaperIdQuery(paperId);
   const [saveResult, { isSucess, isLoading: submitPaperLoading }] =
@@ -37,26 +39,17 @@ export default function StudentPaper({
   );
 
   useEffect(() => {
-    if (
-      (tabSitchSubmit > 1 && tabSitchSubmit < 3) ||
-      (tabBlurCount > 4 && tabBlurCount < 6)
-    ) {
+    if (tabSitchSubmit > 1 || tabBlurCount > 4) {
       if (!isPaperSubmitted) {
-        console.log(
-          'ONe time submitted =================================================='
-        );
+        setShowOnTimeOver(true);
         setIsPaperSubmitted(true);
         submitPaperDetails();
       }
-      console.log(
-        'submitted successfully checking result ===============================================  ',
-        tabSitchSubmit,
-        tabBlurCount
-      );
     }
   }, [tabSitchSubmit, tabBlurCount]);
 
   const imagesArray = useSelector((state) => state.admin.image);
+  const audioArray = useSelector((state) => state.admin.audio);
 
   function getUserAnswereWithQuestion() {
     const questionsJson = JSON.stringify(decodedData?.questions);
@@ -85,7 +78,7 @@ export default function StudentPaper({
         studentId: stdData.userId,
         paperId: paperId,
         images: imagesArray,
-        audios: null,
+        audios: audioArray,
       },
     };
     cameraStop();
@@ -108,7 +101,6 @@ export default function StudentPaper({
     if (!isChecked(id)) {
       setCount(count + 1);
       updateProgressBar();
-      console.log('updated progressbar');
     }
     const update = selectedOption;
     console.log(e.target.value);

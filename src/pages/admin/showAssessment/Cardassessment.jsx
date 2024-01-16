@@ -62,9 +62,9 @@ export default function Cardassessment({
 
   return (
     <>
-      <div className="col-12 col-lg-6 mb-2 p-0 px-1 h-25  ">
-        <div className=" white-box px-3 pt-2 pb-4 position-relative border rounded-4  bg-white">
-          <div
+      <div className="col-12 col-lg-6 mb-2 p-0 px-1  ">
+        <div className="white-box h-100 px-3 pt-3 pb-3 position-relative border rounded-4  bg-white">
+          {/* <div
             className={`w-100 d-flex ${
               stdData || props?.is_Active !== 'false' ? 'pb-4 mb-1' : 'pb-3'
             } pt-1 cursor-pointer justify-content-end align-items-center`}
@@ -74,7 +74,7 @@ export default function Cardassessment({
             ) : (
               <MdDelete color="red" onClick={removeAssisstment} />
             )}
-          </div>
+          </div> */}
           <div className="d-flex justify-content-between align-items-center bg-white rounded-3 p-2 px-4  bg-body-secondary">
             <div className="m-0 p-0">
               <strong
@@ -140,8 +140,9 @@ export default function Cardassessment({
                 onClick={() =>
                   navigate(`${path.TermAndCondition.path}/${paperId}`)
                 }
+                className="border-dashed border-primary bg-light text-primary text-capitalize"
               >
-                GetStarted
+                Get Started
               </Button>
             ) : (
               <div
@@ -178,6 +179,24 @@ export default function Cardassessment({
                   <span> 3+</span>
                 </div>
               </div>
+            )}
+          </div>
+          <div
+            className={`w-100 d-flex ${
+              stdData || props?.is_Active !== 'false' ? 'mb-1' : 'pb-1'
+            } pt-2 cursor-pointer justify-content-end align-items-center pe-4`}
+            onClick={removeAssisstment}
+          >
+            {stdData || props?.is_Active !== 'false' ? (
+              ''
+            ) : (
+              // <MdDelete color="red" onClick={removeAssisstment} />
+              <h6
+                className="m-0 text-primary px-2 py-1 rounded-3"
+                style={{ background: '#ecf7f8' }}
+              >
+                Delete
+              </h6>
             )}
           </div>
         </div>

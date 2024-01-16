@@ -21,6 +21,7 @@ import AttemptedFailed from '../../../assets/gif/graph/assessment-error.png';
 import { BarChartStudentDashboard } from '../component/BarChartStudentDashboard';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../routes/RoutesConstant';
+import { TimeFormate } from '../../../utils/utils';
 
 export const StudentDashBoard = () => {
   let userId = JSON.parse(localStorage.getItem('users'));
@@ -373,16 +374,16 @@ export const StudentDashBoard = () => {
                                 <>
                                   <div className=" border rounded py-3 px-2 my-1">
                                     <div className=" w-100 d-flex  flex-column flex-md-row gap-2  justify-content-start  align-items-start  align-items-md-center justify-content-md-between fw-bold ">
-                                      <div className=" ps-3 ps-md-0 w-auto text-start text-capitalize">
-                                        {value?.assessmentName}{' '}
+                                      <div className="col-4 ps-3 ps-md-0 w-auto text-start text-capitalize">
+                                        {value?.assessmentName}
                                       </div>
-                                      <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
-                                        {value?.examDuration}{' '}
+                                      <div className="col-4 ps-3 ps-md-0 w-auto  text-start text-capitalize">
+                                         {TimeFormate(value?.examDuration)}
                                       </div>
-                                      <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
+                                      {/* <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
                                         {value?.published_date}{' '}
-                                      </div>
-                                      <div className="d-flex  justify-content-around justify-content-lg-between gap-2">
+                                      </div> */}
+                                      <div className="col-4 d-flex  justify-content-around justify-content-lg-between gap-2">
                                         {/* <ViewResult paperId={value.paperId} /> */}
                                         <Button
                                           onClick={() =>

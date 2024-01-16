@@ -383,7 +383,7 @@ export const AddAssignment = () => {
                     </Button> */}
                   </div>
                   <div
-                    className="col-12 col-md-7 px-0 bg-white rounded-3"
+                    className="col-12 col-md-7 px-0 rounded-top-3"
                     style={{ flex: 1, height: 'calc(100vh - 77px)' }}
                   >
                     <Tab.Content>
@@ -416,7 +416,11 @@ export const AddAssignment = () => {
                         />
                       </Tab.Pane>
                     </Tab.Content>
-                    <div className="d-flex justify-content-end me-3">
+                    <div
+                      className={`${
+                        activeTab === 'questionManagement' ? '' : 'bg-white'
+                      } rounded-bottom-3 d-flex justify-content-end pe-3 `}
+                    >
                       <Button
                         type="subbmit"
                         className='className="p-lg-2 my-2 btn-primary btn w-25'
@@ -449,7 +453,7 @@ export const AddAssignment = () => {
 const AssesstmentSetting = ({ setInstruction }) => {
   return (
     <div
-      className=" p-4 rounded-3 bg-white text-dark"
+      className=" p-4 rounded-top-3 bg-white text-dark"
       style={{ height: 'calc(100vh - 135px)' }}
     >
       <div className="my-3">
@@ -621,13 +625,30 @@ const AssesstmentSetting = ({ setInstruction }) => {
 
 const QuestionManagement = ({ values, option, setOption }) => {
   const refArray = useRef([]);
+  const messagesContainerRef = useRef(null);
+
   useEffect(() => {
     refArray.current = Array.from({ length: values.questions.length }, () =>
       React.createRef()
     );
   }, [values.questions]);
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      // Scroll to the bottom of the container
+      console.log('scrollheight', messagesContainerRef.current.scrollHeight);
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [values.questions]);
+
   return (
     <div
+      ref={messagesContainerRef}
       className="text-dark overflow-auto"
       style={{ height: 'calc(100vh - 9rem)' }}
     >
@@ -636,14 +657,14 @@ const QuestionManagement = ({ values, option, setOption }) => {
           <>
             {' '}
             {values.questions.map((question, index) => (
-              <div key={index} className="p-4 mb-3 bg-white rounded-4">
+              <div key={index} className="p-4 mb-3 rounded-3 bg-white">
                 <div>
                   <div className="d-flex justify-content-between align-items-center">
                     <FormLabel className="py-1 fw-bold">
                       Question {index + 1} :-
                     </FormLabel>
                     <div>
-                      <FormLabel className="mx-3">
+                      {/* <FormLabel className="mx-3">
                         <Field
                           type="checkbox"
                           className="form-check-input mx-2"
@@ -651,7 +672,7 @@ const QuestionManagement = ({ values, option, setOption }) => {
                           id={`checkbox-${index}`}
                         />
                         Multiple Correct Answer
-                      </FormLabel>
+                      </FormLabel> */}
                       {values.questions.length === 1 ? (
                         ' '
                       ) : (

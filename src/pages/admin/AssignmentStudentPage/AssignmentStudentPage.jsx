@@ -35,7 +35,7 @@ export default function AssignmentStudentPage() {
               Student
             </h4>
           </div>
-          <div className="m-0 p-0" style={{ height: 'calc(100vh - 16rem)' }}>
+          <div className="m-0 p-0" style={{ height: 'calc(100vh - 122px)' }}>
             <div className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto">
               {data?.map((studentdetails, index) => (
                 <StudentCard

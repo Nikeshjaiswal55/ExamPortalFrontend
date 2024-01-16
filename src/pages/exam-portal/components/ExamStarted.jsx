@@ -22,10 +22,12 @@ import {
 import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { Loader } from '../../../components/Loader/Loader';
-import { sendImage } from '../../../store/adminSlice';
+import { sendAudio, sendImage } from '../../../store/adminSlice';
 import * as tf from '@tensorflow/tfjs';
 import * as facemesh from '@tensorflow-models/facemesh';
 import Webcam from 'react-webcam';
+import * as speechCommands from '@tensorflow-models/speech-commands';
+import { ReactMic } from 'react-mic';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -35,8 +37,9 @@ export const ExamStarted = () => {
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [videoStream, setVideoStream] = useState();
   const [screenStream, setScreenStream] = useState();
-  const [facedetect, setfaceDetect] = useState(0);
+  const [submitVoiceRec, setSubmitVoiceRec] = useState(true);
   const [tabSitchSubmit, setTabSitchSubmit] = useState(false);
+  const [recordedData, setRecordedData] = useState([]);
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
@@ -56,15 +59,69 @@ export const ExamStarted = () => {
     stdId: stdId.userId,
   });
 
-  console.log(attempted, 'attempted');
-
   const [imageUpload, { isError: uploadError }] =
     useUploadImageBase64Mutation();
 
+  const [isRecording, setIsRecording] = useState(false);
   const webcamRef = useRef(null);
 
+  //voice rec
+  const voiceDetect = () => {
+    const initVoiceModel = async () => {
+      // Load the speech commands model
+      const recognizer = speechCommands.create('BROWSER_FFT');
+      await recognizer.ensureModelLoaded();
+      console.log('model loaded', recognizer);
+
+      // Define a callback function for predictions
+      recognizer.listen(
+        (result) => {
+          console.log('result', result.scores);
+          const maxIndex = result.scores.indexOf(Math.max(...result.scores));
+
+          // Check if the predicted class is a voice command (adjust this based on your use case)
+          if (result.scores[maxIndex] > 0.8) {
+            console.log('voice command detected!');
+            setIsRecording(true);
+            // Start recording using webcam or other recording logic
+            // startRecording();
+          } else {
+            setIsRecording(false);
+            onStop();
+          }
+        },
+        { probabilityThreshold: 0.7 }
+      );
+    };
+
+    if (submitVoiceRec) {
+      initVoiceModel();
+    }
+  };
+
+  //for the stop recording
+
+  const onStop = (recordedData) => {
+    console.log('Recording Stopped:', recordedData);
+    // const data = [recordedData];
+    // data.push(recordedData?.blob);
+    if (recordedData?.blob) {
+      // setRecordedData(recordedData?.blob);
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result.split(',')[1];
+          // setBase64Audio(base64String);
+          resolve(base64String);
+        };
+        reader.readAsDataURL(recordedData.blob);
+      }).then((base64String) => {
+        dispatch(sendAudio(base64String));
+      });
+    }
+  };
+
   const runFacemesh = async () => {
-    console.log('runfacemesh');
     const net = await facemesh.load({
       inputResolution: { width: 640, height: 480 },
       scale: 0.8,
@@ -92,17 +149,10 @@ export const ExamStarted = () => {
         handleShow();
         setIsButtonVisible(false);
       }
-      // if (face.length > 1) {
-      //   const lengths = face.length;
-      //   setfaceDetect(lengths);
-      //   console.log(lengths, 'face', face);
-      // }
-      //  const ctx=canvasRef.current.getContext("2d");
-      //  drawMesh(face,ctx)
     }
   };
 
-  const captureImage = () => {
+  const captureImages = () => {
     const constraints = {
       video: true,
     };
@@ -167,10 +217,10 @@ export const ExamStarted = () => {
   const handleVisibilityChange = (stream) => {
     console.log('handle visibility changed call ');
     if (document.hidden && stream) {
+      console.log('handle visibility changed call if condition');
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
       setTabSwitchCount((prev) => prev + 1);
-      console.log('Value Changed of setTabSwitch');
     }
   };
 
@@ -180,17 +230,19 @@ export const ExamStarted = () => {
     TabSwitchScreenShot(stream);
     setTabBlurCount((prev) => prev + 1);
   };
+
   function TabSwitch(stream) {
     document.addEventListener('visibilitychange', () =>
       handleVisibilityChange(stream)
     );
-    console.log('blur event added -===================');
-    window.addEventListener('blur', () => {
+    document.addEventListener('blur', () => {
       handleBlurChange(stream);
     });
+    console.log('tab switch call addeventlistenerrerer =============');
   }
+
   useEffect(() => {
-    if (tabBlurCount > 2 && tabBlurCount < 5) {
+    if (tabBlurCount > 2) {
       setContent(
         "please don't Open tab other on  a tab, your exam will automatically submitted."
       );
@@ -200,7 +252,7 @@ export const ExamStarted = () => {
   }, [tabBlurCount]);
 
   useEffect(() => {
-    if (tabSwitchCount > 0 && tabSwitchCount < 2) {
+    if (tabSwitchCount > 0) {
       setContent(
         "please don't switch your tab other, your exam will automatically submitted."
       );
@@ -209,19 +261,21 @@ export const ExamStarted = () => {
     console.log('tab switch  count := ', tabSwitchCount);
   }, [tabSwitchCount]);
 
-  useEffect(() => {
-    TabSwitch(stream);
+  // useEffect(() => {
+  //   TabSwitch(stream);
 
-    // return () => {
-    // document.addEventListener('visibilitychange',handleVisibilityChange);
-    // window.addEventListener("blur",handleBlurChange);
-    // };
-  }, []);
+  //   // return () => {
+  //   // document.addEventListener('visibilitychange',handleVisibilityChange);
+  //   // window.addEventListener("blur",handleBlurChange);
+  //   // };
+  // }, []);
 
   async function cameraStop() {
     console.log('inside camera stop function');
+    setSubmitVoiceRec(false);
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+    tf.disposeVariables();
   }
 
   async function handleSubmit() {
@@ -229,6 +283,7 @@ export const ExamStarted = () => {
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
+    document.location.reload();
   }
 
   const [progress, setProgress] = useState(0);
@@ -257,15 +312,17 @@ export const ExamStarted = () => {
     } else {
       CheckForExtension(handleShow, setContent, setProgress, callback);
     }
-    // return () => {
-    //   document.removeEventListener('visibilitychange',handleVisibilityChange);
-    // };
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('blur', handleBlurChange);
+    };
   }, [attemptedSucess]);
 
   useEffect(() => {
     if (progress == 100) {
       // navigate(`${path.StudentExamStarted.path}/${paperId}`);
-      captureImage();
+      captureImages();
+      voiceDetect();
       setProcess(false);
       runFacemesh();
     }
@@ -290,7 +347,7 @@ export const ExamStarted = () => {
   //     </div>
   //   );
   // } else {
-  if (attempted?.data == 'true') {
+  if (attempted?.data === 'true') {
     cameraStop();
     return (
       <>
@@ -342,6 +399,26 @@ export const ExamStarted = () => {
                 heght: 100,
               }}
             />
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                zIndex: 9,
+                width: 0,
+                heght: 0,
+                display: 'none',
+              }}
+            >
+              <ReactMic
+                record={isRecording}
+                className="sound-wave"
+                onStop={onStop}
+                strokeColor="#000000"
+                backgroundColor="#FF4081"
+              />
+            </div>
+
             <StudentPaper
               paperId={paperId}
               isLoading={isLoading}
@@ -350,6 +427,7 @@ export const ExamStarted = () => {
               cameraStop={cameraStop}
               tabSitchSubmit={tabSwitchCount}
               tabBlurCount={tabBlurCount}
+              recordedData={recordedData}
             />
             <ExamModal
               show={show}

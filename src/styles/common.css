@@ -21,6 +21,11 @@
     --inputFiedColor: #707070;
 }
 
+#root{
+    height: 100vh;
+    width: 100vw;
+}
+
 .main {
     transition: all 0.5s;
 }

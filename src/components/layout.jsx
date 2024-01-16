@@ -59,15 +59,15 @@ export default function Layout({ children }) {
       name: 'Assessment List',
       icon: <FaClipboardList size={icon_size} />,
     },
-    {
-      path: '',
-      name: 'LogOut',
-      icon: <CiLogout size={icon_size} />,
-      onClick: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear();
-      },
-    },
+    // {
+    //   path: '',
+    //   name: 'LogOut',
+    //   icon: <CiLogout size={icon_size} />,
+    //   onClick: () => {
+    //     logout({ logoutParams: { returnTo: window.location.origin } });
+    //     localStorage.clear();
+    //   },
+    // },
   ];
   const cmpOption = [
     {
@@ -85,15 +85,15 @@ export default function Layout({ children }) {
       name: 'Assessment List',
       icon: <FaClipboardList size={icon_size} />,
     },
-    {
-      path: '',
-      name: 'LogOut',
-      icon: <CiLogout size={icon_size} />,
-      onClick: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear();
-      },
-    },
+    // {
+    //   path: '',
+    //   name: 'LogOut',
+    //   icon: <CiLogout size={icon_size} />,
+    //   onClick: () => {
+    //     logout({ logoutParams: { returnTo: window.location.origin } });
+    //     localStorage.clear();
+    //   },
+    // },
   ];
 
   const stdOption = [
@@ -109,16 +109,16 @@ export default function Layout({ children }) {
       className: '',
       icon: <FaClipboardList size={icon_size} />,
     },
-    {
-      path: '',
-      name: 'LogOut',
-      className: ' align-self-end',
-      icon: <CiLogout size={icon_size} />,
-      onClick: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
-        localStorage.clear();
-      },
-    },
+    // {
+    //   path: '',
+    //   name: 'LogOut',
+    //   className: ' align-self-end',
+    //   icon: <CiLogout size={icon_size} />,
+    //   onClick: () => {
+    //     logout({ logoutParams: { returnTo: window.location.origin } });
+    //     localStorage.clear();
+    //   },
+    // },
   ];
 
   const orgtype = localStorage.getItem('orgtype');
@@ -137,43 +137,62 @@ export default function Layout({ children }) {
             width: isOpen ? '200px' : '50px',
             left: isOpen ? '0px' : '-70px',
           }}
-          className="sidebar m-2  "
+          className="sidebar m-2 d-flex flex-column justify-content-between"
           id="sideNavbar"
         >
-          <div className="top_section">
-            <div style={{ display: isOpen ? 'none' : 'block' }}>
-              <img
-                src={exameasy_short_light_logo}
-                alt="logo"
-                className=""
-                width={'20px'}
-              />
-            </div>
-            <h1
-              style={{ display: isOpen ? 'block' : 'none' }}
-              className="logo text-center"
-            >
-              <img src={exameasy_light_logo} alt="logo" width={'60%'} />
-            </h1>
-          </div>
-
-          {menuItem.map((item, index) => (
-            <NavLink
-              to={item.path}
-              key={index}
-              className="link"
-              activeclassName="active"
-              onClick={item.onClick}
-            >
-              {item.icon}
-              <div
-                style={{ display: isOpen ? 'block' : 'none' }}
-                className="link_text"
-              >
-                {item.name}
+          <div>
+            <div className="top_section">
+              <div style={{ display: isOpen ? 'none' : 'block' }}>
+                <img
+                  src={exameasy_short_light_logo}
+                  alt="logo"
+                  className=""
+                  width={'20px'}
+                />
               </div>
-            </NavLink>
-          ))}
+              <h1
+                style={{ display: isOpen ? 'block' : 'none' }}
+                className="logo text-center"
+              >
+                <img src={exameasy_light_logo} alt="logo" width={'60%'} />
+              </h1>
+            </div>
+
+            {menuItem.map((item, index) => (
+              <NavLink
+                to={item.path}
+                key={index}
+                className="link"
+                activeclassName="active"
+                onClick={item.onClick}
+              >
+                {item.icon}
+                <div
+                  style={{ display: isOpen ? 'block' : 'none' }}
+                  className="link_text"
+                >
+                  {item.name}
+                </div>
+              </NavLink>
+            ))}
+          </div>
+          <NavLink
+            to={''}
+            className="link"
+            activeclassName="active  align-self-end"
+            onClick={() => {
+              logout({ logoutParams: { returnTo: window.location.origin } });
+              localStorage.clear();
+            }}
+          >
+            <CiLogout size={icon_size} />
+            <div
+              style={{ display: isOpen ? 'block' : 'none' }}
+              className="link_text"
+            >
+              LogOut
+            </div>
+          </NavLink>
         </div>
 
         <div

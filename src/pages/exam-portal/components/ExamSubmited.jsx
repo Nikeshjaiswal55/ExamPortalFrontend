@@ -52,7 +52,7 @@ export const ExamSubmited = () => {
         <div className="h-100 d-flex align-items-center justify-content-center">
           <Loader />
         </div>
-      ) : data.is_published === 'approved' ? (
+      ) : data?.is_published === 'approved' ? (
         data?.result.resultStatus === 'pass' ? (
           <div className="h-100 d-flex align-items-center justify-content-center">
             <Pass stdId={stdId} paperId={paperId} data={data?.result} />

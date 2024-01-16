@@ -60,23 +60,25 @@ export default function AllAssissmentToStudent() {
 
   return (
     <>
-      <div className="main w-100 px-3 h-100 m-0 p-0 py-2 overflow-auto ">
-        <div className="w-100 row justify-content-between flex-wrap align-items-center  p-lg-3  ">
+      <div className="main w-100 h-100 m-0 p-0 overflow-auto ">
+        <div className="w-100 row justify-content-between flex-wrap align-items-center mb-3 ">
           <div
-            className=" d-flex col-md-5 mx-3 mb-lg-0 mb-3 col-12 justify-content-between border p-2 fs-4 rounded-4 bg-white  "
-            style={{ width: '550px' }}
+            className="col-12  d-flex col-md-3 mx-3 mb-lg-0 mb-3 justify-content-between border py-2 fs-6 rounded-3 bg-white "
+            style={{ width: '350px' }}
           >
             <input
               type="search"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="border-0 focus-ring  focus-ring-light"
+              onChange={(e) => {
+                setInput(e.target.value);
+              }}
+              className="border-0 focus-ring focus-ring-light"
               placeholder="Search here.."
               style={{ width: '90%' }}
-              disabled={isError || isLoading ? true : false}
+              disabled={isLoading || isError ? true : false}
             />
             <span>
-              <IoSearchSharp size={35} className=" cursor-pointer" />
+              <IoSearchSharp size={25} className=" cursor-pointer" />
             </span>
           </div>
           {/* <div className="w-auto col-md-3 mx-2  mb-lg-0 mb-3 col-12  d-flex justify-content-end">
@@ -95,17 +97,19 @@ export default function AllAssissmentToStudent() {
         <div className=" position-absolute top-50 start-50  translate-middle ">
           {isError && <SomethingWentWrong />}
         </div>
-        {filterData?.length === 0 && (
-          <NoDataFound>
-            <div>
-              <h4 className="text-capitalize fw-bold text-center">
-                {notSearchDataFound
-                  ? 'No Such A Data Found!!'
-                  : ' No Data Available!!'}
-              </h4>
-            </div>
-          </NoDataFound>
-        )}
+        <div className=" position-absolute top-50 start-50  translate-middle ">
+          {filterData?.length === 0 && (
+            <NoDataFound>
+              <div>
+                <h4 className="text-capitalize fw-bold text-center">
+                  {notSearchDataFound
+                    ? 'No Such A Data Found!!'
+                    : ' No Data Available!!'}
+                </h4>
+              </div>
+            </NoDataFound>
+          )}
+        </div>
         {isLoading ? (
           <div className="row m-0 p-0  ">
             {[1, 2, 3, 4, 5, 6].map((item) => (
@@ -116,11 +120,13 @@ export default function AllAssissmentToStudent() {
           <div className="row m-0 p-0  ">
             {filterData?.filter((item) => item._attempted == false).length ===
             0 ? (
-              <NoDataFound>
-                <h4 className="text-capitalize fw-bold text-center">
-                  No Pending Assissment
-                </h4>
-              </NoDataFound>
+              <div className=" position-absolute top-50 start-50  translate-middle ">
+                <NoDataFound>
+                  <h4 className="text-capitalize fw-bold text-center">
+                    No Pending Assissment
+                  </h4>
+                </NoDataFound>
+              </div>
             ) : (
               ''
             )}

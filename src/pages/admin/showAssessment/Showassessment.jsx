@@ -336,22 +336,23 @@ export default function ShowAssessment() {
                       <div className=" fs-5  d-flex justify-content-start  align-items-baseline p-0 py-2 m-0">
                         <div className=" w-auto d-flex align-items-baseline me-2 ">
                           <label htmlFor="per-page" className=" me-2">
-                            Per-page
+                            <h6 className="m-0 p-0">Per-page</h6>
                           </label>
-                          <FormControl
-                            type="number"
+                          <select
                             name="per-page"
-                            className=" w-auto h-50 rounded-1 border   btn btn-outline-light text-black  "
-                            id="per-page"
                             width={'50px'}
-                            min={1}
-                            max={100}
                             defaultValue={Per_Page}
                             onChange={(e) => {
                               setPer_Page(e.target.value);
                               console.log(e.target.value);
                             }}
-                          />
+                            className=" w-auto h-50 rounded-1 border   btn btn-outline-light text-black  "
+                            id="per-page"
+                          >
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                          </select>
                         </div>
                         <Pagination>
                           <Pagination.First
