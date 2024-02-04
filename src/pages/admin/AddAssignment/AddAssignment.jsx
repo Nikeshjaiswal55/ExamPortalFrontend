@@ -33,6 +33,7 @@ import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
 import { Sample1 } from './Templates';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { QuestionExcelDataReader } from '../../../utils/QuestionExcelDataReader';
 const durationTimer = [
   {
     value: '900',
@@ -126,6 +127,7 @@ export const AddAssignment = () => {
   const orgType = localStorage.getItem('orgtype');
   const getOrgdata = JSON.parse(localStorage.getItem('orgData'));
   const [excel, setExcel] = useState([]);
+  const [questionExcel, setQuestionExcel] = useState([]);
   const [show, setModalShow] = useState(false);
   const [errorContent, setErrorContent] = useState('');
   const [instruction, setInstruction] = useState(Sample1);
@@ -198,11 +200,28 @@ export const AddAssignment = () => {
         if (
           values.questions[0].questions !== '' ||
           values.questions[0].options.length ||
-          values.questions[0].correctAns !== ''
+          values.questions[0].correctAns !== ''||
+          questionExcel.length
         ) {
           if (excel.length || values.email.length || values.examBranch !== '') {
+            const excelQuestions = questionExcel.map((question) => 
+              {
+                return {
+                  questions: question.question,
+                  options: [
+                    question.option1,
+                    question.option2,
+                    question.option3,
+                    question.option4,
+                  ],
+                  correctAns: question.answer,
+                }
+              }
+            )
+
+            const sendQuestions=(excelQuestions.length>0) ?excelQuestions:values.questions;
             const sendPaper = {
-              questions: values.questions,
+              questions: sendQuestions,
               examDetails: {
                 examDuration: values.assessmentDuration,
                 examMode: values.assessmentPattern,
@@ -286,7 +305,6 @@ export const AddAssignment = () => {
       if (activeTab == 'assessmentSetting') {
         navLinkRef.current.click();
         setActiveTab('questionManagement');
-
         console.log('inside submit assessmentSetting ', navLinkRef.current);
       }
       if (activeTab == 'questionManagement') {
@@ -401,6 +419,10 @@ export const AddAssignment = () => {
                           values={values}
                           setOption={setOption}
                           option={option}
+                          handleChange={handleChange}
+                          handleBlur={handleBlur}
+                          questionExcel={questionExcel}
+                          setQuestionExcel={setQuestionExcel}
                         />
                       </Tab.Pane>
                       <Tab.Pane
@@ -623,9 +645,35 @@ const AssesstmentSetting = ({ setInstruction }) => {
   );
 };
 
-const QuestionManagement = ({ values, option, setOption }) => {
+const QuestionManagement = ({
+  values,
+  option,
+  setOption,
+  handleBlur,
+  handleChange,
+  questionExcel,
+  setQuestionExcel,
+}) => {
   const refArray = useRef([]);
   const messagesContainerRef = useRef(null);
+  const handleErrorClose = () => setShowError(false);
+  const handleErrorShow = () => setShowError(true);
+  const inputFile = useRef(null);
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    if (inputFile.current) {
+      inputFile.current.value = '';
+      inputFile.current.type = 'text';
+      inputFile.current.type = 'file';
+    }
+    setQuestionExcel([]);
+  };
 
   useEffect(() => {
     refArray.current = Array.from({ length: values.questions.length }, () =>
@@ -652,178 +700,309 @@ const QuestionManagement = ({ values, option, setOption }) => {
       className="text-dark overflow-auto"
       style={{ height: 'calc(100vh - 9rem)' }}
     >
-      <FieldArray name="questions">
-        {({ push, remove }) => (
-          <>
-            {' '}
-            {values.questions.map((question, index) => (
-              <div key={index} className="p-4 mb-3 rounded-3 bg-white">
-                <div>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <FormLabel className="py-1 fw-bold">
-                      Question {index + 1} :-
-                    </FormLabel>
-                    <div>
-                      {/* <FormLabel className="mx-3">
-                        <Field
-                          type="checkbox"
-                          className="form-check-input mx-2"
-                          name="checkbox"
-                          id={`checkbox-${index}`}
-                        />
-                        Multiple Correct Answer
-                      </FormLabel> */}
-                      {values.questions.length === 1 ? (
-                        ' '
-                      ) : (
-                        <ImCross
-                          onClick={() => remove(index)}
-                          className="cursor-pointer"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <Field
-                    type="text"
-                    name={`questions[${index}].questions`}
-                    placeholder="Enter question"
-                    className="form-control"
-                  />
-                  <p className="text-danger">
-                    <ErrorMessage
-                      name={`questions[${index}].questions`}
-                      className="text-danger"
-                    />
-                  </p>
+      <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 bg-primary">
+        <MdUpload size={30} className=" p-1" />
+        <>
+          <label for="files" className="text-white cursor-pointer">
+            Upload Question Excel
+          </label>
+          <input
+            id="files"
+            style={{
+              visibility: 'hidden',
+              width: '1px',
+              height: '1px',
+            }}
+            name="excelFile"
+            ref={inputFile}
+            accept=".xlsx, .xls, .xlsm, .xlsb, .csv,.xlam ,.xltx , .xltm"
+            onChange={async (e) => {
+              handleFileChange(e);
+              handleChange(e);
+              let arr = await QuestionExcelDataReader(e.target.files[0]);
+              if (arr instanceof String) {
+                console.log(arr);
+                setQuestionExcel(arr);
+                handleErrorShow();
+              } else {
+                setQuestionExcel([...arr]);
+                console.log('excel data =========', arr);
+              }
+            }}
+            onBlur={handleBlur}
+            type="file"
+          />
+        </>
+      </div>
+      <div className="my-0  d-flex justify-content-center  ">
+          {selectedFile ? (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span>{selectedFile.name}</span>
+              <button
+                type="button"
+                onClick={handleRemoveFile}
+                className=" fw-bold cursor-pointer ms-2 px-1 border-0 text-danger rounded-circle"
+                title="remove file"
+              >
+                &#x2715;
+              </button>
+            </div>
+          ) : null}
+        </div>
+      {questionExcel instanceof String ? (
+        <>
+          <Modal show={showError} onHide={handleErrorClose}>
+            <Modal.Header>
+              <Modal.Title>Invalid File Error </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {JSON.stringify(questionExcel).replaceAll('"', ' ')}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  handleRemoveFile();
+                  handleErrorClose();
+                }}
+              >
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      ) : null}
+
+      <p className='p-0 m-0 mb-2 text-center'>or</p>
+
+      {questionExcel.length > 0 ?
+      <>
+      {questionExcel.map((question, index) => 
+        <div key={index} className="p-4 mb-3 rounded-3 bg-white">
+          <div>
+            <div className="d-flex justify-content-between align-items-center">
+              <FormLabel className="py-1 fw-bold">
+                Question {index + 1} :-
+              </FormLabel>
+            </div>
+            <Field
+              type="text"
+              value={question.question}
+              className="form-control"
+            />
+          </div>
+          <div>
+            <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
+              <>
+                <div className="d-flex align-items-center">
+                  <FormLabel className="d-flex align-items-center justify-content-between">
+                    <input
+                      type={'radio'}
+                      value={question.option1}
+                      checked={question.option1.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question.option1}</h6>
+                  </FormLabel>
+                  <FormLabel className="d-flex align-items-center justify-content-between">
+                    <input
+                      type={'radio'}
+                      value={question.option2}
+                      checked={question.option2.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question.option2}</h6>
+                  </FormLabel>
+                  <FormLabel className="d-flex align-items-center justify-content-between">
+                    <input
+                      type={'radio'}
+                      value={question.option3}
+                      checked={question.option3.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question.option3}</h6>
+                  </FormLabel>
+                  <FormLabel className="d-flex align-items-center justify-content-between">
+                    <input
+                      type={'radio'}
+                      value={question.option4}
+                      checked={question.option4.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question.option4}</h6>
+                  </FormLabel>
                 </div>
-                <div>
-                  {/* <div className="row align-items-center">
-                    <div className="col-2">
-                      <FormLabel className="py-2 m-0 fw-bold">
-                        Options :-
+              </>
+          </div>
+        </div>)}
+        </>
+       : (
+        <FieldArray name="questions">
+          {({ push, remove }) => (
+            <>
+              {values.questions.map((question, index) => (
+                <div key={index} className="p-4 mb-3 rounded-3 bg-white">
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <FormLabel className="py-1 fw-bold">
+                        Question {index + 1} :-
                       </FormLabel>
-                    </div>
-                    <div className='col-3'>
-                      <Field
-                        as="select"
-                        name="assessmentDuration"
-                        className="form-select input-border p-2 border focus-ring text-capitalize focus-ring-light col-3"
-                      >
-                        <option value="">Multiple Correct Option</option>
-                        {['multiple', 'single']?.map((name, index) => (
-                          <option key={index} value={name}>
-                            {name}
-                          </option>
-                        ))}
-                      </Field>
-                    </div>
-                  </div> */}
-                  <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
-                  {question.options.map((option, optionIndex) => (
-                    <>
-                      <div
-                        key={optionIndex}
-                        className="d-flex align-items-center"
-                      >
-                        <FormLabel className="d-flex align-items-center justify-content-between">
+                      <div>
+                        {/* <FormLabel className="mx-3">
                           <Field
-                            type={values.checkbox ? 'checkbox' : 'radio'}
-                            id={`option-${index}-${optionIndex}`}
-                            name={`questions[${index}].correctAns`}
-                            value={option}
+                            type="checkbox"
+                            className="form-check-input mx-2"
+                            name="checkbox"
+                            id={`checkbox-${index}`}
                           />
-
-                          <h6 className="mx-2 mb-1 mb-0">{option}</h6>
-                          <RiDeleteBin6Line
-                            onClick={() => {
-                              values.questions[index].options =
-                                values?.questions?.[index]?.options?.filter(
-                                  (vlaue, index) => index !== optionIndex
-                                );
-                            }}
-                            className="cursor-pointer input-error  d-block  float-start"
+                          Multiple Correct Answer
+                        </FormLabel> */}
+                        {values.questions.length === 1 ? (
+                          ' '
+                        ) : (
+                          <ImCross
+                            onClick={() => remove(index)}
+                            className="cursor-pointer"
                           />
-                        </FormLabel>
+                        )}
                       </div>
-                      <p className="text-danger">
-                        <ErrorMessage
-                          name={`questions[${index}].correctAns`}
-                          className="text-danger"
-                        />
-                      </p>
-                    </>
-                  ))}
-                  <p className="mt-2 mb-0 fw-bold">
-                    NOTE : Please tick on correct option
-                  </p>
-                  {/* Single input field for options */}
-                  <div className="mb-5">
-                    <div className="d-flex align-items-center gap-2 pt-3">
-                      <div className="w-50">
-                        <input
-                          type="text"
-                          id={`option-${index}`}
-                          name={`questions[${index}].options`}
-                          placeholder="Enter options"
-                          className="form-control hello w-100 input-border p-2 border focus-ring focus-ring-light hello"
-                          ref={refArray.current[index]}
-                          value={refArray.current[index]?.current?.value}
-                          onChange={(e) => {
-                            setOption(e.target.value);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' && option.trim() !== '') {
-                              question.options.push(option);
-                              e.preventDefault();
-                              setOption('');
-                              refArray.current[index].current.value = '';
-                            }
-                          }}
-                        />
-                      </div>
-                      {/* Add Option Button */}
-                      <RiAddFill
-                        size={30}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          option === ''
-                            ? alert('Please enter option')
-                            : question.options.push(option);
-
-                          setOption('');
-                          refArray.current[index].current.value = '';
-                        }}
-                      />
                     </div>
+                    <Field
+                      type="text"
+                      name={`questions[${index}].questions`}
+                      placeholder="Enter question"
+                      className="form-control"
+                    />
                     <p className="text-danger">
                       <ErrorMessage
-                        name={`questions[${index}].options`}
+                        name={`questions[${index}].questions`}
                         className="text-danger"
                       />
                     </p>
                   </div>
+                  <div>
+                    {/* <div className="row align-items-center">
+                      <div className="col-2">
+                        <FormLabel className="py-2 m-0 fw-bold">
+                          Options :-
+                        </FormLabel>
+                      </div>
+                      <div className='col-3'>
+                        <Field
+                          as="select"
+                          name="assessmentDuration"
+                          className="form-select input-border p-2 border focus-ring text-capitalize focus-ring-light col-3"
+                        >
+                          <option value="">Multiple Correct Option</option>
+                          {['multiple', 'single']?.map((name, index) => (
+                            <option key={index} value={name}>
+                              {name}
+                            </option>
+                          ))}
+                        </Field>
+                      </div>
+                    </div> */}
+                    <FormLabel className="py-2 m-0 fw-bold">
+                      Options :-
+                    </FormLabel>
+                    {question.options.map((option, optionIndex) => (
+                      <>
+                        <div
+                          key={optionIndex}
+                          className="d-flex align-items-center"
+                        >
+                          <FormLabel className="d-flex align-items-center justify-content-between">
+                            <Field
+                              type={values.checkbox ? 'checkbox' : 'radio'}
+                              id={`option-${index}-${optionIndex}`}
+                              name={`questions[${index}].correctAns`}
+                              value={option}
+                            />
+
+                            <h6 className="mx-2 mb-1 mb-0">{option}</h6>
+                            <RiDeleteBin6Line
+                              onClick={() => {
+                                values.questions[index].options =
+                                  values?.questions?.[index]?.options?.filter(
+                                    (vlaue, index) => index !== optionIndex
+                                  );
+                              }}
+                              className="cursor-pointer input-error  d-block  float-start"
+                            />
+                          </FormLabel>
+                        </div>
+                        <p className="text-danger">
+                          <ErrorMessage
+                            name={`questions[${index}].correctAns`}
+                            className="text-danger"
+                          />
+                        </p>
+                      </>
+                    ))}
+                    <p className="mt-2 mb-0 fw-bold">
+                      NOTE : Please tick on correct option
+                    </p>
+                    {/* Single input field for options */}
+                    <div className="mb-5">
+                      <div className="d-flex align-items-center gap-2 pt-3">
+                        <div className="w-50">
+                          <input
+                            type="text"
+                            id={`option-${index}`}
+                            name={`questions[${index}].options`}
+                            placeholder="Enter options"
+                            className="form-control hello w-100 input-border p-2 border focus-ring focus-ring-light hello"
+                            ref={refArray.current[index]}
+                            value={refArray.current[index]?.current?.value}
+                            onChange={(e) => {
+                              setOption(e.target.value);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && option.trim() !== '') {
+                                question.options.push(option);
+                                e.preventDefault();
+                                setOption('');
+                                refArray.current[index].current.value = '';
+                              }
+                            }}
+                          />
+                        </div>
+                        {/* Add Option Button */}
+                        <RiAddFill
+                          size={30}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            option === ''
+                              ? alert('Please enter option')
+                              : question.options.push(option);
+
+                            setOption('');
+                            refArray.current[index].current.value = '';
+                          }}
+                        />
+                      </div>
+                      <p className="text-danger">
+                        <ErrorMessage
+                          name={`questions[${index}].options`}
+                          className="text-danger"
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="position-relative">
+                <div
+                  className="position-absolute bottom-50"
+                  style={{ right: '40%' }}
+                >
+                  <Button
+                    variant="dark"
+                    onClick={() => {
+                      push({ questions: '', options: [] });
+                    }}
+                    className="text-capitalize rounded-4"
+                  >
+                    Add More Question
+                  </Button>
                 </div>
               </div>
-            ))}
-            <div className="position-relative">
-              <div
-                className="position-absolute bottom-50"
-                style={{ right: '40%' }}
-              >
-                <Button
-                  variant="dark"
-                  onClick={() => {
-                    push({ questions: '', options: [] });
-                  }}
-                  className="text-capitalize rounded-4"
-                >
-                  Add More Question
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
-      </FieldArray>
+            </>
+          )}
+        </FieldArray>
+      )}
     </div>
   );
 };

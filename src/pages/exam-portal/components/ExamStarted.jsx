@@ -23,10 +23,10 @@ import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
 import { Loader } from '../../../components/Loader/Loader';
 import { sendAudio, sendImage } from '../../../store/adminSlice';
-import * as tf from '@tensorflow/tfjs';
+// import * as tf from '@tensorflow/tfjs';
 import * as facemesh from '@tensorflow-models/facemesh';
 import Webcam from 'react-webcam';
-import * as speechCommands from '@tensorflow-models/speech-commands';
+// import * as speechCommands from '@tensorflow-models/speech-commands';
 import { ReactMic } from 'react-mic';
 
 export const ExamStarted = () => {
@@ -69,6 +69,7 @@ export const ExamStarted = () => {
   const voiceDetect = () => {
     const initVoiceModel = async () => {
       // Load the speech commands model
+      const speechCommands = await import('@tensorflow-models/speech-commands')
       const recognizer = speechCommands.create('BROWSER_FFT');
       await recognizer.ensureModelLoaded();
       console.log('model loaded', recognizer);
@@ -272,6 +273,7 @@ export const ExamStarted = () => {
 
   async function cameraStop() {
     console.log('inside camera stop function');
+    const tf = await import('@tensorflow/tfjs');
     setSubmitVoiceRec(false);
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
