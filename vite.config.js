@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
 
   plugins: [react()],
+  base:"/exams/",
   build: {
     rollupOptions: {
       external: ['@tensorflow/tfjs-data','@tensorflow/tfjs-layers','@tensorflow-models/speech-commands',' @tensorflow-models/facemesh@0.0.5']
