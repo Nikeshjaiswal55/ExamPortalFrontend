@@ -775,9 +775,9 @@ const QuestionManagement = ({
 
       <p className='p-0 m-0 mb-2 text-center'>or</p>
 
-      {questionExcel.length > 0 ?
+      {questionExcel?.length > 0 ?
       <>
-      {questionExcel.map((question, index) => 
+      {questionExcel?.map((question, index) => 
         <div key={index} className="p-4 mb-3 rounded-3 bg-white">
           <div>
             <div className="d-flex justify-content-between align-items-center">
@@ -794,29 +794,29 @@ const QuestionManagement = ({
           <div>
             <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
               <>
-                <div className="d-flex align-items-center">
-                  <FormLabel className="d-flex align-items-center justify-content-between">
+                <div className="">
+                  <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question.option1}
                       checked={question.option1.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question.option1}</h6>
                   </FormLabel>
-                  <FormLabel className="d-flex align-items-center justify-content-between">
+                  <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question.option2}
                       checked={question.option2.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question.option2}</h6>
                   </FormLabel>
-                  <FormLabel className="d-flex align-items-center justify-content-between">
+                  <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question.option3}
                       checked={question.option3.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question.option3}</h6>
                   </FormLabel>
-                  <FormLabel className="d-flex align-items-center justify-content-between">
+                  <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question.option4}
