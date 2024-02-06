@@ -5,7 +5,7 @@ import { LocalStorageCache } from '@auth0/auth0-spa-js';
 // Define a service using a base URL and expected endpoints
 // const baseUrl = " http://localhost:9091"
 // const baseUrl = "https://exameasy-krishna.onrender.com"
-const baseUrl = "http://4.224.28.98:3002"
+const baseUrl = "https://examsapi.ssism.org/";
 // const baseUrl = "http://192.168.180.59:9090"
 // const baseUrl = "http://192.168.155.155:9091"
 
