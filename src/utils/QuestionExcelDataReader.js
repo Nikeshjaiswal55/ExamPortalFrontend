@@ -18,7 +18,7 @@ export const QuestionExcelDataReader = async (file) => {
                 const excelSheet = excelFile.Sheets[excelFile.SheetNames[0]];
                 let excelJson = xlsx.utils.sheet_to_json(excelSheet);
                 if (excelJson.length) {
-                    excelJson.forEach((value) => {
+                    excelJson.forEach((value,index) => {
                         const keyQuestion = findKeyIgnoreCase(value, 'question');
                         const keyOption1 = findKeyIgnoreCase(value, 'option1');
                         const keyOption2 = findKeyIgnoreCase(value, 'option2');
@@ -39,29 +39,29 @@ export const QuestionExcelDataReader = async (file) => {
                         else {
                             if (!keyQuestion && excelData.length) {
                                 // alert("Please provide email for all students")
-                                excelData = new String("Please provide question for all");
+                                excelData = new String(`Please provide questionfor row no ${index + 1}`);
                                 throw new Error("Please provide question for all");
 
                             }
                             if (!keyOption1 && excelData.length) {
                                 // alert("Please provide branch for all students")
-                                excelData = new String("Please provide option1 for all");
-                                throw new Error("Please provide option1 for all");
+                                excelData = new String(`Please provide option 1 value for row no ${index + 1}`);
+                                throw new Error(`Please provide option1 for row no ${index + 1}`);
                             } if (!keyOption2 && excelData.length) {
-                                // alert("Please provide name for all students")
-                                excelData = new String("Please  provide option2 for all");
+                                // alert(`Please provide name for all students")
+                                excelData = new String(`Please  provide option 2 value for row no ${index + 1}`);
                                 throw new Error("Please provide name for all students");
                             } if (!keyOption3 && excelData.length) {
                                 // alert("Please provide year for all students")
-                                excelData = new String("Please provide option3 for all");
+                                excelData = new String(`Please provide option 3 value for row no ${index + 1}`);
                                 throw new Error("Please provide year for all students");
                             } if (!keyOption4 && excelData.length) {
-                                // alert("Please provide year for all students")
-                                excelData = new String("Please provide option4 for all");
+                                // alert(`Please provide year for all students")
+                                excelData = new String(`Please provide option 4 value for row no ${index + 1}`);
                                 throw new Error("Please provide year for all students");
                             } if (!keyAnswer && excelData.length) {
-                                // alert("Please provide year for all students")
-                                excelData = new String("Please provide answer for all");
+                                // alert(`Please provide year for all students")
+                                excelData = new String(`Please provide answer for row no ${index + 1}`);
                                 throw new Error("Please provide answer for all students");
                             }
 

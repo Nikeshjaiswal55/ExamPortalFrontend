@@ -201,10 +201,10 @@ export const AddAssignment = () => {
           values.questions[0].questions !== '' ||
           values.questions[0].options.length ||
           values.questions[0].correctAns !== ''||
-          questionExcel.length
+          questionExcel?.length
         ) {
           if (excel.length || values.email.length || values.examBranch !== '') {
-            const excelQuestions = questionExcel.map((question) => 
+            const excelQuestions = questionExcel?.map((question) => 
               {
                 return {
                   questions: question.question,
@@ -663,7 +663,7 @@ const QuestionManagement = ({
     setSelectedFile(event.target.files[0]);
   };
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
+  const [showErrkr, setShowPreview] = useState([]);
   const [showError, setShowError] = useState(false);
   const handleRemoveFile = () => {
     setSelectedFile(null);
@@ -684,7 +684,6 @@ const QuestionManagement = ({
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
       // Scroll to the bottom of the container
-      console.log('scrollheight', messagesContainerRef.current.scrollHeight);
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
@@ -700,7 +699,7 @@ const QuestionManagement = ({
       className="text-dark overflow-auto"
       style={{ height: 'calc(100vh - 9rem)' }}
     >
-      <div className=" my-3 py-1 d-flex justify-content-center align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 bg-primary">
+      <div onClick={()=>inputFile.current.click()} className=" my-3 py-1 d-flex justify-content-center cursor-pointer align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 bg-primary">
         <MdUpload size={30} className=" p-1" />
         <>
           <label for="files" className="text-white cursor-pointer">
@@ -722,7 +721,8 @@ const QuestionManagement = ({
               let arr = await QuestionExcelDataReader(e.target.files[0]);
               if (arr instanceof String) {
                 console.log(arr);
-                setQuestionExcel(arr);
+                setShowPreview(arr)
+                // setQuestionExcel([...arr]);
                 handleErrorShow();
               } else {
                 setQuestionExcel([...arr]);
@@ -749,14 +749,14 @@ const QuestionManagement = ({
             </div>
           ) : null}
         </div>
-      {questionExcel instanceof String ? (
+      {showErrkr instanceof String ? (
         <>
           <Modal show={showError} onHide={handleErrorClose}>
             <Modal.Header>
               <Modal.Title>Invalid File Error </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {JSON.stringify(questionExcel).replaceAll('"', ' ')}
+              {JSON.stringify(showErrkr).replaceAll('"', ' ')}
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -774,11 +774,10 @@ const QuestionManagement = ({
       ) : null}
 
       <p className='p-0 m-0 mb-2 text-center'>or</p>
-
       {questionExcel?.length > 0 ?
       <>
-      {questionExcel?.map((question, index) => 
-        <div key={index} className="p-4 mb-3 rounded-3 bg-white">
+      {questionExcel?.map((question,index) => (
+        <div className="p-4 mb-3 rounded-3 bg-white">
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <FormLabel className="py-1 fw-bold">
@@ -794,39 +793,40 @@ const QuestionManagement = ({
           <div>
             <FormLabel className="py-2 m-0 fw-bold">Options :-</FormLabel>
               <>
-                <div className="">
-                  <FormLabel className="d-flex">
+                <div>
+                  <FormLabel className="d-flex ">
                     <input
                       type={'radio'}
-                      value={question.option1}
-                      checked={question.option1.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
-                    <h6 className="mx-2 mb-1 mb-0">{question.option1}</h6>
+                      value={question?.option1}
+                      checked={question?.option1.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question?.option1}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
-                      value={question.option2}
-                      checked={question.option2.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
-                    <h6 className="mx-2 mb-1 mb-0">{question.option2}</h6>
+                      value={question?.option2}
+                      checked={question?.option2.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question?.option2}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
-                      value={question.option3}
-                      checked={question.option3.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
-                    <h6 className="mx-2 mb-1 mb-0">{question.option3}</h6>
+                      value={question?.option3}
+                      checked={question?.option3.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question?.option3}</h6>
                   </FormLabel>
-                  <FormLabel className="d-flex">
+                  <FormLabel className="d-flex ">
                     <input
                       type={'radio'}
-                      value={question.option4}
-                      checked={question.option4.replaceAll(" ","").toLowerCase() === question.answer.replaceAll(" ","").toLowerCase()}                   />
-                    <h6 className="mx-2 mb-1 mb-0">{question.option4}</h6>
+                      value={question?.option4}
+                      checked={question?.option4.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                    <h6 className="mx-2 mb-1 mb-0">{question?.option4}</h6>
                   </FormLabel>
                 </div>
               </>
           </div>
-        </div>)}
+        </div>)
+        )}
         </>
        : (
         <FieldArray name="questions">
