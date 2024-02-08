@@ -2,28 +2,28 @@
 export async function GetEntireScreen(setProgress, handleShow, setContent, TabSwitch, setScreenStream) {
     try {
         // Attempt to get a stream with displaySurface set to "monitor"
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-            video: {
-                displaySurface: "monitor",
-                mediaSource: 'screen',
-            }
-        });
-        console.log(stream, 'stream');
-        TabSwitch(stream)
-        if (stream.getVideoTracks().length > 0) {
-            setScreenStream(stream)
-            const trackSettings = stream.getVideoTracks()[0].getSettings();
-            const extend = externalScreen()
-            console.log(extend, 'extend')
-            if (trackSettings.deviceId != 'screen:0:0') {
-                setContent('Please share your entire screen. Sharing a specific tab or window is not supported.');
-                handleShow();
-                return;
-            } else {
+        // const stream = await navigator.mediaDevices.getDisplayMedia({
+        //     video: {
+        //         displaySurface: "monitor",
+        //         mediaSource: 'screen',
+        //     }
+        // });
+        // console.log(stream, 'stream');
+        // TabSwitch(stream)
+        // if (stream.getVideoTracks().length > 0) {
+        //     setScreenStream(stream)
+        //     const trackSettings = stream.getVideoTracks()[0].getSettings();
+        //     const extend = externalScreen()
+        //     console.log(extend, 'extend')
+        //     if (trackSettings.deviceId != 'screen:0:0') {
+        //         setContent('Please share your entire screen. Sharing a specific tab or window is not supported.');
+        //         handleShow();
+        //         return;
+        //     } else {
                 // User is sharing the entire screen, proceed with your logic
                 setProgress((prev) => prev + 25);
-            }
-        }
+            // }
+        // }
 
     } catch (error) {
         console.error('Error accessing screen share:', error);
