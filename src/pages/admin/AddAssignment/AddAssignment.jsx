@@ -798,28 +798,28 @@ const QuestionManagement = ({
                     <input
                       type={'radio'}
                       value={question?.option1}
-                      checked={question?.option1.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option1.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option1}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question?.option2}
-                      checked={question?.option2.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option2.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option2}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question?.option3}
-                      checked={question?.option3.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option3.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option3}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex ">
                     <input
                       type={'radio'}
                       value={question?.option4}
-                      checked={question?.option4.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option4.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option4}</h6>
                   </FormLabel>
                 </div>
