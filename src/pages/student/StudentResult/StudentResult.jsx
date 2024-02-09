@@ -55,7 +55,7 @@ export function StudentResult() {
           <Loader />
         </div>
       ) : data?.is_published == 'requested' ? (
-        <div className="h-100 d-flex align-items-center justify-content-center bg-white">
+            <div className="h-100 d-flex align-items-center  bg-white">
           <Pending />
           {/* <Pass /> */}
           {/* <Fail /> */}
@@ -63,7 +63,7 @@ export function StudentResult() {
       ) : (
         <div className="w-100 h-100 overflow-auto">
           <div className=" w-100 row justify-content-between align-items-center pt-3 px-3 flex-wrap ">
-            <div className=" col-8">
+                  <div className=" col-12">
               <h5 className="fw-bold fs-4 text-capitalize m-0">
                 <img
                   src={checkList}

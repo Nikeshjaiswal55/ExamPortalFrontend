@@ -9,7 +9,7 @@ export const Pass = ({ paperId, stdId, data }) => {
   const navigate = useNavigate();
   return (
     <div className="h-100 w-100 bg-white">
-      <div className="h-100 w-100 result-bg d-flex justify-content-center align-items-center overflow-auto">
+      <div className="h-100 w-100 result-bg d-flex justify-content-center">
         <div className="position-absolute">
           <img src={bombGif} alt="" />
         </div>
@@ -27,13 +27,14 @@ export const Pass = ({ paperId, stdId, data }) => {
           <h5 className="mt-3">Keep up the great work!</h5>
           {/* <Button variant="dark me-4 mt-5">View Certificate</Button> */}
           <Button
-            variant="dark me-4 mt-5"
+            variant="dark me-sm-4 m-2 mt-sm-5"
             onClick={() => navigate(path.StudentDashboard.path)}
           >
             Back To Dashboard
           </Button>
           <Button
-            variant="dark mt-5"
+            variant="dark m-2
+             mt-sm-5"
             onClick={() =>
               navigate(`${path.examReport.path}/${paperId}/${stdId.userId}`)
             }

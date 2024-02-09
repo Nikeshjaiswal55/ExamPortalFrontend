@@ -244,9 +244,9 @@ export const AddAssignment = () => {
                 is_Active: true,
                 is_setup: true,
                 is_auto_check:
-                  values.assessmentResultConfig === 'autoCheck' ? true : false,
+                  values.assessmentResultConfig == 'autoCheck' ? true : false,
                 is_shorted:
-                  values.assessmentOrder === 'sortOrder' ? true : false,
+                  values.assessmentOrder == 'sortOrder' ? true : false,
               },
             };
             let emails = excel.reduce(
@@ -777,7 +777,7 @@ const QuestionManagement = ({
       {questionExcel?.length > 0 ?
       <>
       {questionExcel?.map((question,index) => (
-        <div className="p-4 mb-3 rounded-3 bg-white">
+        <div key={index} className="p-4 mb-3 rounded-3 bg-white">
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <FormLabel className="py-1 fw-bold">

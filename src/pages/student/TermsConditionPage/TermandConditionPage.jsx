@@ -108,7 +108,7 @@ export default function TermandConditionPage() {
               </div>
               <div className="d-flex justify-content-center mt-3">
                 <CustomButton
-                  className={'rounded-4 w-25'}
+                    className={'rounded-4 w-auto text-nowrap mb-3'}
                   buttonText={'Let Started'}
                   onButtonClick={() => {
                     if (checked)

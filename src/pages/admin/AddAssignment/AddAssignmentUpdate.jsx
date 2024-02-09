@@ -87,7 +87,7 @@ export const AddAssignmentUpdate = () => {
     assessmentTotalMarks: assissmentData.totalMarks,
     assessmentMinmumMarks: assissmentData.minimum_marks,
     assessmentResultConfig:
-      assissmentData.is_auto_check === 'true' ? 'autoCheck' : 'manualCheck',
+      assissmentData.is_auto_check == 'true' ? 'autoCheck' : 'manualCheck',
     assessmentOrder:
       assissmentData._shorted == true ? 'sortOrder' : 'sameOrder',
     assessmentInstruction: assissmentData?.instruction,
@@ -239,8 +239,8 @@ export const AddAssignmentUpdate = () => {
         is_Active: 'false',
         is_setup: true,
         is_auto_check:
-          values.assessmentResultConfig === 'autoCheck' ? true : false,
-        is_shorted: values.assessmentOrder === 'sortOrder' ? true : false,
+          (values.assessmentResultConfig == 'autoCheck') ? true : false,
+        is_shorted: (values.assessmentOrder == 'sortOrder') ? true : false,
       },
     };
 
