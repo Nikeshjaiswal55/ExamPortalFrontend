@@ -57,14 +57,21 @@ export default function StudentPaper({
     let questions = JSON.parse(questionsJson);
     console.log('before ', questions);
     decodedData?.questions.forEach((value, index) => {
-      questions[index].userAns = selectedOption[index];
+      console.log('typeof selectedOption[index] === string 0',typeof selectedOption[index] === 'string' )
+      if(typeof selectedOption[index] === 'string' ){
+        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll(" ","");
+        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll(" ","");
+      }else{
+        questions[index].userAns = selectedOption[index]
+      }
     });
     console.log('after ', questions);
     return questions;
   }
+  
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
-  async function submitPaperDetails(params) {
+ const submitPaperDetails=(params)=> {
     console.log(imagesArray, 'IMageArraay =====================');
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
@@ -254,7 +261,7 @@ export default function StudentPaper({
               <Button
                 variant="success"
                 className="rounded-4 w-100"
-                onClick={submitPaperDetails}
+                onClick={()=>submitPaperDetails()}
               >
                 {submitPaperLoading ? (
                   <Spinner animation="border" size="sm" />
