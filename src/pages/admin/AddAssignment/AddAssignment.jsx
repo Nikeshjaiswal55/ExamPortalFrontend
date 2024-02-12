@@ -244,9 +244,9 @@ export const AddAssignment = () => {
                 is_Active: true,
                 is_setup: true,
                 is_auto_check:
-                  values.assessmentResultConfig === 'autoCheck' ? true : false,
+                  values.assessmentResultConfig == 'autoCheck' ? true : false,
                 is_shorted:
-                  values.assessmentOrder === 'sortOrder' ? true : false,
+                  values.assessmentOrder == 'sortOrder' ? true : false,
               },
             };
             let emails = excel.reduce(
@@ -777,7 +777,7 @@ const QuestionManagement = ({
       {questionExcel?.length > 0 ?
       <>
       {questionExcel?.map((question,index) => (
-        <div className="p-4 mb-3 rounded-3 bg-white">
+        <div key={index} className="p-4 mb-3 rounded-3 bg-white">
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <FormLabel className="py-1 fw-bold">
@@ -798,28 +798,28 @@ const QuestionManagement = ({
                     <input
                       type={'radio'}
                       value={question?.option1}
-                      checked={question?.option1.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option1.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option1}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question?.option2}
-                      checked={question?.option2.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option2.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option2}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex">
                     <input
                       type={'radio'}
                       value={question?.option3}
-                      checked={question?.option3.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option3.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option3}</h6>
                   </FormLabel>
                   <FormLabel className="d-flex ">
                     <input
                       type={'radio'}
                       value={question?.option4}
-                      checked={question?.option4.replaceAll(" ","").toLowerCase() === question?.answer.replaceAll(" ","").toLowerCase()}                   />
+                      checked={question?.option4.toString().replaceAll(" ","").toLowerCase() === question?.answer.toString().replaceAll(" ","").toLowerCase()}                   />
                     <h6 className="mx-2 mb-1 mb-0">{question?.option4}</h6>
                   </FormLabel>
                 </div>
