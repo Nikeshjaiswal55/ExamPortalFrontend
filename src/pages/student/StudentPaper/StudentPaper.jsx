@@ -9,7 +9,7 @@ import {
   usePostSaveResultMutation,
 } from '../../../apis/Service';
 import { Loader } from '../../../components/Loader/Loader';
-import {useParams,useNavigate} from 'react-router';
+import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 export default function StudentPaper({
@@ -23,7 +23,6 @@ export default function StudentPaper({
   tabBlurCount,
   recordedData,
 }) {
-  const navigate = useNavigate();
   const [showSubmit, setShowSubmit] = useState(false);
   const handleSubmitClose = () => setShowSubmit(false);
   const handleSubmitShow = () => setShowSubmit(true);
@@ -87,9 +86,7 @@ export default function StudentPaper({
     saveResult(result).then(() => {
       handleSubmit();
       handleSubmitClose();
-      navigate(`/student/exam-submited/${paperId}`)
     });
-
   }
 
   function isChecked(id) {
@@ -127,16 +124,16 @@ export default function StudentPaper({
       ) : (
         <div className="row w-100 gap-4  p-3 ">
           <>
-              <div className="col-lg-8 offset-lg-2 ">
-                <div className=" w-100 d-flex flex-wrap justify-content-between">
-                  <div className=' w-100'>
-                    <h1 className="w-100 text-capitalize">
+            <div className="col-lg-8 offset-lg-2 ">
+              <div className=" d-flex flex-wrap justify-content-between">
+                <div>
+                  <h1 className=" text-capitalize">
                     {decodedData?.examDetails.assessmentName.replaceAll(
                       '+',
                       ' '
                     )}
                   </h1>
-                    <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
+                  <div className=" d-flex align-items-center px-3 fs-6">
                     <CountdownTimer
                       initialTime={parseInt(
                         decodedData?.examDetails.examDuration
@@ -146,7 +143,7 @@ export default function StudentPaper({
                     />
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
-                        style={{width: '12.25rem',height: '10px'}}
+                      style={{ width: '200px', height: '10px' }}
                     >
                       <div
                         className=" rounded-5"
@@ -183,27 +180,27 @@ export default function StudentPaper({
               {decodedData?.questions &&
                 decodedData?.questions.map((value, index) => {
                   return (
-                    <div key={index} className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
+                    <div className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
-                        <p>{value.questions.replaceAll('+',' ')}?</p>
+                        <p>{value.questions.replaceAll('+', ' ')}?</p>
                       </div>
                       <ul className="options text-wrap  fs-6 list-unstyled">
                         {value.options &&
-                          value?.options?.map((valueopt,indexopt) => {
+                          value?.options?.map((valueopt, indexopt) => {
                             return (
-                              <li key={indexopt} className=" d-flex gap-2">
+                              <li className=" d-flex gap-2">
                                 <input
                                   type="radio"
                                   name={`question${index}`}
                                   value={valueopt}
                                   onClick={(e) => {
-                                    handleChecked(e,index);
+                                    handleChecked(e, index);
                                   }}
                                   id={`ques${index}-opt${indexopt}`}
                                 />
-                                <label htmlFor={`ques${index}-opt${indexopt + 1}`}>
-                                  {valueopt.replaceAll('+',' ')}
+                                <label for={`ques${index}-opt${indexopt + 1}`}>
+                                  {valueopt.replaceAll('+', ' ')}
                                 </label>
                               </li>
                             );
@@ -216,7 +213,7 @@ export default function StudentPaper({
             <div className="col-lg-8  offset-lg-2 ">
               <div className=" d-flex w-100 justify-content-end p-0 m-0">
                 <CustomButton
-                    className={'rounded-4 px-3 px-md-5 m-0 m-md-3 mb-0 w-auto '}
+                  className={'rounded-4 px-1 px-md-5 m-0 m-md-3 mb-0 w-25 '}
                   buttonText={'submit'}
                   onButtonClick={handleSubmitShow}
                 />

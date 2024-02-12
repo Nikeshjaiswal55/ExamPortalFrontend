@@ -383,7 +383,7 @@ export const StudentDashBoard = () => {
                                       {/* <div className=" ps-3 ps-md-0 w-auto  text-start text-capitalize">
                                         {value?.published_date}{' '}
                                       </div> */}
-                                      <div className="col-12 col-sm-4 d-flex  justify-content-around justify-content-lg-between gap-2">
+                                      <div className="col-4 d-flex  justify-content-around justify-content-lg-between gap-2">
                                         {/* <ViewResult paperId={value.paperId} /> */}
                                         <Button
                                           onClick={() =>

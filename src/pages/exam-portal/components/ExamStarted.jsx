@@ -389,7 +389,7 @@ export const ExamStarted = () => {
             />
           </>
         ) : (
-              <div className="h-100 overflow-y-auto" style={{backgroundColor: 'var(--main-div)'}}>
+          <div className="h-100" style={{ backgroundColor: 'var(--main-div)' }}>
             <Webcam
               ref={webcamRef}
               style={{

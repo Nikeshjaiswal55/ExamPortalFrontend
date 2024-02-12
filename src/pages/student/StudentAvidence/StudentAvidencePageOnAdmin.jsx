@@ -182,7 +182,7 @@ export default function StudentAvidancePageOnAdmin() {
           </div>
 
           <div className="w-100 m-0 row align-items-center justify-content-evenly text-center">
-                <div className="col-6 col-md-3  p-0 px-1 my-1  ">
+            <div className="col-6 col-md-3 ">
               <div className=" py-2 bg-light rounded-3">
                 <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
                   Total Marks
@@ -192,7 +192,7 @@ export default function StudentAvidancePageOnAdmin() {
                 </p>
               </div>
             </div>
-                <div className="col-6 col-md-3  p-0 px-1 my-1  ">
+            <div className="col-6 col-md-3 ">
               <div className="py-2  bg-light rounded-3">
                 <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
                   Percentage
@@ -202,7 +202,7 @@ export default function StudentAvidancePageOnAdmin() {
                 </p>
               </div>
             </div>
-                <div className="col-6 col-md-3  p-0 px-1 my-1  ">
+            <div className="col-6 col-md-3 ">
               <div className=" py-2 bg-light rounded-3">
                 <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
                   Result Status
@@ -212,7 +212,7 @@ export default function StudentAvidancePageOnAdmin() {
                 </p>
               </div>
             </div>
-                <div className="col-6 col-md-3 p-0 px-1 my-1  ">
+            <div className="col-6 col-md-3 ">
               <div className="py-2 bg-light rounded-3">
                 <p className="white-box px-2 rounded-4 fw-bold mb-0 ">
                   Peper Status
@@ -224,7 +224,7 @@ export default function StudentAvidancePageOnAdmin() {
             </div>
           </div>
           <div className="white-box px-3 overflow  py-4">
-                <Table className="mt-3 mx-0" striped bordered responsive hover size="sm">
+            <Table className="mt-3 mx-0" striped bordered hover size="sm">
               <thead>
                 <tr>
                   <th className="text-center">#</th>
@@ -242,7 +242,7 @@ export default function StudentAvidancePageOnAdmin() {
                       <td className="p-5 text-center">1</td>
                       <td className="p-5 text-center">Random image</td>
                       {/* <td className="p-5">{image?.timestamp.toString()}</td> */}
-                      <td className="p-1 p-md-5 text-center">
+                      <td className="p-5 text-center">
                         <img
                           key={index}
                           className="img-fluid"

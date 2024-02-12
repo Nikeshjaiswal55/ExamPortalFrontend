@@ -196,7 +196,7 @@ export default function StudentAvidancePage() {
             </div>
           </div> */}
           <div className="white-box overflow border ">
-                <Table className="mt-3 " striped responsive bordered hover size="sm">
+            <Table className="mt-3" striped bordered hover size="sm">
               <thead>
                 <tr>
                   <th className="text-center">#</th>
@@ -214,7 +214,7 @@ export default function StudentAvidancePage() {
                       <td className="p-5 text-center">1</td>
                       <td className="p-5 text-center">Random image</td>
                       {/* <td className="p-5">{image?.timestamp.toString()}</td> */}
-                      <td className="p-1 p-md-5 text-center">
+                      <td className="p-5 text-center">
                         <img
                           key={index}
                           className="img-fluid"
@@ -231,7 +231,7 @@ export default function StudentAvidancePage() {
                       <td className="p-5 text-center">1</td>
                       <td className="p-5 text-center">Random audio</td>
                       {/* <td className="p-5">{image?.timestamp.toString()}</td> */}
-                      <td className="p-1 p-md-5 text-center">
+                      <td className="p-5 text-center">
                         <audio controls>
                           <source
                             src={`data:audio/wav;base64,${audio}`}
