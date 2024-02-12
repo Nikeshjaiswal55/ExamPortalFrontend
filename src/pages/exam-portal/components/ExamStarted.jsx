@@ -217,7 +217,7 @@ export const ExamStarted = () => {
 
   const handleVisibilityChange = (stream) => {
     console.log('handle visibility changed call ');
-    if (document.hidden) {
+    if (document.hidden && stream) {
       console.log('handle visibility changed call if condition');
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
@@ -239,6 +239,7 @@ export const ExamStarted = () => {
     document.addEventListener('blur', () => {
       handleBlurChange(stream);
     });
+    console.log('tab switch call addeventlistenerrerer =============');
   }
 
   useEffect(() => {
@@ -261,16 +262,14 @@ export const ExamStarted = () => {
     console.log('tab switch  count := ', tabSwitchCount);
   }, [tabSwitchCount]);
 
-  useEffect(() => {
-    if(doneProcess>75){
-      TabSwitch(stream);
-    }
+  // useEffect(() => {
+  //   TabSwitch(stream);
 
-    return () => {
-    document.addEventListener('visibilitychange',handleVisibilityChange);
-    window.addEventListener("blur",handleBlurChange);
-    }
-  }, [doneProcess]);
+  //   // return () => {
+  //   // document.addEventListener('visibilitychange',handleVisibilityChange);
+  //   // window.addEventListener("blur",handleBlurChange);
+  //   // };
+  // }, []);
 
   async function cameraStop() {
     console.log('inside camera stop function');
@@ -283,7 +282,7 @@ export const ExamStarted = () => {
 
   async function handleSubmit() {
     console.log('inside handle submit stop function');
-    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
     document.location.reload();
