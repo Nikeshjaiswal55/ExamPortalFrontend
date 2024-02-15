@@ -65,14 +65,12 @@ export default function StudentPaper({
         questions[index].userAns = selectedOption[index]
       }
     });
-    console.log('after ', questions);
     return questions;
   }
   
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
  const submitPaperDetails=(params)=> {
-    console.log(imagesArray, 'IMageArraay =====================');
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
     // imagesArray.push(ss);
