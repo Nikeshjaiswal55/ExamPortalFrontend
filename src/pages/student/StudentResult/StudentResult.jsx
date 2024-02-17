@@ -178,7 +178,7 @@ export function StudentResult() {
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns === option
+                                question.userAns == option.toLowerCase().replaceAll('+', '')
                                 // question.correctAns === option
                               }
                             />

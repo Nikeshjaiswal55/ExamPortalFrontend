@@ -261,6 +261,7 @@ export const AddAssignment = () => {
                 dipatch(getNotification(true));
                 // resetForm();
                 navigate(path.ShowAssessment.path);
+                document.location.reload();
                 inviteStudent({
                   userId: res?.data?.userId,
                   paperId: res?.data?.paperId,

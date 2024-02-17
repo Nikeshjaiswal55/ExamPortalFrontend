@@ -59,20 +59,18 @@ export default function StudentPaper({
     decodedData?.questions.forEach((value, index) => {
       console.log('typeof selectedOption[index] === string 0',typeof selectedOption[index] === 'string' )
       if(typeof selectedOption[index] === 'string' ){
-        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll(" ","");
-        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll(" ","");
+        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll("+","");
+        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll("+","");
       }else{
         questions[index].userAns = selectedOption[index]
       }
     });
-    console.log('after ', questions);
     return questions;
   }
   
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
  const submitPaperDetails=(params)=> {
-    console.log(imagesArray, 'IMageArraay =====================');
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
     // imagesArray.push(ss);
