@@ -3,7 +3,7 @@
 *{
     padding: 0;
     margin: 0;
-    box-sizing:border-box;
+    box-sizing:border-box !important;
     font-family: 'Poppins';
 }
 
@@ -119,6 +119,12 @@ body {
     .assesment-side-panel {
         height: auto !important;
     }
+    .landing-nav{
+        height: 60px !important;
+    }
+    .icon-span{
+    width: 50% !important;
+}
 }
 .accordion-button:not(.collapsed) {
     color: var(--bs-accordion-active-color);

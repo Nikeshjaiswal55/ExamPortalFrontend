@@ -76,7 +76,7 @@
 
 /* Common styles for both mobile and desktop */
 .hero {
-  height: calc(100vh - 100px);
+ min-height: calc(100vh - 100px);
   overflow: hidden;
   background: linear-gradient(180deg, #0c0c1d, #111132);
   position: relative;
@@ -194,4 +194,12 @@
   } */
 
 
+}
+@media screen and (max-width:769px) {
+   .hero{
+    height: auto !important;
+  min-height: 100vh !important;
+  padding-top: 4rem !important;
+  padding-left: 2rem;
+  }
 }

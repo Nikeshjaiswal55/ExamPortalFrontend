@@ -45,18 +45,18 @@ const Single = ({ item }) => {
   const y = useTransform(scrollYProgress, [0, 1], [-300, 300]);
 
   return (
-    <section className="section">
+    <section className="section single-section ">
       <div className="portfolio-container">
-        <div className="portfolio-wrapper row">
+        <div className="portfolio-wrapper flex-wrap row ">
           <div
-            className="portfolio-image-container d-flex align-items-center justify-content-center col-md-6 col-sm-12"
+            className="portfolio-image-container d-flex align-items-center  justify-content-center col-md-6  col-sm-12 "
             ref={ref}
           >
             <img src={item.img} className="portfolio-img" alt="" />
           </div>
           <motion.div
-            className="portfolio-text-container col-md-6 col-sm-12"
-            style={{ y }}
+            className="portfolio-text-container col-md-6 col-12"
+            // style={{ y }}
           >
             <h2 className="portfolio-text-h2">{item.title}</h2>
             <p className="portfolio-text-p">{item.desc}</p>

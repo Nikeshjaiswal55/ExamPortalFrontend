@@ -15,7 +15,7 @@ const LandingPage = () => {
   };
   return (
     <div className="m-0 p-0">
-      <div className="section w-100" id={linkIds.home}>
+      <div className="section  landing-page-section w-100" id={linkIds.home}>
         <LandingPageNavbar />
         <HeroSection />
       </div>
@@ -27,7 +27,7 @@ const LandingPage = () => {
         <Parallex type={'feature'} />
       </div> */}
       <Feature />
-      <div className="section" id={linkIds.contact}>
+      <div className="section contact-section" id={linkIds.contact}>
         <Contact />
       </div>
     </div>

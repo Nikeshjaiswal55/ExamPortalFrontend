@@ -1,10 +1,13 @@
 
 .contact {
-  height: 100%;
+  min-height: 100%;
   max-width: 1366px;
+  min-width: 90vw !important;
   margin: auto;
   display: flex;
   align-items: center;
+  flex-direction: row;
+  justify-content: center;
   gap: 50px;
 }
 
@@ -19,7 +22,7 @@
 
 
 .contact-text-h1 {
-  font-size: 80px;
+  font-size: 4rem;
 }
 
 
@@ -55,5 +58,27 @@
   background-color: orange;
   cursor: pointer;
   font-weight: 500;
+  border-radius: 0.25rem;
 }
 
+@media screen and (max-width:768px) {
+  .contact{
+    width: 100vw !important;
+    flex-direction:column;
+    justify-content: center !important;
+    flex-wrap: wrap;
+
+  }
+  .contact-text-h1{
+    font-size: 2rem !important;
+  }
+.contact-textContainer{
+  width: 100vw !important;
+
+  flex-direction: row;
+}
+.conatct-form-container{
+  padding:10px 2rem ;
+  width: 100vw !important;
+}
+}

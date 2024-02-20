@@ -45,3 +45,20 @@ html{
     font-weight: 300;
     cursor: pointer;
   }
+.contact-section{
+  min-height: 90vh !important;
+  height: auto !important;
+  width: 100vw !important;
+  display: flex ;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+  @media screen and (max-width:768px) {
+    .landing-page-section {
+        height: auto !important;
+        min-height: 90vh !important;
+    }
+  }

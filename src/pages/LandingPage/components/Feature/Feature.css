@@ -2,7 +2,10 @@
 .portfolio {
   position: relative;
 }
-
+.single-section{
+  width: 100% !important;
+  overflow: hidden !important;
+}
 .progress {
   position: sticky;
   top: 0;
@@ -30,8 +33,8 @@
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow: hidden !important;
 }
 
 .portfolio-wrapper {
@@ -47,6 +50,8 @@
 
 .portfolio-image-container {
   height: 100%;
+  width: 50%;
+  overflow: hidden;
 }
 
 
@@ -64,6 +69,7 @@
 }
 
  .portfolio-text-container {
+   padding-right: 2.5rem !important;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -71,7 +77,10 @@
 }
 
 .portfolio-text-h2 {
-  font-size: 40px;
+  /* font-size: 40px;
+   */
+   padding-top: 60px ;
+   font-size: 1.5rem;
 }
 
 
@@ -87,4 +96,46 @@
   padding: 10px;
   width: 200px;
   cursor: pointer;
+}
+
+@media screen and (max-width:1024px) {
+  .portfolio-text-h1{
+    font-size: 2rem !important;
+  }
+  .portfolio-text-p{
+  font-size: 1.5rem !important;
+  }
+}
+@media screen and (max-width:768px) {
+  .portfolio-container{
+    height: auto;
+    width: 100%;
+
+    min-height: 100vh !important;
+  }
+  .portfolio-wrapper{
+    width: 100%;
+  }
+  .portfolio-image-container{
+    width: 100%;
+  }
+  .portfolio-text-container{
+   padding-right: 1rem !important;
+    min-height: 90vh !important;
+  }
+  .portfolio-text-h2{
+    margin-top: 30px !important;
+    font-size: 1.5rem !important;
+    text-wrap: wrap !important;
+    width: 100% !important;
+  }
+  .portfolio-text-p{
+    font-size: 1rem !important;
+    text-align: justify ;
+  }
+  .single-section{
+    height: auto !important;
+    width: 100%;
+    min-height: 80vh !important;
+  }
 }
