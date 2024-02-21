@@ -336,7 +336,7 @@ export const ExamStarted = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const decodedString = decodeURIComponent(data.data);
+      const decodedString = atob(data.data);
       const jsonData = JSON.parse(decodedString);
       console.log('asasssasss', jsonData);
       setDecodedData(jsonData);

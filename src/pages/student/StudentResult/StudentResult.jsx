@@ -37,9 +37,8 @@ export function StudentResult() {
 
   useEffect(() => {
     if (isSuccess) {
-      const decodedString = decodeURIComponent(assessmetData.data);
+      const decodedString = atob(assessmetData.data);
       const jsonData = JSON.parse(decodedString);
-      console.log('asasssasss', jsonData);
       setDecodedData(jsonData);
     }
   }, [isSuccess]);
@@ -161,7 +160,7 @@ export function StudentResult() {
               {data?.questions.map((question, index) => (
                 <div key={index} className="p-4 mb-3 bg-white rounded-3">
                   <h6>
-                    {index + 1}. {question?.questions.replaceAll('+', ' ')}
+                    {index + 1}. {question?.questions}
                   </h6>
                   <div className="pt-4 ps-3">
                     {/* <FormLabel className="py-2 m-0 fw-bold">
@@ -178,12 +177,12 @@ export function StudentResult() {
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns == option.toLowerCase().replaceAll('+', '')
+                                question.userAns?.toLowerCase() == option?.replaceAll(" ", "")?.toLowerCase()
                                 // question.correctAns === option
                               }
                             />
-                            <p className="mx-2 mb-1 mb-0">
-                              {option.replaceAll('+', ' ')}
+                            <p className={`mx-2 mb-1 mb-0 ${ (question.userAns?.toLowerCase() == option?.replaceAll(" ", "")?.toLowerCase())?(question.userAns?.toLowerCase()!==question.correctAns?.toLowerCase())?"text-danger":"":""}`}>
+                              {option}
                             </p>
                           </FormLabel>
                         </div>
@@ -191,10 +190,7 @@ export function StudentResult() {
                     ))}
                     <h6 className="text-success mt-2">
                       {question.correctAns
-                        ? `Correct Answer: ${question.correctAns.replaceAll(
-                            '+',
-                            ' '
-                          )}`
+                        ? `Correct Answer: ${question.correctAns}`
                         : ''}
                     </h6>
                   </div>

@@ -34,7 +34,7 @@ export const TotalStudentOfOrg = () => {
         <>
           {!isError && (
             <>
-              <div className="w-100 d-flex gap-2 align-items-center bg-white rounded-4 p-2">
+              <div className="w-100 d-flex gap-2 align-items-center bg-white rounded-4 p-2 overflow-auto">
                 <IoMdArrowRoundBack
                   size={30}
                   className="cursor-pointer "
