@@ -59,8 +59,8 @@ export default function StudentPaper({
     decodedData?.questions.forEach((value, index) => {
       console.log('typeof selectedOption[index] === string 0',typeof selectedOption[index] === 'string' )
       if(typeof selectedOption[index] === 'string' ){
-        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll("+","");
-        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll("+","");
+        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll(" ","");
+        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll(" ","");
       }else{
         questions[index].userAns = selectedOption[index]
       }
@@ -101,6 +101,7 @@ export default function StudentPaper({
     console.log('selected option :- ', selectedOption[id]);
     return selectedOption[id] ? true : false;
   }
+
   function updateProgressBar() {
     const progress = ((count + 1) / decodedData?.questions?.length) * 100;
     progressBar.current.style.width = progress + '%';
@@ -136,10 +137,7 @@ export default function StudentPaper({
                 <div className=" w-100 d-flex flex-wrap justify-content-between">
                   <div className=' w-100'>
                     <h1 className="w-100 text-capitalize">
-                    {decodedData?.examDetails.assessmentName.replaceAll(
-                      '+',
-                      ' '
-                    )}
+                    {decodedData?.examDetails.assessmentName}
                   </h1>
                     <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
                     <CountdownTimer
@@ -175,7 +173,7 @@ export default function StudentPaper({
                   </h1>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
-                    <p>min score:{decodedData?.examDetails.minimum_marks}% </p>
+                    <p>min score:{decodedData?.examDetails.minimum_marks} </p>
                     <p>max score:{decodedData?.examDetails.totalMarks} </p>
                   </div>
                 </div>
@@ -191,7 +189,7 @@ export default function StudentPaper({
                     <div key={index} className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
-                        <p>{value.questions.replaceAll('+',' ')}?</p>
+                        <p>{value.questions}?</p>
                       </div>
                       <ul className="options text-wrap  fs-6 list-unstyled">
                         {value.options &&
@@ -208,7 +206,7 @@ export default function StudentPaper({
                                   id={`ques${index}-opt${indexopt}`}
                                 />
                                 <label htmlFor={`ques${index}-opt${indexopt + 1}`}>
-                                  {valueopt.replaceAll('+',' ')}
+                                  {valueopt}
                                 </label>
                               </li>
                             );
