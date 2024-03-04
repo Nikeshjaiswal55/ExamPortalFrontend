@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import {memo} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export function ExamModal({ show, content, isButtonVisible, handleClose }) {
+export const ExamModal = memo(function ExamModal({show,content,isButtonVisible,handleClose}) {
   return (
     <>
       <Modal
@@ -38,4 +38,4 @@ export function ExamModal({ show, content, isButtonVisible, handleClose }) {
       </Modal>
     </>
   );
-}
+})

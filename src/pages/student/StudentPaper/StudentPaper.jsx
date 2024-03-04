@@ -1,53 +1,53 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { PiHandWaving } from 'react-icons/pi';
+/* eslint-disable react/prop-types */
+import {memo,useCallback,useEffect,useRef,useState} from 'react';
 // import Countdown from 'react-countdown-now';
-import CountdownTimer from '../../../utils/CountDownTimer';
-import { CustomButton } from '../../../theme/Button/Buttons';
-import { Button, Modal, Spinner } from 'react-bootstrap';
-import {
-  useGetAllQuestionsFromPaperIdQuery,
-  usePostSaveResultMutation,
-} from '../../../apis/Service';
-import { Loader } from '../../../components/Loader/Loader';
-import {useParams,useNavigate} from 'react-router';
-import { useSelector } from 'react-redux';
+import {CustomButton} from '../../../theme/Button/Buttons';
+import {Button,Modal,Spinner} from 'react-bootstrap';
+import {usePostSaveResultMutation} from '../../../apis/Service';
+import {Loader} from '../../../components/Loader/Loader';
+import {useNavigate} from 'react-router';
+import {useSelector} from 'react-redux';
+import {CountDownTimerLibrary} from '../../../utils/CountDownTimerLibrary';
 
-export default function StudentPaper({
+const StudentPaper = memo(function StudentPaper({
   paperId,
   decodedData,
   isLoading,
   handleSubmit,
-  paperSubmit,
   cameraStop,
   tabSitchSubmit,
   tabBlurCount,
-  recordedData,
+  examDuration,
+  setExamDuration
 }) {
   const navigate = useNavigate();
-  const [showSubmit, setShowSubmit] = useState(false);
-  const handleSubmitClose = () => setShowSubmit(false);
-  const handleSubmitShow = () => setShowSubmit(true);
-  const [isPaperSubmitted, setIsPaperSubmitted] = useState(false);
+  const [showSubmit,setShowSubmit] = useState(false);
+  const handleSubmitClose = useCallback(() => setShowSubmit(false),[]);
+  const handleSubmitShow = useCallback(() => setShowSubmit(true),[]);
+  const [isPaperSubmitted,setIsPaperSubmitted] = useState(false);
   // const { data, isSuccess, isLoading } =
   //   useGetAllQuestionsFromPaperIdQuery(paperId);
-  const [saveResult, { isSucess, isLoading: submitPaperLoading }] =
+  const [saveResult,{isLoading: submitPaperLoading}] =
     usePostSaveResultMutation();
-  const [showOnTimeOver, setShowOnTimeOver] = useState(false);
+  const [showOnTimeOver,setShowOnTimeOver] = useState(false);
   const progressBar = useRef(null);
-  const [count, setCount] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(
+  const [count,setCount] = useState(0);
+  const [selectedOption,] = useState(
     new Array(decodedData?.questions?.length)
   );
-
+  // const [examDuration,setExamDuration] = useState();
+  // useEffect(() => {
+  //   setExamDuration(decodedData?.examDetails?.examDuration);
+  // },[decodedData?.examDetails?.examDuration]);
   useEffect(() => {
-    if (tabSitchSubmit > 1 || tabBlurCount > 4) {
-      if (!isPaperSubmitted) {
+    if(tabSitchSubmit > 1 || tabBlurCount > 4) {
+      if(!isPaperSubmitted) {
         setShowOnTimeOver(true);
         setIsPaperSubmitted(true);
         submitPaperDetails();
       }
     }
-  }, [tabSitchSubmit, tabBlurCount]);
+  },[tabSitchSubmit,tabBlurCount]);
 
   const imagesArray = useSelector((state) => state.admin.image);
   const audioArray = useSelector((state) => state.admin.audio);
@@ -55,22 +55,20 @@ export default function StudentPaper({
   function getUserAnswereWithQuestion() {
     const questionsJson = JSON.stringify(decodedData?.questions);
     let questions = JSON.parse(questionsJson);
-    console.log('before ', questions);
-    decodedData?.questions.forEach((value, index) => {
-      console.log('typeof selectedOption[index] === string 0',typeof selectedOption[index] === 'string' )
-      if(typeof selectedOption[index] === 'string' ){
-        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll(" ","");
-        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll(" ","");
-      }else{
+    decodedData?.questions.forEach((value,index) => {
+      if(typeof selectedOption[index] === 'string') {
+        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll("+","");
+        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll("+","");
+      } else {
         questions[index].userAns = selectedOption[index]
       }
     });
     return questions;
   }
-  
+
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
- const submitPaperDetails=(params)=> {
+  const submitPaperDetails = () => {
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
     // imagesArray.push(ss);
@@ -88,7 +86,6 @@ export default function StudentPaper({
       },
     };
     cameraStop();
-    console.log('result in submit :  ', result);
     saveResult(result).then(() => {
       handleSubmit();
       handleSubmitClose();
@@ -98,31 +95,26 @@ export default function StudentPaper({
   }
 
   function isChecked(id) {
-    console.log('selected option :- ', selectedOption[id]);
     return selectedOption[id] ? true : false;
   }
-
   function updateProgressBar() {
     const progress = ((count + 1) / decodedData?.questions?.length) * 100;
     progressBar.current.style.width = progress + '%';
   }
-  function handleChecked(e, id) {
-    if (!isChecked(id)) {
+  function handleChecked(e,id) {
+    if(!isChecked(id)) {
       setCount(count + 1);
       updateProgressBar();
     }
     const update = selectedOption;
-    console.log(e.target.value);
-    console.log(id);
     update[id] = e.target.value;
-    console.log('update ========================', update);
   }
 
   const handleTimerEnd = useCallback(() => {
     setShowOnTimeOver(true);
     cameraStop();
     submitPaperDetails();
-  }, []);
+  },[]);
 
   return (
     <>
@@ -137,16 +129,20 @@ export default function StudentPaper({
                 <div className=" w-100 d-flex flex-wrap justify-content-between">
                   <div className=' w-100'>
                     <h1 className="w-100 text-capitalize">
-                    {decodedData?.examDetails.assessmentName}
+                      {decodedData?.examDetails.assessmentName.replaceAll(
+                        '+',
+                        ' '
+                      )}
                   </h1>
                     <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
-                    <CountdownTimer
+                      {examDuration && <CountDownTimerLibrary
                       initialTime={parseInt(
-                        decodedData?.examDetails.examDuration
-                      )}
+                        examDuration
+                      )
+                        } setInitialTime={setExamDuration}
                       // initialTime={40}
                       onTimerEnd={handleTimerEnd}
-                    />
+                      />}
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
                         style={{width: '12.25rem',height: '10px'}}
@@ -173,7 +169,7 @@ export default function StudentPaper({
                   </h1>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
-                    <p>min score:{decodedData?.examDetails.minimum_marks} </p>
+                      <p>min score:{decodedData?.examDetails.minimum_marks}% </p>
                     <p>max score:{decodedData?.examDetails.totalMarks} </p>
                   </div>
                 </div>
@@ -181,15 +177,15 @@ export default function StudentPaper({
             </div>
             <div
               className="col-lg-8  offset-lg-2 p-lg-4  overflow-auto  "
-              style={{ maxHeight: '60vh' }}
+                style={{maxHeight: '60vh'}}
             >
               {decodedData?.questions &&
-                decodedData?.questions.map((value, index) => {
+                  decodedData?.questions.map((value,index) => {
                   return (
                     <div key={index} className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
-                        <p>{value.questions}?</p>
+                        <p>{value.questions.replaceAll('+',' ')}?</p>
                       </div>
                       <ul className="options text-wrap  fs-6 list-unstyled">
                         {value.options &&
@@ -206,7 +202,7 @@ export default function StudentPaper({
                                   id={`ques${index}-opt${indexopt}`}
                                 />
                                 <label htmlFor={`ques${index}-opt${indexopt + 1}`}>
-                                  {valueopt}
+                                  {valueopt.replaceAll('+',' ')}
                                 </label>
                               </li>
                             );
@@ -257,7 +253,7 @@ export default function StudentPaper({
               <Button
                 variant="success"
                 className="rounded-4 w-100"
-                onClick={()=>submitPaperDetails()}
+                onClick={() => submitPaperDetails()}
               >
                 {submitPaperLoading ? (
                   <Spinner animation="border" size="sm" />
@@ -305,4 +301,6 @@ export default function StudentPaper({
       )}
     </>
   );
-}
+});
+
+export default StudentPaper;
