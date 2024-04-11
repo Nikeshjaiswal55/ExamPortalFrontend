@@ -35,10 +35,11 @@ export default function AssignmentStudentPage() {
               Student
             </h4>
           </div>
-          <div className="m-0 p-0" style={{ height: 'calc(100vh - 122px)' }}>
+            <div className="m-0 p-0 overflow-x-hidden overflow-y-auto" style={{height: 'calc(100vh - 122px)'}}>
             <div className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto">
               {data?.map((studentdetails, index) => (
                 <StudentCard
+                  key={index}
                   paperId={paperId}
                   divBoxStyle={'col-lg-2 col-12'}
                   studentdetails={studentdetails}

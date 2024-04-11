@@ -48,7 +48,7 @@ export const TotalStudentOfOrg = () => {
                         <TotalStudent totalStudent={data} />
                     </div> */}
               <div
-                className="m-0 p-0"
+                  className="m-0 p-0 overflow-y-auto overflow-x-hidden"
                 style={{ height: 'calc(100vh - 16rem)' }}
               >
                 <div className="card-div row w-100 justify-content-center justify-content-md-start mx-2 overflow-auto">
