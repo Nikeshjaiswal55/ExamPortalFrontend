@@ -51,7 +51,7 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails, index }) {
               // }}
             >
               <img
-                src={logo[index]}
+                src={logo[Math.floor(Math.random() * color.length)]}
                 width="100%"
                 className="rounded-circle"
                 height="100%"

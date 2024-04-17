@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from 'react-bootstrap';
+import {useState,useEffect,useRef,useMemo,useCallback} from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
 import StudentPaper from '../../student/StudentPaper/StudentPaper';
@@ -13,15 +12,12 @@ import { ExamModal } from './ExamModal';
 import GiphyEmbed from './GiphyEmbed';
 import { CheckForExtension } from '../utils/CheckForExtension';
 import {
-  useGetAllAssissmentOnstudentPageQuery,
   useGetAllQuestionsFromPaperIdQuery,
   useGetCheckAttemptedStudentQuery,
-  useGetStudentAvidenceQuery,
   useUploadImageBase64Mutation,
 } from '../../../apis/Service';
 import imageCompression from 'browser-image-compression';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
-import { Loader } from '../../../components/Loader/Loader';
 import { sendAudio, sendImage } from '../../../store/adminSlice';
 // import * as tf from '@tensorflow/tfjs';
 import * as facemesh from '@tensorflow-models/facemesh';
@@ -33,19 +29,19 @@ export const ExamStarted = () => {
   const { paperId } = useParams();
   const [doneProcess, setProcess] = useState(true);
   const stream = useSelector((state) => state.admin.stream);
-  const [capturedImage, setCapturedImage] = useState([]);
+  // const [capturedImage, setCapturedImage] = useState([]);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
   const [videoStream, setVideoStream] = useState();
   const [screenStream, setScreenStream] = useState();
   const [submitVoiceRec, setSubmitVoiceRec] = useState(true);
-  const [tabSitchSubmit, setTabSitchSubmit] = useState(false);
-  const [recordedData, setRecordedData] = useState([]);
+  // const [tabSitchSubmit, setTabSitchSubmit] = useState(false);
+  const [recordedData] = useState([]);
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleShow = useCallback(() => setShow(true),[]);
+  const handleClose = useCallback(() => setShow(false),[]);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
@@ -59,30 +55,65 @@ export const ExamStarted = () => {
     stdId: stdId.userId,
   });
 
-  const [imageUpload, { isError: uploadError }] =
-    useUploadImageBase64Mutation();
+  const [imageUpload,{isError: uploadError}] = useUploadImageBase64Mutation();
 
   const [isRecording, setIsRecording] = useState(false);
   const webcamRef = useRef(null);
+  //for the stop recording
+  const onStop = useCallback((recordedData) => {
+    // const data = [recordedData];
+    // data.push(recordedData?.blob);
+    if(recordedData?.blob) {
+      // setRecordedData(recordedData?.blob);
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result.split(',')[1];
+          // setBase64Audio(base64String);
+          resolve(base64String);
+        };
+        reader.readAsDataURL(recordedData.blob);
+      }).then((base64String) => {
+        dispatch(sendAudio(base64String));
+      });
+    }
+  },[dispatch]);
 
+  const detect = useCallback(async (net,track) => {
+    if(
+      typeof webcamRef.current !== 'undefined' &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+
+      const face = await net.estimateFaces(video);
+      if(face.length <= 0) {
+        setContent(`Don't cover your face with anything.!`);
+        handleShow();
+        setIsButtonVisible(false);
+      } else if(face.length > 1) {
+        setContent('Multiple face detected.!');
+        handleShow();
+        setIsButtonVisible(false);
+      }
+    }
+  },[handleShow]);
   //voice rec
-  const voiceDetect = () => {
+  const voiceDetect = useCallback(() => {
     const initVoiceModel = async () => {
       // Load the speech commands model
       const speechCommands = await import('@tensorflow-models/speech-commands')
       const recognizer = speechCommands.create('BROWSER_FFT');
       await recognizer.ensureModelLoaded();
-      console.log('model loaded', recognizer);
 
       // Define a callback function for predictions
       recognizer.listen(
         (result) => {
-          console.log('result', result.scores);
           const maxIndex = result.scores.indexOf(Math.max(...result.scores));
 
           // Check if the predicted class is a voice command (adjust this based on your use case)
-          if (result.scores[maxIndex] > 0.8) {
-            console.log('voice command detected!');
+          if(result.scores[maxIndex] > 0.8) {
             setIsRecording(true);
             // Start recording using webcam or other recording logic
             // startRecording();
@@ -98,31 +129,9 @@ export const ExamStarted = () => {
     if (submitVoiceRec) {
       initVoiceModel();
     }
-  };
+  },[onStop,submitVoiceRec])
 
-  //for the stop recording
-
-  const onStop = (recordedData) => {
-    console.log('Recording Stopped:', recordedData);
-    // const data = [recordedData];
-    // data.push(recordedData?.blob);
-    if (recordedData?.blob) {
-      // setRecordedData(recordedData?.blob);
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64String = reader.result.split(',')[1];
-          // setBase64Audio(base64String);
-          resolve(base64String);
-        };
-        reader.readAsDataURL(recordedData.blob);
-      }).then((base64String) => {
-        dispatch(sendAudio(base64String));
-      });
-    }
-  };
-
-  const runFacemesh = async () => {
+  const runFacemesh = useCallback(async () => {
     const net = await facemesh.load({
       inputResolution: { width: 640, height: 480 },
       scale: 0.8,
@@ -130,30 +139,11 @@ export const ExamStarted = () => {
     setInterval(() => {
       detect(net);
     }, 100);
-  };
+  },[detect])
 
-  const detect = async (net, track) => {
-    if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      const video = webcamRef.current.video;
 
-      const face = await net.estimateFaces(video);
-      if (face.length <= 0) {
-        setContent(`Don't cover your face with anything.!`);
-        handleShow();
-        setIsButtonVisible(false);
-      } else if (face.length > 1) {
-        setContent('Multiple face detected.!');
-        handleShow();
-        setIsButtonVisible(false);
-      }
-    }
-  };
 
-  const captureImages = () => {
+  const captureImages = useCallback(() => {
     const constraints = {
       video: true,
     };
@@ -188,7 +178,6 @@ export const ExamStarted = () => {
               // setCapturedImage((prevImages) => [...prevImages, base64Image]);
               imageUpload(base64Image)
                 .then((res) => {
-                  console.log('res', res?.data?.data);
                   dispatch(sendImage(res?.data?.data));
                 })
                 .catch((err) => {});
@@ -201,7 +190,7 @@ export const ExamStarted = () => {
 
         const captureInterval = setInterval(() => {
           captureImage();
-        }, 10000); // Capture every 10 seconds
+        },60000); // Capture every 10 seconds changed to 60 seconds
 
         return () => {
           clearInterval(captureInterval);
@@ -211,35 +200,32 @@ export const ExamStarted = () => {
         console.error('Error accessing the camera:', error);
       });
     // }
-  };
+  },[dispatch,imageUpload]);
 
   const navigate = useNavigate();
 
-  const handleVisibilityChange = (stream) => {
-    console.log('handle visibility changed call ');
-    if (document.hidden) {
-      console.log('handle visibility changed call if condition');
+  const handleVisibilityChange = useCallback((stream) => {
+    if(document.hidden) {
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
       setTabSwitchCount((prev) => prev + 1);
     }
-  };
+  },[]);
 
-  const handleBlurChange = (stream) => {
-    console.log('handle blur call =============');
+  const handleBlurChange = useCallback((stream) => {
     setIsButtonVisible(false);
     TabSwitchScreenShot(stream);
     setTabBlurCount((prev) => prev + 1);
-  };
+  },[]);
 
-  function TabSwitch(stream) {
+  const TabSwitch = useCallback(function TabSwitch(stream) {
     document.addEventListener('visibilitychange', () =>
       handleVisibilityChange(stream)
     );
     document.addEventListener('blur', () => {
       handleBlurChange(stream);
     });
-  }
+  },[handleBlurChange,handleVisibilityChange]);
 
   useEffect(() => {
     if (tabBlurCount > 2) {
@@ -248,7 +234,6 @@ export const ExamStarted = () => {
       );
       handleShow();
     }
-    console.log('blur count := ', tabBlurCount);
   }, [tabBlurCount]);
 
   useEffect(() => {
@@ -258,7 +243,6 @@ export const ExamStarted = () => {
       );
       handleShow();
     }
-    console.log('tab switch  count := ', tabSwitchCount);
   }, [tabSwitchCount]);
 
   useEffect(() => {
@@ -272,31 +256,26 @@ export const ExamStarted = () => {
     }
   }, [doneProcess]);
 
-  async function cameraStop() {
-    console.log('inside camera stop function');
+  const cameraStop = useCallback(async function() {
     const tf = await import('@tensorflow/tfjs');
     setSubmitVoiceRec(false);
     await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     tf.disposeVariables();
-  }
+  },[screenStream,videoStream]);
 
-  async function handleSubmit() {
-    console.log('inside handle submit stop function');
+  const handleSubmit = useCallback(async function() {
     // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
     await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
     navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
     document.location.reload();
-  }
+  },[navigate,paperId,videoStream])
+
 
   const [progress, setProgress] = useState(0);
   const [content, setContent] = useState();
 
-  const callback = () => {
-    MediaPermission(setProgress, callback2, handleShow, setContent);
-  };
-
-  const callback2 = () => {
+  const callback2 = useCallback(() => {
     GetEntireScreen(
       setProgress,
       handleShow,
@@ -304,9 +283,22 @@ export const ExamStarted = () => {
       TabSwitch,
       setScreenStream
     );
-  };
+  },[TabSwitch,handleShow]);
+  const callback = useCallback(() => {
+    MediaPermission(setProgress,callback2,handleShow,setContent);
+  },[callback2,handleShow]);
+
+
 
   const [decodedData, setDecodedData] = useState(null);
+  const decodeDataMemo = useMemo(() => {
+    return decodedData;
+  },[decodedData]);
+
+  const [examDuration,setExamDuration] = useState();
+  useEffect(() => {
+    setExamDuration(decodeDataMemo?.examDetails?.examDuration);
+  },[decodeDataMemo?.examDetails?.examDuration]);
 
   useEffect(() => {
     if (attemptedSucess && attempted?.data == 'true') {
@@ -331,17 +323,15 @@ export const ExamStarted = () => {
     }
   }, [progress]);
 
-  const { data, isSuccess, isError, isLoading } =
-    useGetAllQuestionsFromPaperIdQuery(paperId);
+  const {data,isSuccess,isError,isLoading} = useGetAllQuestionsFromPaperIdQuery(paperId);
 
   useEffect(() => {
     if (isSuccess) {
       const decodedString = atob(data.data);
       const jsonData = JSON.parse(decodedString);
-      console.log('asasssasss', jsonData);
       setDecodedData(jsonData);
     }
-  }, [isSuccess]);
+  },[data,isSuccess]);
 
   // if (ateemptedIsLoading) {
   //   return (
@@ -425,12 +415,14 @@ export const ExamStarted = () => {
             <StudentPaper
               paperId={paperId}
               isLoading={isLoading}
-              decodedData={decodedData}
+                  decodedData={decodeDataMemo}
               handleSubmit={handleSubmit}
               cameraStop={cameraStop}
               tabSitchSubmit={tabSwitchCount}
               tabBlurCount={tabBlurCount}
               recordedData={recordedData}
+                  examDuration={examDuration}
+                  setExamDuration={setExamDuration}
             />
             <ExamModal
               show={show}
