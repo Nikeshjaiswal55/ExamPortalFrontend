@@ -9,7 +9,7 @@ export const Fail = ({ paperId, stdId, data }) => {
 
   return (
     <div className="h-100 w-100 bg-white">
-      <div className="h-100 w-100 result-bg d-flex justify-content-center">
+      <div className="h-100 w-100 result-bg d-flex justify-content-center align-items-center">
         <div className="result-container text-center">
           <h1 className="mb-3">💪Keep Going!</h1>
           <img src={result} />

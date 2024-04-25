@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
-  FormCheck,
   FormLabel,
   Modal,
   Nav,
@@ -124,7 +124,6 @@ export const AddAssignment = () => {
   const navigate = useNavigate();
   let userId = JSON.parse(localStorage.getItem('users'));
   userId = userId.sub.split('|')[1];
-  const orgType = localStorage.getItem('orgtype');
   const getOrgdata = JSON.parse(localStorage.getItem('orgData'));
   const [excel, setExcel] = useState([]);
   const [questionExcel, setQuestionExcel] = useState([]);
@@ -140,17 +139,17 @@ export const AddAssignment = () => {
       ? QuestionManagementValidation
       : '';
   const handleTabSelect = (key) => {
+    console.log("key is ",key);
     setActiveTab(key);
   };
 
   const [
     AssigmnetData,
-    { isLoading, data, isSuccess: AssignmentSuccess, isError },
+    {isLoading,isSuccess: AssignmentSuccess,isError},
   ] = usePostAssignmentMutation();
   const [
     inviteStudent,
     {
-      isLoading: invitedLoading,
       isError: inviteError,
       isSuccess: inviteSucessFull,
     },
@@ -304,18 +303,20 @@ export const AddAssignment = () => {
       }
     } else {
       if (activeTab == 'assessmentSetting') {
-        navLinkRef.current.click();
+        navLinkRef2.current.click();
+        // navLinkRef.current = navLinkRef.current.nextSibling;
         setActiveTab('questionManagement');
-        console.log('inside submit assessmentSetting ', navLinkRef.current);
+        console.log('inside submit assessmentSetting ');
       }
-      if (activeTab == 'questionManagement') {
-        navLinkRef.current.click();
+      else if(activeTab == 'questionManagement') {
+        navLinkRef3.current.click();
         setActiveTab('manageCandidate');
-        console.log('inside submit manageCandidate ');
+        console.log('inside submit manageCandidate ',activeTab);
       }
     }
   };
-  const navLinkRef = useRef(null);
+  const navLinkRef2 = useRef(null);
+  const navLinkRef3 = useRef(null);
   return (
     <>
       <div className="h-100 w-100 rounded-5">
@@ -342,9 +343,8 @@ export const AddAssignment = () => {
                     <div className=" mb-3">
                       <Nav>
                         <div>
-                          <Nav.Item>
+                          <Nav.Item >
                             <Nav.Link
-                              ref={navLinkRef}
                               eventKey="assessmentSetting"
                               className={` text-capitalize my-3 mx-0 px-0 fw-bold cursor-pointer ${
                                 activeTab === 'assessmentSetting'
@@ -356,9 +356,9 @@ export const AddAssignment = () => {
                               Assessment Setting
                             </Nav.Link>
                           </Nav.Item>
-                          <Nav.Item>
+                          <Nav.Item  >
                             <Nav.Link
-                              ref={navLinkRef}
+                              ref={navLinkRef2}
                               eventKey="questionManagement"
                               className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'questionManagement'
@@ -370,9 +370,9 @@ export const AddAssignment = () => {
                               Question Management
                             </Nav.Link>
                           </Nav.Item>
-                          <Nav.Item>
+                          <Nav.Item >
                             <Nav.Link
-                              ref={navLinkRef}
+                              ref={navLinkRef3}
                               eventKey="manageCandidate"
                               className={`text-capitalize my-3 mx-0 px-0  fw-bold cursor-pointer ${
                                 activeTab === 'manageCandidate'
@@ -405,17 +405,18 @@ export const AddAssignment = () => {
                     className="col-12 col-md-7 px-0 rounded-top-3"
                     style={{ flex: 1, height: 'calc(100vh - 77px)' }}
                   >
-                    <Tab.Content>
+                    <Tab.Content className='h-100 bg-white overflow-y-auto pb-5'>
                       <Tab.Pane
                         eventKey="assessmentSetting"
                         className=" bg-transparent m-0"
                       >
-                        <AssesstmentSetting setInstruction={setInstruction} />
+                        {activeTab == "assessmentSetting" && <AssesstmentSetting setInstruction={setInstruction} />}
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="questionManagement"
                         className=" bg-transparent m-0"
                       >
+                        {activeTab == "questionManagement" && 
                         <QuestionManagement
                           values={values}
                           setOption={setOption}
@@ -424,19 +425,19 @@ export const AddAssignment = () => {
                           handleBlur={handleBlur}
                           questionExcel={questionExcel}
                           setQuestionExcel={setQuestionExcel}
-                        />
+                          />}
                       </Tab.Pane>
                       <Tab.Pane
                         eventKey="manageCandidate"
                         className=" bg-transparent m-0"
                       >
-                        <ManageCandidate
+                        {activeTab == "manageCandidate" && <ManageCandidate
                           handleChange={handleChange}
                           handleBlur={handleBlur}
                           values={values}
                           excel={excel}
                           setExcel={setExcel}
-                        />
+                        />}
                       </Tab.Pane>
                     </Tab.Content>
                     <div
@@ -445,8 +446,9 @@ export const AddAssignment = () => {
                       } rounded-bottom-3 d-flex justify-content-end pe-3 `}
                     >
                       <Button
-                        type="subbmit"
-                        className='className="p-lg-2 my-2 btn-primary btn w-25'
+                        type="submit"
+                        className='p-lg-2 my-2 btn-primary btn w-25 position-fixed'
+                        style={{zIndex: 999,bottom: "10px"}}
                       >
                         {isLoading ? (
                           <Spinner animation="border" size="sm" />
@@ -703,7 +705,7 @@ const QuestionManagement = ({
       <div onClick={()=>inputFile.current.click()} className=" my-3 py-1 d-flex justify-content-center cursor-pointer align-items-center border border-dark-subtle  my-1 my-md-2 mx-3 mx-sm-5  w-auto  ps-3 pe-2 text-center rounded-5 bg-primary">
         <MdUpload size={30} className=" p-1" />
         <>
-          <label for="files" className="text-white cursor-pointer">
+          <label htmlFor="files" className="text-white cursor-pointer">
             Upload Question Excel
           </label>
           <input
@@ -1127,7 +1129,7 @@ const ManageCandidate = ({
         </label>
         <div className="my-3 rounded-3 border py-3 px-2">
           <FieldArray name="email">
-            {({ push, remove }) => (
+            {({remove}) => (
               <div className="d-flex gap-2 align-items-center flex-wrap">
                 {values.email.map((email, index) => (
                   <div
@@ -1180,7 +1182,7 @@ const ManageCandidate = ({
         <div className=" my-3 d-flex justify-content-center align-items-center border border-dark-subtle my-1 my-md-2  w-auto text-center rounded-3 h-25 my-3 ">
           <MdUpload size={30} className=" p-1" />
           <>
-            <label for="files" className=" cursor-pointer">
+            <label htmlFor="files" className=" cursor-pointer">
               Upload student email excel list
             </label>
             <input

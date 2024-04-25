@@ -7,9 +7,9 @@ import { Button } from 'react-bootstrap';
 export const Pending = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <>
       <div className="h-100 w-100 bg-white">
-        <div className="h-100 w-100 result-bg d-flex justify-content-center">
+        <div className="h-100 w-100 result-bg d-flex justify-content-center align-items-center">
           <div className=" result-container text-center">
             <h2 className="mb-3">Coming Soon: Your Results Await! 📈</h2>
             <img src={result} />
@@ -24,6 +24,6 @@ export const Pending = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
