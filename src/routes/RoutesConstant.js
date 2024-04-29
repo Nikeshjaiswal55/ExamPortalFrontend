@@ -118,6 +118,10 @@ export const path = {
         path: '/student/view-result',
         desc: 'this is for creating student paper page '
     },
+    AdminViewResult: {
+        path: '/admin/view-result',
+        desc: 'this is for creating student paper page '
+    },
     ShowAllAssessmentToStudent: {
         path: '/student/allAssissment',
         desc: 'this is for creating student paper page '

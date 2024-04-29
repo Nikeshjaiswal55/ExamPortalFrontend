@@ -157,6 +157,14 @@ export const Routes = () => {
                 </Layout>
               }
             />
+            <Route
+              path={`${path.AdminViewResult.path}/:paperId/:userId`}
+              element={
+                <Layout>
+                  <StudentResult />
+                </Layout>
+              }
+            />
           </Route>
 
           {/* --------------------------student-------------------------- */}

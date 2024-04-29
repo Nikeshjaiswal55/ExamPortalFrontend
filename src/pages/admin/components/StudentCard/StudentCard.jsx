@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
+import {GrFormView} from "react-icons/gr";
 import { path } from '../../../../routes/RoutesConstant';
 import logo1 from '../../../../assets/logos/Rectangle-1.png';
 import logo2 from '../../../../assets/logos/Rectangle-2.png';
@@ -72,8 +73,8 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails, index }) {
                 style={{ height: '12px', width: '12px' }}
               />
               <h6 className="m-0 p-0">
-                {studentdetails._attempted ? 'Attempted' : 'Not Attempted'}
-              </h6>
+                {studentdetails._attempted ? <>{'Attempted'} <span onClick={() => {navigate(path.AdminViewResult.path + "/" + paperId + "/" + studentdetails?.studentid)}}><GrFormView size={25} style={{color: "blue"}} className=' text-primary cursor-pointer' title='view result' /></span></> : 'Not Attempted'}
+              </h6>  
             </div>
           </div>
           <div

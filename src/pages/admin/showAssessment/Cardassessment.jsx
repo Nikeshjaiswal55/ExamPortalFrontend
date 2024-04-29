@@ -184,24 +184,25 @@ export default function Cardassessment({
               </div>
             )}
           </div>
+          {stdData || props?.is_Active !== 'false' ? (
+            ''
+          ) : (
           <div
             className={`w-100 d-flex ${
               stdData || props?.is_Active !== 'false' ? 'mb-1' : 'pb-1'
             } pt-2 cursor-pointer justify-content-end align-items-center pe-4`}
             onClick={removeAssisstment}
           >
-            {stdData || props?.is_Active !== 'false' ? (
-              ''
-            ) : (
-              // <MdDelete color="red" onClick={removeAssisstment} />
+
+                {/* // <MdDelete color="red" onClick={removeAssisstment} /> */}
               <h6
                 className="m-0 text-primary px-2 py-1 rounded-3"
                 style={{ background: '#ecf7f8' }}
               >
                 Delete
-              </h6>
-            )}
+                </h6>
           </div>
+          )}
         </div>
       </div>
 

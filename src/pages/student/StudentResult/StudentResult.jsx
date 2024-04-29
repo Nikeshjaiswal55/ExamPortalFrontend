@@ -19,13 +19,13 @@ import { Fail } from '../ResultState/Fail';
 import checkList from '../../../assets/check-list.png';
 
 export function StudentResult() {
-  const { paperId } = useParams();
+  const {paperId,userId} = useParams();
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const [decodedData, setDecodedData] = useState(null);
 
   const { data, isLoading, isError } = useGetStudentAvidenceQuery({
     paperId,
-    stdId: stdId.userId,
+    stdId: stdId?.userId ?? userId,
   });
   console.log(data, 'data');
   const {
