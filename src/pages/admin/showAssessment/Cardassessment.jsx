@@ -79,6 +79,9 @@ export default function Cardassessment({
             <div className="m-0 p-0">
               <strong
                 onClick={() => {
+                  if(stdData) {
+                    return;
+                  }
                   dispatch(updateAssissmentData({ paperId, ...props }));
                   navigate(path.UpdateAssessment.path);
                 }}
@@ -150,8 +153,8 @@ export default function Cardassessment({
                 style={{ width: '50px', height: '10px' }}
                 onClick={() => navigate(`/admin/student-details/${paperId}`)}
               >
-                {[1, 2].map((item) => (
-                  <div
+                  {[1,2].map((item,index) => (
+                    <div key={index}
                     className={` border-light rounded-circle border p-0 position-absolute top-0 d-flex justify-content-center align-items-center ${
                       item == 1
                         ? 'start-25'
