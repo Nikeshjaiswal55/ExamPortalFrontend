@@ -39,6 +39,8 @@ import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentU
 // import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
 import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
+import LeadGenerationPage from '../pages/sns-svs';
+import OtpVerification from '../pages/sns-svs/OtpVerification';
 
 export const Routes = () => {
   return (
@@ -235,6 +237,10 @@ export const Routes = () => {
           />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
+        <Route path={"sns-svs"} element={<LeadGenerationPage/>} />
+        <Route path={"otp"} element={<OtpVerification />} />
+
+
       </ReactRoute>
     </BrowserRouter>
   );

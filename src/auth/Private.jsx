@@ -55,7 +55,7 @@ export const CollegePrivate = () => {
   } else {
     return <h1>Something went wrong</h1>;
   }
-};
+}; 
 
 export const AdminPrivate = () => {
   const role = localStorage.getItem('orgtype');

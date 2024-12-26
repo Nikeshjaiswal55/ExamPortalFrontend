@@ -1,0 +1,19 @@
+.image-bg {
+    /* background-image: url('../../assets//college-image.jpg'); */
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5)), 
+                url('../../assets/college-image.jpg');
+    background-size: auto; /* Ensures the image covers the element */
+    background-position: bottom; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+}
+
+
+.image-svs {
+    height: 6rem; /* Default height */
+}
+
+@media (max-width: 768px) { /* Adjust the max-width based on your breakpoint */
+    .image-svs {
+        height: 4rem; /* Smaller height for mobile screens */
+    }
+}

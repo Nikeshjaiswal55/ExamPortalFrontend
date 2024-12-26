@@ -97,12 +97,12 @@ export default function Layout({ children }) {
   ];
 
   const stdOption = [
-    {
-      path: '/student/dashboard',
-      className: '',
-      name: 'Dashboard',
-      icon: <FaTh size={icon_size} />,
-    },
+    // {
+    //   path: '/student/dashboard',
+    //   className: '',
+    //   name: 'Dashboard',
+    //   icon: <FaTh size={icon_size} />,
+    // },
     {
       path: path.ShowAllAssessmentToStudent.path,
       name: 'Assessment List',
