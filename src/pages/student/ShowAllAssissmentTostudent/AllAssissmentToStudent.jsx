@@ -9,17 +9,19 @@ import NoDataFound from '../../../components/NoDataFound/NoDataFound';
 import Cardassessment, {
   CardassessmentPlaceholder,
 } from '../../admin/showAssessment/Cardassessment';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export default function AllAssissmentToStudent() {
   const navigate = useNavigate();
   let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const otp_data = getDecryptedResponse('otp_data')
+
   const {
     data: assignmentData,
     isLoading,
     isError,
     isSuccess,
-  } = useGetAllAssissmentOnstudentPageQuery(stdId.userId);
-
+  } = useGetAllAssissmentOnstudentPageQuery(stdId?.userId??otp_data?.std_id);
   const [filterData, setFilterData] = useState([]);
   const [input, setInput] = useState();
   const [notSearchDataFound, setSearchDataFound] = useState(false);

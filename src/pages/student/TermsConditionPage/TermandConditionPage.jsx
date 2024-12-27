@@ -20,7 +20,6 @@ export default function TermandConditionPage() {
     isLoading,
     isError,
   } = useGetInstructionQuery(paperId);
-  console.log(getInstruction, 'getInstruction');
 
   if (isLoading) {
     return (

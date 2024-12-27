@@ -24,6 +24,7 @@ import * as facemesh from '@tensorflow-models/facemesh';
 import Webcam from 'react-webcam';
 // import * as speechCommands from '@tensorflow-models/speech-commands';
 import { ReactMic } from 'react-mic';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -43,6 +44,7 @@ export const ExamStarted = () => {
   const handleShow = useCallback(() => setShow(true),[]);
   const handleClose = useCallback(() => setShow(false),[]);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
+  const otp_data = getDecryptedResponse('otp_data')
   const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
   const {
@@ -52,7 +54,7 @@ export const ExamStarted = () => {
     attemptedSucess,
   } = useGetCheckAttemptedStudentQuery({
     paperId,
-    stdId: stdId.userId,
+    stdId: stdId?.userId??otp_data?.std_id,
   });
 
   const [imageUpload,{isError: uploadError}] = useUploadImageBase64Mutation();

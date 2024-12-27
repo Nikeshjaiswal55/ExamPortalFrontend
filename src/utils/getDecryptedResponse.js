@@ -2,6 +2,7 @@ import CryptoJS from 'crypto-js';
 const secretKey = 'nikkk';  // Use the same secret key
 export const getDecryptedResponse = (storageKey) => {
     const encryptedData = localStorage.getItem(storageKey);
+    console.log('encryptedData',encryptedData)
 
     if (encryptedData) {
         // Decrypt the response

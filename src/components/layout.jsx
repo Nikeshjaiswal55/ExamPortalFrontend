@@ -22,6 +22,7 @@ import exameasy_short_light_logo from '../assets/exameasy_short_light_logo.svg';
 import emailGif from '../assets/gif/mailgif.gif';
 import { useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
+import { getDecryptedResponse } from '../utils/getDecryptedResponse';
 export default function Layout({ children }) {
   // const Sidebar = ({children}) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -31,6 +32,8 @@ export default function Layout({ children }) {
   const icon_size = '18px';
   const { logout } = useAuth0();
   const notificationFlag = useSelector((state) => state.admin.notification);
+    const otp_data= getDecryptedResponse("otp_data")
+
   const orgOption = [
     {
       path: '/admin/dashboard',
@@ -125,7 +128,7 @@ export default function Layout({ children }) {
   const menuItem =
     orgData && orgData.orgnizationType === 'company' && orgtype === 'company'
       ? cmpOption
-      : stdData && stdData.role === 'Student'
+      : stdData && stdData.role === 'Student'|| otp_data?.role==='Student'
       ? stdOption
       : orgOption;
 

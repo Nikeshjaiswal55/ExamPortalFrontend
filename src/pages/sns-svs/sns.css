@@ -17,3 +17,8 @@
         height: 4rem; /* Smaller height for mobile screens */
     }
 }
+
+.svs_layout{
+    height:inherit !important;
+    overflow:auto !important
+}

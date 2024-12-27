@@ -27,29 +27,42 @@ const LeadGenerationPage = () => {
         mobileNumber: Yup.string()
             .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
             .required('Mobile number is required'),
+        whatsappNumber: Yup.string()
+            .matches(/^[0-9]{10}$/, 'Whatsapp number must be 10 digits')
+            .required('Whatsapp number is required'),
         school: Yup.string().required('Class 12 School is required'),
         stream: Yup.string().required('Class 12 Stream is required'),
     });
 
     const handleSubmit = (values) => {
+        console.log("values",values)
         const payload = {
             name: values.name,
             fatherName: values.fatherName,
-            mobileNumber: values.mobileNumber,
+            mobileNumber1: values.mobileNumber,
+            mobileNumber2:values.whatsappNumber,
             school12: values.school,
+            tehsil: values.tehsil,
             subject12: values.stream,
+            district: values.district,
             village: values.village
         }
         try {
             postStudent(payload).then((res) => {
-                console.log(res);
-                if (res?.data) {
-                    sendOtp(res?.data.mobileNumber).then((res)=>{
-                        setEncryptData(res?.data.mobileNumber, 'm-num')
+                console.log("resss",res?.data?.data);
+                if (res?.data?.data) {
+                    const payload={
+                        mobileNumber:res?.data?.data.WP_MobileNumber
+                    }
+                    sendOtp(payload).then((otpRes) => {
+                        if(otpRes.data?.success==true){
+                        setEncryptData(res?.data?.data.WP_MobileNumber, 'm-num')
+                        setEncryptData(res?.data?.data, 's-data')
                         sessionStorage.setItem("otp", true)
                         navigate('/otp')
+                        }
                     })
-                   
+
                 }
             })
         } catch (error) {
@@ -68,6 +81,7 @@ const LeadGenerationPage = () => {
                 draggable: true,
                 progress: undefined,
                 theme: 'dark',
+                
             });
         }
     }, [isSuccess]);
@@ -117,8 +131,8 @@ const LeadGenerationPage = () => {
 
 
     return (
-        <div className='image-bg' style={{ height: '100vh' }}>
-            <div className='container' >
+        <div className='image-bg overflow' style={{ height: '100vh' }}>
+            <div className='container svs_layout' >
                 <div className='mt-2 mb-3 m-0 p-0'>
                     <img src={logo} alt='logo' className='img-fluid image-svs' />
                 </div>
@@ -126,7 +140,7 @@ const LeadGenerationPage = () => {
                 < h6 className='fw-bold text-center mb-5' style={{ color: '#f75b05' }}>Empower rural youth for a brighter future</h6>
 
 
-                <div>
+                <div className='mb-5'>
                     {/* <Form.Group className="mb-3 d-flex">
                         <Form.Label className="fw-bold">Language</Form.Label>
                         <Form.Control
@@ -162,12 +176,14 @@ const LeadGenerationPage = () => {
                             stream: '',
                             district: '',
                             tehsil: '',
+                            whatsappNumber:''
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => handleSubmit(values)}
                     >
                         {({ handleSubmit, handleChange, handleBlur, values }) => (
                             <Form noValidate onSubmit={handleSubmit}>
+
                                 <Row className="mb-3 gap-2 gap-lg-0">
                                     <Col xs={12} md={6}>
                                         <Form.Group>
@@ -206,6 +222,100 @@ const LeadGenerationPage = () => {
                                             />
                                             <ErrorMessage
                                                 name="fatherName"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-3 gap-2 gap-lg-0">
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">
+                                                {isHindi ? 'व्हाट्सएप नंबर (ओटीपी सत्यापन के लिए)' : 'WhatsApp Number (for OTP verification)'}
+                                            </Form.Label>
+                                            <Field
+                                                as={Form.Control}
+                                                name="whatsappNumber"
+                                                placeholder={isHindi ? 'अपना व्हाट्सएप नंबर दर्ज करें' : 'Enter your WhatsApp number'}
+                                                onChange={handleChange}
+                                                className="shadow-sm"
+                                                onBlur={handleBlur}
+                                                value={values.whatsappNumber}
+                                            />
+                                            <ErrorMessage
+                                                name="whatsappNumber"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">
+                                                {isHindi ? 'मोबाइल नंबर' : 'Mobile Number'}
+                                            </Form.Label>
+                                            <Field
+                                                as={Form.Control}
+                                                name="mobileNumber"
+                                                placeholder={isHindi ? 'अपना मोबाइल नंबर दर्ज करें' : 'Enter your mobile number'}
+                                                onChange={handleChange}
+                                                className="shadow-sm"
+                                                onBlur={handleBlur}
+                                                value={values.mobileNumber}
+                                            />
+                                            <ErrorMessage
+                                                name="mobileNumber"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                </Row>
+
+                                <Row className="mb-3 gap-2 gap-lg-0">
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">
+                                                {isHindi ? 'कक्षा 12 विद्यालय' : 'Class 12th School'}
+                                            </Form.Label>
+                                            <Field
+                                                as={Form.Control}
+                                                name="school"
+                                                placeholder={isHindi ? 'अपना विद्यालय का नाम दर्ज करें' : 'Enter your school name'}
+                                                onChange={handleChange}
+                                                className="shadow-sm"
+                                                onBlur={handleBlur}
+                                                value={values.school}
+                                            />
+                                            <ErrorMessage
+                                                name="school"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">Class 12th Stream</Form.Label>
+                                            <Field
+                                                as="select"
+                                                name="stream"
+                                                className="form-control shadow-sm"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.stream}
+                                            >
+                                                <option value="">Select your stream</option>
+                                                {streamOptions.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage
+                                                name="stream"
                                                 component="div"
                                                 className="text-danger"
                                             />
@@ -267,7 +377,7 @@ const LeadGenerationPage = () => {
                                             <Field
                                                 as={Form.Control}
                                                 name="village"
-                                                placeholder={isHindi ? 'अपना गांव दर्ज करें' : 'Enter your village'}
+                                                placeholder={isHindi ? 'अपना पता दर्ज करें' : 'Enter your local address'}
                                                 onChange={handleChange}
                                                 className="shadow-sm"
                                                 onBlur={handleBlur}
@@ -280,79 +390,9 @@ const LeadGenerationPage = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                    <Col xs={12} md={6}>
-                                        <Form.Group>
-                                            <Form.Label className="fw-bold">
-                                                {isHindi ? 'मोबाइल नंबर' : 'Mobile Number'}
-                                            </Form.Label>
-                                            <Field
-                                                as={Form.Control}
-                                                name="mobileNumber"
-                                                placeholder={isHindi ? 'अपना मोबाइल नंबर दर्ज करें' : 'Enter your mobile number'}
-                                                onChange={handleChange}
-                                                className="shadow-sm"
-                                                onBlur={handleBlur}
-                                                value={values.mobileNumber}
-                                            />
-                                            <ErrorMessage
-                                                name="mobileNumber"
-                                                component="div"
-                                                className="text-danger"
-                                            />
-                                        </Form.Group>
-                                    </Col>
                                 </Row>
 
-                                <Row className="mb-3 gap-2 gap-lg-0">
-                                    <Col xs={12} md={6}>
-                                        <Form.Group>
-                                            <Form.Label className="fw-bold">
-                                                {isHindi ? 'कक्षा 12 विद्यालय' : 'Class 12 School'}
-                                            </Form.Label>
-                                            <Field
-                                                as={Form.Control}
-                                                name="school"
-                                                placeholder={isHindi ? 'अपना विद्यालय का नाम दर्ज करें' : 'Enter your school name'}
-                                                onChange={handleChange}
-                                                className="shadow-sm"
-                                                onBlur={handleBlur}
-                                                value={values.school}
-                                            />
-                                            <ErrorMessage
-                                                name="school"
-                                                component="div"
-                                                className="text-danger"
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col xs={12} md={6}>
-                                        <Form.Group>
-                                            <Form.Label className="fw-bold">Class 12 Stream</Form.Label>
-                                            <Field
-                                                as="select"
-                                                name="stream"
-                                                className="form-control shadow-sm"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                value={values.stream}
-                                            >
-                                                <option value="">Select your stream</option>
-                                                {streamOptions.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            <ErrorMessage
-                                                name="stream"
-                                                component="div"
-                                                className="text-danger"
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-
-                                <div className="d-flex justify-content-center mt-5 mb-4">
+                                <div className="d-flex justify-content-center mt-5">
                                     <Button
                                         type="submit"
                                         className="w-25 fw-bold"

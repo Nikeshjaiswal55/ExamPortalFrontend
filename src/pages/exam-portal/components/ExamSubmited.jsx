@@ -8,13 +8,15 @@ import { Pending } from '../../student/ResultState/Pending';
 import { Pass } from '../../student/ResultState/Pass';
 import { Loader } from '../../../components/Loader/Loader';
 import SomethingWentWrong from '../../../components/SomethingWentWrong/SomethingWentWrong';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export const ExamSubmited = () => {
   const { paperId } = useParams();
   const stdId = JSON.parse(localStorage.getItem('stdData'));
+  const otp_data = getDecryptedResponse('otp_data')
   const { data, isLoading, isError } = useGetStudentAvidenceQuery({
     paperId,
-    stdId: stdId.userId,
+    stdId: stdId?.userId??otp_data?.std_id,
   });
   // return (
   //   <div className="d-flex justify-content-center mt-5 gap-4">
@@ -55,11 +57,11 @@ export const ExamSubmited = () => {
       ) : data?.is_published === 'approved' ? (
         data?.result.resultStatus === 'pass' ? (
           <div className="h-100 d-flex align-items-center justify-content-center">
-            <Pass stdId={stdId} paperId={paperId} data={data?.result} />
+            <Pass stdId={stdId??otp_data?.std_id} paperId={paperId} data={data?.result} />
           </div>
         ) : data?.result.resultStatus === 'fail' ? (
           <div className="h-100 d-flex align-items-center justify-content-center">
-            <Fail stdId={stdId} paperId={paperId} data={data?.result} />
+            <Fail stdId={stdId??otp_data?.std_id} paperId={paperId} data={data?.result} />
           </div>
         ) : null
       ) : (

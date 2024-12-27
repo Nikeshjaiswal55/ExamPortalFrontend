@@ -14,6 +14,7 @@ import { path } from '../../../routes/RoutesConstant';
 import { useDispatch } from 'react-redux';
 import { updateAssissmentData } from '../../../store/adminSlice';
 import { DateAndTimeFormate, TimeFormate } from '../../../utils/utils';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 const color = ['#966CFF', '#FF8533', '#E6CB0E', '#0ea4e6', '#0ee670'];
 
@@ -52,6 +53,8 @@ export default function Cardassessment({
   ...props
 }) {
   const stdData = JSON.parse(localStorage.getItem('stdData'));
+  const otp_data = getDecryptedResponse('otp_data')
+
   const navigate = useNavigate();
   const removeAssisstment = async () => {
     await deleteAssignment(paperId);
@@ -79,14 +82,14 @@ export default function Cardassessment({
             <div className="m-0 p-0">
               <strong
                 onClick={() => {
-                  if(stdData) {
+                  if (stdData || otp_data?.std_id) {
                     return;
                   }
                   dispatch(updateAssissmentData({ paperId, ...props }));
                   navigate(path.UpdateAssessment.path);
                 }}
                 className="fs-6 cursor-pointer text-capitalize"
-                // onClick={() => (stdData ? '' : setShowCard(true))}
+              // onClick={() => (stdData ? '' : setShowCard(true))}
               >
                 {props?.assessmentName}
               </strong>
@@ -138,7 +141,7 @@ export default function Cardassessment({
               <AiOutlineFieldTime size={30} />
               <span className="ms-2">{TimeFormate(props?.examDuration)}</span>
             </div>
-            {stdData ? (
+            {stdData || otp_data?.std_id ? (
               <Button
                 onClick={() =>
                   navigate(`${path.TermAndCondition.path}/${paperId}`)
@@ -153,15 +156,14 @@ export default function Cardassessment({
                 style={{ width: '50px', height: '10px' }}
                 onClick={() => navigate(`/admin/student-details/${paperId}`)}
               >
-                  {[1,2].map((item,index) => (
-                    <div key={index}
-                    className={` border-light rounded-circle border p-0 position-absolute top-0 d-flex justify-content-center align-items-center ${
-                      item == 1
+                {[1, 2].map((item, index) => (
+                  <div key={index}
+                    className={` border-light rounded-circle border p-0 position-absolute top-0 d-flex justify-content-center align-items-center ${item == 1
                         ? 'start-25'
                         : item == 2
-                        ? 'start-50'
-                        : 'start-75'
-                    }  text-center`}
+                          ? 'start-50'
+                          : 'start-75'
+                      }  text-center`}
                     style={{
                       width: '30px',
                       height: '30px',
@@ -184,24 +186,23 @@ export default function Cardassessment({
               </div>
             )}
           </div>
-          {stdData || props?.is_Active !== 'false' ? (
+          {stdData || otp_data?.std_id || props?.is_Active !== 'false' ? (
             ''
           ) : (
-          <div
-            className={`w-100 d-flex ${
-              stdData || props?.is_Active !== 'false' ? 'mb-1' : 'pb-1'
-            } pt-2 cursor-pointer justify-content-end align-items-center pe-4`}
-            onClick={removeAssisstment}
-          >
+            <div
+              className={`w-100 d-flex ${stdData || otp_data?.std_id || props?.is_Active !== 'false' ? 'mb-1' : 'pb-1'
+                } pt-2 cursor-pointer justify-content-end align-items-center pe-4`}
+              onClick={removeAssisstment}
+            >
 
-                {/* // <MdDelete color="red" onClick={removeAssisstment} /> */}
+              {/* // <MdDelete color="red" onClick={removeAssisstment} /> */}
               <h6
                 className="m-0 text-primary px-2 py-1 rounded-3"
                 style={{ background: '#ecf7f8' }}
               >
                 Delete
-                </h6>
-          </div>
+              </h6>
+            </div>
           )}
         </div>
       </div>

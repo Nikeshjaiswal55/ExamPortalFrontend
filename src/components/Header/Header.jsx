@@ -1,9 +1,11 @@
 import React from 'react';
 import {FaUserAlt} from 'react-icons/fa';
 import './Header.css';
+import { getDecryptedResponse } from '../../utils/getDecryptedResponse';
 
 export default function Header({isOpen}) {
   const user = JSON.parse(localStorage.getItem("users"));
+  const s_data= getDecryptedResponse("s-data")
   console.log(user)
   return (
     <>
@@ -29,12 +31,12 @@ export default function Header({isOpen}) {
 
                 <li >
                   <a className="dropdown-item bg-white text-black fw-bold" href="#">
-                    {user.name}
+                    {user?.name ?? s_data?.name}
                   </a>
                 </li>
                 <li>
                   <a className="dropdown-item  bg-white text-black" href="#">
-                    {user.email}
+                    {user?.email ?? s_data?.mobileNumber}
                   </a>
                 </li>
               </ul>

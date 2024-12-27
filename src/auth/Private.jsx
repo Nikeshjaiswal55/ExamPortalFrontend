@@ -1,7 +1,8 @@
 import { LocalStorageCache, useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 import { useRefreshAccessTokenMutation } from '../apis/Service';
+import { getDecryptedResponse } from '../utils/getDecryptedResponse';
 
 export const getAccessToken = async (getAccessTokenSilently, user) => {
   try {
@@ -12,12 +13,10 @@ export const getAccessToken = async (getAccessTokenSilently, user) => {
     });
     localStorage.setItem('accessToken', accessToken);
     const refresh_token = new LocalStorageCache();
-    console.log('refesh_token : ', refresh_token);
     const key = refresh_token.allKeys().find((key) => key.includes('auth0spa'));
     const refresh_token_value = refresh_token.get(key);
     const ref_token = refresh_token_value?.body?.refresh_token;
     localStorage.setItem('refreshToken', ref_token);
-    console.log(`Access token: ${accessToken}`);
     return true;
   } catch (e) {
     console.error(e);
@@ -29,6 +28,8 @@ export const Private = () => {
   const { loginWithRedirect } = useAuth0();
   const accessToken = localStorage.getItem('accessToken');
   const user = localStorage.getItem('users');
+
+  const otp_data = getDecryptedResponse('otp_data')
   if (accessToken) {
     //we can uncomment in the future
 
@@ -43,7 +44,14 @@ export const Private = () => {
     } else {
       loginWithRedirect();
     }
-  } else {
+  } else if(otp_data?.role==='Student'){
+    if(otp_data?.std_id){
+      return <Outlet />;
+    }else{
+      <Navigate to='/sns-svs' />
+    }
+  }
+  else {
     loginWithRedirect();
   }
 };
@@ -55,7 +63,7 @@ export const CollegePrivate = () => {
   } else {
     return <h1>Something went wrong</h1>;
   }
-}; 
+};
 
 export const AdminPrivate = () => {
   const role = localStorage.getItem('orgtype');
@@ -67,9 +75,13 @@ export const AdminPrivate = () => {
 };
 
 export const StudentPrivate = () => {
-  const { role } = JSON.parse(localStorage.getItem('stdData'));
-  console.log(role);
-  if (role === 'Student') {
+  const stdData  = JSON.parse(localStorage.getItem('stdData'));
+  const otp_data = getDecryptedResponse('otp_data')
+
+  console.log('conndition',otp_data?.role === 'Student' && otp_data?.std_id)
+  if (stdData?.role === 'Student') {
+    return <Outlet />;
+  } else if (otp_data?.role == 'Student' && otp_data?.std_id) {
     return <Outlet />;
   } else {
     return <h1>Something went wrong</h1>;

@@ -8,6 +8,7 @@ import {Loader} from '../../../components/Loader/Loader';
 import {useNavigate} from 'react-router';
 import {useSelector} from 'react-redux';
 import {CountDownTimerLibrary} from '../../../utils/CountDownTimerLibrary';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 const StudentPaper = memo(function StudentPaper({
   paperId,
@@ -68,6 +69,8 @@ const StudentPaper = memo(function StudentPaper({
 
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
+    const otp_data= getDecryptedResponse('otp_data')
+    const { name } = getDecryptedResponse('s-data')
   const submitPaperDetails = () => {
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
@@ -75,11 +78,11 @@ const StudentPaper = memo(function StudentPaper({
     const questions = getUserAnswereWithQuestion();
 
     const result = {
-      studentId: stdData.userId,
+      studentId: stdData?.userId??otp_data?.std_id,
       paperId: paperId,
       questions: questions,
       cheating: {
-        studentId: stdData.userId,
+        studentId: stdData?.userId??otp_data?.std_id,
         paperId: paperId,
         images: imagesArray,
         audios: audioArray,
@@ -164,7 +167,7 @@ const StudentPaper = memo(function StudentPaper({
                 </div>
                 <div className="d-none d-md-flex justify-content-center align-items-center flex-column">
                   <h1>
-                    Hey {stdData?.email.split('@')[0]} 👋
+                    Hey {stdData?.email.split('@')[0]} ?? {name}👋
                     {/* <PiHandWaving size={35} /> */}
                   </h1>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
