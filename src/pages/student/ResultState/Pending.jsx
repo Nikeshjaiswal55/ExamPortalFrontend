@@ -3,6 +3,7 @@ import result from '../../../assets/Pending.svg';
 import { path } from '../../../routes/RoutesConstant';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export const Pending = () => {
   const navigate = useNavigate();
