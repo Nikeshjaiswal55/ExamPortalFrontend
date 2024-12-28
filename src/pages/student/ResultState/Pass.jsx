@@ -7,7 +7,7 @@ import { path } from '../../../routes/RoutesConstant';
 import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export const Pass = ({ paperId, stdId, data }) => {
-  const otp_data = getDecryptedResponse('otp_data')
+  const otp_data = getDecryptedResponse('otp_data');
   const navigate = useNavigate();
   return (
     <div className="h-100 w-100 bg-white">
@@ -44,30 +44,46 @@ export const Pass = ({ paperId, stdId, data }) => {
             View Exam Evidence
           </Button> */}
 
-          {otp_data?.stdId?<Button
-            variant="dark m-2
-           mt-sm-5"
-            onClick={() =>{
-              localStorage.clear()
-              navigate(`/sns-svs`)
-            }
-            }>
-              Back to home
-          </Button>: <><Button
-            variant="dark me-sm-4 m-2 mt-sm-5"
-            onClick={() => navigate(path.StudentDashboard.path)}
-          >
-            Back To Dashboard
-          </Button>
-          <Button
-            variant="dark m-2
+          {otp_data?.std_id ? (
+            <>
+              <Button
+                variant="dark me-sm-4 m-2 mt-sm-5"
+                onClick={() => {
+                  navigate(`/student/view-result/${paperId}`);
+                }}
+              >
+                view result
+              </Button>
+              <Button
+                variant="dark m-2
              mt-sm-5"
-            onClick={() =>
-              navigate(`${path.examReport.path}/${paperId}/${stdId.userId}`)
-            }
-          >
-            View Exam Evidence
-          </Button> </>}
+                onClick={() => {
+                  localStorage.clear();
+                  navigate(`/sns-svs`);
+                }}
+              >
+                Back to home
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                variant="dark me-sm-4 m-2 mt-sm-5"
+                onClick={() => navigate(path.StudentDashboard.path)}
+              >
+                Back To Dashboard
+              </Button>
+              <Button
+                variant="dark m-2
+             mt-sm-5"
+                onClick={() =>
+                  navigate(`${path.examReport.path}/${paperId}/${stdId.userId}`)
+                }
+              >
+                View Exam Evidence
+              </Button>{' '}
+            </>
+          )}
         </div>
       </div>
     </div>

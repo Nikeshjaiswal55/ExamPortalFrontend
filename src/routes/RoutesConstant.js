@@ -45,6 +45,10 @@ export const path = {
         path: '/admin/create-assessment',
         desc: 'this is for creating  assesment page '
     },
+    AllSnsStudent: {
+        path: '/admin/sns-svs',
+        desc: 'this is for creating  assesment page '
+    },
     showAssessment: {
         path: '/admin/show-assessment',
         desc: 'this is for creating showassesment page'
