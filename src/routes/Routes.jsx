@@ -47,7 +47,9 @@ export const Routes = () => {
   return (
     <BrowserRouter>
       <ReactRoute>
-        <Route path={path.home.path} element={<LandingPage />} />
+        <Route path={path.home.path} element={<LeadGenerationPage />} />
+        <Route path={`${path.home.path}/admin/login`} element={<LandingPage />} />
+
         <Route path={path.GetStarted.path} element={<SaveUserOrg />} />
         <Route path={path.Redirect.path} element={<Redirect />} />
 
