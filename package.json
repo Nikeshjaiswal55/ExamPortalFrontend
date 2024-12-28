@@ -24,6 +24,7 @@
     "@tensorflow/tfjs": "^4.17.0",
     "@tensorflow/tfjs-converter": "^4.15.0",
     "@tensorflow/tfjs-layers": "^4.17.0",
+    "axios": "^1.7.9",
     "bootstrap": "^5.3.2",
     "browser-image-compression": "^2.0.2",
     "chart.js": "^4.4.1",

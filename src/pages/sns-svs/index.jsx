@@ -11,12 +11,45 @@ import { toast } from 'react-toastify';
 import { useSendOtpMutation, useStudentRegistrationMutation } from '../../apis/Service';
 import { useNavigate } from 'react-router-dom';
 import { setEncryptData } from '../../utils/getDecryptedResponse';
+import axios from 'axios';
+
 
 
 const LeadGenerationPage = () => {
     const navigate = useNavigate()
     const [postStudent, { isError, isSuccess, isLoading }] = useStudentRegistrationMutation()
     const [sendOtp] = useSendOtpMutation()
+    const [districts, setDistricts] = useState([]);
+    const [tehsils, setTehsils] = useState([]);
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+
+    useEffect(() => {
+        // Fetch districts
+        axios.get('https://district-seven.vercel.app/api/districts')
+            .then(response => {
+                setDistricts(response?.data?.districts);
+            })
+            .catch(error => {
+                console.error('Error fetching districts', error);
+            });
+    }, []);
+
+    useEffect(() => {
+        if (selectedDistrict) {
+            // Fetch tehsils based on selected district
+            axios.get(`https://district-seven.vercel.app/api/tehsils?district=${selectedDistrict}`)
+                .then(response => {
+                    console.log(response)
+
+                    setTehsils(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching tehsils', error);
+                });
+        }
+    }, [selectedDistrict]);
+
+
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required'),
@@ -322,7 +355,7 @@ const LeadGenerationPage = () => {
                                         </Form.Group>
                                     </Col>
                                 </Row>
-
+{/* 
                                 <Row className="mb-3 gap-2 gap-lg-0">
                                     <Col xs={12} md={6}>
                                         <Form.Group>
@@ -366,7 +399,65 @@ const LeadGenerationPage = () => {
                                             />
                                         </Form.Group>
                                     </Col>
+                                </Row> */}
+
+<Row className="mb-3 gap-2 gap-lg-0">
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">
+                                                {isHindi ? 'जिला' : 'District'}
+                                            </Form.Label>
+                                            <Field
+                                                as="select"
+                                                name="district"
+                                                className="form-control shadow-sm"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.district}
+                                            >
+                                                <option value="">Select your district</option>
+                                                {districts.map((district) => (
+                                                    <option key={district.id} value={district.id}>
+                                                        {district.name}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage
+                                                name="district"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col xs={12} md={6}>
+                                        <Form.Group>
+                                            <Form.Label className="fw-bold">
+                                                {isHindi ? 'तहसील' : 'Tehsil'}
+                                            </Form.Label>
+                                            <Field
+                                                as="select"
+                                                name="tehsil"
+                                                className="form-control shadow-sm"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                value={values.tehsil}
+                                            >
+                                                <option value="">Select your tehsil</option>
+                                                {tehsils.map((tehsil) => (
+                                                    <option key={tehsil.id} value={tehsil.id}>
+                                                        {tehsil.name}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            <ErrorMessage
+                                                name="tehsil"
+                                                component="div"
+                                                className="text-danger"
+                                            />
+                                        </Form.Group>
+                                    </Col>
                                 </Row>
+
 
                                 <Row className="mb-3 gap-2 gap-lg-0">
                                     <Col xs={12} md={6}>
@@ -419,3 +510,5 @@ const LeadGenerationPage = () => {
 };
 
 export default LeadGenerationPage;
+
+
