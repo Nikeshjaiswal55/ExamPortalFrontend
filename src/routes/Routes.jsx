@@ -244,11 +244,11 @@ export const Routes = () => {
         <Route path={'otp'} element={<OtpVerification />} />
         <Route
               // path={path.AllSnsStudent.path}
-              path="/test"
+              path="/sns-svs-lead-student"
               element={
-                <Layout>
+                // <Layout>
                   <AllLeadStudent />
-                </Layout>
+                // </Layout>
               }
             />
       </ReactRoute>

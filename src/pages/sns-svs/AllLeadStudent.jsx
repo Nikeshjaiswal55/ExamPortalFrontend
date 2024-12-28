@@ -5,6 +5,8 @@ export function AllLeadStudent() {
   const { data, isError, isLoading, isFetching } = useGetAllSnsStudentQuery();
   console.log('data', data);
   return (
+    <>
+    <h6 className='fw-bold text-center my-3'>All SNS-SVS Register Student List</h6>
     <Table striped bordered hover>
       <thead>
         <tr>
@@ -33,5 +35,6 @@ export function AllLeadStudent() {
         ))}
       </tbody>
     </Table>
+    </>
   );
 }
