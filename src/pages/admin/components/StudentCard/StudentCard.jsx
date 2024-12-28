@@ -63,7 +63,7 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails, index }) {
               </h1> */}
             </div>
             <p className="card-text mt-3 text-truncate ">
-              {studentdetails.email}
+              {studentdetails?.name??studentdetails.email}
             </p>
             <div className="d-flex justify-content-center align-items-center mb-2">
               <span
@@ -75,6 +75,17 @@ export function StudentCard({ paperId, divBoxStyle, studentdetails, index }) {
               <h6 className="m-0 p-0">
                 {studentdetails._attempted ? <>{'Attempted'} <span onClick={() => {navigate(path.AdminViewResult.path + "/" + paperId + "/" + studentdetails?.studentid)}}><GrFormView size={25} style={{color: "blue"}} className=' text-primary cursor-pointer' title='view result' /></span></> : 'Not Attempted'}
               </h6>  
+            </div>
+            <div className="d-flex justify-content-center align-items-center mb-2">
+             
+              <h6  className={` ${
+                  studentdetails?.resultStatus ? 'text-success' : 'text-danger'
+                } m-0 p-0`}>
+                {studentdetails?.resultStatus?.toUpperCase()} 
+              </h6>
+              <h6  className={` m-0 p-0`}>
+                {studentdetails?.totalMarks} 
+              </h6> 
             </div>
           </div>
           <div

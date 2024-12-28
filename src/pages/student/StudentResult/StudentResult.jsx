@@ -17,15 +17,17 @@ import { Pending } from '../ResultState/Pending';
 import { Pass } from '../ResultState/Pass';
 import { Fail } from '../ResultState/Fail';
 import checkList from '../../../assets/check-list.png';
+import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 export function StudentResult() {
-  const {paperId,userId} = useParams();
+  const { paperId, userId } = useParams();
   let stdId = JSON.parse(localStorage.getItem('stdData'));
   const [decodedData, setDecodedData] = useState(null);
-
+  const otp_data = getDecryptedResponse('otp_data');
+  const std_id = otp_data?.std_id ?? stdId;
   const { data, isLoading, isError } = useGetStudentAvidenceQuery({
     paperId,
-    stdId: stdId?.userId ?? userId,
+    stdId: std_id ?? userId,
   });
   console.log(data, 'data');
   const {
@@ -54,7 +56,7 @@ export function StudentResult() {
           <Loader />
         </div>
       ) : data?.is_published == 'requested' ? (
-            <div className="h-100 d-flex align-items-center  bg-white">
+        <div className="h-100 d-flex align-items-center  bg-white">
           <Pending />
           {/* <Pass /> */}
           {/* <Fail /> */}
@@ -62,7 +64,7 @@ export function StudentResult() {
       ) : (
         <div className="w-100 h-100 overflow-auto">
           <div className=" w-100 row justify-content-between align-items-center pt-3 px-3 flex-wrap ">
-                  <div className=" col-12">
+            <div className=" col-12">
               <h5 className="fw-bold fs-4 text-capitalize m-0">
                 <img
                   src={checkList}
@@ -91,8 +93,8 @@ export function StudentResult() {
                 <b>{decodedData?.examDetails.totalMarks} </b>
               </h6>
               <h6>
-                Minimum Marks:
-                <b> {decodedData?.examDetails.minimum_marks}%</b>
+                Passing Marks:
+                <b> {decodedData?.examDetails.minimum_marks}</b>
               </h6>
             </div>
             <div className="fw-bold">
@@ -109,8 +111,8 @@ export function StudentResult() {
                 </span>
               </h6>
               <h6 className="text-capitalize">
-                Result Percentage:
-                <b>{data?.result.percentage}%</b>
+                Obtain Marks:
+                <b>{data?.result.marks}</b>
               </h6>
             </div>
           </div>
@@ -177,11 +179,22 @@ export function StudentResult() {
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns?.toLowerCase() == option?.replaceAll(" ", "")?.toLowerCase()
+                                question.userAns?.toLowerCase() ==
+                                option?.replaceAll(' ', '')?.toLowerCase()
                                 // question.correctAns === option
                               }
                             />
-                            <p className={`mx-2 mb-1 mb-0 ${ (question.userAns?.toLowerCase() == option?.replaceAll(" ", "")?.toLowerCase())?(question.userAns?.toLowerCase()!==question.correctAns?.toLowerCase())?"text-danger":"":""}`}>
+                            <p
+                              className={`mx-2 mb-1 mb-0 ${
+                                question.userAns?.toLowerCase() ==
+                                option?.replaceAll(' ', '')?.toLowerCase()
+                                  ? question.userAns?.toLowerCase() !==
+                                    question.correctAns?.toLowerCase()
+                                    ? 'text-danger'
+                                    : ''
+                                  : ''
+                              }`}
+                            >
                               {option}
                             </p>
                           </FormLabel>

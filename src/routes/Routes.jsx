@@ -41,6 +41,7 @@ import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
 import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
 import LeadGenerationPage from '../pages/sns-svs';
 import OtpVerification from '../pages/sns-svs/OtpVerification';
+import { AllLeadStudent } from '../pages/sns-svs/AllLeadStudent';
 
 export const Routes = () => {
   return (
@@ -108,6 +109,8 @@ export const Routes = () => {
                 </Layout>
               }
             />
+
+           
 
             <Route
               path={path.showStudent.path}
@@ -237,10 +240,17 @@ export const Routes = () => {
           />
         </Route>
         <Route path={path.error.path} element={<h1>page not found</h1>} />
-        <Route path={"sns-svs"} element={<LeadGenerationPage/>} />
-        <Route path={"otp"} element={<OtpVerification />} />
-
-
+        <Route path={'sns-svs'} element={<LeadGenerationPage />} />
+        <Route path={'otp'} element={<OtpVerification />} />
+        <Route
+              // path={path.AllSnsStudent.path}
+              path="/test"
+              element={
+                <Layout>
+                  <AllLeadStudent />
+                </Layout>
+              }
+            />
       </ReactRoute>
     </BrowserRouter>
   );

@@ -17,7 +17,7 @@ export const Pending = () => {
             <img src={result} />
             <h5 className="mt-5">Results pending—anticipation builds! </h5>
             <h5 className="mt-3">Stay tuned for updates on your outcome.</h5>
-            {otp_data?.stdId ? <Button
+            {otp_data?.std_id ? <Button
               variant="dark m-2
                       mt-sm-5"
               onClick={() => {
