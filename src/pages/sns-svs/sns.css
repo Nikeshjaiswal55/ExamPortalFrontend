@@ -22,3 +22,12 @@
     height:inherit !important;
     overflow:auto !important
 }
+
+
+.custom-dropdown {
+    height: 3rem !important; /* Height for the select dropdown */
+    overflow: auto; /* Enable scrolling if content overflows */
+  }
+  .custom-dropdown option {
+    white-space: nowrap !important; /* Prevent text from wrapping */
+  }

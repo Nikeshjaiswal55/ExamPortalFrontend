@@ -59,6 +59,7 @@ export const Pass = ({ paperId, stdId, data }) => {
              mt-sm-5"
                 onClick={() => {
                   localStorage.clear();
+                  sessionStorage.clear();
                   navigate(`/sns-svs`);
                 }}
               >

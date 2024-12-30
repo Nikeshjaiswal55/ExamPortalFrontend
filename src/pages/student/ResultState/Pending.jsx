@@ -23,6 +23,7 @@ export const Pending = () => {
                       mt-sm-5"
               onClick={() => {
                 localStorage.clear()
+                sessionStorage.clear();
                 navigate(`/sns-svs`)
               }
               }>

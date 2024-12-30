@@ -1,12 +1,39 @@
 import Table from 'react-bootstrap/Table';
-import { useGetAllSnsStudentQuery } from '../../apis/Service';
+import { useGetAllSnsStudentQuery, useGetAssignmentQuery } from '../../apis/Service';
 
 export function AllLeadStudent() {
-  const { data, isError, isLoading, isFetching } = useGetAllSnsStudentQuery();
-  console.log('data', data);
-  return (
+  const { data, isError, isLoading, isFetching } = useGetAllSnsStudentQuery(); 
+   const {
+       data: assignmentData
+     } = useGetAssignmentQuery({
+       id: '662a2d224da8ec45371ebfe6',
+       publishDate:null,
+       createdDate:null,
+       paper_name: '',
+       pageno: null,
+       pageSize: null,
+       sortOrder: 'asc',
+       Active: '',
+     });
+    return (
     <>
     <h6 className='fw-bold text-center my-3'>All SNS-SVS Register Student List</h6>
+    <div>
+       {/* <select
+                              as="select"
+                              className="form-control shadow-sm "
+                              onChange={}
+                              onBlur={}
+                              value={}
+                            >
+                              <option value="">Select your exam</option>
+                              {[]?.map((exam) => (
+                                <option key={} value={}>
+                                  {}
+                                </option>
+                              ))}
+                            </select> */}
+    </div>
     <Table striped bordered hover>
       <thead>
         <tr>
@@ -22,7 +49,7 @@ export function AllLeadStudent() {
       <tbody>
         {data?.map((item, index) => (
           <tr>
-            <td>{index}</td>
+            <td>{index+1}</td>
             <td>{item?.name}</td>
             <td>{item?.fatherName}</td>
             <td>

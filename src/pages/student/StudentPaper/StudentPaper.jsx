@@ -173,7 +173,7 @@ const StudentPaper = memo(function StudentPaper({
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
                       <p>min score:{decodedData?.examDetails.minimum_marks} marks </p>
-                    <p>max score:{decodedData?.examDetails.totalMarks} </p>
+                    <p>max score:{decodedData?.examDetails.totalMarks} marks</p>
                   </div>
                 </div>
               </div>

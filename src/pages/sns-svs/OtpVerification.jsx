@@ -131,7 +131,7 @@ const OtpVerification = () => {
                         <p className="small mb-4">
                             {/* OTP valid up to: <span className="text-danger">{formatTime(timer)}</span> */}
                             <span className="ms-2">
-                                <p onClick={resendOtp} className="text-primary">
+                                <p style={{cursor:'pointer'}} onClick={resendOtp} className="text-primary">
                                     Resend OTP?
                                 </p>
                             </span>
