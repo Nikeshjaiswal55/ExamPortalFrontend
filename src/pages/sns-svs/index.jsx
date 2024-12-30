@@ -117,35 +117,7 @@ const validationSchema = Yup.object().shape({
     }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success('Otp send successfully', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error('Something went wrong!!😑', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
-  }, [isError]);
+ 
 
   useEffect(() => {
     if (sessionStorage.getItem('otp')) {
