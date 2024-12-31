@@ -8,7 +8,10 @@ export async function MediaPermission(setProgress, callback2, handleShow, setCon
                 callback2()
             })
             .catch((error) => {
-                setContent('you have to give access of your camera and mic. Otherwise you will not move to the next step')
+                setContent(`Your camera and microphone are blocked. Please follow the instructions below to enable access:\n
+                1. Click on the lock icon in the browser address bar.\n
+                2. Set camera and microphone to "Allow".\n
+                3. Reload the page`)
                 handleShow()
             });
     }
