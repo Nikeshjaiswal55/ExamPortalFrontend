@@ -175,15 +175,24 @@ export function StudentResult() {
                           className="d-flex align-items-center "
                         >
                           <FormLabel className="d-flex align-items-center">
-                            <input
+                            {option.includes('+')?<input
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns?.toLowerCase() ==
+                                question.userAns.replaceAll(' ', '')?.toLowerCase() ==
+                                option?.replaceAll('+', '')?.toLowerCase()
+                                // question.correctAns === option
+                              }
+                            />:<input
+                              type="radio"
+                              value={option}
+                              checked={
+                                question.userAns.replaceAll(' ', '')?.toLowerCase() ==
                                 option?.replaceAll(' ', '')?.toLowerCase()
                                 // question.correctAns === option
                               }
-                            />
+                             
+                            />}
                             <p
                               className={`mx-2 mb-1 mb-0 ${
                                 question.userAns?.toLowerCase() ==

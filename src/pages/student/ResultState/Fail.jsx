@@ -16,7 +16,7 @@ export const Fail = ({ paperId, stdId, data }) => {
           <h1 className="mb-3">💪Keep Going!</h1>
           <img src={result} />
           <h5 className="mt-5">Keep pushing forward! </h5>
-          <span className="display-3 fw-bolder">{data.percentage}</span>
+          <span className="display-3 fw-bolder">{data.percentage}%</span>
           <h5 className="mt-3">Doesn't define your potential. </h5>
           <h5 className="mt-3">
             Embrace this setback as a setup for a powerful comeback!

@@ -25,6 +25,7 @@ import Webcam from 'react-webcam';
 // import * as speechCommands from '@tensorflow-models/speech-commands';
 import { ReactMic } from 'react-mic';
 import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
+import { ExamModal2 } from './ExamModal2';
 
 export const ExamStarted = () => {
   const { paperId } = useParams();
@@ -40,6 +41,7 @@ export const ExamStarted = () => {
 
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
+
 
   const handleShow = useCallback(() => setShow(true),[]);
   const handleClose = useCallback(() => setShow(false),[]);
@@ -81,26 +83,32 @@ export const ExamStarted = () => {
     }
   },[dispatch]);
 
-  const detect = useCallback(async (net,track) => {
-    if(
+  const detect = useCallback(async (net, track) => {
+    if (
       typeof webcamRef.current !== 'undefined' &&
       webcamRef.current !== null &&
       webcamRef.current.video.readyState === 4
     ) {
       const video = webcamRef.current.video;
+  
+      // Adjust video resolution or preprocess the input
+      const face = await net.estimateFaces(video, { flipHorizontal: false });
 
-      const face = await net.estimateFaces(video);
-      if(face.length <= 0) {
+      console.log('face',face)
+  
+      if (!face || face.length <= 0) {
         setContent(`Don't cover your face with anything.!`);
         handleShow();
         setIsButtonVisible(false);
-      } else if(face.length > 1) {
+      } else if (face.length > 1) {
         setContent('Multiple face detected.!');
         handleShow();
         setIsButtonVisible(false);
+      } else {
+        setIsButtonVisible(true); // Reset button visibility if conditions are met
       }
     }
-  },[handleShow]);
+  }, [handleShow]);
   //voice rec
   const voiceDetect = useCallback(() => {
     const initVoiceModel = async () => {
@@ -329,7 +337,7 @@ export const ExamStarted = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      const decodedString = atob(data.data);
+      const decodedString = atob(data?.data);
       const jsonData = JSON.parse(decodedString);
       setDecodedData(jsonData);
     }
@@ -426,10 +434,9 @@ export const ExamStarted = () => {
                   examDuration={examDuration}
                   setExamDuration={setExamDuration}
             />
-            <ExamModal
+            <ExamModal2
               show={show}
               content={content}
-              isButtonVisible={isButtonVisible}
               handleClose={handleClose}
             />
           </div>
