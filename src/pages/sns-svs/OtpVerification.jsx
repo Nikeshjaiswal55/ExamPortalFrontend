@@ -4,7 +4,7 @@ import { getDecryptedResponse, setEncryptData } from '../../utils/getDecryptedRe
 import { maskPhoneNumber } from '../../utils/maskphonenumber';
 import { useSendOtpMutation, useVerifyOtpMutation } from '../../apis/Service';
 import { Spinner } from 'react-bootstrap';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../routes/RoutesConstant';
 
@@ -35,10 +35,7 @@ const OtpVerification = () => {
                 std_id: '676be0c9553a1d0d4f60d312',
                 role: "Student"
             }
-            // setEncryptData(data,'otp_data')
-            // navigate(path.ShowAllAssessmentToStudent.path)
-
-            if (res?.data) {
+            if (res?.data?.success==true) {
                 toast.success('Otp verify successfully', {
                     position: 'top-right',
                     autoClose: 5000,
@@ -56,9 +53,21 @@ const OtpVerification = () => {
                 }
                 setEncryptData(data,'otp_data')
                 navigate(path.ShowAllAssessmentToStudent.path)
+            }else{
+                console.log("inside if")
+                toast.error(res?.data?.massage, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark',
+                });
             }
         }).catch((error) => {
-            toast.error('Something went wrong!!😑', {
+            toast.error('Something went wrong! Try again', {
                 position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -86,7 +95,7 @@ const OtpVerification = () => {
                 });
             }
         }).catch((error) => {
-            toast.error('Something went wrong!!😑', {
+            toast.error('Something went wrong! Try again', {
                 position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -101,6 +110,7 @@ const OtpVerification = () => {
 
 
     return (
+        <>
         <div className='container'>
             <div className="d-flex justify-content-center align-items-center vh-100">
                 <div className="card shadow" style={{ width: '400px' }}>
@@ -143,7 +153,10 @@ const OtpVerification = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
+
         </div>
+</>
     );
 };
 

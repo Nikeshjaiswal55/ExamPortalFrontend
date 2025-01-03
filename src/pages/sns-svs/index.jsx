@@ -5,7 +5,8 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import logo from '../../assets/ssism-logo.png';
 import bgCollege from '../../../src/assets/college-image.jpg';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+
 import {
   useSendOtpMutation,
   useStudentRegistrationMutation,
@@ -102,6 +103,16 @@ const validationSchema = Yup.object().shape({
           const payload = {
             mobileNumber: res?.data?.data.WP_MobileNumber,
           };
+           toast.success('Registration completed successfully', {
+                              position: 'top-right',
+                              autoClose: 5000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: 'dark',
+                          });
           sendOtp(payload).then((otpRes) => {
             if (otpRes.data?.success == true) {
               setEncryptData(res?.data?.data.WP_MobileNumber, 'm-num');
@@ -111,11 +122,29 @@ const validationSchema = Yup.object().shape({
             }
           });
         }
-      });
+      })
     } catch (error) {
       console.log(error);
+      
     }
   };
+
+  useEffect(()=>{
+    if(isError){
+      console.log("issss error called")
+      toast.error('Something went wrong! Try again', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+    })
+    }
+   
+  },[isError])
 
  
 
@@ -512,6 +541,8 @@ const validationSchema = Yup.object().shape({
         {/* <div className='d-flex justify-content-center'>
             < h6 className='position-fixed bottom-0 fw-bold ' style={{color:'#f75b05'}}>Empower rural youth for a brighter future</h6>
             </div> */}
+                      <ToastContainer />
+            
       </div>
     </div>
   );
