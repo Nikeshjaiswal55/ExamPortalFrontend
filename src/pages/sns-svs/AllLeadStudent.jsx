@@ -175,7 +175,7 @@ export function AllLeadStudent() {
 
                 <td>{item?.obtainMarks}</td>
                 <td>{item?.resultStatus}</td>
-                <td>{item?._attempted ? 'true' : 'false'}</td>
+                <td>{item?.is_attempted ? 'true' : 'false'}</td>
               </tr>
             ))}
           </tbody>
