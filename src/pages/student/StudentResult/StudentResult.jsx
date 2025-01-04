@@ -71,10 +71,10 @@ export function StudentResult() {
                   className="me-2"
                   style={{ height: '29px' }}
                 />
-                {decodedData?.examDetails.assessmentName.replaceAll('+', ' ')}
+                {decodedData?.examDetails?.assessmentName?.replaceAll('+', ' ')}
               </h5>
               <p className="m-0 ms-4 ps-3">
-                Submited At: {FormateDate(data?.result.date)}
+                Submited At: {FormateDate(data?.result?.date)}
               </p>
             </div>
             <div className="fw-bold col-4 m-0">
@@ -90,11 +90,11 @@ export function StudentResult() {
             <div className="fw-bold">
               <h6 className="text-capitalize">
                 Total Marks:
-                <b>{decodedData?.examDetails.totalMarks} </b>
+                <b>{decodedData?.examDetails?.totalMarks} </b>
               </h6>
               <h6>
                 Passing Marks:
-                <b> {decodedData?.examDetails.minimum_marks}</b>
+                <b> {decodedData?.examDetails?.minimum_marks}</b>
               </h6>
             </div>
             <div className="fw-bold">
@@ -107,12 +107,12 @@ export function StudentResult() {
                       : 'text-success'
                   }`}
                 >
-                  <b> {data?.result.resultStatus}</b>
+                  <b> {data?.result?.resultStatus}</b>
                 </span>
               </h6>
               <h6 className="text-capitalize">
                 Obtain Marks:
-                <b>{data?.result.marks}</b>
+                <b>{data?.result?.marks}</b>
               </h6>
             </div>
           </div>
@@ -168,37 +168,49 @@ export function StudentResult() {
                     {/* <FormLabel className="py-2 m-0 fw-bold">
                       Options :-
                     </FormLabel> */}
-                    {question?.options.map((option, optionIndex) => (
+                    {question?.options?.map((option, optionIndex) => (
                       <>
                         <div
                           key={optionIndex}
                           className="d-flex align-items-center "
                         >
                           <FormLabel className="d-flex align-items-center">
-                            {option.includes('+')?<input
+                            {option?.includes("+")?<input
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns.replaceAll(' ', '')?.toLowerCase() ==
-                                option?.replaceAll('+', '')?.toLowerCase()
+                                question?.userAns?.replaceAll('+', '')?.toLowerCase() ==
+                                option?.replaceAll('+', "")?.toLowerCase()
                                 // question.correctAns === option
                               }
                             />:<input
                               type="radio"
                               value={option}
                               checked={
-                                question.userAns.replaceAll(' ', '')?.toLowerCase() ==
+                                question?.userAns?.replaceAll(' ', '')?.toLowerCase() ==
                                 option?.replaceAll(' ', '')?.toLowerCase()
                                 // question.correctAns === option
                               }
                              
                             />}
-                            <p
+                           {option?.includes("+")? <p
                               className={`mx-2 mb-1 mb-0 ${
-                                question.userAns?.toLowerCase() ==
+                                question?.userAns?.replaceAll('+', '')?.toLowerCase() ==
+                                option?.replaceAll('+', '')?.toLowerCase()
+                                  ? question?.userAns?.replaceAll(' ', '')?.toLowerCase() !==
+                                    question?.correctAns?.replaceAll(' ', '')?.toLowerCase()
+                                    ? 'text-danger'
+                                    : ''
+                                  : ''
+                              }`}
+                            >
+                              {option}
+                            </p>: <p
+                              className={`mx-2 mb-1 mb-0 ${
+                                question?.userAns?.replaceAll(' ', '')?.toLowerCase() ==
                                 option?.replaceAll(' ', '')?.toLowerCase()
-                                  ? question.userAns?.toLowerCase() !==
-                                    question.correctAns?.toLowerCase()
+                                  ? question?.userAns?.replaceAll(' ', '')?.toLowerCase() !==
+                                    question?.correctAns?.replaceAll(' ', '')?.toLowerCase()
                                     ? 'text-danger'
                                     : ''
                                   : ''
@@ -206,6 +218,7 @@ export function StudentResult() {
                             >
                               {option}
                             </p>
+}
                           </FormLabel>
                         </div>
                       </>

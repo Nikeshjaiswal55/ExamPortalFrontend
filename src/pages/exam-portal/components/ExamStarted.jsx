@@ -1,4 +1,4 @@
-import {useState,useEffect,useRef,useMemo,useCallback} from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { TabSwitchScreenShot } from '../utils/TabSwitchScreenShot';
 import StudentPaper from '../../student/StudentPaper/StudentPaper';
@@ -42,11 +42,10 @@ export const ExamStarted = () => {
   const [show, setShow] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
 
-
-  const handleShow = useCallback(() => setShow(true),[]);
-  const handleClose = useCallback(() => setShow(false),[]);
+  const handleShow = useCallback(() => setShow(true), []);
+  const handleClose = useCallback(() => setShow(false), []);
   let stdId = JSON.parse(localStorage.getItem('stdData'));
-  const otp_data = getDecryptedResponse('otp_data')
+  const otp_data = getDecryptedResponse('otp_data');
   const [tabBlurCount, setTabBlurCount] = useState(0);
   const dispatch = useDispatch();
   const {
@@ -56,90 +55,121 @@ export const ExamStarted = () => {
     attemptedSucess,
   } = useGetCheckAttemptedStudentQuery({
     paperId,
-    stdId: stdId?.userId??otp_data?.std_id,
+    stdId: stdId?.userId ?? otp_data?.std_id,
   });
 
-  const [imageUpload,{isError: uploadError}] = useUploadImageBase64Mutation();
+  const [imageUpload, { isError: uploadError }] =
+    useUploadImageBase64Mutation();
 
   const [isRecording, setIsRecording] = useState(false);
   const webcamRef = useRef(null);
   //for the stop recording
-  const onStop = useCallback((recordedData) => {
-    // const data = [recordedData];
-    // data.push(recordedData?.blob);
-    if(recordedData?.blob) {
-      // setRecordedData(recordedData?.blob);
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64String = reader.result.split(',')[1];
-          // setBase64Audio(base64String);
-          resolve(base64String);
-        };
-        reader.readAsDataURL(recordedData.blob);
-      }).then((base64String) => {
-        dispatch(sendAudio(base64String));
-      });
-    }
-  },[dispatch]);
-
-  const detect = useCallback(async (net, track) => {
-    if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      const video = webcamRef.current.video;
-  
-      // Adjust video resolution or preprocess the input
-      const face = await net.estimateFaces(video, { flipHorizontal: false });
-
-      console.log('face',face)
-  
-      if (!face || face.length <= 0) {
-        setContent(`Don't cover your face with anything.!`);
-        handleShow();
-        setIsButtonVisible(false);
-      } else if (face.length > 1) {
-        setContent('Multiple face detected.!');
-        handleShow();
-        setIsButtonVisible(false);
-      } else {
-        setIsButtonVisible(true); // Reset button visibility if conditions are met
+  const onStop = useCallback(
+    (recordedData) => {
+      // const data = [recordedData];
+      // data.push(recordedData?.blob);
+      if (recordedData?.blob) {
+        // setRecordedData(recordedData?.blob);
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1];
+            // setBase64Audio(base64String);
+            resolve(base64String);
+          };
+          reader.readAsDataURL(recordedData.blob);
+        }).then((base64String) => {
+          dispatch(sendAudio(base64String));
+        });
       }
-    }
-  }, [handleShow]);
+    },
+    [dispatch]
+  );
+
+  const detect = useCallback(
+    async (net, track) => {
+      if (
+        typeof webcamRef.current !== 'undefined' &&
+        webcamRef.current !== null &&
+        webcamRef.current.video.readyState === 4
+      ) {
+        const video = webcamRef.current.video;
+
+        // Adjust video resolution or preprocess the input
+        const face = await net.estimateFaces(video, { flipHorizontal: false });
+
+
+        if (!face || face.length == 0) {
+          setContent(`Don't cover your face with anything.!`);
+          handleShow();
+          setIsButtonVisible(false);
+        } else if (face?.length > 1) {
+          setContent('Multiple face detected.!');
+          handleShow();
+          setIsButtonVisible(false);
+        } else {
+          setIsButtonVisible(true); // Reset button visibility if conditions are met
+        }
+      }
+    },
+    [handleShow]
+  );
   //voice rec
   const voiceDetect = useCallback(() => {
     const initVoiceModel = async () => {
       // Load the speech commands model
-      const speechCommands = await import('@tensorflow-models/speech-commands')
+      const speechCommands = await import('@tensorflow-models/speech-commands');
       const recognizer = speechCommands.create('BROWSER_FFT');
       await recognizer.ensureModelLoaded();
 
       // Define a callback function for predictions
-      recognizer.listen(
-        (result) => {
-          const maxIndex = result.scores.indexOf(Math.max(...result.scores));
+      // recognizer.listen(
+      //   (result) => {
+      //     const maxIndex = result.scores.indexOf(Math.max(...result.scores));
 
-          // Check if the predicted class is a voice command (adjust this based on your use case)
-          if(result.scores[maxIndex] > 0.8) {
-            setIsRecording(true);
-            // Start recording using webcam or other recording logic
-            // startRecording();
-          } else {
-            setIsRecording(false);
-            onStop();
-          }
-        },
-        { probabilityThreshold: 0.7 }
-      );
+      //     // Check if the predicted class is a voice command (adjust this based on your use case)
+      //     if (result.scores[maxIndex] > 0.8) {
+      //       setIsRecording(true);
+      //       // Start recording using webcam or other recording logic
+      //       // startRecording();
+      //     } else {
+      //       setIsRecording(false);
+      //       onStop();
+      //     }
+      //   },
+      //   { probabilityThreshold: 0.7 }
+      // );
+
+      recognizer
+        .listen(
+          (result) => {
+            console.log('voice score', result.scores); // Log scores for debugging
+            const maxIndex = result.scores.indexOf(Math.max(...result.scores));
+            console.log("max voice",result.scores[maxIndex])
+
+            if (result.scores[maxIndex] > 0.8) {
+              setIsRecording(true);
+            } else {
+              setIsRecording(false);
+              onStop();
+            }
+            if (result.scores[maxIndex] > 0.9) {
+              setContent(`To muchh noise, please give exam in silent place`);
+              handleShow();
+              setIsButtonVisible(false);
+            }
+          },
+          { probabilityThreshold: 0.7 }
+        )
+        .catch((error) => {
+          console.error('Error in recognizer.listen():', error);
+        });
     };
 
     if (submitVoiceRec) {
       initVoiceModel();
     }
-  },[onStop,submitVoiceRec])
+  }, [onStop, submitVoiceRec]);
 
   const runFacemesh = useCallback(async () => {
     const net = await facemesh.load({
@@ -149,9 +179,7 @@ export const ExamStarted = () => {
     setInterval(() => {
       detect(net);
     }, 100);
-  },[detect])
-
-
+  }, [detect]);
 
   const captureImages = useCallback(() => {
     const constraints = {
@@ -200,7 +228,7 @@ export const ExamStarted = () => {
 
         const captureInterval = setInterval(() => {
           captureImage();
-        },60000); // Capture every 10 seconds changed to 60 seconds
+        }, 60000); // Capture every 10 seconds changed to 60 seconds
 
         return () => {
           clearInterval(captureInterval);
@@ -210,32 +238,35 @@ export const ExamStarted = () => {
         console.error('Error accessing the camera:', error);
       });
     // }
-  },[dispatch,imageUpload]);
+  }, [dispatch, imageUpload]);
 
   const navigate = useNavigate();
 
   const handleVisibilityChange = useCallback((stream) => {
-    if(document.hidden) {
+    if (document.hidden) {
       setIsButtonVisible(false);
       TabSwitchScreenShot(stream);
       setTabSwitchCount((prev) => prev + 1);
     }
-  },[]);
+  }, []);
 
   const handleBlurChange = useCallback((stream) => {
     setIsButtonVisible(false);
     TabSwitchScreenShot(stream);
     setTabBlurCount((prev) => prev + 1);
-  },[]);
+  }, []);
 
-  const TabSwitch = useCallback(function TabSwitch(stream) {
-    document.addEventListener('visibilitychange', () =>
-      handleVisibilityChange(stream)
-    );
-    document.addEventListener('blur', () => {
-      handleBlurChange(stream);
-    });
-  },[handleBlurChange,handleVisibilityChange]);
+  const TabSwitch = useCallback(
+    function TabSwitch(stream) {
+      document.addEventListener('visibilitychange', () =>
+        handleVisibilityChange(stream)
+      );
+      document.addEventListener('blur', () => {
+        handleBlurChange(stream);
+      });
+    },
+    [handleBlurChange, handleVisibilityChange]
+  );
 
   useEffect(() => {
     if (tabBlurCount > 2) {
@@ -256,31 +287,36 @@ export const ExamStarted = () => {
   }, [tabSwitchCount]);
 
   useEffect(() => {
-    if(doneProcess>75){
+    if (doneProcess > 75) {
       TabSwitch(stream);
     }
 
     return () => {
-    document.addEventListener('visibilitychange',handleVisibilityChange);
-    window.addEventListener("blur",handleBlurChange);
-    }
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('blur', handleBlurChange);
+    };
   }, [doneProcess]);
 
-  const cameraStop = useCallback(async function() {
-    const tf = await import('@tensorflow/tfjs');
-    setSubmitVoiceRec(false);
-    await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
-    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
-    tf.disposeVariables();
-  },[screenStream,videoStream]);
+  const cameraStop = useCallback(
+    async function () {
+      const tf = await import('@tensorflow/tfjs');
+      setSubmitVoiceRec(false);
+      // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+      await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+      tf.disposeVariables();
+    },
+    [screenStream, videoStream]
+  );
 
-  const handleSubmit = useCallback(async function() {
-    // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
-    await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
-    navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
-    document.location.reload();
-  },[navigate,paperId,videoStream])
-
+  const handleSubmit = useCallback(
+    async function () {
+      // await screenStream.getTracks().forEach((track) => track.stop()); // Stop the screen stream
+      await videoStream.getTracks().forEach((track) => track.stop()); // Stop the camera stream
+      navigate(`${path.StudentPaperSubmitted.path}/${paperId}`);
+      document.location.reload();
+    },
+    [navigate, paperId, videoStream]
+  );
 
   const [progress, setProgress] = useState(0);
   const [content, setContent] = useState();
@@ -293,22 +329,20 @@ export const ExamStarted = () => {
       TabSwitch,
       setScreenStream
     );
-  },[TabSwitch,handleShow]);
+  }, [TabSwitch, handleShow]);
   const callback = useCallback(() => {
-    MediaPermission(setProgress,callback2,handleShow,setContent);
-  },[callback2,handleShow]);
-
-
+    MediaPermission(setProgress, callback2, handleShow, setContent);
+  }, [callback2, handleShow]);
 
   const [decodedData, setDecodedData] = useState(null);
   const decodeDataMemo = useMemo(() => {
     return decodedData;
-  },[decodedData]);
+  }, [decodedData]);
 
-  const [examDuration,setExamDuration] = useState();
+  const [examDuration, setExamDuration] = useState();
   useEffect(() => {
     setExamDuration(decodeDataMemo?.examDetails?.examDuration);
-  },[decodeDataMemo?.examDetails?.examDuration]);
+  }, [decodeDataMemo?.examDetails?.examDuration]);
 
   useEffect(() => {
     if (attemptedSucess && attempted?.data == 'true') {
@@ -323,17 +357,10 @@ export const ExamStarted = () => {
     };
   }, [attemptedSucess]);
 
-  useEffect(() => {
-    if (progress == 100) {
-      // navigate(`${path.StudentExamStarted.path}/${paperId}`);
-      captureImages();
-      voiceDetect();
-      setProcess(false);
-      runFacemesh();
-    }
-  }, [progress]);
+  
 
-  const {data,isSuccess,isError,isLoading} = useGetAllQuestionsFromPaperIdQuery(paperId);
+  const { data, isSuccess, isError, isLoading } =
+    useGetAllQuestionsFromPaperIdQuery(paperId);
 
   useEffect(() => {
     if (isSuccess) {
@@ -341,7 +368,17 @@ export const ExamStarted = () => {
       const jsonData = JSON.parse(decodedString);
       setDecodedData(jsonData);
     }
-  },[data,isSuccess]);
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    if (progress == 100 && isSuccess) {
+      // navigate(`${path.StudentExamStarted.path}/${paperId}`);
+      captureImages();
+      voiceDetect();
+      setProcess(false);
+      runFacemesh();
+    }
+  }, [progress,isSuccess,data]);
 
   // if (ateemptedIsLoading) {
   //   return (
@@ -390,7 +427,10 @@ export const ExamStarted = () => {
             />
           </>
         ) : (
-              <div className="h-100 overflow-y-auto" style={{backgroundColor: 'var(--main-div)'}}>
+          <div
+            className="h-100 overflow-y-auto"
+            style={{ backgroundColor: 'var(--main-div)' }}
+          >
             <Webcam
               ref={webcamRef}
               style={{
@@ -425,14 +465,14 @@ export const ExamStarted = () => {
             <StudentPaper
               paperId={paperId}
               isLoading={isLoading}
-                  decodedData={decodeDataMemo}
+              decodedData={decodeDataMemo}
               handleSubmit={handleSubmit}
               cameraStop={cameraStop}
               tabSitchSubmit={tabSwitchCount}
               tabBlurCount={tabBlurCount}
               recordedData={recordedData}
-                  examDuration={examDuration}
-                  setExamDuration={setExamDuration}
+              examDuration={examDuration}
+              setExamDuration={setExamDuration}
             />
             <ExamModal2
               show={show}
