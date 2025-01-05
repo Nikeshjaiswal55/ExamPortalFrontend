@@ -22,15 +22,28 @@ export const Fail = ({ paperId, stdId, data }) => {
             Embrace this setback as a setup for a powerful comeback!
           </h5>
 
-          {otp_data?.std_id?<Button
-                      variant="dark m-2
-                     mt-sm-5"
-                      onClick={() =>{
-                        navigate(`/student/view-result/${paperId}`)
-                      }
-                      }>
-                        view result
-                    </Button> :
+          {otp_data?.std_id?
+          // <Button
+          //             variant="dark m-2
+          //            mt-sm-5"
+          //             onClick={() =>{
+          //               navigate(`/student/view-result/${paperId}`)
+          //             }
+          //             }>
+          //               view result
+          //           </Button>
+           <Button
+                          variant="dark m-2
+                       mt-sm-5"
+                          onClick={() => {
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            navigate(`/sns-svs`);
+                          }}
+                        >
+                          Back to home
+                        </Button>
+                     :
             <><Button
               variant="dark me-sm-4 m-2 mt-sm-5"
               onClick={() => navigate(path.StudentDashboard.path)}

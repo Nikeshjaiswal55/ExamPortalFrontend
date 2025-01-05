@@ -373,7 +373,7 @@ const validationSchema = Yup.object().shape({
                         onBlur={handleBlur}
                         value={values.stream}
                       >
-                        <option value="">Select your stream</option>
+                        <option value="">{isHindi ? 'कक्षा 12 विषय चुनें':'Select your stream'}</option>
                         {streamOptions.map((option) => (
                           <option key={option.value} value={option.value}>
                             {option.label}
