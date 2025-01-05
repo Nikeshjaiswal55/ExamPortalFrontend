@@ -46,14 +46,14 @@ export const Pass = ({ paperId, stdId, data }) => {
 
           {otp_data?.std_id ? (
             <>
-              <Button
+              {/* <Button
                 variant="dark me-sm-4 m-2 mt-sm-5"
                 onClick={() => {
                   navigate(`/student/view-result/${paperId}`);
                 }}
               >
                 view result
-              </Button>
+              </Button> */}
               <Button
                 variant="dark m-2
              mt-sm-5"

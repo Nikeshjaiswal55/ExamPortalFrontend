@@ -7,11 +7,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Loader } from '../../components/Loader/Loader';
+import SomethingWentWrong from '../../components/SomethingWentWrong/SomethingWentWrong';
 
 export function AllLeadStudent() {
   const [selectedPaper, setSelectedPaper] = useState('all');
   const [paperStudent, setPaperStudent] = useState([]);
-
+  const [enterPass, setEnterPass] = useState(true);
   const { data, isError, isLoading, isFetching } = useGetAllSnsStudentQuery();
 
   const exportExcel = () => {
@@ -90,7 +92,34 @@ export function AllLeadStudent() {
         });
     }
   }, [selectedPaper]);
+
+  useEffect(() => {
+
+    if (enterPass) {
+      const userInput = prompt('Please enter your input:');
+      if (userInput === 'admin@1234') {
+        alert('login successfully!');
+        setEnterPass(false);
+      } else {
+        alert('wrong password!');
+        console.log('No input provided.');
+      }
+    }
+  }, []);
+
+  
+
   return (
+    <>
+        {isError ?
+        <div className=" w-100 h-100 d-flex justify-content-center align-items-center">
+          <SomethingWentWrong />
+        </div>
+      :
+    isLoading ? 
+            <div className=" position-absolute top-50 start-50  translate-middle ">
+              <Loader />
+            </div>:
     <>
       <h5 className="fw-bold text-center  mt-1">
         All SNS-SVS Register Student List
@@ -181,6 +210,8 @@ export function AllLeadStudent() {
           </tbody>
         </Table>
       )}
+    </>
+}
     </>
   );
 }

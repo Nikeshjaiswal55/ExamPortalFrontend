@@ -8,6 +8,7 @@ import bgCollege from '../../../src/assets/college-image.jpg';
 import { toast, ToastContainer } from 'react-toastify';
 
 import {
+  useGetAllSnsStudentQuery,
   useSendOtpMutation,
   useStudentRegistrationMutation,
 } from '../../apis/Service';
@@ -23,6 +24,7 @@ const LeadGenerationPage = () => {
   const [districts, setDistricts] = useState([]);
   const [tehsils, setTehsils] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState('');
+  const { data } = useGetAllSnsStudentQuery();
 
   useEffect(() => {
     // Fetch districts
@@ -447,7 +449,7 @@ const validationSchema = Yup.object().shape({
                         value={values.district}
 
                       >
-                        <option value="">Select your district</option>
+                        <option value="">{isHindi ? "जिला चुनें" : "Select your district"}</option>
                         {districts.map((district) => (
                           <option key={district.id} value={district.name}>
                             {district.name}
@@ -474,7 +476,7 @@ const validationSchema = Yup.object().shape({
                         onBlur={handleBlur}
                         value={values.tehsil}
                       >
-                        <option value="">Select your tehsil</option>
+                        <option value="">{isHindi ? "अपनी तहसील का चयन करें" : "Select your tehsil"}</option>
                         {tehsils?.map((tehsil) => (
                           <option key={tehsil.id} value={tehsil.name}>
                             {tehsil.name}

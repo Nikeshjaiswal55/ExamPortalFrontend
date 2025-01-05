@@ -81,8 +81,8 @@ const OtpVerification = () => {
     }
 
     const resendOtp = () => {
-        reSendOtp({mobileNumber:number}).then(() => {
-            if (res?.data) {
+        reSendOtp({mobileNumber:number}).then((res) => {
+            if (res?.data?.success) {
                 toast.success('check your whatsapp for otp', {
                     position: 'top-right',
                     autoClose: 5000,
