@@ -31,7 +31,7 @@ import { CkEditor } from './CkEditor';
 import { AssessmentModal } from './AssessmentModal';
 import { RiMailSettingsLine, RiUserSettingsLine } from 'react-icons/ri';
 import { VscSettings } from 'react-icons/vsc';
-import { Sample1 } from './Templates';
+import { Sample1,Sample1Hindi } from './Templates';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { QuestionExcelDataReader } from '../../../utils/QuestionExcelDataReader';
 const durationTimer = [
@@ -129,7 +129,7 @@ export const AddAssignment = () => {
   const [questionExcel, setQuestionExcel] = useState([]);
   const [show, setModalShow] = useState(false);
   const [errorContent, setErrorContent] = useState('');
-  const [instruction, setInstruction] = useState(Sample1);
+  const [instruction, setInstruction] = useState(Sample1Hindi);
   const [option, setOption] = useState('');
 
   const validationschema =

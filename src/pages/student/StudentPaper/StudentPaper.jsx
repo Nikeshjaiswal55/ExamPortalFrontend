@@ -119,6 +119,35 @@ const StudentPaper = memo(function StudentPaper({
     submitPaperDetails();
   },[]);
 
+  //translate paper in hindi
+  const [language, setLanguage] = useState("hi"); // Default to Hindi
+
+  useEffect(() => {
+    // Dynamically load the Google Translate script
+    const script = document.createElement("script");
+    script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Define the callback function for Google Translate
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        { pageLanguage: "en" },
+        "google_translate_element"
+      );
+    };
+  }, []);
+
+  const handleTranslate = () => {
+    const translateElement = document.querySelector(".goog-te-combo");
+    if (translateElement) {
+      const newLanguage = language === "hi" ? "en" : "hi"; // Toggle language
+      translateElement.value = newLanguage; // Set the selected language
+      translateElement.dispatchEvent(new Event("change"));
+      setLanguage(newLanguage); // Update the state
+    }
+  };
+
   return (
     <>
       {isLoading || tabSitchSubmit > 1 || tabBlurCount > 4 ? (
@@ -128,6 +157,8 @@ const StudentPaper = memo(function StudentPaper({
       ) : (
         <div className="row w-100 gap-4  p-3 ">
           <>
+          <div id="google_translate_element" style={{ display: "none" }}></div>
+
               <div className="col-lg-8 offset-lg-2 ">
                 <div className=" w-100 d-flex flex-wrap justify-content-between">
                   <div className=' w-100'>
@@ -138,14 +169,14 @@ const StudentPaper = memo(function StudentPaper({
                       )}
                   </h1>
                     <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
-                      {examDuration && <CountDownTimerLibrary
+                      {examDuration && <><span  className='mx-2'>Time Remaining:</span><CountDownTimerLibrary
                       initialTime={parseInt(
                         examDuration
                       )
                         } setInitialTime={setExamDuration}
                       // initialTime={40}
                       onTimerEnd={handleTimerEnd}
-                      />}
+                      /></>}
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
                         style={{width: '12.25rem',height: '10px'}}
@@ -163,7 +194,11 @@ const StudentPaper = memo(function StudentPaper({
                     <span>
                       {count}/{decodedData?.questions?.length} Question
                     </span>
+
                   </div>
+                  <button className='my-2 btn btn-primary w-25' onClick={handleTranslate}>
+        {language === "hi" ? "Translate to English" : "Translate to Hindi"}
+      </button>
                 </div>
                 <div className="d-none d-md-flex justify-content-center align-items-center flex-column">
                   <h3>

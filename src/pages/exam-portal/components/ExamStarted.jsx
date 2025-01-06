@@ -341,8 +341,21 @@ export const ExamStarted = () => {
 
   const [examDuration, setExamDuration] = useState();
   useEffect(() => {
-    setExamDuration(decodeDataMemo?.examDetails?.examDuration);
-  }, [decodeDataMemo?.examDetails?.examDuration]);
+    const savedDuration = sessionStorage.getItem('examDuration');
+    if(savedDuration){
+      const time=parseInt(savedDuration, 10)
+      setExamDuration(time)
+    }else{
+      setExamDuration(decodeDataMemo?.examDetails?.examDuration);
+    }
+  }, [decodeDataMemo?.examDetails?.examDuration]); 
+
+  useEffect(() => {
+    if (examDuration > 0) {
+      sessionStorage.setItem('examDuration', examDuration); // Save the current duration
+    }
+  }, [examDuration]);
+  
 
   useEffect(() => {
     if (attemptedSucess && attempted?.data == 'true') {

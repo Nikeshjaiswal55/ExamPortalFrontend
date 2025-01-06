@@ -6,15 +6,28 @@
   <link rel="icon" type="image/svg+xml" href="/public/exameasylight.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ExamEasy</title>
+  <!-- tranlate paper in hindi -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi', // specify the languages you want to include, for example, 'hi' for Hindi
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@3.3.0/dist/speech-commands.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@3.3.0/dist/speech-commands.min.js"></script>
   <script src="/node_modules/@tensorflow/tfjs/dist/tf.min.js"></script>
   <script src="/node_modules/@tensorflow-models/speech-commands/dist/speech-commands.min.js"></script>
+
 </body>
 
 </html>

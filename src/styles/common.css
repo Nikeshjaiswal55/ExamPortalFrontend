@@ -133,3 +133,45 @@ body {
 }
 
 
+/* translate in hindi popupcss and style hide css */
+/* Hide Google Translate dropdown */
+.goog-te-combo {
+    display: none !important;
+  }
+  
+  /* Hide Google Translate popup UI */
+  .goog-te-banner-frame {
+    display: none !important;
+  }
+  
+  /* Hide the translate icon on the page */
+  .goog-te-gadget {
+    display: none !important;
+  }
+  
+  /* Optional: Hide the translated text box or tooltip */
+  .goog-te-gadget-simple {
+    display: none !important;
+  }
+
+  
+  /* Hide the Google Translate dropdown */
+.goog-te-combo {
+    display: none !important;
+  }
+  
+  /* Hide the Google Translate popup (the banner) */
+  .goog-te-banner-frame {
+    display: none !important;
+  }
+  
+  /* Hide the Google Translate icon that appears on top of the page */
+  .goog-te-gadget {
+    display: none !important;
+  }
+  
+
+  #google_translate_element {
+    display: none;
+  }
+  
