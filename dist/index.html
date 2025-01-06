@@ -6,17 +6,30 @@
   <link rel="icon" type="image/svg+xml" href="/assets/exameasylight-23ebe64e.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ExamEasy</title>
-  <script type="module" crossorigin src="/assets/index-0ab2e1b6.js"></script>
-  <link rel="stylesheet" href="/assets/index-9b034c40.css">
+  <!-- tranlate paper in hindi -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi', // specify the languages you want to include, for example, 'hi' for Hindi
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <script type="module" crossorigin src="/assets/index-651d1b8d.js"></script>
+  <link rel="stylesheet" href="/assets/index-666a6bb5.css">
 </head>
 
 <body>
   <div id="root"></div>
   
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@3.3.0/dist/speech-commands.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@3.3.0/dist/speech-commands.min.js"></script>
   <script src="/node_modules/@tensorflow/tfjs/dist/tf.min.js"></script>
   <script src="/node_modules/@tensorflow-models/speech-commands/dist/speech-commands.min.js"></script>
+
 </body>
 
 </html>
