@@ -50,7 +50,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import Countdown from "react-countdown";
 
 // const CompletionTimer = () => <p>Time Remaining: 0:0:0</p>;
-const CompletionTimer = () => <p> 0:0:0</p>;
+const CompletionTimer = () => <span>00:00:00</span>;
 
 export const CountDownTimerLibrary = memo(function CountDownTimerLibrary({
   initialTime,
@@ -91,7 +91,7 @@ export const CountDownTimerLibrary = memo(function CountDownTimerLibrary({
       alert("Last 5 minutes remaining");
       flag.current = true;
     }
-    return <p> {hours}:{minutes}:{seconds}</p>;
+    return <span> {hours}:{minutes}:{seconds}</span>;
   };
 
   return (

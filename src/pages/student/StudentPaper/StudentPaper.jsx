@@ -120,7 +120,7 @@ const StudentPaper = memo(function StudentPaper({
   },[]);
 
   //translate paper in hindi
-  const [language, setLanguage] = useState("hi"); // Default to Hindi
+  const [language, setLanguage] = useState("en"); // Default to Hindi
 
   useEffect(() => {
     // Dynamically load the Google Translate script
@@ -169,14 +169,15 @@ const StudentPaper = memo(function StudentPaper({
                       )}
                   </h1>
                     <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
-                      {examDuration && <><span  className='mx-2'>Time Remaining:</span><CountDownTimerLibrary
+                      
+                      {examDuration && <div><span  className='mx-2'>Time Remaining:</span><CountDownTimerLibrary
                       initialTime={parseInt(
                         examDuration
                       )
                         } setInitialTime={setExamDuration}
                       // initialTime={40}
                       onTimerEnd={handleTimerEnd}
-                      /></>}
+                      /></div>}
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
                         style={{width: '12.25rem',height: '10px'}}
@@ -196,7 +197,7 @@ const StudentPaper = memo(function StudentPaper({
                     </span>
 
                   </div>
-                  <button className='my-2 btn btn-primary w-25' onClick={handleTranslate}>
+                  <button className='my-2 btn btn-primary w-md-25 w-sm-100' onClick={handleTranslate}>
         {language === "hi" ? "Translate to English" : "Translate to Hindi"}
       </button>
                 </div>
