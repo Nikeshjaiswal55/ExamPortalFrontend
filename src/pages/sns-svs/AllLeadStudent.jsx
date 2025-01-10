@@ -9,12 +9,14 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Loader } from '../../components/Loader/Loader';
 import SomethingWentWrong from '../../components/SomethingWentWrong/SomethingWentWrong';
+import { useNavigate } from 'react-router-dom';
 
 export function AllLeadStudent() {
   const [selectedPaper, setSelectedPaper] = useState('all');
   const [paperStudent, setPaperStudent] = useState([]);
   const [enterPass, setEnterPass] = useState(true);
   const { data, isError, isLoading, isFetching } = useGetAllSnsStudentQuery();
+  const navigate = useNavigate()
 
   const exportExcel = () => {
     const tableData = selectedPaper === 'all' ? data : paperStudent?.students; // Adjust based on your structure
@@ -93,19 +95,19 @@ export function AllLeadStudent() {
     }
   }, [selectedPaper]);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (enterPass) {
-      const userInput = prompt('Please enter your input:');
-      if (userInput === 'admin@1234') {
-        alert('login successfully!');
-        setEnterPass(false);
-      } else {
-        alert('wrong password!');
-        console.log('No input provided.');
-      }
-    }
-  }, []);
+  //   if (enterPass) {
+  //     const userInput = prompt('Please enter your input:');
+  //     if (userInput === 'admin@1234') {
+  //       alert('login successfully!');
+  //       setEnterPass(false);
+  //     } else {
+  //       alert('wrong password!');
+  //       console.log('No input provided.');
+  //     }
+  //   }
+  // }, []);
 
   
 
@@ -142,6 +144,9 @@ export function AllLeadStudent() {
         </select>
         <button className="btn btn-primary mx-2" onClick={exportExcel}>
           Export Excel
+        </button>
+        <button className="btn btn-primary mx-2" onClick={() => navigate('/sns-svs-dashboard')}>
+          View Dashboard
         </button>{' '}
       </div>
       {selectedPaper === 'all' ? (

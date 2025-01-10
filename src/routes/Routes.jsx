@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes as ReactRoute } from 'react-router-dom';
-import Home from '../pages/home/Home';
+import { BrowserRouter, Routes as ReactRoute, Route } from 'react-router-dom';
 import {
   AdminPrivate,
   CollegePrivate,
@@ -9,39 +8,39 @@ import {
 } from '../auth/Private';
 import { path } from './RoutesConstant';
 
+import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
+import Layout from '../components/layout';
+import LandingPage from '../pages/LandingPage/LandingPage';
+import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
 import AddCourse from '../pages/admin/AddCourse/AddCourse';
 import { CreateCourse } from '../pages/admin/AddCourse/CreateCourse';
-import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
-import Layout from '../components/layout';
-import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
 import AssignmentStudentPage from '../pages/admin/AssignmentStudentPage/AssignmentStudentPage';
-import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
-import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
-import CreateAssesment from '../pages/admin/AddAssignment/CreateAssesment';
-import { Redirect, SaveUserOrg } from '../auth/redirection/Redirect';
-import LandingPage from '../pages/LandingPage/LandingPage';
+import OrganisationPage from '../pages/admin/OrganisationPage/OrganisationPage';
+import ShowCourse from '../pages/admin/ShowCourse/ShowCourse';
 import SidePooup from '../pages/admin/showAssessment/AssessmentSidePooup/SidePooup';
+import ShowAssessment from '../pages/admin/showAssessment/Showassessment';
 import { ExamPortal } from '../pages/exam-portal/ExamPortal';
 import { ExamVerification } from '../pages/exam-portal/components/ExamVerification';
+import TermandConditionPage from '../pages/student/TermsConditionPage/TermandConditionPage';
 // import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
-import { ReportCard } from '../pages/exam-portal/components/ReportCard';
+import { TotalStudentOfOrg } from '../pages/admin/totalStudentsOrg/TotalStudents';
 import { ExamStarted } from '../pages/exam-portal/components/ExamStarted';
 import { ExamSubmited } from '../pages/exam-portal/components/ExamSubmited';
-import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
-import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
+import { ReportCard } from '../pages/exam-portal/components/ReportCard';
 import { AdminDashboard } from '../pages/home/AdminDashBoard/AdminDashboards';
 import { StudentDashBoard } from '../pages/home/StudentDashBoard/StudentDashBoard';
-import { TotalStudent } from '../pages/admin/components/TotalStudent/TotalStudent';
-import { TotalStudentOfOrg } from '../pages/admin/totalStudentsOrg/TotalStudents';
+import AllAssissmentToStudent from '../pages/student/ShowAllAssissmentTostudent/AllAssissmentToStudent';
+import StudentPaper from '../pages/student/StudentPaper/StudentPaper';
 import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 // import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
 import { AddAssignmentUpdate } from '../pages/admin/AddAssignment/AddAssignmentUpdate';
 // import { StudentResult } from '../pages/student/StudentResult/StudentResult';
 import { AddAssignment } from '../pages/admin/AddAssignment/AddAssignment';
-import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
 import LeadGenerationPage from '../pages/sns-svs';
-import OtpVerification from '../pages/sns-svs/OtpVerification';
 import { AllLeadStudent } from '../pages/sns-svs/AllLeadStudent';
+import OtpVerification from '../pages/sns-svs/OtpVerification';
+import StudentAvidancePageOnAdmin from '../pages/student/StudentAvidence/StudentAvidencePageOnAdmin';
+import { SnsSvsDashboard } from '../pages/sns-svs/SnsSvsDashboard';
 
 export const Routes = () => {
   return (
@@ -250,6 +249,15 @@ export const Routes = () => {
               element={
                 // <Layout>
                   <AllLeadStudent />
+                // </Layout>
+              }
+            />
+            <Route
+              // path={path.AllSnsStudent.path}
+              path="/sns-svs-dashboard"
+              element={
+                // <Layout>
+                  <SnsSvsDashboard />
                 // </Layout>
               }
             />
