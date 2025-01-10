@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import {memo,useCallback,useEffect,useRef,useState} from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 // import Countdown from 'react-countdown-now';
-import {CustomButton} from '../../../theme/Button/Buttons';
-import {Button,Modal,Spinner} from 'react-bootstrap';
-import {usePostSaveResultMutation} from '../../../apis/Service';
-import {Loader} from '../../../components/Loader/Loader';
-import {useNavigate} from 'react-router';
-import {useSelector} from 'react-redux';
-import {CountDownTimerLibrary} from '../../../utils/CountDownTimerLibrary';
+import { CustomButton } from '../../../theme/Button/Buttons';
+import { Button, Modal, Spinner } from 'react-bootstrap';
+import { usePostSaveResultMutation } from '../../../apis/Service';
+import { Loader } from '../../../components/Loader/Loader';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { CountDownTimerLibrary } from '../../../utils/CountDownTimerLibrary';
 import { getDecryptedResponse } from '../../../utils/getDecryptedResponse';
 
 const StudentPaper = memo(function StudentPaper({
@@ -22,17 +22,17 @@ const StudentPaper = memo(function StudentPaper({
   setExamDuration
 }) {
   const navigate = useNavigate();
-  const [showSubmit,setShowSubmit] = useState(false);
-  const handleSubmitClose = useCallback(() => setShowSubmit(false),[]);
-  const handleSubmitShow = useCallback(() => setShowSubmit(true),[]);
-  const [isPaperSubmitted,setIsPaperSubmitted] = useState(false);
+  const [showSubmit, setShowSubmit] = useState(false);
+  const handleSubmitClose = useCallback(() => setShowSubmit(false), []);
+  const handleSubmitShow = useCallback(() => setShowSubmit(true), []);
+  const [isPaperSubmitted, setIsPaperSubmitted] = useState(false);
   // const { data, isSuccess, isLoading } =
   //   useGetAllQuestionsFromPaperIdQuery(paperId);
-  const [saveResult,{isLoading: submitPaperLoading}] =
+  const [saveResult, { isLoading: submitPaperLoading }] =
     usePostSaveResultMutation();
-  const [showOnTimeOver,setShowOnTimeOver] = useState(false);
+  const [showOnTimeOver, setShowOnTimeOver] = useState(false);
   const progressBar = useRef(null);
-  const [count,setCount] = useState(0);
+  const [count, setCount] = useState(0);
   const [selectedOption,] = useState(
     new Array(decodedData?.questions?.length)
   );
@@ -41,14 +41,14 @@ const StudentPaper = memo(function StudentPaper({
   //   setExamDuration(decodedData?.examDetails?.examDuration);
   // },[decodedData?.examDetails?.examDuration]);
   useEffect(() => {
-    if(tabSitchSubmit > 1 || tabBlurCount > 4) {
-      if(!isPaperSubmitted) {
+    if (tabSitchSubmit > 1 || tabBlurCount > 4) {
+      if (!isPaperSubmitted) {
         setShowOnTimeOver(true);
         setIsPaperSubmitted(true);
         submitPaperDetails();
       }
     }
-  },[tabSitchSubmit,tabBlurCount]);
+  }, [tabSitchSubmit, tabBlurCount]);
 
   const imagesArray = useSelector((state) => state.admin.image);
   const audioArray = useSelector((state) => state.admin.audio);
@@ -56,10 +56,10 @@ const StudentPaper = memo(function StudentPaper({
   function getUserAnswereWithQuestion() {
     const questionsJson = JSON.stringify(decodedData?.questions);
     let questions = JSON.parse(questionsJson);
-    decodedData?.questions.forEach((value,index) => {
-      if(typeof selectedOption[index] === 'string') {
-        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll("+","");
-        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll("+","");
+    decodedData?.questions.forEach((value, index) => {
+      if (typeof selectedOption[index] === 'string') {
+        questions[index].correctAns = questions[index].correctAns.toLowerCase().replaceAll("+", "");
+        questions[index].userAns = selectedOption[index].toLowerCase().replaceAll("+", "");
       } else {
         questions[index].userAns = selectedOption[index]
       }
@@ -69,8 +69,8 @@ const StudentPaper = memo(function StudentPaper({
 
 
   const stdData = JSON.parse(localStorage.getItem('stdData'));
-    const otp_data= getDecryptedResponse('otp_data')
-    const s_data= getDecryptedResponse('s-data')
+  const otp_data = getDecryptedResponse('otp_data')
+  const s_data = getDecryptedResponse('s-data')
   const submitPaperDetails = () => {
     // const randomImg = JSON.parse(localStorage.getItem('capturedImage'));
     // const ss = localStorage.getItem('ss');
@@ -78,11 +78,11 @@ const StudentPaper = memo(function StudentPaper({
     const questions = getUserAnswereWithQuestion();
 
     const result = {
-      studentId: stdData?.userId??otp_data?.std_id,
+      studentId: stdData?.userId ?? otp_data?.std_id,
       paperId: paperId,
       questions: questions,
       cheating: {
-        studentId: stdData?.userId??otp_data?.std_id,
+        studentId: stdData?.userId ?? otp_data?.std_id,
         paperId: paperId,
         images: imagesArray,
         audios: audioArray,
@@ -104,8 +104,8 @@ const StudentPaper = memo(function StudentPaper({
     const progress = ((count + 1) / decodedData?.questions?.length) * 100;
     progressBar.current.style.width = progress + '%';
   }
-  function handleChecked(e,id) {
-    if(!isChecked(id)) {
+  function handleChecked(e, id) {
+    if (!isChecked(id)) {
       setCount(count + 1);
       updateProgressBar();
     }
@@ -117,7 +117,7 @@ const StudentPaper = memo(function StudentPaper({
     setShowOnTimeOver(true);
     cameraStop();
     submitPaperDetails();
-  },[]);
+  }, []);
 
   //translate paper in hindi
   const [language, setLanguage] = useState("en"); // Default to Hindi
@@ -157,30 +157,30 @@ const StudentPaper = memo(function StudentPaper({
       ) : (
         <div className="row w-100 gap-4  p-3 ">
           <>
-          <div id="google_translate_element" style={{ display: "none" }}></div>
+            <div id="google_translate_element" style={{ display: "none" }}></div>
 
-              <div className="col-lg-8 offset-lg-2 ">
-                <div className=" w-100 d-flex flex-wrap justify-content-between">
-                  <div className=' w-100'>
-                    <h1 className="w-100 text-capitalize">
-                      {decodedData?.examDetails.assessmentName.replaceAll(
-                        '+',
-                        ' '
-                      )}
+            <div className="col-lg-8 offset-lg-2 ">
+              <div className=" w-100 d-flex flex-wrap justify-content-between">
+                <div className=' w-100'>
+                  <h1 className="w-100 text-capitalize">
+                    {decodedData?.examDetails.assessmentName.replaceAll(
+                      '+',
+                      ' '
+                    )}
                   </h1>
-                    <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
-                      
-                      {examDuration && <div><span  className='mx-2'>Time Remaining:</span><CountDownTimerLibrary
+                  <div className=" w-100 d-flex flex-column flex-sm-row align-items-lg-center px-0 px-sm-3 mt-5 mt-sm-0 fs-6">
+
+                    {examDuration && <div><span className='mx-2'>Time Remaining:</span><CountDownTimerLibrary
                       initialTime={parseInt(
                         examDuration
                       )
-                        } setInitialTime={setExamDuration}
+                      } setInitialTime={setExamDuration}
                       // initialTime={40}
                       onTimerEnd={handleTimerEnd}
-                      /></div>}
+                    /></div>}
                     <div
                       className=" mx-1 bg-dark-subtle rounded-5"
-                        style={{width: '12.25rem',height: '10px'}}
+                      style={{ width: '12.25rem', height: '10px' }}
                     >
                       <div
                         className=" rounded-5"
@@ -198,8 +198,8 @@ const StudentPaper = memo(function StudentPaper({
 
                   </div>
                   <button className='my-2 btn btn-primary w-md-25 w-sm-100' onClick={handleTranslate}>
-        {language === "hi" ? "Translate to English" : "Translate to Hindi"}
-      </button>
+                    {language === "hi" ? "Translate to English" : "Translate to Hindi"}
+                  </button>
                 </div>
                 <div className="d-none d-md-flex justify-content-center align-items-center flex-column">
                   <h3>
@@ -208,7 +208,7 @@ const StudentPaper = memo(function StudentPaper({
                   </h3>
                   <div className=" d-flex justify-content-center gap-5 fs-5 text-capitalize">
                     {' '}
-                      <p>min score:{decodedData?.examDetails.minimum_marks} marks </p>
+                    <p>min score:{decodedData?.examDetails.minimum_marks} marks </p>
                     <p>max score:{decodedData?.examDetails.totalMarks} marks</p>
                   </div>
                 </div>
@@ -216,19 +216,19 @@ const StudentPaper = memo(function StudentPaper({
             </div>
             <div
               className="col-lg-8  offset-lg-2 p-lg-4  overflow-auto  "
-                style={{maxHeight: '60vh'}}
+              style={{ maxHeight: '60vh' }}
             >
               {decodedData?.questions &&
-                  decodedData?.questions.map((value,index) => {
+                decodedData?.questions.map((value, index) => {
                   return (
                     <div key={index} className="p-1 py-3 p-lg-4 my-3  shadow border rounded-3 bg-white">
                       <div className="question d-flex fs-6">
                         <span>{index + 1}.</span>
-                        <p>{value.questions.replaceAll('+',' ')}?</p>
+                        <p>{value.questions.replaceAll('+', ' ')}?</p>
                       </div>
                       <ul className="options text-wrap  fs-6 list-unstyled">
                         {value.options &&
-                          value?.options?.map((valueopt,indexopt) => {
+                          value?.options?.map((valueopt, indexopt) => {
                             return (
                               <li key={indexopt} className=" d-flex gap-2">
                                 <input
@@ -236,12 +236,12 @@ const StudentPaper = memo(function StudentPaper({
                                   name={`question${index}`}
                                   value={valueopt}
                                   onClick={(e) => {
-                                    handleChecked(e,index);
+                                    handleChecked(e, index);
                                   }}
                                   id={`ques${index}-opt${indexopt + 1}`}
                                 />
                                 <label htmlFor={`ques${index}-opt${indexopt + 1}`}>
-                                  {valueopt.replaceAll('+',' ')}
+                                  {valueopt.replaceAll('+', ' ')}
                                 </label>
                               </li>
                             );
@@ -254,7 +254,7 @@ const StudentPaper = memo(function StudentPaper({
             <div className="col-lg-8  offset-lg-2 ">
               <div className=" d-flex w-100 justify-content-end p-0 m-0">
                 <CustomButton
-                    className={'rounded-4 px-3 px-md-5 m-0 m-md-3 mb-0 w-auto '}
+                  className={'rounded-4 px-3 px-md-5 m-0 m-md-3 mb-0 w-auto '}
                   buttonText={'submit'}
                   onButtonClick={handleSubmitShow}
                 />
@@ -292,7 +292,7 @@ const StudentPaper = memo(function StudentPaper({
               <Button
                 variant="success"
                 className="rounded-4 w-100"
-                onClick={() => submitPaperDetails()}
+                onClick={() => !submitPaperLoading && submitPaperDetails()}
               >
                 {submitPaperLoading ? (
                   <Spinner animation="border" size="sm" />
