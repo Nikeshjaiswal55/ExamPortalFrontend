@@ -140,12 +140,11 @@ export function SnsSvsDashboard() {
             "#": index + 1,
             "Student Name": item?.name,
             "Father Name": item?.fatherName,
-            Address: item?.village,
-            "Mobile Number": item?.mobileNumber,
+             Address: item?.village,
+            "Mobile Number": item?.mobileNumber1,
+            "Whatshap Mobile Number": item?.mobileNumber2,
             "Total Marks": item?.totalMarks,
-            "Obtained Marks": item?.obtainedMarks,
-            "Result Status": item?.resultStatus,
-            Attempted: item?.is_attempted ? "true" : "false",
+            "Obtained Marks": item?.obtainMarks,
           }));
 
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
