@@ -89,11 +89,10 @@ export function AllLeadStudent() {
             "Student Name": item?.name,
             "Father Name": item?.fatherName,
             Address: item?.village,
-            "Mobile Number": item?.mobileNumber,
+            "Mobile Number": `${item?.mobileNumber1} - ${item?.mobileNumber2}`,
             "Total Marks": item?.totalMarks,
-            "Obtained Marks": item?.obtainedMarks,
+            "Obtained Marks": item?.obtainMarks,
             "Result Status": item?.resultStatus,
-            Attempted: item?.attempted,
             date: formatDate(item?.date),
             time: getTimeInIST(item?.date),
           }));
